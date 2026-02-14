@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="build-version" content="01.02w">
+  <meta name="build-version" content="01.03w">
   <title>YOUR_PROJECT_TITLE</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -153,6 +153,7 @@
       // Resolve <page-name>-version.txt URL relative to the current page
       var basePath = window.location.href.split('?')[0];
       var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+      if (!pageName) pageName = 'index';
       var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + pageName + '.version.txt';
 
       function checkForUpdate() {
