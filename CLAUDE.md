@@ -118,5 +118,16 @@ When a GAS app embedded in a GitHub Pages iframe needs Google sign-in (e.g. to r
 | `gas-needs-auth` | GAS iframe → parent | Tells parent to show sign-in wall (includes `authStatus`, `email`) |
 | `gas-auth-complete` | GAS iframe → parent | Tells parent auth succeeded (hides wall, reloads iframe) |
 
+## Developer Branding
+- **Every code file** in this repo must have a comment at the very bottom: `Developed by: ShadowAISolutions`
+- Use the appropriate comment syntax for each file type:
+  - HTML: `<!-- Developed by: ShadowAISolutions -->`
+  - JavaScript / GAS (.gs): `// Developed by: ShadowAISolutions`
+  - YAML: `# Developed by: ShadowAISolutions`
+  - CSS: `/* Developed by: ShadowAISolutions */`
+  - Markdown: plain text at the very bottom
+- When creating new code files, always add this comment as the last line
+- This section must remain the **last section** in CLAUDE.md — do not add new sections below it
 
+Developed by: ShadowAISolutions
 
