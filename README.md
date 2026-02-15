@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-15 04:25:06 PM EST`
+Last updated: `2026-02-15 04:28:24 PM EST`
 
 You are currently using the **autoupdatehtmltemplate**, update your code and claude will update the live site link here
 
@@ -15,7 +15,7 @@ You are currently using the **autoupdatehtmltemplate**, update your code and cla
 
 ## Initialize This Template
 
-After copying this template to your own repository, follow these steps to get your live site running:
+After copying this template and you see it in your own repository, follow these steps to get your live site running:
 
 ### 1. Enable GitHub Pages
 
