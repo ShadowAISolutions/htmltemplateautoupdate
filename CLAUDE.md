@@ -8,7 +8,8 @@ These variables are the **single source of truth** for repo-specific values. Whe
 |----------|-------|------------------|
 | `YOUR_ORG_NAME` | `ShadowAISolutions` | LICENSE, README, CITATION.cff, "Developed by:" footers, FUNDING.yml, issue templates, GOVERNANCE, SUPPORT, SECURITY, ARCHITECTURE, STATUS, CONTRIBUTING, PR template, workflow file |
 | `YOUR_REPO_NAME` | `YOUR_REPO_NAME` | README title/structure tree, CITATION.cff, ARCHITECTURE diagram, STATUS live URL, SUPPORT issue links, SECURITY advisory link, issue template config |
-| `YOUR_LOGO_URL` | `https://www.shadowaisolutions.com/SAIS%20Logo.png` | HTML splash screen `LOGO_URL` variable (in `index.html` and template) |
+| `DEVELOPER_LOGO_URL` | `https://www.shadowaisolutions.com/SAIS%20Logo.png` | HTML splash screen `LOGO_URL` variable (in `index.html` and template) |
+| `COMPANY_LOGO_URL` | `https://pfcassociates.github.io/PFC_Website/PFC_images/PFC_LOGO_4_Transparent.png` | Available for use in pages that need the company logo |
 
 ### How variables work
 - **In code files** (HTML, YAML, Markdown, etc.): use the **resolved value** (e.g. write `ShadowAISolutions`, not `YOUR_ORG_NAME`)

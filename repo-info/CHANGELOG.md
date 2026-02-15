@@ -16,6 +16,7 @@ Version suffixes: `w` = website (HTML pages), `g` = Google Apps Script.
 - Added Template Variables section to CLAUDE.md as single source of truth for org name, repo name, and logo URL
 - Added `LOGO_URL` JS config variable to HTML files for splash screen logo
 - Propagated resolved variable values (`ShadowAISolutions`, logo URL) throughout repo
+- Split `YOUR_LOGO_URL` into `DEVELOPER_LOGO_URL` and `COMPANY_LOGO_URL` template variables; HTML files now define both with `LOGO_URL` defaulting to developer logo
 
 ## [v01.04w] - 2026-02-14
 ### Changed
