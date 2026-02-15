@@ -19,7 +19,7 @@ If you need help with this project, here are your options:
 
 ### Security Issues
 
-For security vulnerabilities, **do not open a public issue**. See our [Security Policy](SECURITY.md) for responsible disclosure instructions.
+For security vulnerabilities, **do not open a public issue**. See our [Security Policy](../.github/SECURITY.md) for responsible disclosure instructions.
 
 Developed by: ShadowAISolutions
 

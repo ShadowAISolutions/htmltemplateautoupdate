@@ -42,7 +42,7 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 > - **Session Start Checklist template drift checks are skipped** — step #1 short-circuits the numbered checklist. The "Always Run" section (branch hygiene and deployment flow) still applies every session
 > - **All version bumps are skipped** — Pre-Commit Checklist items #1 (`.gs` version bump), #2 (HTML build-version), #3 (version.txt sync), #5 (STATUS.md), #7 (CHANGELOG.md), and #9 (version prefix in commit message) are all skipped unless the user explicitly requests them
 > - **GitHub Pages deployment is skipped** — the workflow's `deploy` job checks `github.event.repository.name != 'autoupdatehtmltemplate'` and won't run on the template repo
-> - Pre-Commit items #4, #6, #8, #10, #11 still apply normally
+> - Pre-Commit items #4, #6, #8, #10, #11, #12 still apply normally
 
 ---
 > **--- END OF TEMPLATE REPO GUARD ---**
@@ -62,6 +62,7 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 9. **Commit message format** — if versions were bumped, the commit message must start with the version prefix(es): `v{VERSION}` for `.gs`, `v{BUILD_VERSION}` for HTML (e.g. `v01.14g v01.02w Fix bug`)
 10. **Developer branding** — any newly created file must have `Developed by: ShadowAISolutions` as the last line (using the appropriate comment syntax for the file type)
 11. **README.md `Last updated:` timestamp** — on every commit, update the `Last updated:` timestamp near the top of `README.md` to the real current time (run `TZ=America/New_York date '+%Y-%m-%d %H:%M:%S EST'`). **This rule always applies — it is NOT skipped by the Template Repo Guard**
+12. **Internal link integrity** — if any markdown file is added, moved, or renamed, verify that all internal links (`[text](path)`) in the repo still resolve to existing files. Pay special attention to cross-directory links — see the Internal Link Reference section for the correct relative paths
 
 ### Maintaining these checklists
 - The Session Start and Pre-Commit checklists are the **single source of truth** for all actionable rules. Detailed sections below provide reference context only
@@ -313,6 +314,52 @@ Update these only when the change is genuinely relevant — don't force unnecess
 
 ---
 > **--- END OF KEEPING DOCUMENTATION FILES IN SYNC ---**
+---
+
+## Internal Link Reference
+*Rule: see Pre-Commit Checklist item #12. Correct relative paths below.*
+
+Files live in three locations: repo root, `.github/`, and `repository-information/`. Cross-directory links must use `../` to traverse up before descending into the target directory.
+
+### File locations
+| File | Actual path |
+|------|-------------|
+| README.md | `./README.md` (root) |
+| CLAUDE.md | `./CLAUDE.md` (root) |
+| LICENSE | `./LICENSE` (root) |
+| CODE_OF_CONDUCT.md | `.github/CODE_OF_CONDUCT.md` |
+| CONTRIBUTING.md | `.github/CONTRIBUTING.md` |
+| SECURITY.md | `.github/SECURITY.md` |
+| PULL_REQUEST_TEMPLATE.md | `.github/PULL_REQUEST_TEMPLATE.md` |
+| ARCHITECTURE.md | `repository-information/ARCHITECTURE.md` |
+| CHANGELOG.md | `repository-information/CHANGELOG.md` |
+| GOVERNANCE.md | `repository-information/GOVERNANCE.md` |
+| IMPROVEMENTS.md | `repository-information/IMPROVEMENTS.md` |
+| STATUS.md | `repository-information/STATUS.md` |
+| SUPPORT.md | `repository-information/SUPPORT.md` |
+| TODO.md | `repository-information/TODO.md` |
+
+### Common cross-directory link patterns
+| From directory | To file in `.github/` | Correct relative path |
+|----------------|----------------------|----------------------|
+| `repository-information/` | `.github/SECURITY.md` | `../.github/SECURITY.md` |
+| `repository-information/` | `.github/CONTRIBUTING.md` | `../.github/CONTRIBUTING.md` |
+| `repository-information/` | `.github/CODE_OF_CONDUCT.md` | `../.github/CODE_OF_CONDUCT.md` |
+
+| From directory | To file in `repository-information/` | Correct relative path |
+|----------------|--------------------------------------|----------------------|
+| `.github/` | `repository-information/SUPPORT.md` | `../repository-information/SUPPORT.md` |
+| `.github/` | `repository-information/CHANGELOG.md` | `../repository-information/CHANGELOG.md` |
+
+| From directory | To root files | Correct relative path |
+|----------------|--------------|----------------------|
+| `repository-information/` | `README.md` | `../README.md` |
+| `repository-information/` | `CLAUDE.md` | `../CLAUDE.md` |
+| `.github/` | `README.md` | `../README.md` |
+| `.github/` | `CLAUDE.md` | `../CLAUDE.md` |
+
+---
+> **--- END OF INTERNAL LINK REFERENCE ---**
 ---
 
 ## Developer Branding
