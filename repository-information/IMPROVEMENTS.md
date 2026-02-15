@@ -1,6 +1,6 @@
-# Improvements & To-Do
+# Potential Improvements
 
-Potential improvements and future enhancements for the project.
+Ideas and optimizations to explore — no commitment, investigated when time allows.
 
 ## GAS Auto-Update: Switch from CacheService to PropertiesService
 

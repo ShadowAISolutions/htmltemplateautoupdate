@@ -41,8 +41,9 @@ autoupdatehtmltemplate/
 │   ├── ARCHITECTURE.md         # System diagram (Mermaid)
 │   ├── CHANGELOG.md            # Version history
 │   ├── GOVERNANCE.md           # Project governance
-│   ├── IMPROVEMENTS.md         # Potential improvements & to-do
+│   ├── IMPROVEMENTS.md         # Potential improvements
 │   ├── STATUS.md               # Project status dashboard
+│   ├── TODO.md                 # Actionable to-do items
 │   └── SUPPORT.md              # Getting help
 ├── CITATION.cff                # Citation metadata
 ├── CLAUDE.md                   # Developer instructions
@@ -56,8 +57,9 @@ autoupdatehtmltemplate/
 | [ARCHITECTURE.md](repository-information/ARCHITECTURE.md) | Visual system diagram (Mermaid) |
 | [CHANGELOG.md](repository-information/CHANGELOG.md) | Version history |
 | [CLAUDE.md](CLAUDE.md) | Developer instructions and conventions |
-| [IMPROVEMENTS.md](repository-information/IMPROVEMENTS.md) | Potential improvements and to-do items |
+| [IMPROVEMENTS.md](repository-information/IMPROVEMENTS.md) | Potential improvements to explore |
 | [STATUS.md](repository-information/STATUS.md) | Current project status and versions |
+| [TODO.md](repository-information/TODO.md) | Actionable planned items |
 
 ## Community
 
