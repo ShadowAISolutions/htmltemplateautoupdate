@@ -10,6 +10,7 @@ Version suffixes: `w` = website (HTML pages), `g` = Google Apps Script.
 - Reverted license back to proprietary (All Rights Reserved) for work use
 - Reset all build-versions to 01.00w (index.html, template, version.txt files) for clean template baseline
 - Renamed `docs/` folder to `repo-info/` for clarity; updated all references
+- Renamed `httpsdocs/` to `live-site/` and `autoUpdateTemplateFiles/` to `live-site-templates/`; updated all references
 
 ## [v01.04w] - 2026-02-14
 ### Changed

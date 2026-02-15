@@ -24,11 +24,11 @@ Google Apps Script projects are embedded as iframes in GitHub Pages. The framewo
 
 ```
 demorepo4/
-├── httpsdocs/                  # Deployed to GitHub Pages
+├── live-site/                  # Deployed to GitHub Pages
 │   ├── index.html              # Live landing page
 │   ├── index.version.txt       # Version file for auto-refresh
 │   └── sounds/                 # Audio feedback files
-├── autoUpdateTemplateFiles/    # Template for new pages
+├── live-site-templates/        # Template for new pages
 ├── .github/
 │   ├── workflows/              # CI/CD pipeline
 │   ├── ISSUE_TEMPLATE/         # Bug report & feature request forms

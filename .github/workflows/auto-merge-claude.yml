@@ -16,7 +16,7 @@
 #   3. Check what changed (git diff)
 #   4. Deploy GAS projects — only if their Code.gs was modified
 #   5. Delete the claude branch
-#   6. Deploy GitHub Pages — only if httpsdocs/ files were modified
+#   6. Deploy GitHub Pages — only if live-site/ files were modified
 #   7. Direct pushes to main skip merge and just deploy
 #
 # HOW TO ADD A NEW GAS PROJECT:
@@ -107,7 +107,7 @@ jobs:
         id: check-changes
         run: |
           PRE=${{ steps.merge.outputs.pre_merge_sha }}
-          if git diff --name-only "$PRE" HEAD | grep -q "^httpsdocs/"; then
+          if git diff --name-only "$PRE" HEAD | grep -q "^live-site/"; then
             echo "pages-changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "pages-changed=false" >> "$GITHUB_OUTPUT"
@@ -153,7 +153,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './httpsdocs'
+          path: './live-site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

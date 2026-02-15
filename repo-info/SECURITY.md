@@ -37,7 +37,7 @@ Only the latest deployed version receives security updates.
 
 This security policy covers:
 
-- The GitHub Pages deployment (`httpsdocs/`)
+- The GitHub Pages deployment (`live-site/`)
 - Google Apps Script code (`.gs` files)
 - CI/CD workflows (`.github/workflows/`)
 
