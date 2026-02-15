@@ -141,6 +141,7 @@ For pages that live directly in `live-site-pages/` (not in a subdirectory), the 
 - **Skip all version bumps** — do NOT increment `build-version` in HTML pages or `VERSION` in `.gs` files
 - For text files: add a trailing newline
 - For binary files (e.g. `.mp3`): append a null byte
+- **Reset `repo-info/CHANGELOG.md`** — replace all entries with a fresh template (keep the header, version suffix note, and an empty `[Unreleased]` section with `*(No changes yet)*`). This gives the repo a clean history starting point
 - Commit message: `Phantom edit to align all file timestamps on GitHub` (no version prefix)
 
 ## Execution Style
