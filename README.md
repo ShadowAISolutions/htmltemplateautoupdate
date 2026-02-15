@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-15 04:31:42 PM EST`
+Last updated: `2026-02-15 04:32:54 PM EST`
 
 You are currently using the **autoupdatehtmltemplate**, update your code and claude will update the live site link here
 
@@ -22,7 +22,8 @@ After copying this template and you see it in your own repository, follow these 
 Go to your repository's [**Pages settings**](https://github.com/ShadowAISolutions/autoupdatehtmltemplate/settings/pages) and configure:
 
 - **Source**: Select **GitHub Actions** (not "Deploy from a branch")
-- This allows the included workflow to deploy your `live-site-pages/` directory automatically
+
+  This allows the included workflow to deploy your `live-site-pages/` directory automatically.
 
 ### 2. Configure the `github-pages` Environment
 
