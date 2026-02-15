@@ -19,3 +19,4 @@
 | Auto-Update HTML | `autoUpdateTemplateFiles/AutoUpdateOnlyHtmlTemplate.html` | v01.00w |
 
 Developed by: ShadowAISolutions
+

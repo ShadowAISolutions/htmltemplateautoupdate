@@ -68,3 +68,4 @@ demorepo4/
 | [Governance](docs/GOVERNANCE.md) | Project ownership and decision making |
 
 Developed by: ShadowAISolutions
+

@@ -22,3 +22,4 @@ If you need help with this project, here are your options:
 For security vulnerabilities, **do not open a public issue**. See our [Security Policy](SECURITY.md) for responsible disclosure instructions.
 
 Developed by: ShadowAISolutions
+
