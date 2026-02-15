@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-**Live site:** [ShadowAISolutions.github.io/autoupdatehtmltemplate](https://ShadowAISolutions.github.io/autoupdatehtmltemplate)
+You are currently using the **autoupdatehtmltemplate**, update your code and claude will update the live site link here
 
 ## How It Works
 
