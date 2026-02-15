@@ -1,8 +1,8 @@
-# YOUR_REPO_NAME
+# autoupdatehtmltemplate
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-**Live site:** [ShadowAISolutions.github.io/YOUR_REPO_NAME](https://ShadowAISolutions.github.io/YOUR_REPO_NAME)
+**Live site:** [ShadowAISolutions.github.io/autoupdatehtmltemplate](https://ShadowAISolutions.github.io/autoupdatehtmltemplate)
 
 ## How It Works
 
@@ -23,7 +23,7 @@ Google Apps Script projects are embedded as iframes in GitHub Pages. The framewo
 ## Project Structure
 
 ```
-YOUR_REPO_NAME/
+autoupdatehtmltemplate/
 ├── live-site-pages/             # Deployed to GitHub Pages
 │   ├── index.html              # Live landing page
 │   ├── index.version.txt       # Version file for auto-refresh
