@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-15 03:10:57 PM EST`
+Last updated: `2026-02-15 03:15:08 PM EST`
 
 You are currently using the **autoupdatehtmltemplate**, update your code and claude will update the live site link here
 
@@ -25,21 +25,14 @@ Go to your repository's [**Environments settings**](https://github.com/ShadowAIS
 - Name it exactly `github-pages`
 - No additional protection rules are needed — the workflow handles deployment automatically
 
-### 3. Run Claude Code
+### 3. Run Claude Code and Type `initialize`
 
-Open the repo with Claude Code. On first run, the **Session Start Checklist** in `CLAUDE.md` will automatically:
+Open the repo with Claude Code and type **`initialize`** as your first prompt. Claude will automatically:
 
 - Detect your new repo name and org
 - Update all references throughout the codebase
 - Replace the placeholder text above with your live site link
-
-### 4. Push Your First Change
-
-Push to any `claude/*` branch — the workflow will:
-
-1. Merge into `main`
-2. Deploy to GitHub Pages
-3. Clean up the branch
+- Commit and push — triggering the workflow to deploy to GitHub Pages
 
 Your site will be live at `https://<your-org>.github.io/<your-repo>/`
 
