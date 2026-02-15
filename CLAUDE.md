@@ -34,13 +34,22 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 3. **Relative links (already dynamic — do NOT modify)** — certain markdown files use relative paths that automatically resolve to the correct repo via GitHub's blob-view URL structure (see *Relative Path Resolution on GitHub* reference section for how this works). These links work on any fork/clone without initialization and must **never** be converted to absolute URLs or modified during drift checks. Files with relative links:
    - `.github/SECURITY.md` — private security advisory link (`../../../security/advisories/new`)
    - `repository-information/SUPPORT.md` — issue creation links (`../../../issues/new`)
-4. **Absolute URL propagation** — some files contain absolute URLs with the org and repo name that cannot use relative paths (YAML metadata fields, GitHub Pages URLs on a different domain, Mermaid diagram text). After steps 1–2, find and replace the template repo's values (`ShadowAISolutions`/`autoupdatehtmltemplate`) with the fork's actual values in these files:
-   - `.github/ISSUE_TEMPLATE/config.yml` — support and security advisory links (YAML `url` fields require absolute URLs)
-   - `CITATION.cff` — repository URL and site URL (citation metadata, not rendered markdown)
-   - `repository-information/STATUS.md` — GitHub Pages live site URL (different domain: `org.github.io`)
-   - `repository-information/ARCHITECTURE.md` — live site URL in Mermaid diagram text label
-   - `README.md` — live site link, source repo URL
+4. **Absolute URL propagation** — some files contain absolute URLs with the org and repo name that cannot use relative paths (YAML metadata fields, GitHub Pages URLs on a different domain, Mermaid diagram text). After steps 1–2, find and replace the template repo's values (`ShadowAISolutions`/`autoupdatehtmltemplate`) with the fork's actual values in these files. **For each file, verify every URL listed below — not just the first one you find:**
+   - `.github/ISSUE_TEMPLATE/config.yml` — YAML `url` fields require absolute URLs:
+     - `url: https://github.com/ShadowAISolutions/autoupdatehtmltemplate/blob/main/repository-information/SUPPORT.md` (support link)
+     - `url: https://github.com/ShadowAISolutions/autoupdatehtmltemplate/security/advisories/new` (security advisory link)
+   - `CITATION.cff` — citation metadata (not rendered markdown):
+     - `repository-code:` URL (`https://github.com/ShadowAISolutions/autoupdatehtmltemplate`)
+     - `url:` field (`https://ShadowAISolutions.github.io/autoupdatehtmltemplate`)
+   - `repository-information/STATUS.md` — GitHub Pages URL (different domain: `org.github.io`):
+     - `[View](https://ShadowAISolutions.github.io/autoupdatehtmltemplate/)` link in the Hosted Pages table
+   - `repository-information/ARCHITECTURE.md` — Mermaid diagram text (not a clickable link):
+     - `LIVE["Live Site\nShadowAISolutions.github.io/autoupdatehtmltemplate"]`
+   - `README.md` — live site link and source repo URL:
+     - Live site `[View](https://...)` or `[...github.io/...](https://...)` link
+     - Source repo URL in "Copy This Repository" section (gets removed in step #6, but update if still present)
    When replacing, change **only the org and repo name portions** of each URL — preserve the rest of the URL path and structure intact (e.g. `/security/advisories/new` stays the same, only `ShadowAISolutions/autoupdatehtmltemplate` changes to `NewOrg/newrepo`)
+   **Verification:** after replacements, run `grep -r 'ShadowAISolutions\|autoupdatehtmltemplate' --include='*.md' --include='*.yml' --include='*.cff' --include='*.html'` (excluding CLAUDE.md) and confirm zero hits remain outside of `Developed by:` branding lines and provenance markers
 5. **README live site link** — check if `README.md` still contains the placeholder text (`You are currently using the **YOUR_REPO_NAME**...`). If so, replace it with: `**Live site:** [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME)` (resolved values)
 6. **Remove "Copy This Repository" and "Initialize This Template" sections** — if `README.md` contains the `## Copy This Repository` or `## Initialize This Template` sections, delete each entirely (from the `##` heading through to the line immediately before the next `##` heading). These sections are only useful on the template repo itself; forks/clones should not keep them
 7. **Unresolved placeholders** — scan for any literal `YOUR_ORG_NAME`, `YOUR_REPO_NAME`, `YOUR_PROJECT_TITLE`, or `DEVELOPER_NAME` strings in code files (not CLAUDE.md) and replace them with resolved values
