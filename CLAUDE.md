@@ -7,19 +7,34 @@
 > `Session start: fix template drift`
 > **The user's task is NOT urgent enough to skip this. Do it first. Every time.**
 
-1. **Template repo short-circuit** — run `git remote -v` and extract the repo name. If it is `autoupdatehtmltemplate`, skip all remaining checklist steps and proceed directly to the user's request. The remaining steps exist to catch template drift on forks/clones and are not needed on the template repo itself
+### Always Run (every repo, every session — NEVER skip)
+These rules apply universally — they are **NOT** skipped by the template repo short-circuit in step #1 below.
+
+**Branch hygiene** — run `git remote set-head origin main` to ensure `origin/HEAD` points to `main`. If a local `master` branch exists and points to the same commit as `origin/main`, delete it with `git branch -D master`. This prevents the auto-merge workflow from failing with exit code 128 due to branch misconfiguration.
+
+**Deployment Flow**
+- Never push directly to `main`
+- Push to `claude/*` branches only
+- `.github/workflows/auto-merge-claude.yml` handles everything automatically:
+  1. Merges the claude branch into main
+  2. Deletes the claude branch
+  3. Deploys to GitHub Pages
+- The "Create a pull request" message in push output is just GitHub boilerplate — ignore it, the workflow handles merging automatically
+- **Batch commits before pushing** — do NOT push multiple times in rapid succession to the same `claude/*` branch. The workflow uses a shared concurrency group (`"pages"`) with `cancel-in-progress: false`, so each push queues a separate workflow run. If an earlier run merges and deletes the branch, subsequent queued runs fail with exit code 128 because the branch no longer exists. Instead, make all your commits locally first, then push once
+
+### Template Drift Checks
+1. **Template repo short-circuit** — run `git remote -v` and extract the repo name. If it is `autoupdatehtmltemplate`, skip the remaining numbered steps below and proceed directly to the user's request. The "Always Run" section above still applies. The steps below exist to catch template drift on forks/clones and are not needed on the template repo itself
 2. **Repo name auto-detect** — compare the actual repo name to the `YOUR_REPO_NAME` value in the Template Variables table. If they differ, update the table value and propagate it to every file in the "Where it appears" column
 3. **README live site link** — check if `README.md` still contains the placeholder text (`You are currently using the **YOUR_REPO_NAME**...`). If so, replace it with: `**Live site:** [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME)` (resolved values)
 4. **Unresolved placeholders** — scan for any literal `YOUR_ORG_NAME`, `YOUR_REPO_NAME`, or `YOUR_PROJECT_TITLE` strings in code files (not CLAUDE.md) and replace them with resolved values
 5. **Variable propagation** — if any value in the Template Variables table was changed (in this or a prior session), verify the new value has been propagated to every file listed in the "Where it appears" column
-6. **Branch hygiene** — run `git remote set-head origin main` to ensure `origin/HEAD` points to `main`. If a local `master` branch exists and points to the same commit as `origin/main`, delete it with `git branch -D master`. This prevents the auto-merge workflow from failing with exit code 128 due to branch misconfiguration
-7. **Confirm completion** — after all checks pass, briefly state to the user: "Session start checklist complete — no issues found" (or list what was fixed). Then proceed to their request
+6. **Confirm completion** — after all checks pass, briefly state to the user: "Session start checklist complete — no issues found" (or list what was fixed). Then proceed to their request
 
 These checks catch template drift that accumulates when the repo is cloned/forked into a new name.
 
 ## Template Repo Guard
 > When `YOUR_REPO_NAME` is `autoupdatehtmltemplate` (i.e. this is the template repo itself, not a fork/clone):
-> - **Session Start Checklist is skipped** — item #1 short-circuits the entire checklist. The remaining items only apply to forks/clones
+> - **Session Start Checklist template drift checks are skipped** — step #1 short-circuits the numbered checklist. The "Always Run" section (branch hygiene and deployment flow) still applies every session
 > - **Pre-Commit Checklist items #2, #3, #5, #7** are skipped unless the user explicitly requests version bumps or changelog entries — the template repo's HTML pages and documentation should not auto-increment
 > - **GitHub Pages deployment is skipped** — the workflow's `deploy` job checks `github.event.repository.name != 'autoupdatehtmltemplate'` and won't run on the template repo
 > - Pre-Commit items #1 (`.gs` version bump), #4, #6, #8, #9, #10 still apply normally
@@ -58,16 +73,6 @@ These variables are the **single source of truth** for repo-specific values. Whe
 ### How variables work
 - **In code files** (HTML, YAML, Markdown, etc.): use the **resolved value** (e.g. write `ShadowAISolutions`, not `YOUR_ORG_NAME`)
 - **In CLAUDE.md instructions**: the placeholder names (`YOUR_ORG_NAME`, etc.) may appear in examples and rules — Claude Code resolves them using the table above
-
-## Deployment Flow
-- Never push directly to `main`
-- Push to `claude/*` branches only
-- `.github/workflows/auto-merge-claude.yml` handles everything automatically:
-  1. Merges the claude branch into main
-  2. Deletes the claude branch
-  3. Deploys to GitHub Pages
-- The "Create a pull request" message in push output is just GitHub boilerplate — ignore it, the workflow handles merging automatically
-- **Batch commits before pushing** — do NOT push multiple times in rapid succession to the same `claude/*` branch. The workflow uses a shared concurrency group (`"pages"`) with `cancel-in-progress: false`, so each push queues a separate workflow run. If an earlier run merges and deletes the branch, subsequent queued runs fail with exit code 128 because the branch no longer exists. Instead, make all your commits locally first, then push once
 
 ## Version Bumping
 *Rule: see Pre-Commit Checklist item #1. Reference details below.*
