@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-16 10:41:31 AM EST`
+Last updated: `2026-02-16 10:44:25 AM EST`
 
 You are currently using the **autoupdatehtmltemplate** developed by **ShadowAISolutions**<br>
 Update your code and claude will update the live site link here
@@ -18,9 +18,9 @@ Update your code and claude will update the live site link here
 
 ## Initialize This Template
 
-> **Tip:** The links below navigate away from this page. **Ctrl + click** (or right-click → *Open in new tab*) to keep these instructions visible while you work.
+> **Important:** The links in steps 1 and 2 below point to the settings of **whichever repo you are viewing this page from**. Make sure you are reading this on **your own copy** of the repository, not on the original template repo — otherwise the links will open the template's settings instead of yours.
 
-> **Important:** The links in steps 1 and 2 below are **relative to the repo you're viewing this page from**. After the import finishes, **navigate to your newly created repository** and open **its** README — then click the links from there. If you click them here on the template repo, they will open the template's settings instead of yours.
+> **Tip:** The links below navigate away from this page. **Ctrl + click** (or right-click → *Open in new tab*) to keep these instructions visible while you work.
 
 ### 1. Enable GitHub Pages
 
