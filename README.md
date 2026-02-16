@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-15 08:15:19 PM EST`
+Last updated: `2026-02-15 10:38:43 PM EST`
 
 You are currently using the **autoupdatehtmltemplate** developed by **ShadowAISolutions**<br>
 Update your code and claude will update the live site link here
@@ -77,8 +77,6 @@ autoupdatehtmltemplate/
 │   ├── ISSUE_TEMPLATE/         # Bug report & feature request forms
 │   ├── PULL_REQUEST_TEMPLATE.md # PR checklist
 │   ├── CODE_OF_CONDUCT.md      # Community standards
-│   ├── CONTRIBUTING.md         # How to contribute
-│   ├── SECURITY.md             # Vulnerability reporting
 │   └── FUNDING.yml             # Sponsor button config
 ├── repository-information/
 │   ├── ARCHITECTURE.md         # System diagram (Mermaid)
@@ -90,7 +88,9 @@ autoupdatehtmltemplate/
 │   └── SUPPORT.md              # Getting help
 ├── CITATION.cff                # Citation metadata
 ├── CLAUDE.md                   # Developer instructions
-└── LICENSE                     # Proprietary license
+├── CONTRIBUTING.md             # How to contribute
+├── LICENSE                     # Proprietary license
+└── SECURITY.md                 # Vulnerability reporting
 ```
 
 ## Documentation
@@ -113,8 +113,8 @@ autoupdatehtmltemplate/
 | Document | Description |
 |----------|-------------|
 | [Code of Conduct](.github/CODE_OF_CONDUCT.md) | Community standards and expectations |
-| [Contributing](.github/CONTRIBUTING.md) | How to contribute to this project |
-| [Security Policy](.github/SECURITY.md) | How to report vulnerabilities |
+| [Contributing](CONTRIBUTING.md) | How to contribute to this project |
+| [Security Policy](SECURITY.md) | How to report vulnerabilities |
 | [Support](repository-information/SUPPORT.md) | Getting help |
 | [Governance](repository-information/GOVERNANCE.md) | Project ownership and decision making |
 

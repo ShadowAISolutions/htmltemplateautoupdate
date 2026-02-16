@@ -14,7 +14,7 @@ All decisions regarding the project direction, feature additions, and architectu
 |------|-----------------|
 | **Owner** | Final authority on project direction, merges, and deployments |
 | **Maintainer** | Code review, issue triage, and day-to-day project management |
-| **Contributor** | Submits changes via pull requests following the [Contributing](../.github/CONTRIBUTING.md) guidelines |
+| **Contributor** | Submits changes via pull requests following the [Contributing](../CONTRIBUTING.md) guidelines |
 
 ## Releases
 

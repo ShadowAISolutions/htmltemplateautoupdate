@@ -32,7 +32,7 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 1. **Org name auto-detect** — run `git remote -v` and extract the org/owner from the remote URL (e.g. `github.com/NewOrg/myrepo` → `NewOrg`). Compare it to the `YOUR_ORG_NAME` value in the Template Variables table. If they differ, update the table value and propagate to every file in the "Where it appears" column by **finding and replacing** the old org name (`ShadowAISolutions`) with the new org name in all occurrences (URLs, text, branding). Also update `DEVELOPER_NAME` to match the new org name (unless the user has explicitly set `DEVELOPER_NAME` to a different value)
 2. **Repo name auto-detect** — compare the actual repo name (from the same remote URL) to the `YOUR_REPO_NAME` value in the Template Variables table. If they differ, update the table value and propagate it to every file in the "Where it appears" column by **finding and replacing** the old repo name (`autoupdatehtmltemplate`) with the new repo name in all occurrences (URLs, text, structure references)
 3. **Relative links (already dynamic — do NOT modify)** — certain markdown files use relative paths that automatically resolve to the correct repo via GitHub's blob-view URL structure (see *Relative Path Resolution on GitHub* reference section for how this works). These links work on any fork/clone without initialization and must **never** be converted to absolute URLs or modified during drift checks. Files with relative links:
-   - `.github/SECURITY.md` — private security advisory link (`../../../security/advisories/new`)
+   - `SECURITY.md` — private security advisory link (`../../security/advisories/new`)
    - `repository-information/SUPPORT.md` — issue creation links (`../../../issues/new`)
    - `README.md` — repository settings links in "Initialize This Template" section (`../../settings/pages`, `../../settings/environments`). These are removed by step #6 but must not be converted to absolute URLs if encountered before removal
 4. **Absolute URL propagation** — some files contain absolute URLs with the org and repo name that cannot use relative paths (YAML metadata fields, GitHub Pages URLs on a different domain, Mermaid diagram text). After steps 1–2, find and replace the template repo's values (`ShadowAISolutions`/`autoupdatehtmltemplate`) with the fork's actual values in these files. **For each file, verify every URL listed below — not just the first one you find:**
@@ -344,8 +344,8 @@ When a GAS app embedded in a GitHub Pages iframe needs Google sign-in (e.g. to r
 |------|---------------|
 | `.gitignore` | New file types or tooling is introduced that generates artifacts (e.g. adding Node tooling, Python venvs, build outputs) |
 | `.editorconfig` | New file types are introduced that need specific formatting rules |
-| `.github/CONTRIBUTING.md` | Development workflow changes, new conventions are added to CLAUDE.md that contributors need to know |
-| `.github/SECURITY.md` | New attack surfaces are added (e.g. new API endpoints, new OAuth flows, new deployment targets) |
+| `CONTRIBUTING.md` | Development workflow changes, new conventions are added to CLAUDE.md that contributors need to know |
+| `SECURITY.md` | New attack surfaces are added (e.g. new API endpoints, new OAuth flows, new deployment targets) |
 | `CITATION.cff` | Project name, description, authors, or URLs change |
 | `.github/ISSUE_TEMPLATE/*.yml` | New project areas are added (update the "Affected Area" / "Area" dropdown options) |
 | `.github/PULL_REQUEST_TEMPLATE.md` | New checklist items become relevant (e.g. new conventions, new mandatory checks) |
@@ -368,8 +368,8 @@ Files live in three locations: repo root, `.github/`, and `repository-informatio
 | CLAUDE.md | `./CLAUDE.md` (root) |
 | LICENSE | `./LICENSE` (root) |
 | CODE_OF_CONDUCT.md | `.github/CODE_OF_CONDUCT.md` |
-| CONTRIBUTING.md | `.github/CONTRIBUTING.md` |
-| SECURITY.md | `.github/SECURITY.md` |
+| CONTRIBUTING.md | `./CONTRIBUTING.md` (root) |
+| SECURITY.md | `./SECURITY.md` (root) |
 | PULL_REQUEST_TEMPLATE.md | `.github/PULL_REQUEST_TEMPLATE.md` |
 | ARCHITECTURE.md | `repository-information/ARCHITECTURE.md` |
 | CHANGELOG.md | `repository-information/CHANGELOG.md` |
@@ -382,8 +382,6 @@ Files live in three locations: repo root, `.github/`, and `repository-informatio
 ### Common cross-directory link patterns
 | From directory | To file in `.github/` | Correct relative path |
 |----------------|----------------------|----------------------|
-| `repository-information/` | `.github/SECURITY.md` | `../.github/SECURITY.md` |
-| `repository-information/` | `.github/CONTRIBUTING.md` | `../.github/CONTRIBUTING.md` |
 | `repository-information/` | `.github/CODE_OF_CONDUCT.md` | `../.github/CODE_OF_CONDUCT.md` |
 
 | From directory | To file in `repository-information/` | Correct relative path |
@@ -395,6 +393,8 @@ Files live in three locations: repo root, `.github/`, and `repository-informatio
 |----------------|--------------|----------------------|
 | `repository-information/` | `README.md` | `../README.md` |
 | `repository-information/` | `CLAUDE.md` | `../CLAUDE.md` |
+| `repository-information/` | `CONTRIBUTING.md` | `../CONTRIBUTING.md` |
+| `repository-information/` | `SECURITY.md` | `../SECURITY.md` |
 | `.github/` | `README.md` | `../README.md` |
 | `.github/` | `CLAUDE.md` | `../CLAUDE.md` |
 
@@ -424,14 +424,13 @@ The browser resolves relative links from the **directory** portion of that URL. 
 ### Example: SECURITY.md advisory link
 
 ```
-File:      .github/SECURITY.md
-Blob URL:  https://github.com/AnyOrg/AnyRepo/blob/main/.github/SECURITY.md
-Directory: /AnyOrg/AnyRepo/blob/main/.github/
+File:      SECURITY.md
+Blob URL:  https://github.com/AnyOrg/AnyRepo/blob/main/SECURITY.md
+Directory: /AnyOrg/AnyRepo/blob/main/
 
-Link:      ../../../security/advisories/new
-Step 1:    ../   removes .github/       → /AnyOrg/AnyRepo/blob/main/
-Step 2:    ../   removes main/          → /AnyOrg/AnyRepo/blob/
-Step 3:    ../   removes blob/          → /AnyOrg/AnyRepo/
+Link:      ../../security/advisories/new
+Step 1:    ../   removes main/          → /AnyOrg/AnyRepo/blob/
+Step 2:    ../   removes blob/          → /AnyOrg/AnyRepo/
 Result:    /AnyOrg/AnyRepo/security/advisories/new  ✓
 ```
 
