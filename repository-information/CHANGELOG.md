@@ -10,16 +10,3 @@ Version suffixes: `w` = website (HTML pages), `g` = Google Apps Script.
 *(No changes yet)*
 
 Developed by: ShadowAISolutions
-
-
-
-
-
-
-
-
-
-
-
-
-
