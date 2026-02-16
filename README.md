@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-15 10:42:24 PM EST`
+Last updated: `2026-02-15 10:44:47 PM EST`
 
 You are currently using the **autoupdatehtmltemplate** developed by **ShadowAISolutions**<br>
 Update your code and claude will update the live site link here
@@ -37,6 +37,8 @@ Go to your repository's [**Environments settings**](../../settings/environments)
 - Select the dropdown next to the **Deployment branches and tags** heading and choose **No restriction**
 
 ### 3. Run Claude Code and Type `initialize`
+
+> The initialization process takes approximately **~8 minutes** to complete.
 
 Open the repo with Claude Code and type **`initialize`** as your first prompt. Claude will automatically:
 
