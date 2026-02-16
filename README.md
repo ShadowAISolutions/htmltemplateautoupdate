@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-15 10:55:48 PM EST`
+Last updated: `2026-02-15 10:58:15 PM EST`
 
 You are currently using the **autoupdatehtmltemplate** developed by **ShadowAISolutions**<br>
 Update your code and claude will update the live site link here
@@ -42,10 +42,10 @@ Go to your repository's [**Environments settings**](../../settings/environments)
 
 Open the repo with Claude Code and type **`initialize`** as your first prompt. Claude will automatically:
 
-  Detect your new repo name and org
-  Update all references throughout the codebase
-  Replace the placeholder text above with your live site link
-  Commit and push — triggering the workflow to deploy to GitHub Pages
+&emsp;Detect your new repo name and org<br>
+&emsp;Update all references throughout the codebase<br>
+&emsp;Replace the placeholder text above with your live site link<br>
+&emsp;Commit and push — triggering the workflow to deploy to GitHub Pages
 
 Your site will be live at `https://<your-org>.github.io/<your-repo>/`
 
@@ -62,9 +62,9 @@ Every hosted page polls a lightweight `.version.txt` file every 10 seconds. When
 ### GAS Embedding Architecture
 Google Apps Script projects are embedded as iframes in GitHub Pages. The framework handles:
 
-  Automatic GAS deployment via `doPost` when `.gs` files change
-  "Code Ready" blue splash on GAS updates (client-side polling)
-  Google Sign-In from the parent page (stable OAuth origin)
+&emsp;Automatic GAS deployment via `doPost` when `.gs` files change<br>
+&emsp;"Code Ready" blue splash on GAS updates (client-side polling)<br>
+&emsp;Google Sign-In from the parent page (stable OAuth origin)
 
 ## Project Structure
 
