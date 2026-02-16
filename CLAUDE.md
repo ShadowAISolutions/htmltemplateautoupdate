@@ -27,6 +27,7 @@ These rules apply universally — they are **NOT** skipped by the template repo 
   3. Deploys to GitHub Pages
 - The "Create a pull request" message in push output is just GitHub boilerplate — ignore it, the workflow handles merging automatically
 - **Push only once per branch** — do NOT push multiple times to the same `claude/*` branch in a single session. The workflow uses a shared concurrency group (`"pages"`) with `cancel-in-progress: false`, so each push queues a separate workflow run. If an earlier run merges and deletes the branch, subsequent queued runs fail with exit code 128 because the branch no longer exists. **This includes sequential user requests** — if the user asks for task A and then task B in the same session, commit both locally and push once after all work is done. Do NOT push after task A and then push again after task B. The only exception is if a re-push is needed to recover from a failed workflow (e.g. the branch still exists on the remote but the merge didn't happen)
+- **Pre-push verification** — before executing any `git push`, run the Pre-Push Checklist (see below). This is mandatory even when the Deployment Flow rules are satisfied
 
 **Template repo short-circuit** — run `git remote -v` and extract the repo name. If it is `autoupdatehtmltemplate`, skip the Template Drift Checks below and proceed directly to the user's request.
 
@@ -73,7 +74,7 @@ If the user's prompt is just **"initialize"** (after the Session Start Checklist
 1. **Verify placeholders are resolved** — confirm that `repository-information/STATUS.md` no longer contains `*(deploy to activate)*` (drift check step #4 should have replaced it). If it's still there, replace it now with `[View](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/)` (resolved values)
 2. Update the `Last updated:` timestamp in `README.md` to the real current time
 3. Commit with message `Initialize deployment`
-4. Push to the `claude/*` branch
+4. Push to the `claude/*` branch (Pre-Push Checklist applies)
 
 This triggers the auto-merge workflow, which merges into `main` and deploys to GitHub Pages — populating the live site for the first time. No other changes are needed.
 
@@ -88,6 +89,7 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 > - **GitHub Pages deployment is skipped** — the workflow's `deploy` job checks `github.event.repository.name != 'autoupdatehtmltemplate'` and won't run on the template repo
 > - **`YOUR_ORG_NAME` and `YOUR_REPO_NAME` are frozen as placeholders** — in the Template Variables table, these values must stay as `YourOrgName` and `YourRepoName` (generic placeholders). Do NOT update them to match the actual org/repo (`ShadowAISolutions`/`autoupdatehtmltemplate`). The code files throughout the repo use the real `ShadowAISolutions/autoupdatehtmltemplate` values so that links are functional. On forks, the Session Start drift checks detect the mismatch between the placeholder table values and the actual `git remote -v` values, then find and replace the template repo's real values (`ShadowAISolutions`/`autoupdatehtmltemplate`) in the listed files with the fork's actual org/repo
 > - Pre-Commit items #0, #4, #6, #8, #10, #11, #12 still apply normally
+> - **Pre-Push Checklist is never skipped** — all 5 items apply on every repo including the template repo
 
 ---
 > **--- END OF TEMPLATE REPO GUARD ---**
@@ -112,7 +114,7 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 13. **README section link tips** — every `##` section in `README.md` that contains (or will contain) any clickable links must have this blockquote as the first line after the heading (before any other content): `> **Tip:** The links below navigate away from this page. **Ctrl + click** (or right-click → *Open in new tab*) to keep these instructions visible while you work.` — Sections with no links (e.g. a section with only a code block or plain text) do not need the tip
 
 ### Maintaining these checklists
-- The Session Start and Pre-Commit checklists are the **single source of truth** for all actionable rules. Detailed sections below provide reference context only
+- The Session Start, Pre-Commit, and Pre-Push checklists are the **single source of truth** for all actionable rules. Detailed sections below provide reference context only
 - When adding new rules to CLAUDE.md, add the actionable check to the appropriate checklist and put supporting details in a reference section — do not duplicate the rule in both places
 - When editing CLAUDE.md, check whether any existing reference section restates a checklist item — if so, remove the duplicate and add a `*Rule: see ... Checklist item #N*` pointer instead
 - **Section separators** — every `##` section in CLAUDE.md must end with a double-ruled banner. When adding a new `##` section, add the following block between the end of its content and the next `##` heading:
@@ -125,6 +127,25 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 
 ---
 > **--- END OF PRE-COMMIT CHECKLIST ---**
+---
+
+## Pre-Push Checklist
+**Before every `git push`, verify ALL of the following:**
+
+1. **Branch name** — confirm the branch being pushed is the `claude/*` branch assigned to THIS session. If a different branch name is checked out (e.g. `main`, or a `claude/*` branch from a prior session), STOP — do not push. Switch to the correct branch or ask the user for guidance. **This item is never skipped** — it applies on every repo including the template repo
+2. **Remote URL** — run `git remote -v` and verify the origin URL matches the repo this session is working on. If the URL has changed or does not match (e.g. context drifted mid-session to a different repo), STOP — do not push. This catches context drift that occurred after the Session Start Checklist and after Pre-Commit item #0
+3. **Commit audit** — run `git log origin/main..HEAD --oneline` and verify that every commit listed was created by THIS session. Look for commit messages, timestamps, or SHAs that do not match work performed in this session. If any commit appears to be inherited from a prior session or a different repo, STOP — do not push. Remove the stale commits (interactive rebase or reset) before proceeding, or ask the user for guidance
+4. **No cross-repo content** — run `git diff origin/main..HEAD` and scan for references to a different org/repo than the current one. Specifically, look for hardcoded org names or repo names in URLs, import paths, or configuration that do not match the current repo's `org/repo` identity (from `git remote -v`). References to `ShadowAISolutions/autoupdatehtmltemplate` are expected in the template repo itself and in provenance markers — only flag references to a *third* repo that is neither the current repo nor the template origin. If suspicious cross-repo content is found, STOP and ask the user to verify before pushing
+5. **Push-once enforcement** — verify that no push has already been made to this `claude/*` branch in this session. If a push already succeeded earlier in the session, STOP — do not push again (see Deployment Flow rules). The only exception is recovery from a failed workflow where the branch still exists on the remote but the merge did not happen
+
+### Abort protocol
+If any pre-push check fails, do NOT proceed with `git push`. Instead:
+- State which check failed and why
+- Do NOT silently fix the issue and push — the failure may indicate context contamination that requires user judgment
+- Ask the user how to proceed (discard commits, fix and retry, or abandon the push)
+
+---
+> **--- END OF PRE-PUSH CHECKLIST ---**
 ---
 
 ## Template Variables
