@@ -301,14 +301,8 @@ Each GAS project has a code file and a corresponding embedding page. Register th
 - **Version file naming**: the version file must be named `<page-name>.version.txt`, matching the HTML file it tracks (e.g. `index.html` → `index.version.txt`, `dashboard.html` → `dashboard.version.txt`). The `.version.txt` double extension ensures the version file sorts **after** the `.html` file alphabetically
 - Each version file holds only the current build-version string (e.g. `01.08w`)
 - The polling logic fetches the version file (~7 bytes) instead of the full HTML page, reducing bandwidth per poll from kilobytes to bytes
-- URL resolution: derive the version file URL relative to the current page's directory, using the page's own filename:
-  ```javascript
-  var basePath = window.location.href.split('?')[0];
-  var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
-  if (!pageName) pageName = 'index';
-  var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + pageName + '.version.txt';
-  ```
-- **The `if (!pageName)` fallback is critical** — when a page is accessed via a directory URL (e.g. `https://example.github.io/myapp/` instead of `.../myapp/index.html`), `pageName` resolves to an empty string. Without the fallback, the poll fetches `.version.txt` (wrong file), gets a 404 whose body doesn't match the build-version, and triggers an infinite reload loop
+- URL resolution: derive the version file URL relative to the current page's directory, using the page's own filename. See the template file (`live-site-templates/AutoUpdateOnlyHtmlTemplate.html`) for the implementation
+- **The `if (!pageName)` fallback is critical** — when a page is accessed via a directory URL (e.g. `https://example.github.io/myapp/`), `pageName` resolves to an empty string. Without the fallback to `'index'`, the poll fetches `.version.txt` (wrong file) and triggers an infinite reload loop
 - Cache-bust with a query param: `fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })`
 - Compare the trimmed response text against the page's `<meta name="build-version">` content
 - The template in `live-site-templates/AutoUpdateOnlyHtmlTemplate.html` already implements this pattern — use it as a starting point for new projects
@@ -371,7 +365,7 @@ The Mermaid diagram in `repository-information/ARCHITECTURE.md` contains nodes t
 | `TPL` | `AutoUpdateOnlyHtmlTemplate.html` | `TPL["...\n(build-version: 01.00w — never bumped)"]` | Frozen at `01.00w` — never changes |
 
 ### Why the miss happens
-Pre-Commit items #2 and #3 explicitly name `<meta name="build-version">` and `<page-name>.version.txt` — so those files always get bumped. But the ARCHITECTURE.md diagram is a separate representation of the same versions. If item #6 doesn't call out each node by name, it's easy to update INDEX and forget VERTXT (since the `.version.txt` file itself was already bumped in item #3). This was discovered on a fork (demorepo3) where a `01.00w` → `01.01w` bump correctly updated `index.html`, `index.version.txt`, and `STATUS.md`, but only the INDEX Mermaid node was bumped — VERTXT was left at `01.00w`, requiring manual intervention. Hardening item #6 with explicit node names prevents this class of miss.
+The `.version.txt` file gets bumped by Pre-Commit item #3, but the VERTXT *Mermaid node* is a separate representation of the same version. It's easy to bump the file and forget the diagram node. Always check both INDEX and VERTXT nodes together when bumping a build-version.
 
 ### Adding new pages
 When a new embedding page is created (see New Embedding Page Setup Checklist), add corresponding nodes to the diagram:
@@ -445,7 +439,6 @@ When a new embedding page is created (see New Embedding Page Setup Checklist), a
 
 ## Execution Style
 - For clear, straightforward requests: **just do it** — make the changes, commit, and push without asking for plan approval
-- **Always show the coding plan first** — every response that makes changes must open with `🚩🚩CODING PLAN🚩🚩` followed by plan bullets, then `⚡⚡CODING START⚡⚡` (see Chat Bookends). This is a transparency measure, not an approval gate — output the plan and immediately proceed to execution without waiting for user confirmation
 - Only ask clarifying questions when the request is genuinely ambiguous or has multiple valid interpretations
 - Do not use formal plan-mode approval workflows for routine tasks (version bumps, file moves, feature additions, bug fixes, etc.)
 
@@ -468,36 +461,6 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 - Do not change the prompts sent to subagents — this is purely an output/display convention
 - Do not prefix routine tool calls (Read, Edit, Grep, Glob) — only Task-spawned subagents get prefixed
 - If a subagent found nothing useful, no need to mention it
-
-### Example
-```
-🚩🚩CODING PLAN🚩🚩
-  - Explore the codebase for auth patterns
-  - Design the implementation
-  - Apply changes
-
-⚡⚡CODING START⚡⚡
-🔍🔍RESEARCHING🔍🔍
-[Agent 1 (Explore)] Found existing auth patterns in src/middleware/auth.js...
-[Agent 2 (Plan)] Designed the following approach based on Agent 1's findings...
-
-Applying the changes now...
-  ... work ...
-
-🕵🕵AGENTS USED🕵🕵
-  Agent 0 (Main) — applied changes, committed, pushed
-  Agent 1 (Explore) — searched codebase for auth patterns
-  Agent 2 (Plan) — designed implementation approach
-📁📁FILES CHANGED📁📁
-  `src/middleware/auth.js` (edited)
-  `README.md` (edited)
-🔗🔗COMMIT LOG🔗🔗
-  def5678 — Add auth middleware
-📝📝SUMMARY OF CHANGES📝📝
-  - Added auth middleware in `src/middleware/auth.js` ([Agent 2 (Plan)] designed the approach)
-  - Updated timestamp in `README.md`
-✅✅CODING COMPLETE✅✅
-```
 
 ---
 > **--- END OF AGENT ATTRIBUTION ---**
@@ -572,7 +535,7 @@ Update these only when the change is genuinely relevant — don't force unnecess
 Files live in three locations: repo root, `.github/`, and `repository-information/`. Cross-directory links must use `../` to traverse up before descending into the target directory.
 
 ### Why community health files live at root (not `.github/`)
-GitHub renders community health files (`CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`) in two contexts: the **blob view** (direct file URL) and the **community sidebar tabs** on the repo's main page. These two contexts use different base URLs for resolving relative links — blob view uses `/org/repo/blob/main/.github/`, while the sidebar tab uses `/org/repo/tree/main`. Any relative link with `../` (needed to escape `.github/`) breaks in the tab context because the `../` traverses into GitHub's URL structure instead of the file system. Moving these files to the repo root eliminates the mismatch — root-level relative links resolve identically in both contexts, just like `README.md` links. `CODE_OF_CONDUCT.md` is included even though it currently has no links, to ensure future links work correctly without needing a file move.
+Community health files (`CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`) live at root so relative links resolve correctly in both GitHub blob-view and sidebar-tab contexts — files inside `.github/` break in the sidebar tab because `../` traverses GitHub's URL structure differently there.
 
 ### File locations
 | File | Actual path |
@@ -635,36 +598,7 @@ Plain markdown collapses consecutive indented lines into one paragraph — `<br>
 ## Relative Path Resolution on GitHub
 *Rule: see Template Drift Checks item #3. Reference details below.*
 
-GitHub renders markdown files at blob-view URLs with the structure:
-```
-https://github.com/{org}/{repo}/blob/{branch}/{path-to-file}
-```
-
-The browser resolves relative links from the **directory** portion of that URL. This means `../` traversals climb through GitHub's URL segments (`blob/`, `main/`, subdirectories) to reach the repo root — which is dynamically determined by the org and repo name.
-
-### Traversal math by directory depth
-
-| File location | Blob-view directory | `../` count to repo root |
-|---------------|-------------------|--------------------------|
-| Root (`README.md`) | `/org/repo/blob/main/` | 2 (`../../`) |
-| `.github/` | `/org/repo/blob/main/.github/` | 3 (`../../../`) |
-| `repository-information/` | `/org/repo/blob/main/repository-information/` | 3 (`../../../`) |
-| `.github/ISSUE_TEMPLATE/` | `/org/repo/blob/main/.github/ISSUE_TEMPLATE/` | 4 (`../../../../`) |
-
-### Example: SECURITY.md advisory link
-
-```
-File:      SECURITY.md
-Blob URL:  https://github.com/AnyOrg/AnyRepo/blob/main/SECURITY.md
-Directory: /AnyOrg/AnyRepo/blob/main/
-
-Link:      ../../security/advisories/new
-Step 1:    ../   removes main/          → /AnyOrg/AnyRepo/blob/
-Step 2:    ../   removes blob/          → /AnyOrg/AnyRepo/
-Result:    /AnyOrg/AnyRepo/security/advisories/new  ✓
-```
-
-This resolves correctly on **any** fork because the org and repo name are part of the blob-view URL itself — the relative path never contains them.
+Relative links in markdown files resolve from the blob-view URL directory (`/org/repo/blob/main/...`). Each `../` climbs one URL segment. Root files need 2 `../` to reach `/org/repo/`, subdirectory files need 3. This works on any fork because the org/repo name is part of the URL itself.
 
 ### When relative paths work vs. don't
 
