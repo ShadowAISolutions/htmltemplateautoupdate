@@ -180,6 +180,8 @@ These rules apply universally — they are **NOT** skipped by the template repo 
 ### Template Drift Checks (forks/clones only)
 These checks catch template drift that accumulates when the repo is cloned/forked into a new name. They do **not** apply to the template repo itself.
 
+> **Token budget:** ~300–800 output tokens, ~8–15 tool calls. Runs once (first session on a fresh fork). Steps 1–4 (org/repo detect + absolute URL propagation) dominate — each of ~8 files requires a read + edit. The final `grep -r` verification pass adds ~30–50 tokens. After first run, the short-circuit skips all of this.
+
 0. **Set `IS_TEMPLATE_REPO` to `No`** — in the Template Variables table, change `IS_TEMPLATE_REPO` from its current value to `No`. Reaching the drift checks means the short-circuit already confirmed this is NOT the template repo
 1. **Org name auto-detect** — run `git remote -v` and extract the org/owner from the remote URL (e.g. `github.com/NewOrg/myrepo` → `NewOrg`). Compare it to the `YOUR_ORG_NAME` value in the Template Variables table. If they differ, update the table value and propagate to every file in the "Where it appears" column by **finding and replacing** the old org name (`ShadowAISolutions`) with the new org name in all occurrences (URLs, text, branding). Also update `DEVELOPER_NAME` to match the new org name (unless the user has explicitly set `DEVELOPER_NAME` to a different value)
 2. **Repo name auto-detect** — compare the actual repo name (from the same remote URL) to the `YOUR_REPO_NAME` value in the Template Variables table. If they differ, update the table value and propagate it to every file in the "Where it appears" column by **finding and replacing** the old repo name (`autoupdatehtmltemplate`) with the new repo name in all occurrences (URLs, text, structure references)
@@ -209,6 +211,17 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 8. **Unresolved placeholders** — scan for any literal `YOUR_ORG_NAME`, `YOUR_REPO_NAME`, `YOUR_PROJECT_TITLE`, or `DEVELOPER_NAME` strings in code files (not CLAUDE.md) and replace them with resolved values
 9. **Variable propagation** — if any value in the Template Variables table was changed (in this or a prior session), verify the new value has been propagated to every file listed in the "Where it appears" column
 10. **Confirm completion** — after all checks pass, briefly state to the user: "Session start checklist complete — no issues found" (or list what was fixed). Then proceed to their request
+
+### Token Budget Reference
+The Session Start Checklist runs once per session but is the heaviest single-response cost.
+
+| Scenario | ~Output tokens | ~Tool calls | Notes |
+|----------|---------------|-------------|-------|
+| Template repo (short-circuit) | 100–200 | 3–5 | Branch hygiene + skip message |
+| Initialized fork (short-circuit) | 150–300 | 4–6 | Branch hygiene + README check + skip message |
+| Fresh fork (full drift checks) | 500–1,000+ | 10–20 | Steps 0–10: grep, find-replace across ~8 files, verification grep |
+
+**Where the cost lives:** on fresh forks, steps 1–4 (org/repo detect + absolute URL propagation) dominate — each file requires a read, edit, and verification. The final `grep -r` verification pass (step 4) adds another ~30–50 tokens of tool overhead.
 
 ---
 > **--- END OF SESSION START CHECKLIST ---**
@@ -274,6 +287,17 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
   ```
   Replace `SECTION NAME` with the section's heading in ALL CAPS. The only exception is Developer Branding (the final section), which has no separator after it
 
+### Token Budget Reference
+The Pre-Commit Checklist runs before every commit — costs multiply with multi-commit responses.
+
+| Scenario | ~Output tokens | ~Tool calls | Notes |
+|----------|---------------|-------------|-------|
+| Template repo (most items skipped) | 100–200 | 2–4 | Items #0, #4, #8, #10, #11, #12, #13 only |
+| Fork — no version bumps needed | 150–300 | 3–6 | README timestamp + checklist verification |
+| Fork — version bumps triggered | 300–600 | 6–12 | Version bump + STATUS.md + ARCHITECTURE.md + CHANGELOG.md + version.txt |
+
+**Where the cost lives:** CHANGELOG.md entry (item #7) requires a `date` call + file read + edit. ARCHITECTURE.md Mermaid updates (item #6) require reading the diagram and updating multiple nodes. These two items together account for ~40% of the full-checklist cost.
+
 ---
 > **--- END OF PRE-COMMIT CHECKLIST ---**
 ---
@@ -292,6 +316,19 @@ If any pre-push check fails, do NOT proceed with `git push`. Instead:
 - State which check failed and why
 - Do NOT silently fix the issue and push — the failure may indicate context contamination that requires user judgment
 - Ask the user how to proceed (discard commits, fix and retry, or abandon the push)
+
+### Token Budget Reference
+The Pre-Push Checklist runs before every `git push`.
+
+| Component | ~Output tokens | ~Tool calls |
+|-----------|---------------|-------------|
+| Branch name + remote URL checks (#1, #2) | 40–80 | 2 |
+| Commit audit — `git log` (#3) | 30–60 | 1 |
+| Cross-repo content scan — `git diff` (#4) | 40–80 | 1 |
+| Push-once enforcement (#5) | 10–20 | 0 (mental check) |
+| **Total** | **~100–250** | **~4–5** |
+
+**Cost is stable:** unlike Pre-Commit, this checklist doesn't scale with the number of changes — it's the same ~4–5 tool calls regardless of commit size.
 
 ---
 > **--- END OF PRE-PUSH CHECKLIST ---**
@@ -527,6 +564,17 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 - Do not change the prompts sent to subagents — this is purely an output/display convention
 - Do not prefix routine tool calls (Read, Edit, Grep, Glob) — only Task-spawned subagents get prefixed
 - If a subagent found nothing useful, no need to mention it
+
+### Token Budget Reference
+Agent attribution overhead scales with the number of subagents spawned.
+
+| Scenario | ~Output tokens | Notes |
+|----------|---------------|-------|
+| No subagents (Agent 0 only) | 20–30 | Single AGENTS_USED line |
+| 1–2 subagents | 50–80 | AGENTS_USED lines + inline `[Agent N]` prefixes on relayed findings |
+| 3+ subagents | 100–150+ | More prefixed lines + longer AGENTS_USED list |
+
+**Hidden cost:** each Task tool call to spawn a subagent consumes ~50–100 tokens of tool overhead (prompt + result), separate from the attribution output. The subagent's own context window is independent but its summarized result flows back into the main context.
 
 ---
 > **--- END OF AGENT ATTRIBUTION ---**
