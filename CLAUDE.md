@@ -2,7 +2,7 @@
 
 ## Chat Bookends (MANDATORY — EVERY PROMPT)
 - **First output**: for every user prompt, the very first line written to chat must be exactly: `⚡⚡CODING START⚡⚡`
-- **Execution plan**: immediately after `⚡⚡CODING START⚡⚡` (or `⚓⚓HOOK FEEDBACK⚓⚓`), output `📋📋EXECUTION PLAN📋📋` on its own line followed by a brief bullet-point list of what will be done in this response. Keep it concise — one bullet per distinct action (e.g. "Edit CLAUDE.md to add execution plan rule", "Update README.md timestamp"). This is for transparency, not approval — do NOT wait for user confirmation before proceeding. Skip the plan only if the response is purely informational with no changes to make
+- **Execution plan**: immediately after `⚡⚡CODING START⚡⚡` (or `⚓⚓HOOK FEEDBACK⚓⚓`), output `📋📋EXECUTION PLAN START📋📋` on its own line followed by a brief bullet-point list of what will be done in this response, then close the plan with `📄📄EXECUTION PLAN END📄📄` on its own line. Keep it concise — one bullet per distinct action (e.g. "Edit CLAUDE.md to add execution plan rule", "Update README.md timestamp"). This is for transparency, not approval — do NOT wait for user confirmation before proceeding. Skip the plan only if the response is purely informational with no changes to make
 - **Hook feedback override**: if the triggering message is hook feedback (starts with "Stop hook feedback:", "hook feedback:", or contains `<user-prompt-submit-hook>`), use `⚓⚓HOOK FEEDBACK⚓⚓` as the first line instead of `⚡⚡CODING START⚡⚡`
 - **Hook anticipation**: before writing `✅✅CODING COMPLETE✅✅`, check whether the stop hook (`~/.claude/stop-hook-git-check.sh`) will fire. **This check must happen after all actions in the current response are complete** (including any `git push`) — do not predict the pre-action state; check the actual post-action state. **Actually run** the three git commands (do not evaluate mentally): (a) uncommitted changes — `git diff --quiet && git diff --cached --quiet`, (b) untracked files — `git ls-files --others --exclude-standard`, (c) unpushed commits — `git rev-list origin/<branch>..HEAD --count`. If any condition is true, **omit** `✅✅CODING COMPLETE✅✅` and instead write `🐟🐟AWAITING HOOK🐟🐟` as the last line of the current response — the hook will fire, and `✅✅CODING COMPLETE✅✅` should close the hook feedback response instead
 - **Summary of changes**: immediately before `✅✅CODING COMPLETE✅✅` (or `🐟🐟AWAITING HOOK🐟🐟`), output `📝📝SUMMARY OF CHANGES📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. This summary appears in every response that made changes (code edits, commits, pushes, file modifications). Skip the summary only if the response was purely informational with no changes made
@@ -15,7 +15,8 @@
 | Bookend | When | Position |
 |---------|------|----------|
 | `⚡⚡CODING START⚡⚡` | User sends a message | First line of response |
-| `📋📋EXECUTION PLAN📋📋` | Response will make changes (code edits, commits, file modifications) | After CODING START or HOOK FEEDBACK (skip if purely informational) |
+| `📋📋EXECUTION PLAN START📋📋` | Response will make changes (code edits, commits, file modifications) | After CODING START or HOOK FEEDBACK (skip if purely informational) |
+| `📄📄EXECUTION PLAN END📄📄` | Closes the execution plan block | After the last plan bullet, before work begins |
 | `⚓⚓HOOK FEEDBACK⚓⚓` | Hook feedback triggers a follow-up | First line of hook response (replaces CODING START) |
 | `📝📝SUMMARY OF CHANGES📝📝` | Changes were made in the current response | Before CODING COMPLETE or AWAITING HOOK (skip if purely informational) |
 | `🐟🐟AWAITING HOOK🐟🐟` | Hook conditions are true after all actions complete (unpushed commits, uncommitted changes, or untracked files detected by running git commands) | Last line of response (replaces CODING COMPLETE) |
@@ -26,8 +27,9 @@
 **Normal flow (no hook):**
 ```
 ⚡⚡CODING START⚡⚡
-📋📋EXECUTION PLAN📋📋
+📋📋EXECUTION PLAN START📋📋
   - brief bullet plan of intended changes
+📄📄EXECUTION PLAN END📄📄
   ... work ...
 📝📝SUMMARY OF CHANGES📝📝
   - bullet summary of changes
@@ -37,16 +39,18 @@
 **Hook anticipated flow:**
 ```
 ⚡⚡CODING START⚡⚡
-📋📋EXECUTION PLAN📋📋
+📋📋EXECUTION PLAN START📋📋
   - brief bullet plan of intended changes
+📄📄EXECUTION PLAN END📄📄
   ... work (commit without push) ...
 📝📝SUMMARY OF CHANGES📝📝
   - bullet summary of changes
 🐟🐟AWAITING HOOK🐟🐟
   ← hook fires →
 ⚓⚓HOOK FEEDBACK⚓⚓
-📋📋EXECUTION PLAN📋📋
+📋📋EXECUTION PLAN START📋📋
   - push to claude/* branch
+📄📄EXECUTION PLAN END📄📄
   ... push ...
 ✅✅CODING COMPLETE✅✅
 ```
@@ -54,8 +58,9 @@
 **Commit-and-push flow (no hook needed):**
 ```
 ⚡⚡CODING START⚡⚡
-📋📋EXECUTION PLAN📋📋
+📋📋EXECUTION PLAN START📋📋
   - brief bullet plan of intended changes
+📄📄EXECUTION PLAN END📄📄
   ... work (commit AND push in same response) ...
   ... run git hook checks — all clean ...
 📝📝SUMMARY OF CHANGES📝📝
@@ -413,7 +418,7 @@ When a new embedding page is created (see New Embedding Page Setup Checklist), a
 
 ## Execution Style
 - For clear, straightforward requests: **just do it** — make the changes, commit, and push without asking for plan approval
-- **Always show the execution plan first** — every response that makes changes must begin with `📋📋EXECUTION PLAN📋📋` (see Chat Bookends). This is a transparency measure, not an approval gate — output the plan and immediately proceed to execution without waiting for user confirmation
+- **Always show the execution plan first** — every response that makes changes must begin with `📋📋EXECUTION PLAN START📋📋` ... `📄📄EXECUTION PLAN END📄📄` (see Chat Bookends). This is a transparency measure, not an approval gate — output the plan and immediately proceed to execution without waiting for user confirmation
 - Only ask clarifying questions when the request is genuinely ambiguous or has multiple valid interpretations
 - Do not use formal plan-mode approval workflows for routine tasks (version bumps, file moves, feature additions, bug fixes, etc.)
 
@@ -442,10 +447,11 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ### Example
 ```
 ⚡⚡CODING START⚡⚡
-📋📋EXECUTION PLAN📋📋
+📋📋EXECUTION PLAN START📋📋
   - Explore the codebase for auth patterns
   - Design the implementation
   - Apply changes
+📄📄EXECUTION PLAN END📄📄
 
 Agent 1 (Explore) searched for existing auth patterns and found...
 Agent 2 (Plan) designed the following approach based on Agent 1's findings...
