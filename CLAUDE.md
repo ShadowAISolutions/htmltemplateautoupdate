@@ -11,14 +11,14 @@
 - **Blocked**: output `🚧🚧BLOCKED🚧🚧` on its own line when an obstacle is hit (permission denied, merge conflict, ambiguous requirement, failed push, hook check failure). Follow with a brief description of the blocker. This makes problems immediately visible rather than buried in tool output
 - **Verifying**: output `🧪🧪VERIFYING🧪🧪` on its own line when entering a verification phase — running git hook checks, confirming no stale references, validating edits post-change. Separates "doing the work" from "checking the work"
 - **Hook anticipation**: before writing `✅✅CODING_COMPLETE✅✅`, check whether the stop hook (`~/.claude/stop-hook-git-check.sh`) will fire. **This check must happen after all actions in the current response are complete** (including any `git push`) — do not predict the pre-action state; check the actual post-action state. **Actually run** the three git commands (do not evaluate mentally): (a) uncommitted changes — `git diff --quiet && git diff --cached --quiet`, (b) untracked files — `git ls-files --others --exclude-standard`, (c) unpushed commits — `git rev-list origin/<branch>..HEAD --count`. If any condition is true, **omit** `✅✅CODING_COMPLETE✅✅` and instead write `🐟🐟AWAITING_HOOK🐟🐟` as the last line of the current response — the hook will fire, and `✅✅CODING_COMPLETE✅✅` should close the hook feedback response instead
-- **End-of-response sections**: after all work is done and before `✅✅CODING_COMPLETE✅✅` (or `🐟🐟AWAITING_HOOK🐟🐟`), output the following sections in this exact order. Skip the entire block only if the response was purely informational with no changes made:
+- **Hook feedback override**: if the triggering message is hook feedback (starts with "Stop hook feedback:", "hook feedback:", or contains `<user-prompt-submit-hook>`), use `⚓⚓HOOK_FEEDBACK⚓⚓` as the first line instead of `🚩🚩CODING_PLAN🚩🚩` or `⚡⚡CODING_START⚡⚡`. The coding plan (if applicable) follows immediately after `⚓⚓HOOK_FEEDBACK⚓⚓`, then `⚡⚡CODING_START⚡⚡`
+- **End-of-response sections**: after all work is done, output the following sections in this exact order. Skip the entire block only if the response was purely informational with no changes made:
   - **Agents used**: output `🕵🕵AGENTS_USED🕵🕵` followed by a list of all agents that contributed to this response — including Agent 0 (Main). Format: `Agent N (Type) — brief description of contribution`. This appears in every response that performed work. Skip only if the response was purely informational with no actions taken
   - **Files changed**: output `📁📁FILES_CHANGED📁📁` followed by a list of every file modified in the response, each tagged with the type of change: `(edited)`, `(created)`, or `(deleted)`. This gives a clean at-a-glance file manifest. Skip if no files were changed in the response
   - **Commit log**: output `🔗🔗COMMIT_LOG🔗🔗` followed by a list of every commit made in the response, formatted as `SHORT_SHA — commit message`. Skip if no commits were made in the response
   - **Worth noting**: output `🔖🔖WORTH_NOTING🔖🔖` followed by a list of anything that deserves attention but isn't a blocker (e.g. "Push-once already used — did not push again", "Template repo guard skipped version bumps", "Pre-commit hook modified files — re-staged"). Skip if there are nothing worth noting
-  - **Summary of changes**: output `📝📝SUMMARY📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. Each bullet must indicate which file(s) were edited (e.g. "Updated build-version in `live-site-pages/index.html`"). If a bullet describes a non-file action (e.g. "Pushed to remote"), no file path is needed. This is the last section before `✅✅CODING_COMPLETE✅✅` (or `🐟🐟AWAITING_HOOK🐟🐟`)
+  - **Summary of changes**: output `📝📝SUMMARY📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. Each bullet must indicate which file(s) were edited (e.g. "Updated build-version in `live-site-pages/index.html`"). If a bullet describes a non-file action (e.g. "Pushed to remote"), no file path is needed. This is the last section before `✅✅CODING_COMPLETE✅✅`
 - **Last output**: for every user prompt, the very last line written to chat after all work is done must be exactly: `✅✅CODING_COMPLETE✅✅`
-- **Hook feedback override**: if the triggering message is hook feedback (starts with "Stop hook feedback:", "hook feedback:", or contains `<user-prompt-submit-hook>`), use `⚓⚓HOOK_FEEDBACK⚓⚓` as the first line instead of `🚩🚩CODING_PLAN🚩🚩` or `⚡⚡CODING_START⚡⚡`. The coding plan (if applicable) follows immediately after `⚓⚓HOOK_FEEDBACK⚓⚓`, then `⚡⚡CODING_START⚡⚡`
 - These apply to **every single user message**, not just once per session
 - These bookend lines are standalone — do not combine them with other text on the same line
 
@@ -34,14 +34,14 @@
 | `🔄🔄NEXT_PHASE🔄🔄` | Work pivots to a new sub-task | During work, between phases (never repeats CODING_PLAN/CODING_START) |
 | `🚧🚧BLOCKED🚧🚧` | An obstacle was hit | During work, when the problem is encountered |
 | `🧪🧪VERIFYING🧪🧪` | Entering a verification phase | During work, after edits are applied |
-| `🐟🐟AWAITING_HOOK🐟🐟` | Hook conditions true after all actions | Decided before end-of-response sections; replaces CODING_COMPLETE |
-| `🕵🕵AGENTS_USED🕵🕵` | Response performed work | After all work, first end-of-response section |
+| `🐟🐟AWAITING_HOOK🐟🐟` | Hook conditions true after all actions | After verifying; replaces CODING_COMPLETE when hook will fire |
+| `⚓⚓HOOK_FEEDBACK⚓⚓` | Hook feedback triggers a follow-up | First line of hook response (replaces CODING_PLAN as opener) |
+| `🕵🕵AGENTS_USED🕵🕵` | Response performed work | First end-of-response section |
 | `📁📁FILES_CHANGED📁📁` | Files were modified/created/deleted | After AGENTS_USED (skip if no files changed) |
 | `🔗🔗COMMIT_LOG🔗🔗` | Commits were made | After FILES_CHANGED (skip if no commits made) |
 | `🔖🔖WORTH_NOTING🔖🔖` | Something deserves attention | After COMMIT_LOG (skip if nothing worth noting) |
-| `📝📝SUMMARY📝📝` | Changes were made in the response | Last section before CODING_COMPLETE (skip if purely informational) |
-| `✅✅CODING_COMPLETE✅✅` | All work done, no hook anticipated | Last line of response |
-| `⚓⚓HOOK_FEEDBACK⚓⚓` | Hook feedback triggers a follow-up | First line of hook response (replaces CODING_PLAN as opener) |
+| `📝📝SUMMARY📝📝` | Changes were made in the response | Last section before CODING_COMPLETE |
+| `✅✅CODING_COMPLETE✅✅` | All work done | Always the very last line of response |
 
 ### Flow Examples
 
@@ -79,15 +79,19 @@
 
 ⚡⚡CODING_START⚡⚡
   ... work (commit without push) ...
-  ... (end-of-response sections — see Normal flow above) ...
 🐟🐟AWAITING_HOOK🐟🐟
   ← hook fires →
 ⚓⚓HOOK_FEEDBACK⚓⚓
-🚩🚩CODING_PLAN🚩🚩
-  - push to claude/* branch
-
-⚡⚡CODING_START⚡⚡
   ... push ...
+🕵🕵AGENTS_USED🕵🕵
+  Agent 0 (Main) — applied changes, pushed
+📁📁FILES_CHANGED📁📁
+  `file.md` (edited)
+🔗🔗COMMIT_LOG🔗🔗
+  abc1234 — Add feature X
+📝📝SUMMARY📝📝
+  - Updated X in `file.md`
+  - Pushed to remote
 ✅✅CODING_COMPLETE✅✅
 ```
 
