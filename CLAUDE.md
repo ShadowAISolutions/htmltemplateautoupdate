@@ -7,7 +7,7 @@
 - **Continuation after user interaction**: when `AskUserQuestion` or `ExitPlanMode` returns mid-response (the user answered a question or approved a plan), the response continues but must **NOT** repeat `🚩🚩CODING_PLAN🚩🚩` or `⚡⚡CODING_START⚡⚡`. Instead:
   - After `AskUserQuestion`: use `🔄🔄NEXT_PHASE🔄🔄` with a description incorporating the user's choice (e.g. "User chose option A — proceeding with implementation")
   - After `ExitPlanMode` (plan approved): output `📋📋PLAN_APPROVED📋📋` on its own line, followed by `🚩🚩CODING_PLAN🚩🚩` with the execution plan bullets, then `⚡⚡CODING_START⚡⚡`. This is the **only** scenario where CODING_PLAN/CODING_START may appear a second time — because plan approval is a distinct boundary between planning and execution, and the user needs to see the execution plan clearly. The `📋📋PLAN_APPROVED📋📋` marker signals that this is a continuation, not a new prompt
-- **Checklist running**: output `👟👟CHECKLIST👟👟` on its own line before executing any mandatory checklist (Session Start, Pre-Commit, Pre-Push), followed by the checklist name (e.g. `Session Start Checklist`). This separates checklist overhead from the user's actual task. Output once per checklist invocation
+- **Checklist running**: output `✔️✔️CHECKLIST✔️✔️` on its own line before executing any mandatory checklist (Session Start, Pre-Commit, Pre-Push), followed by the checklist name (e.g. `Session Start Checklist`). This separates checklist overhead from the user's actual task. Output once per checklist invocation
 - **Researching**: output `🔍🔍RESEARCHING🔍🔍` on its own line when entering a research/exploration phase — reading files, searching the codebase, or understanding context before making changes. Skip if going straight to changes without research
 - **Verifying**: output `🧪🧪VERIFYING🧪🧪` on its own line when entering a verification phase — running git hook checks, confirming no stale references, validating edits post-change. Separates "doing the work" from "checking the work"
 - **Blocked**: output `🚧🚧BLOCKED🚧🚧` on its own line when an obstacle is hit (permission denied, merge conflict, ambiguous requirement, failed push, hook check failure). Follow with a brief description of the blocker. This makes problems immediately visible rather than buried in tool output
@@ -28,13 +28,13 @@
 |---------|------|----------|
 | `🚩🚩CODING_PLAN🚩🚩` | Response will make changes | Very first line of response (skip if purely informational) |
 | `⚡⚡CODING_START⚡⚡` | Work is beginning | After coding plan bullets (or first line if no plan) |
-| `🔄🔄NEXT_PHASE🔄🔄` | Work pivots to a new sub-task | During work, between phases (never repeats CODING_PLAN/CODING_START) |
-| `📋📋PLAN_APPROVED📋📋` | User approved a plan via ExitPlanMode | Before execution begins; followed by CODING_PLAN + CODING_START (only allowed repeat) |
 | `⚓⚓HOOK_FEEDBACK⚓⚓` | Hook feedback triggers a follow-up | First line of hook response (replaces CODING_PLAN as opener) |
-| `👟👟CHECKLIST👟👟` | A mandatory checklist is executing | Before the checklist name, during work |
+| `📋📋PLAN_APPROVED📋📋` | User approved a plan via ExitPlanMode | Before execution begins; followed by CODING_PLAN + CODING_START (only allowed repeat) |
+| `✔️✔️CHECKLIST✔️✔️` | A mandatory checklist is executing | Before the checklist name, during work |
 | `🔍🔍RESEARCHING🔍🔍` | Entering a research/exploration phase | During work, before edits begin (skip if going straight to changes) |
-| `🧪🧪VERIFYING🧪🧪` | Entering a verification phase | During work, after edits are applied |
+| `🔄🔄NEXT_PHASE🔄🔄` | Work pivots to a new sub-task | During work, between phases (never repeats CODING_PLAN/CODING_START) |
 | `🚧🚧BLOCKED🚧🚧` | An obstacle was hit | During work, when the problem is encountered |
+| `🧪🧪VERIFYING🧪🧪` | Entering a verification phase | During work, after edits are applied |
 | `🕵🕵AGENTS_USED🕵🕵` | Response performed work | After all work, first end-of-response section |
 | `📁📁FILES_CHANGED📁📁` | Files were modified/created/deleted | After AGENTS_USED (skip if no files changed) |
 | `🔗🔗COMMIT_LOG🔗🔗` | Commits were made | After FILES_CHANGED (skip if no commits made) |
@@ -54,7 +54,7 @@
 🔍🔍RESEARCHING🔍🔍
   ... reading files, searching codebase ...
   ... applying changes ...
-👟👟CHECKLIST👟👟
+✔️✔️CHECKLIST✔️✔️
   Pre-Commit Checklist
   ... checklist items ...
 🧪🧪VERIFYING🧪🧪
