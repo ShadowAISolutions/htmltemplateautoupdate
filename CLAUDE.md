@@ -304,6 +304,32 @@ For pages that live directly in `live-site-pages/` (not in a subdirectory), the 
 > **--- END OF COMMIT MESSAGE NAMING ---**
 ---
 
+## ARCHITECTURE.md Version Nodes
+*Rule: see Pre-Commit Checklist item #6. Reference details below.*
+
+The Mermaid diagram in `repository-information/ARCHITECTURE.md` contains nodes that display version strings. When a build-version is bumped, **all** nodes showing that version must be updated — not just the HTML page node.
+
+### Version-bearing nodes
+
+| Node ID | What it represents | Example text | Tracks |
+|---------|--------------------|-------------|--------|
+| `INDEX` | `index.html` | `INDEX["index.html\n(build-version: 01.00w)"]` | Current build-version of the embedding page |
+| `VERTXT` | `index.version.txt` | `VERTXT["index.version.txt\n(01.00w)"]` | Must always match INDEX — it's the polling file for that page |
+| `TPL` | `AutoUpdateOnlyHtmlTemplate.html` | `TPL["...\n(build-version: 01.00w — never bumped)"]` | Frozen at `01.00w` — never changes |
+
+### Why the miss happens
+Pre-Commit items #2 and #3 explicitly name `<meta name="build-version">` and `<page-name>.version.txt` — so those files always get bumped. But the ARCHITECTURE.md diagram is a separate representation of the same versions. If item #6 doesn't call out each node by name, it's easy to update INDEX and forget VERTXT (since the `.version.txt` file itself was already bumped in item #3).
+
+### Adding new pages
+When a new embedding page is created (see New Embedding Page Setup Checklist), add corresponding nodes to the diagram:
+- A page node: `NEWPAGE["page-name.html\n(build-version: XX.XXw)"]`
+- A version file node: `NEWVER["page-name.version.txt\n(XX.XXw)"]`
+- Both must be updated together on every version bump for that page
+
+---
+> **--- END OF ARCHITECTURE.MD VERSION NODES ---**
+---
+
 ## GAS Code Constraints
 - **All GAS `.gs` code must be valid Google Apps Script syntax** — test mentally that strings, escapes, and quotes parse correctly before committing
 - Avoid deeply nested quote escaping in HTML strings built inside `.gs` files. Instead, store values in global JS variables and reference them in `onclick` handlers (e.g. `_signInUrl` pattern)
