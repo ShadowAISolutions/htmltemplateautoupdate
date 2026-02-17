@@ -72,68 +72,6 @@
 ✅✅CODING COMPLETE✅✅
 ```
 
-**Multi-phase flow (sub-tasks within one response):**
-```
-🚩🚩CODING PLAN🚩🚩
-  - Update rule text in CLAUDE.md
-  - Fix related issue discovered during edit
-  - Update README timestamp
-
-⚡⚡CODING START⚡⚡
-🔍🔍RESEARCHING🔍🔍
-  ... reading files ...
-  ... applying Edit 1 ...
-
-🔄🔄NEXT PHASE🔄🔄
-  Fix related issue discovered during Edit 1
-  ... applying Edit 1a ...
-
-👟👟CHECKLIST RUNNING👟👟
-  Pre-Commit Checklist
-  ... checklist items ...
-  ... (end-of-response sections — see Normal flow above) ...
-✅✅CODING COMPLETE✅✅
-```
-
-**Plan approval flow (ExitPlanMode continuation):**
-```
-🚩🚩CODING PLAN🚩🚩
-  - Research codebase for auth patterns
-  - Design implementation plan
-
-⚡⚡CODING START⚡⚡
-🔍🔍RESEARCHING🔍🔍
-  ... exploring codebase, writing plan file ...
-  ... calls ExitPlanMode → user approves ...
-📋📋PLAN APPROVED📋📋
-🚩🚩CODING PLAN🚩🚩
-  - Add auth middleware in src/middleware/
-  - Update route handlers
-  - Update README timestamp
-
-⚡⚡CODING START⚡⚡
-  ... executing the approved plan ...
-  ... (end-of-response sections — see Normal flow above) ...
-✅✅CODING COMPLETE✅✅
-```
-
-**AskUserQuestion continuation flow:**
-```
-🚩🚩CODING PLAN🚩🚩
-  - Determine user preference for approach
-  - Implement chosen approach
-
-⚡⚡CODING START⚡⚡
-🔍🔍RESEARCHING🔍🔍
-  ... reading codebase to formulate question ...
-  ... calls AskUserQuestion → user answers ...
-🔄🔄NEXT PHASE🔄🔄
-  User chose Option A — proceeding with implementation
-  ... applying changes ...
-  ... (end-of-response sections — see Normal flow above) ...
-✅✅CODING COMPLETE✅✅
-```
-
 **Hook anticipated flow:**
 ```
 🚩🚩CODING PLAN🚩🚩
@@ -153,39 +91,8 @@
 ✅✅CODING COMPLETE✅✅
 ```
 
-**Commit-and-push flow (no hook needed):**
-```
-🚩🚩CODING PLAN🚩🚩
-  - brief bullet plan of intended changes
-
-⚡⚡CODING START⚡⚡
-  ... work (commit AND push in same response) ...
-🧪🧪VERIFYING🧪🧪
-  ... run git hook checks — all clean ...
-  ... (end-of-response sections — see Normal flow above) ...
-✅✅CODING COMPLETE✅✅
-```
-
-**Blocked flow (obstacle encountered):**
-```
-🚩🚩CODING PLAN🚩🚩
-  - brief bullet plan of intended changes
-
-⚡⚡CODING START⚡⚡
-  ... attempting work ...
-🚧🚧BLOCKED🚧🚧
-  Push failed — branch was deleted by workflow before push completed
-  ... resolution or asking user for guidance ...
-  ... (end-of-response sections — see Normal flow above) ...
-🔖🔖WORTH NOTING🔖🔖
-  Push-once already used — did not push again
-📝📝SUMMARY OF CHANGES📝📝
-  - bullet summary of what was accomplished
-✅✅CODING COMPLETE✅✅
-```
-
 ### Hook anticipation — bug context
-The timing and method requirements in the Hook anticipation bullet were added after a misfire on a fork (demorepo2). During initialization, two commits were pushed in the same response, but Claude mentally predicted the hook conditions *before* the push completed — concluding there were unpushed commits. It wrote `🐟🐟AWAITING HOOK🐟🐟`, but the push had already succeeded, so all three conditions were false. The hook correctly did not fire, leaving the conversation stuck. The fix added two explicit requirements: (1) evaluate *after* all actions complete (including `git push`), and (2) *actually run* the git commands rather than predicting the outcome. The "Commit-and-push flow" example was added to make the correct behavior obvious for the push-in-same-response case.
+The timing and method requirements in the Hook anticipation bullet were added after a misfire on a fork (demorepo2). During initialization, two commits were pushed in the same response, but Claude mentally predicted the hook conditions *before* the push completed — concluding there were unpushed commits. It wrote `🐟🐟AWAITING HOOK🐟🐟`, but the push had already succeeded, so all three conditions were false. The hook correctly did not fire, leaving the conversation stuck. The fix added two explicit requirements: (1) evaluate *after* all actions complete (including `git push`), and (2) *actually run* the git commands rather than predicting the outcome.
 
 ---
 > **--- END OF CHAT BOOKENDS ---**
