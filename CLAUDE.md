@@ -5,7 +5,7 @@
 - **Execution plan**: immediately after `⚡⚡CODING START⚡⚡` (or `⚓⚓HOOK FEEDBACK⚓⚓`), output `📋📋EXECUTION PLAN START📋📋` on its own line followed by a brief bullet-point list of what will be done in this response, then close the plan with `📄📄EXECUTION PLAN END📄📄` on its own line. Keep it concise — one bullet per distinct action (e.g. "Edit CLAUDE.md to add execution plan rule", "Update README.md timestamp"). This is for transparency, not approval — do NOT wait for user confirmation before proceeding. Skip the plan only if the response is purely informational with no changes to make
 - **Hook feedback override**: if the triggering message is hook feedback (starts with "Stop hook feedback:", "hook feedback:", or contains `<user-prompt-submit-hook>`), use `⚓⚓HOOK FEEDBACK⚓⚓` as the first line instead of `⚡⚡CODING START⚡⚡`
 - **Hook anticipation**: before writing `✅✅CODING COMPLETE✅✅`, check whether the stop hook (`~/.claude/stop-hook-git-check.sh`) will fire. **This check must happen after all actions in the current response are complete** (including any `git push`) — do not predict the pre-action state; check the actual post-action state. **Actually run** the three git commands (do not evaluate mentally): (a) uncommitted changes — `git diff --quiet && git diff --cached --quiet`, (b) untracked files — `git ls-files --others --exclude-standard`, (c) unpushed commits — `git rev-list origin/<branch>..HEAD --count`. If any condition is true, **omit** `✅✅CODING COMPLETE✅✅` and instead write `🐟🐟AWAITING HOOK🐟🐟` as the last line of the current response — the hook will fire, and `✅✅CODING COMPLETE✅✅` should close the hook feedback response instead
-- **Summary of changes**: immediately before `✅✅CODING COMPLETE✅✅` (or `🐟🐟AWAITING HOOK🐟🐟`), output `📝📝SUMMARY OF CHANGES📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. This summary appears in every response that made changes (code edits, commits, pushes, file modifications). Skip the summary only if the response was purely informational with no changes made
+- **Summary of changes**: immediately before `✅✅CODING COMPLETE✅✅` (or `🐟🐟AWAITING HOOK🐟🐟`), output `📝📝SUMMARY OF CHANGES📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. Each bullet must indicate which file(s) were edited (e.g. "Updated build-version in `live-site-pages/index.html`"). If a bullet describes a non-file action (e.g. "Pushed to remote"), no file path is needed. This summary appears in every response that made changes (code edits, commits, pushes, file modifications). Skip the summary only if the response was purely informational with no changes made
 - **Agents used**: after the summary of changes (or after work if no summary), output `🕵🕵AGENTS USED🕵🕵` on its own line followed by a list of all agents that contributed to this response — including Agent 0 (Main). Format: `Agent N (Type) — brief description of contribution`. This appears in every response that performed work. Skip only if the response was purely informational with no actions taken
 - **Last output**: for every user prompt, the very last line written to chat after all work is done must be exactly: `✅✅CODING COMPLETE✅✅`
 - These apply to **every single user message**, not just once per session
@@ -468,8 +468,8 @@ Agent 0 (Main) applying the changes now...
   ... work ...
 
 📝📝SUMMARY OF CHANGES📝📝
-  - Added auth middleware (designed by Agent 2 (Plan))
-  - Updated README timestamp
+  - Added auth middleware in `src/middleware/auth.js` (designed by Agent 2 (Plan))
+  - Updated timestamp in `README.md`
 🕵🕵AGENTS USED🕵🕵
   Agent 0 (Main) — applied changes, committed, pushed
   Agent 1 (Explore) — searched codebase for auth patterns
