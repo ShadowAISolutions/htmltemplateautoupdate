@@ -43,6 +43,9 @@
 | `📝📝SUMMARY📝📝` | Changes were made in the response | Last section before CODING_COMPLETE |
 | `✅✅CODING_COMPLETE✅✅` | All work done | Always the very last line of response |
 
+### Ordering principle
+The table and bullet-point rules above are ordered by **the chronological flow as the user experiences it** — not by which internal response turn each marker belongs to. AWAITING_HOOK and HOOK_FEEDBACK may technically span two response turns, but the user experiences them as consecutive events that happen *before* the final summary and CODING_COMPLETE. When reordering or adding bookends, always ask: "in what order does the user see these?" — never reason from response-turn boundaries.
+
 ### Flow Examples
 
 **Normal flow (no hook):**
