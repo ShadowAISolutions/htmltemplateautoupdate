@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-18 09:09:30 AM EST`
+Last updated: `2026-02-18 09:16:35 AM EST`
 
 You are currently using the **autoupdatehtmltemplate** developed by **ShadowAISolutions**<br>
 Update your code and claude will update the live site link here
@@ -12,7 +12,7 @@ Update your code and claude will update the live site link here
 > **Tip:** Links below navigate away from this page. **Ctrl + click** (or right-click → *Open in new tab*) to keep this ReadMe visible while you work.
 
 1. Go to [**GitHub Importer**](https://github.com/new/import)
-2. Under **The URL for your source repository**, click the copy button below and paste the URL:
+2. Click the copy button on the code block below, then paste it into the **source repository URL** field:
 
 ```
 https://github.com/ShadowAISolutions/autoupdatehtmltemplate
