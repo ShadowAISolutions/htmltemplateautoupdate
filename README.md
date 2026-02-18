@@ -23,7 +23,7 @@ https://github.com/ShadowAISolutions/autoupdatehtmltemplate
 
 ## Initialize This Template
 
-> **Important:** The links in steps 1 and 2 below point to the settings of **whichever repo you are viewing this page from**. Make sure you are using the links below on `YOUR OWN COPY` of the repository, not on the original template repo — otherwise the links will lead to a 404 page.
+> **Important:** The links in steps 1 and 2 below point to the settings of **whichever repo you are viewing this page from**. Make sure you are using the links below while on `YOUR OWN COPY` of the repository, not on the original template repo — otherwise the links will lead to a 404 page.
 
 > <sub>**Tip:** Links below navigate away from this page. `Right-click` → `Open link in new window` to keep this ReadMe visible while you work.</sub>
 
