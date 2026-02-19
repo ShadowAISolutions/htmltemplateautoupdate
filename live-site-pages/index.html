@@ -169,7 +169,7 @@
       var dot = indicator.querySelector('.dot');
 
       // Resolve <page-name>-version.txt URL relative to the current page
-      var basePath = window.location.href.split('?')[0];
+      var basePath = window.location.href.split('?')[0].split('#')[0];
       var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
       if (!pageName) pageName = 'index';
       var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + pageName + '.version.txt';

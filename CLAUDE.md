@@ -30,13 +30,13 @@
   - **Estimate calibration** (conditional): if ACTUAL TIME differs from the estimate by >2 minutes, output `🔧🔧ESTIMATE CALIBRATED🔧🔧` followed by what was adjusted. This is the **one exception** to the "no tool calls in the end-of-response block" rule — the calibration edits CLAUDE.md's heuristic values via an Edit tool call between SUMMARY and ACTUAL TIME. See the Estimate calibration bullet above for the full procedure
   - **Live URLs** (conditional): output `🔗🔗LIVE URLS🔗🔗` followed by the GitHub Pages URL of each edited webpage (or the associated HTML page for edited `.gs` files). Appears after ACTUAL TIME, immediately before CODING COMPLETE. Skip if no webpages or associated `.gs` files were edited. See the Live URLs bullet above for full rules
 - **Live URLs**: immediately before `✅✅CODING COMPLETE✅✅` (after ACTUAL TIME), output `🔗🔗LIVE URLS🔗🔗` followed by the GitHub Pages URL of every webpage that was edited in the response. This gives the user one-click access to see their changes live. Rules:
-  - **HTML pages in `live-site-pages/`**: list the GitHub Pages URL. For pages at `live-site-pages/index.html`, the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/live-site-pages/`. For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`), the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/live-site-pages/my-project/`. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`autoupdatehtmltemplate` values on the template repo)
+  - **HTML pages in `live-site-pages/`**: list the GitHub Pages URL. The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. For pages at `live-site-pages/index.html`, the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/`. For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`), the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/`. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`autoupdatehtmltemplate` values on the template repo)
   - **`.gs` files**: list the GitHub Pages URL of the **associated embedding HTML page** (from the GAS Projects table). If the `.gs` file has no registered embedding page, skip it
   - **Template HTML** (`live-site-templates/`): skip — template files are not deployed as standalone pages
   - **Non-webpage files** (`.md`, `.yml`, `.cff`, etc.): skip — only live-site HTML pages and their `.gs` counterparts get URLs
   - **Initialization**: after an `initialize` command, **always** show the root GitHub Pages URL (`https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/`) and every `live-site-pages/` page URL — even though initialization doesn't directly edit those files. This is the first deployment, so the user needs the URLs to verify their site went live
   - **Skip entirely** if no webpages or associated `.gs` files were edited in the response **and** the response is not an initialization
-  - Format: one URL per line, prefixed with the file that triggered it (e.g. `live-site-pages/index.html → https://ShadowAISolutions.github.io/autoupdatehtmltemplate/live-site-pages/`)
+  - Format: one URL per line, prefixed with the file that triggered it (e.g. `live-site-pages/index.html → https://ShadowAISolutions.github.io/autoupdatehtmltemplate/`)
   - This section is part of the end-of-response block — it does **not** get a timestamp or `⏱️` annotation
 - **Last output**: for every user prompt, the very last line written to chat after all work is done must be exactly: `✅✅CODING COMPLETE✅✅`
 - These apply to **every single user message**, not just once per session
@@ -106,7 +106,7 @@
   - Created `new-file.js` (created)
 ⏳⏳ACTUAL TIME: 3m 14s (estimated 4m)⏳⏳
 🔗🔗LIVE URLS🔗🔗
-  live-site-pages/index.html → https://ShadowAISolutions.github.io/autoupdatehtmltemplate/live-site-pages/
+  live-site-pages/index.html → https://ShadowAISolutions.github.io/autoupdatehtmltemplate/
 ✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
 ```
 
@@ -137,7 +137,7 @@
   - Pushed to remote
 ⏳⏳ACTUAL TIME: 2m 9s (estimated 3m)⏳⏳
 🔗🔗LIVE URLS🔗🔗
-  live-site-pages/index.html → https://ShadowAISolutions.github.io/autoupdatehtmltemplate/live-site-pages/
+  live-site-pages/index.html → https://ShadowAISolutions.github.io/autoupdatehtmltemplate/
 ✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
 ```
 
