@@ -28,7 +28,15 @@
   - **Worth noting**: output `🔖🔖WORTH NOTING🔖🔖` followed by a list of anything that deserves attention but isn't a blocker (e.g. "Push-once already used — did not push again", "Template repo guard skipped version bumps", "Pre-commit hook modified files — re-staged"). Skip if there are nothing worth noting
   - **Summary of changes**: output `📝📝SUMMARY📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. Each bullet must indicate which file(s) were edited (e.g. "Updated build-version in `live-site-pages/index.html`"). If a bullet describes a non-file action (e.g. "Pushed to remote"), no file path is needed
   - **Estimate calibration** (conditional): if ACTUAL TIME differs from the estimate by >2 minutes, output `🔧🔧ESTIMATE CALIBRATED🔧🔧` followed by what was adjusted. This is the **one exception** to the "no tool calls in the end-of-response block" rule — the calibration edits CLAUDE.md's heuristic values via an Edit tool call between SUMMARY and ACTUAL TIME. See the Estimate calibration bullet above for the full procedure
-- **Last output**: for every user prompt, the very last line written to chat after all work is done must be exactly: `✅✅CODING COMPLETE✅✅`
+- **Live URLs**: immediately after `✅✅CODING COMPLETE✅✅`, output `🔗🔗LIVE URLS🔗🔗` followed by the GitHub Pages URL of every webpage that was edited in the response. This gives the user one-click access to see their changes live. Rules:
+  - **HTML pages in `live-site-pages/`**: list the GitHub Pages URL. For pages at `live-site-pages/index.html`, the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/live-site-pages/`. For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`), the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/live-site-pages/my-project/`. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`autoupdatehtmltemplate` values on the template repo)
+  - **`.gs` files**: list the GitHub Pages URL of the **associated embedding HTML page** (from the GAS Projects table). If the `.gs` file has no registered embedding page, skip it
+  - **Template HTML** (`live-site-templates/`): skip — template files are not deployed as standalone pages
+  - **Non-webpage files** (`.md`, `.yml`, `.cff`, etc.): skip — only live-site HTML pages and their `.gs` counterparts get URLs
+  - **Skip entirely** if no webpages or associated `.gs` files were edited in the response
+  - Format: one URL per line, prefixed with the file that triggered it (e.g. `live-site-pages/index.html → https://ShadowAISolutions.github.io/autoupdatehtmltemplate/live-site-pages/`)
+  - This section is **outside** the end-of-response block (it appears after CODING COMPLETE) and does **not** get a timestamp or `⏱️` annotation
+- **Last output**: for every user prompt, the very last line written to chat after all work is done must be `✅✅CODING COMPLETE✅✅` — or, if live URLs apply, the LIVE URLS section immediately follows CODING COMPLETE as the true final output
 - These apply to **every single user message**, not just once per session
 - These bookend lines are standalone — do not combine them with other text on the same line
 - **Timestamps on bookends** — every bookend marker must include a real EST timestamp on the same line, placed after the marker text in square brackets. **Three bookends get time+date** (format: `[HH:MM:SS AM/PM EST YYYY-MM-DD]`): CODING PLAN, CODING START, and CODING COMPLETE. **All other bookends get time-only** (format: `[HH:MM:SS AM/PM EST]`). **You must run `date` via the Bash tool and get the result BEFORE writing the bookend line** — you have no internal clock, so any timestamp written without calling `date` first is fabricated. Use `TZ=America/New_York date '+%I:%M:%S %p EST %Y-%m-%d'` for the time+date bookends and `TZ=America/New_York date '+%I:%M:%S %p EST'` for time-only bookends. Do not guess, estimate, or anchor on times mentioned in the user's message. The small delay before text appears is an acceptable tradeoff for accuracy. For the opening pair (CODING PLAN + CODING START), a single `date` call is sufficient — run it once before any text output and reuse the same timestamp for both markers. For subsequent bookends mid-response, call `date` inline before writing the marker. End-of-response section headers (AGENTS USED, FILES CHANGED, COMMIT LOG, WORTH NOTING, SUMMARY) do not get timestamps. **CODING COMPLETE's `date` call must happen before AGENTS USED** — fetch the timestamp, then write the entire end-of-response block (AGENTS USED → FILES CHANGED → COMMIT LOG → WORTH NOTING → SUMMARY → CODING COMPLETE) as one uninterrupted text output using the pre-fetched timestamp
@@ -60,7 +68,8 @@
 | `📝📝SUMMARY📝📝` | Changes were made in the response | After WORTH NOTING | — | — |
 | `🔧🔧ESTIMATE CALIBRATED🔧🔧` | Estimate missed by >2 min | After SUMMARY, before ACTUAL TIME (skip if ≤2 min gap) | — | — |
 | `⏳⏳ACTUAL TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE | Immediately before CODING COMPLETE (never skipped) | — | Computed from CODING START → CODING COMPLETE |
-| `✅✅CODING COMPLETE✅✅ [HH:MM:SS AM EST YYYY-MM-DD]` | All work done | Always the very last line of response | Required | — |
+| `✅✅CODING COMPLETE✅✅ [HH:MM:SS AM EST YYYY-MM-DD]` | All work done | Last line of response (or followed by LIVE URLS) | Required | — |
+| `🔗🔗LIVE URLS🔗🔗` | Webpages or associated `.gs` files were edited | Immediately after CODING COMPLETE (skip if no web pages edited) | — | — |
 
 ### Flow Examples
 
@@ -95,6 +104,8 @@
   - Created `new-file.js` (created)
 ⏳⏳ACTUAL TIME: 3m 14s (estimated 4m)⏳⏳
 ✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
+🔗🔗LIVE URLS🔗🔗
+  live-site-pages/index.html → https://ShadowAISolutions.github.io/autoupdatehtmltemplate/live-site-pages/
 ```
 
 **Hook anticipated flow:**
@@ -124,6 +135,8 @@
   - Pushed to remote
 ⏳⏳ACTUAL TIME: 2m 9s (estimated 3m)⏳⏳
 ✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
+🔗🔗LIVE URLS🔗🔗
+  live-site-pages/index.html → https://ShadowAISolutions.github.io/autoupdatehtmltemplate/live-site-pages/
 ```
 
 ### Hook anticipation — bug context
