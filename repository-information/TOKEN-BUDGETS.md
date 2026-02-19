@@ -100,3 +100,4 @@ Agent attribution overhead scales with the number of subagents spawned.
 **Hidden cost:** each Task tool call to spawn a subagent consumes ~50–100 tokens of tool overhead (prompt + result), separate from the attribution output. The subagent's own context window is independent but its summarized result flows back into the main context.
 
 Developed by: ShadowAISolutions
+
