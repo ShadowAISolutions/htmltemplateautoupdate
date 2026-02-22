@@ -2,12 +2,12 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-22 01:28:50 AM EST`
+Last updated: `2026-02-22 01:42:06 AM EST`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
 
-**Template repo:** [github.com/ShadowAISolutions/htmltemplateautoupdate](https://github.com/ShadowAISolutions/htmltemplateautoupdate)
+**This Template Repository's URL:** [github.com/ShadowAISolutions/htmltemplateautoupdate](https://github.com/ShadowAISolutions/htmltemplateautoupdate)
 
 <p align="center">
   <img src="repository-information/readme-qr-code.png" alt="QR code to template repo" width="200">
