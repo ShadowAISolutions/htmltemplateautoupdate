@@ -19,8 +19,6 @@ graph TB
             MERGE --> DIFF["Check git diff"]
             DIFF -->|"live-site-pages/ changed"| PAGES_FLAG["pages-changed = true"]
             DIFF -->|".gs changed"| GAS_DEPLOY["Deploy GAS via curl POST\n(no GAS projects yet)"]
-            DIFF -->|"README.md changed"| QR_GEN["Generate QR code\n(qrencode → qr-code.png)"]
-            QR_GEN --> DELETE_BR
             GAS_DEPLOY --> DELETE_BR
             MERGE --> DELETE_BR["Delete claude/* branch"]
             PAGES_FLAG --> DEPLOY_PAGES

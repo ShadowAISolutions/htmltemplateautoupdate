@@ -114,43 +114,6 @@ jobs:
             echo "pages-changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      # ── QR CODE GENERATION ──────────────────────────────────────────
-      # Regenerates repository-information/qr-code.png when README.md
-      # changes (e.g. after initialization updates the live site URL).
-      # The QR encodes the GitHub Pages URL if found, otherwise the
-      # repo URL.  Commits with [skip ci] to prevent retriggering.
-      # ────────────────────────────────────────────────────────────────
-      - name: Generate QR code
-        run: |
-          PRE=${{ steps.merge.outputs.pre_merge_sha }}
-          if ! git diff --name-only "$PRE" HEAD | grep -q "^README.md$"; then
-            echo "README.md unchanged — skipping QR generation"
-            exit 0
-          fi
-
-          sudo apt-get update -qq && sudo apt-get install -y -qq qrencode
-
-          # Try GitHub Pages URL first, fall back to repo URL
-          LIVE_URL=$(grep -oP 'https://[A-Za-z0-9-]+\.github\.io/[A-Za-z0-9._-]+/?' README.md | head -1)
-          if [ -z "$LIVE_URL" ]; then
-            LIVE_URL="https://github.com/${{ github.repository }}"
-          fi
-
-          echo "Generating QR code for: $LIVE_URL"
-          mkdir -p repository-information
-          qrencode -o repository-information/qr-code.png -s 10 -m 2 -l H "$LIVE_URL"
-
-          # Commit only if the image actually changed
-          if git diff --quiet repository-information/qr-code.png 2>/dev/null && \
-             ! git ls-files --others --exclude-standard | grep -q "qr-code.png"; then
-            echo "QR code unchanged — no commit needed"
-            exit 0
-          fi
-
-          git add repository-information/qr-code.png
-          git commit -m "Update QR code [skip ci]"
-          git push origin main
-
       # ── GAS DEPLOY STEPS ──────────────────────────────────────────────
       # Add one step per GAS project here, BEFORE "Delete branch".
       # Each step only fires when its .gs file changed in the merge.
