@@ -2,12 +2,12 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-22 12:53:45 AM EST`
+Last updated: `2026-02-22 01:17:58 AM EST`
 
-You are currently using the **autoupdatehtmltemplate** developed by **ShadowAISolutions**<br>
+You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Update your code and claude will update the live site link and QR code here
 
-**Template repo:** [github.com/ShadowAISolutions/autoupdatehtmltemplate](https://github.com/ShadowAISolutions/autoupdatehtmltemplate)
+**Template repo:** [github.com/ShadowAISolutions/htmltemplateautoupdate](https://github.com/ShadowAISolutions/htmltemplateautoupdate)
 
 <p align="center">
   <img src="repository-information/readme-qr-code.png" alt="QR code to template repo" width="200">
@@ -18,7 +18,7 @@ Update your code and claude will update the live site link and QR code here
 1. Click the `⧉` button below to copy this template's URL:
 
 ```
-https://github.com/ShadowAISolutions/autoupdatehtmltemplate
+https://github.com/ShadowAISolutions/htmltemplateautoupdate
 ```
 
    > <sub>**Tip:** Link below navigates away from this page. `Shift + click` (or `Right-click` → `Open link in new window`) to keep this ReadMe visible while you work.</sub>
@@ -80,7 +80,7 @@ Google Apps Script projects are embedded as iframes in GitHub Pages. The framewo
 ## Project Structure
 
 ```
-autoupdatehtmltemplate/
+htmltemplateautoupdate/
 ├── live-site-pages/             # Deployed to GitHub Pages
 │   ├── index.html              # Live landing page
 │   ├── index.version.txt       # Version file for auto-refresh
