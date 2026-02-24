@@ -12,7 +12,7 @@
 #
 # Flow:
 #   1. Push to claude/* branch triggers this workflow
-#   1a. Guard: detect inherited branches via commit-SHA tracking,
+#   1a. Guard: detect inherited branches via dual-source commit-SHA tracking,
 #       commit-timestamp-vs-repo-creation check, IS_TEMPLATE_REPO mismatch,
 #       and already-merged check — delete and skip
 #   2. Merge into main (once)
@@ -108,13 +108,22 @@ jobs:
           # the template repo. If the branch tip matches the stored SHA, it's
           # an inherited branch replaying an already-processed commit.
           # This is the fastest guard — a single file read, no API calls.
-          STORED_SHA=""
-          if [ -f ".github/last-processed-commit.sha" ]; then
-            STORED_SHA=$(cat .github/last-processed-commit.sha | tr -d '[:space:]')
-          fi
+          #
+          # We check the SHA file from TWO sources:
+          #   1. The checked-out branch (the push being processed)
+          #   2. origin/main (which has the most recently updated SHA)
+          # On a fork/copy, the branch carries the template's SHA file, but
+          # origin/main may have a more recent SHA from a prior workflow run.
+          # Matching EITHER means this commit was already processed.
           INCOMING_SHA="${{ github.sha }}"
-          if [ -n "$STORED_SHA" ] && [ "$STORED_SHA" = "$INCOMING_SHA" ]; then
-            echo "::notice::Inherited branch detected — commit SHA $INCOMING_SHA matches last-processed-commit.sha"
+
+          # Source 1: SHA file from the checked-out branch
+          BRANCH_SHA=""
+          if [ -f ".github/last-processed-commit.sha" ]; then
+            BRANCH_SHA=$(cat .github/last-processed-commit.sha | tr -d '[:space:]')
+          fi
+          if [ -n "$BRANCH_SHA" ] && [ "$BRANCH_SHA" = "$INCOMING_SHA" ]; then
+            echo "::notice::Inherited branch detected — commit SHA $INCOMING_SHA matches last-processed-commit.sha (from branch)"
             echo "::notice::Deleting inherited branch ${{ github.ref_name }}"
             git push origin --delete ${{ github.ref_name }} || true
             echo "skip=true" >> "$GITHUB_OUTPUT"
@@ -140,6 +149,21 @@ jobs:
           # claude/* push happens on a repo where origin/main can't be fetched.
           if [ "$MAIN_AVAILABLE" = false ]; then
             echo "::warning::Could not fetch origin/main after 3 retries — assuming inherited branch on new repo"
+            git push origin --delete ${{ github.ref_name }} || true
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Source 2: SHA file from origin/main (freshly fetched, may be more recent)
+          # After a prior workflow run merges and updates the SHA file on main,
+          # origin/main has the post-merge SHA. The branch still has the pre-merge
+          # SHA. Checking both sources catches inherited branches regardless of
+          # which copy of the SHA file they carry.
+          MAIN_SHA=""
+          MAIN_SHA=$(git show origin/main:.github/last-processed-commit.sha 2>/dev/null | tr -d '[:space:]' || echo "")
+          if [ -n "$MAIN_SHA" ] && [ "$MAIN_SHA" = "$INCOMING_SHA" ]; then
+            echo "::notice::Inherited branch detected — commit SHA $INCOMING_SHA matches last-processed-commit.sha (from origin/main)"
+            echo "::notice::Deleting inherited branch ${{ github.ref_name }}"
             git push origin --delete ${{ github.ref_name }} || true
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0

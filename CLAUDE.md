@@ -379,17 +379,20 @@ The auto-merge workflow merges `claude/*` branches into `main` using `git merge 
 The file `.github/last-processed-commit.sha` stores the SHA of the last commit that was successfully merged into `main` by the auto-merge workflow. This provides a deterministic guard against inherited branches on forks and imports.
 
 **How it works:**
-1. When a `claude/*` branch is pushed, the workflow reads `.github/last-processed-commit.sha` from the checked-out branch
-2. If the incoming commit SHA (`github.sha`) matches the stored SHA, the branch is inherited — it carries the exact same commit from the template repo. The workflow deletes the branch and skips
+1. When a `claude/*` branch is pushed, the workflow reads `.github/last-processed-commit.sha` from **two sources**: the checked-out branch AND `origin/main` (after fetching)
+2. If the incoming commit SHA (`github.sha`) matches the stored SHA from **either source**, the branch is inherited — it carries the exact same commit from the template repo. The workflow deletes the branch and skips
 3. After a successful merge, the workflow updates the file with the new `HEAD` SHA on `main` and pushes it, so the marker is always current
+
+**Why two sources?** After a workflow run merges a branch and updates the SHA file on `main`, the branch's copy of the file is stale (it has the pre-merge SHA). But `origin/main` has the fresh post-merge SHA. On a fork/copy, which copy the inherited branch carries depends on timing — checking both eliminates the race condition.
 
 **Why this is bulletproof:**
 - Git SHAs are deterministic — a fork/import inherits the exact same SHAs from the source repo
 - A new legitimate commit always produces a different SHA (different author, timestamp, parent, etc.)
 - The file travels with the repo on copy, carrying the "already processed" marker with it
-- No API calls needed — the check is a simple file read and string compare, making it the fastest guard in the chain
+- The dual-source check (branch + origin/main) eliminates timing races between the SHA file update and the branch copy
+- No API calls needed — the check is a file read and string compare, making it the fastest guard in the chain
 
-**Relationship to other guards:** This is **Check 0a** in the guard chain — it runs before the origin/main fetch, the already-merged check, the timestamp check, and the IS_TEMPLATE_REPO mismatch check. It catches the most common inherited branch scenario (exact same commit) with zero external dependencies.
+**Relationship to other guards:** This is **Check 0a** in the guard chain. The branch-source check runs before the origin/main fetch (fast path — catches exact matches immediately). The origin/main-source check runs after the fetch (catches cases where the branch's copy is stale but main's copy is current). Both run before the already-merged check, the timestamp check, and the IS_TEMPLATE_REPO mismatch check.
 
 **File management:** The `.sha` file is managed exclusively by the workflow — Claude Code does not modify it. The only exception is during initial repository creation, where the file is seeded with the current HEAD SHA.
 
