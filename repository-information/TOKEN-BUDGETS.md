@@ -18,7 +18,7 @@ The bookend system adds overhead to every response. Use this reference if you're
 | CODING START line | ~15 | Shared `date` call with CODING PLAN |
 | ESTIMATED TIME lines (overall + per-phase) | 15–30 | Overall always present; per-phase only when >2 min; no `date` call needed |
 | REVISED ESTIMATED TIME line | 10–20 | Only when estimate changes ≥1m after research; no `date` call needed |
-| ACTUAL TIME line | ~10 | Always present before CODING COMPLETE; no extra `date` call needed |
+| ACTUAL TOTAL COMPLETION TIME line | ~10 | Always present before CODING COMPLETE; no extra `date` call needed |
 | Mid-response markers (RESEARCHING, VERIFYING, etc.) | 30–45 | Avg 2–3 per response |
 | `⏱️` duration lines | 20–30 | Avg 3–4 per response |
 | `date` command tool calls + results | 120–180 | ~25–35 tokens per round-trip × 4–6 calls |
