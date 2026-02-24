@@ -34,7 +34,10 @@
   - **`.gs` files**: list the GitHub Pages URL of the **associated embedding HTML page** (from the GAS Projects table). If the `.gs` file has no registered embedding page, skip it
   - **Template HTML** (`live-site-templates/`): skip — template files are not deployed as standalone pages
   - **Non-webpage files** (`.md`, `.yml`, `.cff`, etc.): skip — only live-site HTML pages and their `.gs` counterparts get URLs
-  - **Initialization**: after an `initialize` command, **always** show the GitHub repo URL (`https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME`), the root GitHub Pages URL (`https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/`), **and** every `live-site-pages/` page URL — even though initialization doesn't directly edit those files. This is the first deployment, so the user needs the repo URL for quick reference and the live site URLs to verify deployment. Format the repo URL on its own line: `Repository → https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME`
+  - **Initialization**: after an `initialize` command, **always** show the template repository URL, the fork's GitHub repo URL, the root GitHub Pages URL, **and** every `live-site-pages/` page URL — even though initialization doesn't directly edit those files. This is the first deployment, so the user needs all three reference URLs: the template for origin context, the repo URL for quick reference, and the live site URLs to verify deployment. Format each on its own line:
+    - `Template → https://github.com/ShadowAISolutions/htmltemplateautoupdate` (always this fixed URL — it's the origin template)
+    - `Repository → https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME`
+    - Then the root GitHub Pages URL and every `live-site-pages/` page URL
   - **Skip entirely** if no webpages or associated `.gs` files were edited in the response **and** the response is not an initialization
   - Format: one URL per line, prefixed with the file that triggered it (e.g. `live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/`)
   - This section is part of the end-of-response block — it does **not** get a timestamp or `⏱️` annotation
@@ -226,7 +229,7 @@ If the user's prompt is just **"initialize"** (after the Session Start Checklist
 2. Update the `Last updated:` timestamp in `README.md` to the real current time
 3. Commit with message `Initialize deployment`
 4. Push to the `claude/*` branch (Pre-Push Checklist applies)
-5. **Show LIVE URLS** — in the end-of-response block, always include `🔗🔗LIVE URLS🔗🔗` with the GitHub repo URL first, then the root GitHub Pages URL, then every `live-site-pages/` page URL. This is the first deployment — the user needs the repo URL for quick reference and the live site URLs to verify deployment (see LIVE URLS → Initialization rule in Chat Bookends)
+5. **Show LIVE URLS** — in the end-of-response block, always include `🔗🔗LIVE URLS🔗🔗` with the template repository URL first (`Template → https://github.com/ShadowAISolutions/htmltemplateautoupdate`), then the fork's GitHub repo URL, then the root GitHub Pages URL, then every `live-site-pages/` page URL. This is the first deployment — the user needs the template URL for origin context, the repo URL for quick reference, and the live site URLs to verify deployment (see LIVE URLS → Initialization rule in Chat Bookends)
 
 **No version bumps** — initialization never bumps `build-version`, `version.txt`, or any version-tracking files. It deploys whatever versions already exist. This applies on both the template repo and forks.
 
