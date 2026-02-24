@@ -98,10 +98,33 @@ jobs:
       - name: Guard against stale inherited branches
         id: guard
         run: |
+          # ── Fetch origin/main with retry ──
+          # On brand-new repos (from import/fork), origin/main may not be
+          # immediately available. Retry with backoff to handle this race.
+          MAIN_AVAILABLE=false
+          for attempt in 1 2 3; do
+            if git fetch origin main 2>/dev/null; then
+              MAIN_AVAILABLE=true
+              break
+            fi
+            echo "::warning::Failed to fetch origin/main (attempt $attempt/3)"
+            sleep 3
+          done
+
+          # ── Check 0: Fail-safe when origin/main is unreachable ──
+          # If we can't fetch origin/main after retries, this is almost certainly
+          # a brand-new repo where infrastructure isn't ready. No legitimate
+          # claude/* push happens on a repo where origin/main can't be fetched.
+          if [ "$MAIN_AVAILABLE" = false ]; then
+            echo "::warning::Could not fetch origin/main after 3 retries — assuming inherited branch on new repo"
+            git push origin --delete ${{ github.ref_name }} || true
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           # ── Check 1: Already merged ──
           # Quick pre-check: if the branch tip is already an ancestor of main,
           # this is a re-run or a no-op. Clean up and skip.
-          git fetch origin main
           if git merge-base --is-ancestor ${{ github.sha }} origin/main; then
             echo "::notice::Branch already merged into main — cleaning up"
             git push origin --delete ${{ github.ref_name }} || true
@@ -109,7 +132,7 @@ jobs:
             exit 0
           fi
 
-          # ── Check 2: Commit predates repo creation ──
+          # ── Check 2: Commit predates repo creation + repo age guard ──
           # On a fork/template/import, inherited claude/* branches carry commits
           # from the original repo. These commits have author timestamps from
           # BEFORE the fork was created. A legitimate claude/* push always has
@@ -120,13 +143,18 @@ jobs:
           # than the repo (minus a 5-minute grace period for clock skew), it's
           # inherited — delete and skip.
           #
+          # Additionally, if the repo is less than 10 minutes old, ALL claude/*
+          # branches are treated as inherited — no legitimate user pushes to
+          # claude/* within seconds of creating a repo via import.
+          #
           # Why this works across ALL copy methods:
           #   - GitHub Fork: commits carry original timestamps → detected
           #   - "Use this template": same → detected
           #   - GitHub Import: same → detected
           #   - Manual clone + push: same → detected
           #   - git push --mirror: same → detected
-          CREATED_AT=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          CREATED_AT=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "${{ github.api_url }}/repos/${{ github.repository }}" | jq -r '.created_at')
 
           if [ -n "$CREATED_AT" ] && [ "$CREATED_AT" != "null" ]; then
@@ -148,6 +176,30 @@ jobs:
               echo "skip=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
+
+            # Repo age guard: if repo is less than 10 minutes old, ALL claude/*
+            # branches are inherited. No legitimate user creates a repo via import
+            # and pushes to claude/* within 10 minutes.
+            NOW_EPOCH=$(date +%s)
+            REPO_AGE=$((NOW_EPOCH - REPO_CREATED_EPOCH))
+            if [ "$REPO_AGE" -lt 600 ]; then
+              echo "::notice::Repo is only ${REPO_AGE}s old — all claude/* branches are inherited"
+              echo "::notice::Deleting inherited branch ${{ github.ref_name }}"
+              git push origin --delete ${{ github.ref_name }} || true
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          else
+            # API failed after retries — fail-safe on early workflow runs.
+            # On established repos the API always works; failure on early runs
+            # strongly indicates a brand-new repo still initializing.
+            if [ "${{ github.run_number }}" -le 5 ]; then
+              echo "::warning::Could not fetch repo creation date on early run #${{ github.run_number }} — assuming inherited branch"
+              git push origin --delete ${{ github.ref_name }} || true
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "::warning::Could not fetch repo creation date — skipping timestamp check"
           fi
 
           # ── Check 3: IS_TEMPLATE_REPO mismatch (defense in depth) ──
