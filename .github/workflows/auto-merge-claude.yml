@@ -101,13 +101,18 @@ jobs:
       - name: Guard against stale inherited branches
         id: guard
         run: |
+          echo "═══════════════════════════════════════════════"
+          echo "GUARD: Starting inherited branch detection"
+          echo "═══════════════════════════════════════════════"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Run number: ${{ github.run_number }}"
+
           # ── Check 0a: Commit SHA already processed ──
           # The file .github/last-processed-commit.sha stores the SHA of the
           # last commit that was successfully merged. On fork/import, the
           # inherited claude/* branches carry the exact same commit SHAs from
           # the template repo. If the branch tip matches the stored SHA, it's
           # an inherited branch replaying an already-processed commit.
-          # This is the fastest guard — a single file read, no API calls.
           #
           # We check the SHA file from TWO sources:
           #   1. The checked-out branch (the push being processed)
@@ -116,12 +121,14 @@ jobs:
           # origin/main may have a more recent SHA from a prior workflow run.
           # Matching EITHER means this commit was already processed.
           INCOMING_SHA="${{ github.sha }}"
+          echo "GUARD: Incoming SHA = $INCOMING_SHA"
 
           # Source 1: SHA file from the checked-out branch
           BRANCH_SHA=""
           if [ -f ".github/last-processed-commit.sha" ]; then
             BRANCH_SHA=$(cat .github/last-processed-commit.sha | tr -d '[:space:]')
           fi
+          echo "GUARD Check 0a-1: Branch .sha file = '${BRANCH_SHA:-<empty>}'"
           if [ -n "$BRANCH_SHA" ] && [ "$BRANCH_SHA" = "$INCOMING_SHA" ]; then
             echo "::notice::Inherited branch detected — commit SHA $INCOMING_SHA matches last-processed-commit.sha (from branch)"
             echo "::notice::Deleting inherited branch ${{ github.ref_name }}"
@@ -131,8 +138,6 @@ jobs:
           fi
 
           # ── Fetch origin/main with retry ──
-          # On brand-new repos (from import/fork), origin/main may not be
-          # immediately available. Retry with backoff to handle this race.
           MAIN_AVAILABLE=false
           for attempt in 1 2 3; do
             if git fetch origin main 2>/dev/null; then
@@ -142,11 +147,9 @@ jobs:
             echo "::warning::Failed to fetch origin/main (attempt $attempt/3)"
             sleep 3
           done
+          echo "GUARD: origin/main fetch = $MAIN_AVAILABLE"
 
           # ── Check 0: Fail-safe when origin/main is unreachable ──
-          # If we can't fetch origin/main after retries, this is almost certainly
-          # a brand-new repo where infrastructure isn't ready. No legitimate
-          # claude/* push happens on a repo where origin/main can't be fetched.
           if [ "$MAIN_AVAILABLE" = false ]; then
             echo "::warning::Could not fetch origin/main after 3 retries — assuming inherited branch on new repo"
             git push origin --delete ${{ github.ref_name }} || true
@@ -154,13 +157,10 @@ jobs:
             exit 0
           fi
 
-          # Source 2: SHA file from origin/main (freshly fetched, may be more recent)
-          # After a prior workflow run merges and updates the SHA file on main,
-          # origin/main has the post-merge SHA. The branch still has the pre-merge
-          # SHA. Checking both sources catches inherited branches regardless of
-          # which copy of the SHA file they carry.
+          # Source 2: SHA file from origin/main (freshly fetched)
           MAIN_SHA=""
           MAIN_SHA=$(git show origin/main:.github/last-processed-commit.sha 2>/dev/null | tr -d '[:space:]' || echo "")
+          echo "GUARD Check 0a-2: Main .sha file = '${MAIN_SHA:-<empty>}'"
           if [ -n "$MAIN_SHA" ] && [ "$MAIN_SHA" = "$INCOMING_SHA" ]; then
             echo "::notice::Inherited branch detected — commit SHA $INCOMING_SHA matches last-processed-commit.sha (from origin/main)"
             echo "::notice::Deleting inherited branch ${{ github.ref_name }}"
@@ -170,76 +170,54 @@ jobs:
           fi
 
           # ── Check 1: Already merged ──
-          # Quick pre-check: if the branch tip is already an ancestor of main,
-          # this is a re-run or a no-op. Clean up and skip.
           if git merge-base --is-ancestor ${{ github.sha }} origin/main; then
             echo "::notice::Branch already merged into main — cleaning up"
             git push origin --delete ${{ github.ref_name }} || true
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          echo "GUARD Check 1: Branch is NOT ancestor of origin/main — continuing"
 
           # ── Check 2: Commit predates repo creation + repo age guard ──
-          # On a fork/template/import, inherited claude/* branches carry commits
-          # from the original repo. These commits have author timestamps from
-          # BEFORE the fork was created. A legitimate claude/* push always has
-          # commits authored AFTER the repo exists.
-          #
-          # Compare the branch tip commit's author date against the repo's
-          # created_at timestamp (from the GitHub API). If the commit is older
-          # than the repo (minus a 5-minute grace period for clock skew), it's
-          # inherited — delete and skip.
-          #
-          # Additionally, if the repo is less than 10 minutes old, ALL claude/*
-          # branches are treated as inherited — no legitimate user pushes to
-          # claude/* within seconds of creating a repo via import.
-          #
-          # Why this works across ALL copy methods:
-          #   - GitHub Fork: commits carry original timestamps → detected
-          #   - "Use this template": same → detected
-          #   - GitHub Import: same → detected
-          #   - Manual clone + push: same → detected
-          #   - git push --mirror: same → detected
           CREATED_AT=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "${{ github.api_url }}/repos/${{ github.repository }}" | jq -r '.created_at')
+          echo "GUARD Check 2: API created_at = '${CREATED_AT:-<empty>}'"
 
           if [ -n "$CREATED_AT" ] && [ "$CREATED_AT" != "null" ]; then
             REPO_CREATED_EPOCH=$(date -d "$CREATED_AT" +%s 2>/dev/null || echo "0")
-
-            # Get the author date of the branch tip commit (the commit being merged)
             COMMIT_AUTHOR_DATE=$(git log -1 --format='%aI' ${{ github.sha }})
             COMMIT_EPOCH=$(date -d "$COMMIT_AUTHOR_DATE" +%s 2>/dev/null || echo "0")
+            NOW_EPOCH=$(date +%s)
+            REPO_AGE=$((NOW_EPOCH - REPO_CREATED_EPOCH))
 
-            # Grace period: 5 minutes (300 seconds) to handle minor clock skew
-            # Inherited commits predate the fork by hours/days/weeks, so 5 min is generous
+            echo "GUARD Check 2: Repo created epoch = $REPO_CREATED_EPOCH"
+            echo "GUARD Check 2: Commit author date = $COMMIT_AUTHOR_DATE (epoch: $COMMIT_EPOCH)"
+            echo "GUARD Check 2: Current epoch = $NOW_EPOCH"
+            echo "GUARD Check 2: Repo age = ${REPO_AGE}s"
+
+            # Timestamp check: commit older than repo (minus 5 min grace)?
             GRACE=300
             REPO_CREATED_WITH_GRACE=$((REPO_CREATED_EPOCH - GRACE))
-
             if [ "$COMMIT_EPOCH" -gt 0 ] && [ "$COMMIT_EPOCH" -lt "$REPO_CREATED_WITH_GRACE" ]; then
               echo "::notice::Inherited branch detected — commit authored $(date -d "@$COMMIT_EPOCH" -u '+%Y-%m-%dT%H:%M:%SZ') but repo created $(date -d "@$REPO_CREATED_EPOCH" -u '+%Y-%m-%dT%H:%M:%SZ')"
-              echo "::notice::Deleting inherited branch ${{ github.ref_name }}"
               git push origin --delete ${{ github.ref_name }} || true
               echo "skip=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
 
             # Repo age guard: if repo is less than 10 minutes old, ALL claude/*
-            # branches are inherited. No legitimate user creates a repo via import
-            # and pushes to claude/* within 10 minutes.
-            NOW_EPOCH=$(date +%s)
-            REPO_AGE=$((NOW_EPOCH - REPO_CREATED_EPOCH))
+            # branches are inherited
             if [ "$REPO_AGE" -lt 600 ]; then
               echo "::notice::Repo is only ${REPO_AGE}s old — all claude/* branches are inherited"
-              echo "::notice::Deleting inherited branch ${{ github.ref_name }}"
               git push origin --delete ${{ github.ref_name }} || true
               echo "skip=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
+            echo "GUARD Check 2: Repo age ${REPO_AGE}s >= 600s, commit not older than repo — continuing"
           else
-            # API failed after retries — fail-safe on early workflow runs.
-            # On established repos the API always works; failure on early runs
-            # strongly indicates a brand-new repo still initializing.
+            echo "GUARD Check 2: API returned empty/null — fail-safe check"
+            # API failed — fail-safe on early workflow runs
             if [ "${{ github.run_number }}" -le 5 ]; then
               echo "::warning::Could not fetch repo creation date on early run #${{ github.run_number }} — assuming inherited branch"
               git push origin --delete ${{ github.ref_name }} || true
@@ -250,29 +228,28 @@ jobs:
           fi
 
           # ── Check 3: IS_TEMPLATE_REPO mismatch (defense in depth) ──
-          # Read IS_TEMPLATE_REPO from BOTH main branch and pushed branch.
-          # This catches stale branches even if the API call in Check 2 fails.
           TEMPLATE_VALUE_MAIN=$(git show origin/main:CLAUDE.md 2>/dev/null | \
             grep -oP '^\| `IS_TEMPLATE_REPO` \| \K[^|]+' | \
             sed 's/[[:space:]]*$//' | tr -d '\r' || echo "")
           TEMPLATE_VALUE_BRANCH=$(grep -oP '^\| `IS_TEMPLATE_REPO` \| \K[^|]+' CLAUDE.md | \
             sed 's/[[:space:]]*$//' | tr -d '\r' || echo "")
           REPO_NAME="${{ github.event.repository.name }}"
+          echo "GUARD Check 3: IS_TEMPLATE_REPO from main = '${TEMPLATE_VALUE_MAIN:-<empty>}'"
+          echo "GUARD Check 3: IS_TEMPLATE_REPO from branch = '${TEMPLATE_VALUE_BRANCH:-<empty>}'"
+          echo "GUARD Check 3: Actual repo name = '$REPO_NAME'"
 
-          # Case A: main says "No" (initialized) but branch still has a template
-          # name that doesn't match this repo → stale pre-initialization branch
+          # Case A: main says "No" (initialized) but branch still has template name
           if [ "$TEMPLATE_VALUE_MAIN" = "No" ] && \
              [ -n "$TEMPLATE_VALUE_BRANCH" ] && \
              [ "$TEMPLATE_VALUE_BRANCH" != "No" ] && \
              [ "$TEMPLATE_VALUE_BRANCH" != "$REPO_NAME" ]; then
-            echo "::notice::Stale branch from pre-initialization detected (main: IS_TEMPLATE_REPO=No, branch: $TEMPLATE_VALUE_BRANCH)"
+            echo "::notice::Stale branch from pre-initialization detected (main: No, branch: $TEMPLATE_VALUE_BRANCH)"
             git push origin --delete ${{ github.ref_name }} || true
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          # Case B: Branch's IS_TEMPLATE_REPO is a repo name that doesn't match
-          # this repo — catches different-name forks even when Check 2 is skipped
+          # Case B: Branch's IS_TEMPLATE_REPO doesn't match this repo name
           if [ -n "$TEMPLATE_VALUE_BRANCH" ] && \
              [ "$TEMPLATE_VALUE_BRANCH" != "No" ] && \
              [ "$TEMPLATE_VALUE_BRANCH" != "$REPO_NAME" ]; then
@@ -282,9 +259,10 @@ jobs:
             exit 0
           fi
 
+          echo "GUARD: All checks passed — branch is legitimate"
           echo "skip=false" >> "$GITHUB_OUTPUT"
 
-      - name: Merge into main
+      - name: Merge into main and update SHA tracker
         if: steps.guard.outputs.skip != 'true'
         id: merge
         run: |
@@ -292,19 +270,21 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout main
           echo "pre_merge_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+          # Merge the claude branch into main
           git merge --ff-only ${{ github.ref_name }} || \
             git merge --no-edit -X theirs ${{ github.ref_name }}
-          git push origin main
 
-      - name: Update last-processed-commit SHA
-        if: steps.guard.outputs.skip != 'true'
-        run: |
-          # Record the new HEAD on main (post-merge) so that any fork/import
-          # inheriting this commit will be detected by the SHA check guard.
-          NEW_SHA=$(git rev-parse HEAD)
-          echo "$NEW_SHA" > .github/last-processed-commit.sha
+          # Update the SHA tracker in the SAME push as the merge.
+          # This eliminates the race condition where an import/fork copies the
+          # repo between the merge push and the SHA update push, getting an
+          # inconsistent state where the branch exists but the SHA file is stale.
+          MERGE_SHA=$(git rev-parse HEAD)
+          echo "$MERGE_SHA" > .github/last-processed-commit.sha
           git add .github/last-processed-commit.sha
-          git commit -m "Update last-processed-commit.sha to $NEW_SHA" || true
+          git commit -m "Update last-processed-commit.sha to ${MERGE_SHA:0:7}" || true
+
+          # Single push — merge + SHA update land atomically
           git push origin main
 
       - name: Check what changed
