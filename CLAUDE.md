@@ -501,6 +501,25 @@ When a new embedding page is created (see New Embedding Page Setup Checklist), a
 > **--- END OF PHANTOM EDIT ---**
 ---
 
+## Line Ending Safety
+`.gitattributes` enforces `* text=auto eol=lf` repo-wide. This normalizes CRLF (`\r\n`) to LF (`\n`) for all text files on commit. The following audit confirms this is safe for every file type in the repo — **do not re-audit on future phantom updates or `.gitattributes` changes** unless a new file type is introduced.
+
+### What was verified
+| File type | Finding | Safe? |
+|-----------|---------|-------|
+| **`.md` files** | Pure line-ending CRLF only. Provenance markers are zero-width Unicode (`U+200B`, `U+200C`, etc.) — multi-byte UTF-8 sequences unrelated to `\r`. Line ending normalization does not touch them | Yes |
+| **`.html` files** | Pure line-ending CRLF (e.g. 240 lines, all `\r\n`, no lone `\r`). Non-ASCII content is box-drawing chars (`─`) in comments — standard UTF-8, unaffected by CRLF stripping | Yes |
+| **`.yml`, `.cff`, `.sh` files** | Already LF. No `\r` present | Yes |
+| **`.png`, `.mp3` files** | Explicitly marked `binary` in `.gitattributes`. Additionally, `text=auto` auto-detects binary (null bytes) — belt and suspenders | Yes |
+| **Provenance markers** | Zero-width Unicode chars (`U+200B`–`U+200F`, `U+FEFF`, `U+2060`). These are multi-byte UTF-8 (e.g. `\xe2\x80\x8b`) — completely unrelated to `\r` (`\x0d`). CRLF normalization cannot affect them | Yes |
+
+### When to re-audit
+Only if a **new file type** is added to the repo that might use `\r` intentionally (e.g. Windows batch files `.bat`, or binary formats with `.txt` extension). Standard web files (HTML, CSS, JS, YAML, Markdown) are always safe to normalize.
+
+---
+> **--- END OF LINE ENDING SAFETY ---**
+---
+
 ## Execution Style
 - For clear, straightforward requests: **just do it** — make the changes, commit, and push without asking for plan approval
 - Only ask clarifying questions when the request is genuinely ambiguous or has multiple valid interpretations
