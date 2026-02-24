@@ -34,10 +34,11 @@
   - **`.gs` files**: list the GitHub Pages URL of the **associated embedding HTML page** (from the GAS Projects table). If the `.gs` file has no registered embedding page, skip it
   - **Template HTML** (`live-site-templates/`): skip — template files are not deployed as standalone pages
   - **Non-webpage files** (`.md`, `.yml`, `.cff`, etc.): skip — only live-site HTML pages and their `.gs` counterparts get URLs
-  - **First response of session**: on the **first response that produces a LIVE URLS section** in each new session, **always** include these three reference URLs at the top (before any file-specific URLs):
+  - **First response of session**: on the **first response that produces a LIVE URLS section** in each new session, **always** include these reference URLs at the top (before any file-specific URLs):
     - `Template → https://github.com/ShadowAISolutions/htmltemplateautoupdate` (always this fixed URL — it's the origin template)
     - `Repository → https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME`
     - `Live Site → https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/` — **on the template repo**, replace the URL with a note: `Live Site → (template repo — no live site deployed)`
+    - **On the template repo**, the Template and Repository URLs are identical — merge them into a single line: `Template & Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate`
     - After these, list any `.html`/`.gs` page URLs that would normally appear (from files modified in the response). If no files were modified, the reference URLs alone are sufficient
     - This gives the user one-glance access to the template origin, the repo, and the live site at the start of every session. On subsequent responses within the same session, only show file-specific URLs as usual
   - **Initialization**: after an `initialize` command, the first-response-of-session rule above applies (since initialization is always the first response). Additionally, show **every** `live-site-pages/` page URL even though initialization doesn't directly edit those files — this is the first deployment, so the user needs all page URLs to verify deployment
