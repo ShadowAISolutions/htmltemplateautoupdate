@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-22 11:46:19 AM EST`
+Last updated: `2026-02-24 09:06:43 AM EST`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -102,6 +102,8 @@ htmltemplateautoupdate/
 │   ├── readme-qr-code.png             # QR code linking to this repo
 │   ├── TOKEN-BUDGETS.md        # Token cost reference for CLAUDE.md
 │   └── SUPPORT.md              # Getting help
+├── scripts/
+│   └── init-repo.sh            # One-shot fork initialization script
 ├── CITATION.cff                # Citation metadata
 ├── CLAUDE.md                   # Developer instructions
 ├── CODE_OF_CONDUCT.md          # Community standards

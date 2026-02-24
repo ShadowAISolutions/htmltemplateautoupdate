@@ -62,6 +62,11 @@ graph TB
             CLAUDE_MD["CLAUDE.md\n(project instructions)"]
             SETTINGS[".claude/settings.json\n(git * auto-allowed)"]
         end
+
+        subgraph "Initialization"
+            INIT_SCRIPT["scripts/init-repo.sh\n(one-shot fork initialization)"]
+            INIT_SCRIPT -.->|"auto-detects org/repo\nreplaces 23+ files"| CLAUDE_MD
+        end
     end
 
     TPL -.->|"copy to create\nnew pages"| INDEX
@@ -72,6 +77,7 @@ graph TB
     style SPLASH fill:#1b5e20,color:#fff
     style TPL fill:#ffa726,color:#000
     style CLAUDE_MD fill:#ce93d8,color:#000
+    style INIT_SCRIPT fill:#78909c,color:#fff
 ```
 
 Developed by: ShadowAISolutions

@@ -193,36 +193,22 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 
 > **Token budget:** *See `repository-information/TOKEN-BUDGETS.md` — section "Template Drift Checks"*
 
-0. **Set `IS_TEMPLATE_REPO` to `No`** — in the Template Variables table, change `IS_TEMPLATE_REPO` from its current value to `No`. Reaching the drift checks means the short-circuit already confirmed this is NOT the template repo
-1. **Org name auto-detect** — run `git remote -v` and extract the org/owner from the remote URL (e.g. `github.com/NewOrg/myrepo` → `NewOrg`). Compare it to the `YOUR_ORG_NAME` value in the Template Variables table. If they differ, update the table value and propagate to every file in the "Where it appears" column by **finding and replacing** the old org name (`ShadowAISolutions`) with the new org name in all occurrences (URLs, text, branding). Also update `DEVELOPER_NAME` to match the new org name (unless the user has explicitly set `DEVELOPER_NAME` to a different value)
-2. **Repo name auto-detect** — compare the actual repo name (from the same remote URL) to the `YOUR_REPO_NAME` value in the Template Variables table. If they differ, update the table value and propagate it to every file in the "Where it appears" column by **finding and replacing** the old repo name (`htmltemplateautoupdate`) with the new repo name in all occurrences (URLs, text, structure references)
-3. **Relative links (already dynamic — do NOT modify)** — certain markdown files use relative paths that automatically resolve to the correct repo via GitHub's blob-view URL structure (see *Relative Path Resolution on GitHub* reference section for how this works). These links work on any fork/clone without initialization and must **never** be converted to absolute URLs or modified during drift checks. Files with relative links:
-   - `SECURITY.md` — private security advisory link (`../../security/advisories/new`)
-   - `repository-information/SUPPORT.md` — issue creation links (`../../../issues/new`)
-   - `README.md` — repository settings links in "Initialize This Template" section (`../../settings/pages`, `../../settings/environments`). These are removed by step #6 but must not be converted to absolute URLs if encountered before removal
-4. **Absolute URL propagation** — some files contain absolute URLs with the org and repo name that cannot use relative paths (YAML metadata fields, GitHub Pages URLs on a different domain, Mermaid diagram text). After steps 1–2, find and replace the template repo's values (`ShadowAISolutions`/`htmltemplateautoupdate`) with the fork's actual values in these files. **For each file, verify every URL listed below — not just the first one you find:**
-   - `.github/ISSUE_TEMPLATE/config.yml` — YAML `url` fields require absolute URLs:
-     - `url: https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/repository-information/SUPPORT.md` (support link)
-     - `url: https://github.com/ShadowAISolutions/htmltemplateautoupdate/security/advisories/new` (security advisory link)
-   - `CITATION.cff` — citation metadata (not rendered markdown):
-     - `repository-code:` URL (`https://github.com/ShadowAISolutions/htmltemplateautoupdate`)
-     - `url:` field (`https://ShadowAISolutions.github.io/htmltemplateautoupdate`)
-   - `repository-information/STATUS.md` — placeholder in Hosted Pages table (`github.io` is a different domain, can't use relative paths):
-     - If the Live URL column still contains `*(deploy to activate)*`, replace it with `[View](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/)` (resolved values)
-   - `repository-information/ARCHITECTURE.md` — Mermaid diagram text (not a clickable link):
-     - `LIVE["Live Site\nShadowAISolutions.github.io/htmltemplateautoupdate"]`
-   - `README.md` — live site link and source repo URL:
-     - Live site `[View](https://...)` or `[...github.io/...](https://...)` link
-     - Template repo link in the placeholder block (gets replaced in step #6, but update if still present)
-     - Source repo URL in "Copy This Repository" section (gets removed in step #7, but update if still present)
-   When replacing, change **only the org and repo name portions** of each URL — preserve the rest of the URL path and structure intact (e.g. `/security/advisories/new` stays the same, only `ShadowAISolutions/htmltemplateautoupdate` changes to `NewOrg/newrepo`)
-   **Verification:** after replacements, run `grep -r 'ShadowAISolutions\|htmltemplateautoupdate' --include='*.md' --include='*.yml' --include='*.cff' --include='*.html'` (excluding CLAUDE.md) and confirm zero hits remain outside of `Developed by:` branding lines and provenance markers
-5. **README title** — replace the `# Auto Update HTML Template` heading at the top of `README.md` with `# ReadMe - YOUR_REPO_NAME` (resolved value, preserving any invisible characters before the title text). This heading format is specific to the README and is independent of `YOUR_PROJECT_TITLE` — do NOT update `YOUR_PROJECT_TITLE` in the Template Variables table (it stays as `Auto Update HTML Template` until the user explicitly changes it)
-6. **README live site link** — check if `README.md` still contains the placeholder text (`You are currently using the **YOUR_REPO_NAME**...`). If so, replace the entire placeholder block — from the `You are currently using the **` line through the QR code `</p>` closing tag (inclusive) — with: `**Live site:** [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME)` (resolved values) followed by `<p align="center"><img src="repository-information/readme-qr-code.png" alt="QR code to live site" width="200"></p>`. If the QR code `<p>` block is not present (older forks created before the QR code was added to the template), replace only through the `Initialize your repository...` line and add the QR `<p>` block after the live site link. The `<img>` tag stays the same on forks — only the PNG content changes (Pre-Commit Checklist #14 regenerates it with the fork's live site URL)
-7. **Remove "Copy This Repository" and "Initialize This Template" sections** — if `README.md` contains the `## Copy This Repository` or `## Initialize This Template` sections, delete each entirely (from the `##` heading through to the line immediately before the next `##` heading). These sections are only useful on the template repo itself; forks/clones should not keep them
-8. **Unresolved placeholders** — scan for any literal `YOUR_ORG_NAME`, `YOUR_REPO_NAME`, `YOUR_PROJECT_TITLE`, or `DEVELOPER_NAME` strings in code files (not CLAUDE.md) and replace them with resolved values
-9. **Variable propagation** — if any value in the Template Variables table was changed (in this or a prior session), verify the new value has been propagated to every file listed in the "Where it appears" column
-10. **Confirm completion** — after all checks pass, briefly state to the user: "Session start checklist complete — no issues found" (or list what was fixed). Then proceed to their request
+> **Centralized init script:** The bulk of the drift checks are automated by `scripts/init-repo.sh`. The script handles all find-and-replace propagation across 23+ files, README restructuring, STATUS.md placeholder replacement, and CLAUDE.md table updates. Steps 0–5 below replace the previous 10-step manual process.
+
+0. **Set `IS_TEMPLATE_REPO` to `No`** — in the Template Variables table, change `IS_TEMPLATE_REPO` from its current value to `No`. Reaching the drift checks means the short-circuit already confirmed this is NOT the template repo. This is done manually before the script runs because the script uses this value as a guard
+1. **Run init script** — execute `bash scripts/init-repo.sh`. The script auto-detects the org and repo name from `git remote -v` and performs all initialization in one execution:
+   - Replaces all occurrences of `ShadowAISolutions` → new org name across 23 target files (URLs, branding, content, "Developed by:" footers)
+   - Replaces all occurrences of `htmltemplateautoupdate` → new repo name across the same files
+   - If `DEVELOPER_NAME` differs from org name, pass it as a third argument: `bash scripts/init-repo.sh ORG REPO DEVELOPER_NAME`. The script will correct "Developed by:" lines and content references. By default `DEVELOPER_NAME` equals the org name
+   - Updates the CLAUDE.md Template Variables table (`YOUR_ORG_NAME`, `YOUR_REPO_NAME`, `DEVELOPER_NAME`)
+   - Replaces the STATUS.md `*(deploy to activate)*` placeholder with the live site URL
+   - Restructures README.md: replaces the title, swaps the placeholder block for the live site link, and removes the "Copy This Repository" and "Initialize This Template" sections
+   - Runs a verification grep and reports any remaining stale references
+   - **Relative links** in `SECURITY.md`, `SUPPORT.md`, and `README.md` that use `../../` paths are NOT modified — they resolve correctly on any fork via GitHub's blob-view URL structure
+2. **Handle script warnings** — if the verification step reports files with remaining old values, inspect them manually. They are likely provenance markers (expected) or edge cases the script didn't cover (fix manually)
+3. **Unresolved placeholders** — scan for any literal `YOUR_ORG_NAME`, `YOUR_REPO_NAME`, `YOUR_PROJECT_TITLE`, or `DEVELOPER_NAME` strings in code files (not CLAUDE.md) and replace them with resolved values
+4. **QR code generation** — regenerate `repository-information/readme-qr-code.png` with the fork's live site URL: `python3 -c "import qrcode; qrcode.make('https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME').save('repository-information/readme-qr-code.png')"`
+5. **Confirm completion** — after all checks pass, briefly state to the user: "Session start checklist complete — no issues found" (or list what was fixed). Then proceed to their request
 
 ### Token Budget Reference
 *See `repository-information/TOKEN-BUDGETS.md` — section "Session Start Checklist"*
