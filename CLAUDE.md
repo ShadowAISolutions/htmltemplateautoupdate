@@ -491,7 +491,7 @@ When a new embedding page is created (see New Embedding Page Setup Checklist), a
 ## Phantom Edit (Timestamp Alignment)
 - When the user asks for a **phantom edit** or **phantom update**, touch every file in the repo with a no-op change so all files share the same commit timestamp on GitHub
 - **Skip all version bumps** — do NOT increment `build-version` in HTML pages or `VERSION` in `.gs` files
-- For text files: add a trailing newline
+- For text files: add a trailing newline. Also normalize any CRLF (`\r\n`) line endings to LF (`\n`) — run `sed -i 's/\r$//' <file>` on each text file before the no-op touch
 - For binary files (e.g. `.mp3`): append a null byte
 - **Reset `repository-information/CHANGELOG.md`** — replace all entries with a fresh template (keep the header, version suffix note, and an empty `[Unreleased]` section with `*(No changes yet)*`). This gives the repo a clean history starting point
 - **Update `Last updated:` in `README.md`** — set the timestamp to the real current time (run `TZ=America/New_York date '+%Y-%m-%d %I:%M:%S %p EST'`). This is the only substantive edit besides the no-op touches
