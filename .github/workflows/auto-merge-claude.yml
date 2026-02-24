@@ -23,6 +23,9 @@
 #   7. Direct pushes to main skip merge and just deploy
 #   8. On every main push, sweep and delete any stale claude/* branches
 #      that are already merged (self-healing cleanup)
+#   9. Brand-new repos (< 10 min old) skip deploy and cleanup — import
+#      push events are not user actions
+#  10. SHA update commits use [skip ci] to prevent cascading workflow runs
 #
 # HOW TO ADD A NEW GAS PROJECT:
 #
@@ -282,7 +285,7 @@ jobs:
           MERGE_SHA=$(git rev-parse HEAD)
           echo "$MERGE_SHA" > .github/last-processed-commit.sha
           git add .github/last-processed-commit.sha
-          git commit -m "Update last-processed-commit.sha to ${MERGE_SHA:0:7}" || true
+          git commit -m "Update last-processed-commit.sha to ${MERGE_SHA:0:7} [skip ci]" || true
 
           # Single push — merge + SHA update land atomically
           git push origin main
@@ -325,7 +328,10 @@ jobs:
           git push origin --delete ${{ github.ref_name }} || echo "Branch already deleted"
 
   cleanup-branches:
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      needs.check-template.outputs.is-new-repo != 'true'
+    needs: [check-template]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -359,6 +365,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       is-template: ${{ steps.check.outputs.is-template }}
+      is-new-repo: ${{ steps.repo-age.outputs.is-new-repo }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -375,10 +382,30 @@ jobs:
           else
             echo "is-template=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Check repo age
+        id: repo-age
+        run: |
+          # Brand-new repos (< 10 minutes old) should not deploy or run
+          # cleanup — any push events are from the import, not user actions.
+          CREATED_AT=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "${{ github.api_url }}/repos/${{ github.repository }}" | jq -r '.created_at')
+          if [ -n "$CREATED_AT" ] && [ "$CREATED_AT" != "null" ]; then
+            REPO_CREATED_EPOCH=$(date -d "$CREATED_AT" +%s 2>/dev/null || echo "0")
+            NOW_EPOCH=$(date +%s)
+            REPO_AGE=$((NOW_EPOCH - REPO_CREATED_EPOCH))
+            if [ "$REPO_AGE" -lt 600 ]; then
+              echo "::notice::Repo is only ${REPO_AGE}s old — flagging as new repo"
+              echo "is-new-repo=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          echo "is-new-repo=false" >> "$GITHUB_OUTPUT"
 
   deploy:
     if: >-
       needs.check-template.outputs.is-template != 'true' &&
+      needs.check-template.outputs.is-new-repo != 'true' &&
       always() &&
       (needs.auto-merge.result == 'skipped' ||
        (needs.auto-merge.result == 'success' && needs.auto-merge.outputs.pages-changed == 'true'))
