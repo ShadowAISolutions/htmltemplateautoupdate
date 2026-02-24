@@ -50,6 +50,7 @@
 - These bookend lines are standalone — do not combine them with other text on the same line
 - **Timestamps on bookends** — every bookend marker must include a real EST timestamp on the same line, placed after the marker text in square brackets. **Three bookends get time+date** (format: `[HH:MM:SS AM/PM EST YYYY-MM-DD]`): CODING PLAN, CODING START, and CODING COMPLETE. **All other bookends (including REVISED ESTIMATED TIME) get time-only** (format: `[HH:MM:SS AM/PM EST]`). **You must run `date` via the Bash tool and get the result BEFORE writing the bookend line** — you have no internal clock, so any timestamp written without calling `date` first is fabricated. Use `TZ=America/New_York date '+%I:%M:%S %p EST %Y-%m-%d'` for the time+date bookends and `TZ=America/New_York date '+%I:%M:%S %p EST'` for time-only bookends. Do not guess, estimate, or anchor on times mentioned in the user's message. The small delay before text appears is an acceptable tradeoff for accuracy. For the opening pair (CODING PLAN + CODING START), a single `date` call is sufficient — run it once before any text output and reuse the same timestamp for both markers. For subsequent bookends mid-response, call `date` inline before writing the marker. End-of-response section headers (AGENTS USED, FILES CHANGED, COMMIT LOG, WORTH NOTING, SUMMARY) do not get timestamps. **CODING COMPLETE's `date` call must happen before AGENTS USED** — fetch the timestamp, then write the entire end-of-response block (AGENTS USED → FILES CHANGED → COMMIT LOG → WORTH NOTING → SUMMARY → CODING COMPLETE) as one uninterrupted text output using the pre-fetched timestamp
 - **Duration annotations** — a `⏱️` annotation appears between **every** consecutive pair of bookends (and before the end-of-response block). No exceptions — if two bookends appear in sequence, there must be a `⏱️` line between them. Format: `⏱️ Xs` (or `Xm Ys` for durations over 60 seconds). The duration is calculated by subtracting the previous bookend's timestamp from the current time. **You must run `date` to get the current time and compute the difference** — never estimate durations mentally. If a phase lasted less than 1 second, write `⏱️ <1s`. **The last working phase always gets a `⏱️`** — its annotation appears immediately before AGENTS USED (as part of the pre-fetched end-of-response block). This includes the gap between CODING START and the next bookend, the gap between AWAITING HOOK and HOOK FEEDBACK, and every other transition
+- **Duration before user interaction** — before calling `ExitPlanMode` or `AskUserQuestion`, output a `⏱️` duration annotation showing how long the preceding phase took (from the last bookend's timestamp to now). This makes the planning/research time visible to the user before they're asked for input. Run `date`, compute the duration since the previous bookend, and write the `⏱️` line immediately before the tool call. After the user responds (plan approved or question answered), the continuation resumes with the next bookend (`📋📋PLAN APPROVED📋📋` or `🔄🔄NEXT PHASE🔄🔄`) as normal
 
 ### Bookend Summary
 
@@ -68,7 +69,7 @@
 | `🧪🧪VERIFYING🧪🧪 [HH:MM:SS AM EST]` | Entering a verification phase | During work, after edits are applied | Required | `⏱️` before next bookend |
 | `🐟🐟AWAITING HOOK🐟🐟 [HH:MM:SS AM EST]` | Hook conditions true after all actions | After verifying; replaces CODING COMPLETE when hook will fire | Required | `⏱️` before HOOK FEEDBACK |
 | `⚓⚓HOOK FEEDBACK⚓⚓ [HH:MM:SS AM EST]` | Hook feedback triggers a follow-up | First line of hook response (replaces CODING PLAN as opener) | Required | `⏱️` before end-of-response block |
-| `⏱️ Xs` | Phase just ended | Immediately before the next bookend marker | — | Computed |
+| `⏱️ Xs` | Phase just ended | Immediately before the next bookend marker, and before `ExitPlanMode`/`AskUserQuestion` calls | — | Computed |
 | `━━━━━━━━━━━━━━━━━━━━━━━━━━━━` | End-of-response block begins | After last `⏱️`, before AGENTS USED | — | — |
 | `🕵🕵AGENTS USED🕵🕵` | Response performed work | First end-of-response section | — | — |
 | `📁📁FILES CHANGED📁📁` | Files were modified/created/deleted | After AGENTS USED (skip if no files changed) | — | — |
@@ -116,6 +117,41 @@
   Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate
   live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/
 ✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
+```
+
+**Plan mode flow (with duration before user input):**
+```
+🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 2026-01-15]
+  - Research the codebase and design an approach
+  - Present plan for approval
+
+⏳⏳ESTIMATED TIME ≈ 5m⏳⏳ — ~research + plan design + implementation
+⚡⚡CODING START⚡⚡ [01:15:01 AM EST 2026-01-15]
+🔍🔍RESEARCHING🔍🔍 [01:15:01 AM EST]
+  ... reading files, exploring codebase, designing solution ...
+  ⏱️ 2m 30s
+  ← ExitPlanMode called, user reviews plan →
+  ⏱️ 45s
+📋📋PLAN APPROVED📋📋 [01:18:16 AM EST]
+
+🚩🚩CODING PLAN🚩🚩 [01:18:16 AM EST 2026-01-15]
+  - Edit file X
+  - Update file Y
+  - Commit and push
+
+⏳⏳ESTIMATED TIME ≈ 2m⏳⏳ — ~3 edits + commit + push cycle
+⚡⚡CODING START⚡⚡ [01:18:16 AM EST 2026-01-15]
+  ... applying changes ...
+  ⏱️ 1m 15s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🕵🕵AGENTS USED🕵🕵
+  1. Agent 0 (Main) — researched, planned, implemented
+📁📁FILES CHANGED📁📁
+  `file.md` (edited)
+📝📝SUMMARY📝📝
+  - Updated X in `file.md`
+⏳⏳ACTUAL TIME: 4m 30s (estimated 5m)⏳⏳
+✅✅CODING COMPLETE✅✅ [01:19:31 AM EST 2026-01-15]
 ```
 
 **Hook anticipated flow:**
