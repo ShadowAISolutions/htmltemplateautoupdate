@@ -218,15 +218,65 @@ else
 fi
 echo ""
 
-# ── PHASE 5: VERIFICATION ────────────────────────────────────────────────────
-echo "[Phase 5] Verifying no stale references remain..."
+# ── PHASE 5: README TIMESTAMP ────────────────────────────────────────────────
+echo "[Phase 5] Updating README.md 'Last updated:' timestamp..."
 
-# Search for old org/repo values in text files, excluding CLAUDE.md
-REMAINING=$(grep -rn "${OLD_ORG}\|${OLD_REPO}" \
+if [ -f "$README_FILE" ]; then
+  CURRENT_TIME=$(TZ=America/New_York date '+%Y-%m-%d %I:%M:%S %p EST')
+  sed -i "s|Last updated: \`[^\`]*\`|Last updated: \`${CURRENT_TIME}\`|" "$README_FILE"
+  echo "  Set to: $CURRENT_TIME"
+else
+  echo "  WARN: README.md not found, skipping."
+fi
+echo ""
+
+# ── PHASE 6: QR CODE GENERATION ─────────────────────────────────────────────
+echo "[Phase 6] Generating QR code for live site URL..."
+
+LIVE_URL="https://${ORG_NAME}.github.io/${REPO_NAME}/"
+QR_PATH="$REPO_ROOT/repository-information/readme-qr-code.png"
+
+if command -v python3 &>/dev/null; then
+  # Try importing qrcode; install if missing
+  if ! python3 -c "import qrcode" &>/dev/null; then
+    echo "  qrcode package not found, installing..."
+    pip install qrcode[pil] --quiet 2>/dev/null || pip3 install qrcode[pil] --quiet 2>/dev/null || {
+      echo "  WARN: Could not install qrcode package. Skipping QR code generation."
+      echo "  Manual step: pip install qrcode[pil] && python3 -c \"import qrcode; qrcode.make('${LIVE_URL}').save('${QR_PATH}')\""
+      QR_SKIP=1
+    }
+  fi
+  if [ "${QR_SKIP:-0}" = "0" ]; then
+    python3 -c "import qrcode; qrcode.make('${LIVE_URL}').save('${QR_PATH}')" && \
+      echo "  Generated: $QR_PATH" || \
+      echo "  WARN: QR code generation failed. Skipping."
+  fi
+else
+  echo "  WARN: python3 not found. Skipping QR code generation."
+  echo "  Manual step: python3 -c \"import qrcode; qrcode.make('${LIVE_URL}').save('${QR_PATH}')\""
+fi
+echo ""
+
+# ── PHASE 7: VERIFICATION ────────────────────────────────────────────────────
+echo "[Phase 7] Verifying no stale references remain..."
+
+# Build the grep pattern based on whether org changed
+# Same-org fork: only check for old repo name (org refs are correct)
+# Different-org fork: check for both old org and old repo name
+if [ "$ORG_NAME" = "$OLD_ORG" ]; then
+  echo "  Same-org fork detected — verifying repo name replacements only."
+  GREP_PATTERN="${OLD_REPO}"
+else
+  GREP_PATTERN="${OLD_ORG}\|${OLD_REPO}"
+fi
+
+# Search for stale references, excluding known-safe patterns
+REMAINING=$(grep -rn "$GREP_PATTERN" \
   --include='*.md' --include='*.yml' --include='*.cff' --include='*.html' \
   "$REPO_ROOT" \
   | grep -v 'CLAUDE.md' \
   | grep -v 'template-id' \
+  | grep -v 'Developed by:' \
   || true)
 
 if [ -n "$REMAINING" ]; then
@@ -247,10 +297,7 @@ echo "  Init $RESULT"
 echo "  Repository: $ORG_NAME/$REPO_NAME"
 echo "  Developer:  $DEVELOPER_NAME"
 echo ""
-echo "  Remaining manual steps:"
-echo "    1. Regenerate QR code: python3 -c \"import qrcode; qrcode.make('https://${ORG_NAME}.github.io/${REPO_NAME}').save('repository-information/readme-qr-code.png')\""
-echo "    2. Update 'Last updated:' timestamp in README.md"
-echo "    3. Commit and push"
+echo "  Next step: commit and push to deploy."
 echo "═══════════════════════════════════════════════════════════════"
 
 # Developed by: ShadowAISolutions

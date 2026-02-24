@@ -203,22 +203,22 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 
 > **Token budget:** *See `repository-information/TOKEN-BUDGETS.md` — section "Template Drift Checks"*
 
-> **Centralized init script:** The bulk of the drift checks are automated by `scripts/init-repo.sh`. The script handles all find-and-replace propagation across 23+ files, README restructuring, STATUS.md placeholder replacement, and CLAUDE.md table updates. Steps 0–5 below replace the previous 10-step manual process.
+> **Centralized init script:** The drift checks are fully automated by `scripts/init-repo.sh`. The script handles all find-and-replace propagation across 23+ files, README restructuring, STATUS.md placeholder replacement, CLAUDE.md table updates (including `IS_TEMPLATE_REPO` → `No`), README timestamp, and QR code generation. Steps 1–3 below are all that's needed.
 
-0. **Set `IS_TEMPLATE_REPO` to `No`** — in the Template Variables table, change `IS_TEMPLATE_REPO` from its current value to `No`. Reaching the drift checks means the short-circuit already confirmed this is NOT the template repo. This is done manually before the script runs because the script uses this value as a guard
 1. **Run init script** — execute `bash scripts/init-repo.sh`. The script auto-detects the org and repo name from `git remote -v` and performs all initialization in one execution:
    - Replaces all occurrences of `ShadowAISolutions` → new org name across 23 target files (URLs, branding, content, "Developed by:" footers)
    - Replaces all occurrences of `htmltemplateautoupdate` → new repo name across the same files
    - If `DEVELOPER_NAME` differs from org name, pass it as a third argument: `bash scripts/init-repo.sh ORG REPO DEVELOPER_NAME`. The script will correct "Developed by:" lines and content references. By default `DEVELOPER_NAME` equals the org name
-   - Updates the CLAUDE.md Template Variables table (`YOUR_ORG_NAME`, `YOUR_REPO_NAME`, `DEVELOPER_NAME`)
+   - Updates the CLAUDE.md Template Variables table (`YOUR_ORG_NAME`, `YOUR_REPO_NAME`, `DEVELOPER_NAME`, `IS_TEMPLATE_REPO` → `No`)
    - Replaces the STATUS.md `*(deploy to activate)*` placeholder with the live site URL
    - Restructures README.md: replaces the title, swaps the placeholder block for the live site link, and removes the "Copy This Repository" and "Initialize This Template" sections
-   - Runs a verification grep and reports any remaining stale references
+   - Updates the `Last updated:` timestamp in README.md to the current time
+   - Generates `repository-information/readme-qr-code.png` with the fork's live site URL (installs `qrcode[pil]` if needed; skips gracefully if Python is unavailable)
+   - Runs a smart verification grep: on same-org forks (org unchanged), only checks repo-name replacements; on different-org forks, checks both. Excludes "Developed by:" branding lines and provenance markers from warnings
    - **Relative links** in `SECURITY.md`, `SUPPORT.md`, and `README.md` that use `../../` paths are NOT modified — they resolve correctly on any fork via GitHub's blob-view URL structure
-2. **Handle script warnings** — if the verification step reports files with remaining old values, inspect them manually. They are likely provenance markers (expected) or edge cases the script didn't cover (fix manually)
+2. **Handle script warnings** — if the verification step reports files with remaining old values, inspect them manually. They are likely provenance markers (expected) or edge cases the script didn't cover (fix manually). On a clean run, the script exits with zero warnings
 3. **Unresolved placeholders** — scan for any literal `YOUR_ORG_NAME`, `YOUR_REPO_NAME`, `YOUR_PROJECT_TITLE`, or `DEVELOPER_NAME` strings in code files (not CLAUDE.md) and replace them with resolved values
-4. **QR code generation** — regenerate `repository-information/readme-qr-code.png` with the fork's live site URL: `python3 -c "import qrcode; qrcode.make('https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME').save('repository-information/readme-qr-code.png')"`
-5. **Confirm completion** — after all checks pass, briefly state to the user: "Session start checklist complete — no issues found" (or list what was fixed). Then proceed to their request
+4. **Confirm completion** — after all checks pass, briefly state to the user: "Session start checklist complete — no issues found" (or list what was fixed). Then proceed to their request
 
 ### Token Budget Reference
 *See `repository-information/TOKEN-BUDGETS.md` — section "Session Start Checklist"*
