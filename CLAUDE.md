@@ -186,7 +186,7 @@ These rules apply universally — they are **NOT** skipped by the template repo 
 - Never push directly to `main`
 - Push to `claude/*` branches only
 - `.github/workflows/auto-merge-claude.yml` handles everything automatically:
-  1. Guards against stale inherited branches (from template forks) — deletes them without merging
+  1. Guards against stale inherited branches (from template forks) via commit-timestamp-vs-repo-creation check, IS_TEMPLATE_REPO mismatch (reads from both main and pushed branch), and already-merged check — deletes them without merging
   2. Merges the claude branch into main
   3. Deletes the claude branch
   4. Deploys to GitHub Pages

@@ -12,8 +12,8 @@
 #
 # Flow:
 #   1. Push to claude/* branch triggers this workflow
-#   1a. Guard: detect inherited branches via repo age check (<10 min old),
-#       IS_TEMPLATE_REPO mismatch, and already-merged check — delete and skip
+#   1a. Guard: detect inherited branches via commit-timestamp-vs-repo-creation
+#       check, IS_TEMPLATE_REPO mismatch, and already-merged check — delete and skip
 #   2. Merge into main (once)
 #   3. Check what changed (git diff)
 #   4. Deploy GAS projects — only if their Code.gs was modified
@@ -98,43 +98,86 @@ jobs:
       - name: Guard against stale inherited branches
         id: guard
         run: |
-          # ── Check 1: Repo age ──
-          # When a repo is forked/templated, all branches (including claude/*)
-          # are inherited. These trigger the workflow immediately. If the repo
-          # was created less than 10 minutes ago, any claude/* branch is
-          # inherited — not a real push. Delete it and skip.
+          # ── Check 1: Already merged ──
+          # Quick pre-check: if the branch tip is already an ancestor of main,
+          # this is a re-run or a no-op. Clean up and skip.
+          git fetch origin main
+          if git merge-base --is-ancestor ${{ github.sha }} origin/main; then
+            echo "::notice::Branch already merged into main — cleaning up"
+            git push origin --delete ${{ github.ref_name }} || true
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # ── Check 2: Commit predates repo creation ──
+          # On a fork/template/import, inherited claude/* branches carry commits
+          # from the original repo. These commits have author timestamps from
+          # BEFORE the fork was created. A legitimate claude/* push always has
+          # commits authored AFTER the repo exists.
+          #
+          # Compare the branch tip commit's author date against the repo's
+          # created_at timestamp (from the GitHub API). If the commit is older
+          # than the repo (minus a 5-minute grace period for clock skew), it's
+          # inherited — delete and skip.
+          #
+          # Why this works across ALL copy methods:
+          #   - GitHub Fork: commits carry original timestamps → detected
+          #   - "Use this template": same → detected
+          #   - GitHub Import: same → detected
+          #   - Manual clone + push: same → detected
+          #   - git push --mirror: same → detected
           CREATED_AT=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "${{ github.api_url }}/repos/${{ github.repository }}" | jq -r '.created_at')
+
           if [ -n "$CREATED_AT" ] && [ "$CREATED_AT" != "null" ]; then
-            CREATED_EPOCH=$(date -d "$CREATED_AT" +%s 2>/dev/null || echo "0")
-            NOW_EPOCH=$(date +%s)
-            AGE=$((NOW_EPOCH - CREATED_EPOCH))
-            if [ "$AGE" -lt 600 ]; then
-              echo "::notice::Repo created ${AGE}s ago — deleting inherited branch ${{ github.ref_name }}"
+            REPO_CREATED_EPOCH=$(date -d "$CREATED_AT" +%s 2>/dev/null || echo "0")
+
+            # Get the author date of the branch tip commit (the commit being merged)
+            COMMIT_AUTHOR_DATE=$(git log -1 --format='%aI' ${{ github.sha }})
+            COMMIT_EPOCH=$(date -d "$COMMIT_AUTHOR_DATE" +%s 2>/dev/null || echo "0")
+
+            # Grace period: 5 minutes (300 seconds) to handle minor clock skew
+            # Inherited commits predate the fork by hours/days/weeks, so 5 min is generous
+            GRACE=300
+            REPO_CREATED_WITH_GRACE=$((REPO_CREATED_EPOCH - GRACE))
+
+            if [ "$COMMIT_EPOCH" -gt 0 ] && [ "$COMMIT_EPOCH" -lt "$REPO_CREATED_WITH_GRACE" ]; then
+              echo "::notice::Inherited branch detected — commit authored $(date -d "@$COMMIT_EPOCH" -u '+%Y-%m-%dT%H:%M:%SZ') but repo created $(date -d "@$REPO_CREATED_EPOCH" -u '+%Y-%m-%dT%H:%M:%SZ')"
+              echo "::notice::Deleting inherited branch ${{ github.ref_name }}"
               git push origin --delete ${{ github.ref_name }} || true
               echo "skip=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
           fi
 
-          # ── Check 2: IS_TEMPLATE_REPO mismatch ──
-          # Extract IS_TEMPLATE_REPO value from CLAUDE.md
-          TEMPLATE_VALUE=$(grep -oP '^\| `IS_TEMPLATE_REPO` \| \K[^|]+' CLAUDE.md | sed 's/[[:space:]]*$//' | tr -d '\r' || echo "")
+          # ── Check 3: IS_TEMPLATE_REPO mismatch (defense in depth) ──
+          # Read IS_TEMPLATE_REPO from BOTH main branch and pushed branch.
+          # This catches stale branches even if the API call in Check 2 fails.
+          TEMPLATE_VALUE_MAIN=$(git show origin/main:CLAUDE.md 2>/dev/null | \
+            grep -oP '^\| `IS_TEMPLATE_REPO` \| \K[^|]+' | \
+            sed 's/[[:space:]]*$//' | tr -d '\r' || echo "")
+          TEMPLATE_VALUE_BRANCH=$(grep -oP '^\| `IS_TEMPLATE_REPO` \| \K[^|]+' CLAUDE.md | \
+            sed 's/[[:space:]]*$//' | tr -d '\r' || echo "")
           REPO_NAME="${{ github.event.repository.name }}"
 
-          # If IS_TEMPLATE_REPO is a repo name (not "No") and doesn't match this repo,
-          # this is a stale branch inherited from the template
-          if [ -n "$TEMPLATE_VALUE" ] && [ "$TEMPLATE_VALUE" != "No" ] && [ "$TEMPLATE_VALUE" != "$REPO_NAME" ]; then
-            echo "::notice::Stale branch from template repo detected — skipping merge, deleting branch"
+          # Case A: main says "No" (initialized) but branch still has a template
+          # name that doesn't match this repo → stale pre-initialization branch
+          if [ "$TEMPLATE_VALUE_MAIN" = "No" ] && \
+             [ -n "$TEMPLATE_VALUE_BRANCH" ] && \
+             [ "$TEMPLATE_VALUE_BRANCH" != "No" ] && \
+             [ "$TEMPLATE_VALUE_BRANCH" != "$REPO_NAME" ]; then
+            echo "::notice::Stale branch from pre-initialization detected (main: IS_TEMPLATE_REPO=No, branch: $TEMPLATE_VALUE_BRANCH)"
             git push origin --delete ${{ github.ref_name }} || true
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          # Also skip if branch is already fully merged into main
-          git fetch origin main
-          if git merge-base --is-ancestor ${{ github.sha }} origin/main; then
-            echo "::notice::Branch already merged into main — cleaning up"
+          # Case B: Branch's IS_TEMPLATE_REPO is a repo name that doesn't match
+          # this repo — catches different-name forks even when Check 2 is skipped
+          if [ -n "$TEMPLATE_VALUE_BRANCH" ] && \
+             [ "$TEMPLATE_VALUE_BRANCH" != "No" ] && \
+             [ "$TEMPLATE_VALUE_BRANCH" != "$REPO_NAME" ]; then
+            echo "::notice::Stale branch from template repo — IS_TEMPLATE_REPO mismatch ($TEMPLATE_VALUE_BRANCH != $REPO_NAME)"
             git push origin --delete ${{ github.ref_name }} || true
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0
