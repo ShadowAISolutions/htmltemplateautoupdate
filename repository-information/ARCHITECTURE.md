@@ -15,8 +15,11 @@ graph TB
             direction TB
             TRIGGER{"Push to claude/*?"}
             CB --> TRIGGER
-            TRIGGER -->|Yes| MERGE["Merge into main"]
-            MERGE --> DIFF["Check git diff"]
+            TRIGGER -->|Yes| SHA_CHECK{"Commit SHA\n= last-processed?"}
+            SHA_CHECK -->|Yes| DELETE_STALE["Delete inherited branch\n(skip merge)"]
+            SHA_CHECK -->|No| MERGE["Merge into main"]
+            MERGE --> UPDATE_SHA["Update\nlast-processed-commit.sha"]
+            UPDATE_SHA --> DIFF["Check git diff"]
             DIFF -->|"live-site-pages/ changed"| PAGES_FLAG["pages-changed = true"]
             DIFF -->|".gs changed"| GAS_DEPLOY["Deploy GAS via curl POST\n(no GAS projects yet)"]
             GAS_DEPLOY --> DELETE_BR
@@ -61,6 +64,7 @@ graph TB
         subgraph "Project Config"
             CLAUDE_MD["CLAUDE.md\n(project instructions)"]
             SETTINGS[".claude/settings.json\n(git * auto-allowed)"]
+            SHA_FILE[".github/last-processed-commit.sha\n(inherited branch guard)"]
         end
 
         subgraph "Initialization"
@@ -71,9 +75,13 @@ graph TB
 
     TPL -.->|"copy to create\nnew pages"| INDEX
     LIVE -.->|"serves"| BROWSER
+    SHA_FILE -.->|"read by"| SHA_CHECK
+    UPDATE_SHA -.->|"writes"| SHA_FILE
 
     style DEV fill:#4a90d9,color:#fff
     style LIVE fill:#66bb6a,color:#fff
+    style SHA_FILE fill:#ef5350,color:#fff
+    style DELETE_STALE fill:#ef9a9a,color:#000
     style SPLASH fill:#1b5e20,color:#fff
     style TPL fill:#ffa726,color:#000
     style CLAUDE_MD fill:#ce93d8,color:#000

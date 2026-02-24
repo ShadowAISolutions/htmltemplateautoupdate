@@ -375,6 +375,28 @@ The auto-merge workflow merges `claude/*` branches into `main` using `git merge 
 > **--- END OF MERGE CONFLICT PREVENTION ---**
 ---
 
+## Commit SHA Tracking (Inherited Branch Guard)
+The file `.github/last-processed-commit.sha` stores the SHA of the last commit that was successfully merged into `main` by the auto-merge workflow. This provides a deterministic guard against inherited branches on forks and imports.
+
+**How it works:**
+1. When a `claude/*` branch is pushed, the workflow reads `.github/last-processed-commit.sha` from the checked-out branch
+2. If the incoming commit SHA (`github.sha`) matches the stored SHA, the branch is inherited — it carries the exact same commit from the template repo. The workflow deletes the branch and skips
+3. After a successful merge, the workflow updates the file with the new `HEAD` SHA on `main` and pushes it, so the marker is always current
+
+**Why this is bulletproof:**
+- Git SHAs are deterministic — a fork/import inherits the exact same SHAs from the source repo
+- A new legitimate commit always produces a different SHA (different author, timestamp, parent, etc.)
+- The file travels with the repo on copy, carrying the "already processed" marker with it
+- No API calls needed — the check is a simple file read and string compare, making it the fastest guard in the chain
+
+**Relationship to other guards:** This is **Check 0a** in the guard chain — it runs before the origin/main fetch, the already-merged check, the timestamp check, and the IS_TEMPLATE_REPO mismatch check. It catches the most common inherited branch scenario (exact same commit) with zero external dependencies.
+
+**File management:** The `.sha` file is managed exclusively by the workflow — Claude Code does not modify it. The only exception is during initial repository creation, where the file is seeded with the current HEAD SHA.
+
+---
+> **--- END OF COMMIT SHA TRACKING ---**
+---
+
 ## Template Variables
 
 These variables are the **single source of truth** for repo-specific values. When a variable value is changed here, Claude Code must propagate the new value to every file in the repo that uses it.

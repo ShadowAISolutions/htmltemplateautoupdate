@@ -12,8 +12,9 @@
 #
 # Flow:
 #   1. Push to claude/* branch triggers this workflow
-#   1a. Guard: detect inherited branches via commit-timestamp-vs-repo-creation
-#       check, IS_TEMPLATE_REPO mismatch, and already-merged check — delete and skip
+#   1a. Guard: detect inherited branches via commit-SHA tracking,
+#       commit-timestamp-vs-repo-creation check, IS_TEMPLATE_REPO mismatch,
+#       and already-merged check — delete and skip
 #   2. Merge into main (once)
 #   3. Check what changed (git diff)
 #   4. Deploy GAS projects — only if their Code.gs was modified
@@ -100,6 +101,26 @@ jobs:
       - name: Guard against stale inherited branches
         id: guard
         run: |
+          # ── Check 0a: Commit SHA already processed ──
+          # The file .github/last-processed-commit.sha stores the SHA of the
+          # last commit that was successfully merged. On fork/import, the
+          # inherited claude/* branches carry the exact same commit SHAs from
+          # the template repo. If the branch tip matches the stored SHA, it's
+          # an inherited branch replaying an already-processed commit.
+          # This is the fastest guard — a single file read, no API calls.
+          STORED_SHA=""
+          if [ -f ".github/last-processed-commit.sha" ]; then
+            STORED_SHA=$(cat .github/last-processed-commit.sha | tr -d '[:space:]')
+          fi
+          INCOMING_SHA="${{ github.sha }}"
+          if [ -n "$STORED_SHA" ] && [ "$STORED_SHA" = "$INCOMING_SHA" ]; then
+            echo "::notice::Inherited branch detected — commit SHA $INCOMING_SHA matches last-processed-commit.sha"
+            echo "::notice::Deleting inherited branch ${{ github.ref_name }}"
+            git push origin --delete ${{ github.ref_name }} || true
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           # ── Fetch origin/main with retry ──
           # On brand-new repos (from import/fork), origin/main may not be
           # immediately available. Retry with backoff to handle this race.
@@ -249,6 +270,17 @@ jobs:
           echo "pre_merge_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           git merge --ff-only ${{ github.ref_name }} || \
             git merge --no-edit -X theirs ${{ github.ref_name }}
+          git push origin main
+
+      - name: Update last-processed-commit SHA
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          # Record the new HEAD on main (post-merge) so that any fork/import
+          # inheriting this commit will be detected by the SHA check guard.
+          NEW_SHA=$(git rev-parse HEAD)
+          echo "$NEW_SHA" > .github/last-processed-commit.sha
+          git add .github/last-processed-commit.sha
+          git commit -m "Update last-processed-commit.sha to $NEW_SHA" || true
           git push origin main
 
       - name: Check what changed
