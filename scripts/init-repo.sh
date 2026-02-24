@@ -58,6 +58,34 @@ echo "  Old values:   $OLD_ORG/$OLD_REPO"
 echo "═══════════════════════════════════════════════════════════════"
 echo ""
 
+# ── PHASE 0: CLEAN UP INHERITED BRANCHES ─────────────────────────────────────
+# Forks/template copies inherit claude/* branches from the template repo.
+# These trigger the auto-merge workflow unnecessarily. Delete them now.
+echo "[Phase 0] Cleaning up inherited claude/* branches..."
+
+INHERITED_COUNT=0
+for branch in $(git branch --list 'claude/*' 2>/dev/null); do
+  branch=$(echo "$branch" | sed 's/^[* ]*//')
+  echo "  Deleting local branch: $branch"
+  git branch -D "$branch" 2>/dev/null || true
+  INHERITED_COUNT=$((INHERITED_COUNT + 1))
+done
+
+# Also delete remote claude/* branches if they exist
+for branch in $(git branch -r --list 'origin/claude/*' 2>/dev/null); do
+  branch_name=$(echo "$branch" | sed 's|^  origin/||')
+  echo "  Deleting remote branch: $branch_name"
+  git push origin --delete "$branch_name" 2>/dev/null || true
+  INHERITED_COUNT=$((INHERITED_COUNT + 1))
+done
+
+if [ "$INHERITED_COUNT" -gt 0 ]; then
+  echo "  Cleaned up $INHERITED_COUNT inherited branch(es)."
+else
+  echo "  No inherited branches found."
+fi
+echo ""
+
 # ── PHASE 1: GLOBAL SED REPLACEMENTS ─────────────────────────────────────────
 # Explicit file list — avoids touching CLAUDE.md examples or provenance markers.
 # Each file is checked for existence before processing.
