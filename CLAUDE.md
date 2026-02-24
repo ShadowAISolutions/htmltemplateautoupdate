@@ -179,9 +179,10 @@ These rules apply universally — they are **NOT** skipped by the template repo 
 - Never push directly to `main`
 - Push to `claude/*` branches only
 - `.github/workflows/auto-merge-claude.yml` handles everything automatically:
-  1. Merges the claude branch into main
-  2. Deletes the claude branch
-  3. Deploys to GitHub Pages
+  1. Guards against stale inherited branches (from template forks) — deletes them without merging
+  2. Merges the claude branch into main
+  3. Deletes the claude branch
+  4. Deploys to GitHub Pages
 - The "Create a pull request" message in push output is just GitHub boilerplate — ignore it, the workflow handles merging automatically
 - **Push only once per branch** — do NOT push multiple times to the same `claude/*` branch in a single session. The workflow uses a shared concurrency group (`"pages"`) with `cancel-in-progress: false`, so each push queues a separate workflow run. If an earlier run merges and deletes the branch, subsequent queued runs fail with exit code 128 because the branch no longer exists. **This includes sequential user requests** — if the user asks for task A and then task B in the same session, commit both locally and push once after all work is done. Do NOT push after task A and then push again after task B. The only exception is if a re-push is needed to recover from a failed workflow (e.g. the branch still exists on the remote but the merge didn't happen)
 - **Pre-push verification** — before executing any `git push`, run the Pre-Push Checklist (see below). This is mandatory even when the Deployment Flow rules are satisfied

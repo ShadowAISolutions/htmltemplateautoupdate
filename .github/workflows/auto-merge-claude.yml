@@ -12,6 +12,8 @@
 #
 # Flow:
 #   1. Push to claude/* branch triggers this workflow
+#   1a. Guard: detect stale inherited branches (from template forks) and
+#       already-merged branches — delete them and skip all remaining steps
 #   2. Merge into main (once)
 #   3. Check what changed (git diff)
 #   4. Deploy GAS projects — only if their Code.gs was modified
@@ -93,7 +95,35 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Guard against stale inherited branches
+        id: guard
+        run: |
+          # Extract IS_TEMPLATE_REPO value from CLAUDE.md
+          TEMPLATE_VALUE=$(grep -oP '^\| `IS_TEMPLATE_REPO` \| \K[^|]+' CLAUDE.md | sed 's/ *$//' || echo "")
+          REPO_NAME="${{ github.event.repository.name }}"
+
+          # If IS_TEMPLATE_REPO is a repo name (not "No") and doesn't match this repo,
+          # this is a stale branch inherited from the template
+          if [ -n "$TEMPLATE_VALUE" ] && [ "$TEMPLATE_VALUE" != "No" ] && [ "$TEMPLATE_VALUE" != "$REPO_NAME" ]; then
+            echo "::notice::Stale branch from template repo detected — skipping merge, deleting branch"
+            git push origin --delete ${{ github.ref_name }} || true
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Also skip if branch is already fully merged into main
+          git fetch origin main
+          if git merge-base --is-ancestor ${{ github.sha }} origin/main; then
+            echo "::notice::Branch already merged into main — cleaning up"
+            git push origin --delete ${{ github.ref_name }} || true
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
       - name: Merge into main
+        if: steps.guard.outputs.skip != 'true'
         id: merge
         run: |
           git config user.name "github-actions[bot]"
@@ -105,6 +135,7 @@ jobs:
           git push origin main
 
       - name: Check what changed
+        if: steps.guard.outputs.skip != 'true'
         id: check-changes
         run: |
           PRE=${{ steps.merge.outputs.pre_merge_sha }}
@@ -136,6 +167,7 @@ jobs:
       # ─────────────────────────────────────────────────────────────────
 
       - name: Delete branch
+        if: steps.guard.outputs.skip != 'true'
         run: |
           git push origin --delete ${{ github.ref_name }} || echo "Branch already deleted"
 
