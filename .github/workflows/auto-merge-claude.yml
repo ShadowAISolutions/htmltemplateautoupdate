@@ -20,6 +20,8 @@
 #   5. Delete the claude branch
 #   6. Deploy GitHub Pages — only if live-site-pages/ files were modified
 #   7. Direct pushes to main skip merge and just deploy
+#   8. On every main push, sweep and delete any stale claude/* branches
+#      that are already merged (self-healing cleanup)
 #
 # HOW TO ADD A NEW GAS PROJECT:
 #
@@ -285,6 +287,37 @@ jobs:
         if: steps.guard.outputs.skip != 'true'
         run: |
           git push origin --delete ${{ github.ref_name }} || echo "Branch already deleted"
+
+  cleanup-branches:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete stale claude branches
+        run: |
+          # On every main push, sweep for claude/* branches already merged
+          # into main. This catches branches that survived due to workflow
+          # failures, race conditions, or re-pushes after deletion.
+          git fetch origin main
+          DELETED=0
+          for ref in $(git branch -r --list 'origin/claude/*' 2>/dev/null); do
+            branch_name="${ref#origin/}"
+            if git merge-base --is-ancestor "$ref" origin/main 2>/dev/null; then
+              echo "Deleting merged branch: $branch_name"
+              git push origin --delete "$branch_name" || true
+              DELETED=$((DELETED + 1))
+            fi
+          done
+          if [ "$DELETED" -gt 0 ]; then
+            echo "::notice::Cleaned up $DELETED stale claude/* branch(es)"
+          else
+            echo "No stale claude/* branches found"
+          fi
 
   check-template:
     runs-on: ubuntu-latest
