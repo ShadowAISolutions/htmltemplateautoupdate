@@ -29,22 +29,24 @@
   - **Worth noting**: output `🔖🔖WORTH NOTING🔖🔖` followed by a list of anything that deserves attention but isn't a blocker (e.g. "Push-once already used — did not push again", "Template repo guard skipped version bumps", "Pre-commit hook modified files — re-staged"). Skip if there are nothing worth noting
   - **Summary of changes**: output `📝📝SUMMARY📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. Each bullet must indicate which file(s) were edited (e.g. "Updated build-version in `live-site-pages/index.html`"). If a bullet describes a non-file action (e.g. "Pushed to remote"), no file path is needed
   - **Estimate calibration** (conditional): if ACTUAL TOTAL COMPLETION TIME differs from the estimate by >2 minutes, output `🔧🔧ESTIMATE CALIBRATED🔧🔧` followed by what was adjusted. This is the **one exception** to the "no tool calls in the end-of-response block" rule — the calibration edits CLAUDE.md's heuristic values via an Edit tool call between SUMMARY and ACTUAL TOTAL COMPLETION TIME. See the Estimate calibration bullet above for the full procedure
-  - **Live URLs** (conditional): output `🔗🔗LIVE URLS🔗🔗` followed by the GitHub Pages URL of each edited webpage (or the associated HTML page for edited `.gs` files). Appears after ACTUAL TOTAL COMPLETION TIME, immediately before CODING COMPLETE. Skip if no webpages or associated `.gs` files were edited. See the Live URLs bullet above for full rules
-- **Live URLs**: immediately before `✅✅CODING COMPLETE✅✅` (after ACTUAL TOTAL COMPLETION TIME), output `🔗🔗LIVE URLS🔗🔗` followed by the GitHub Pages URL of every webpage that was edited in the response. This gives the user one-click access to see their changes live. Rules:
-  - **HTML pages in `live-site-pages/`**: list the GitHub Pages URL. The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. For pages at `live-site-pages/index.html`, the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/`. For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`), the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/`. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`htmltemplateautoupdate` values on the template repo)
-  - **`.gs` files**: list the GitHub Pages URL of the **associated embedding HTML page** (from the GAS Projects table). If the `.gs` file has no registered embedding page, skip it
-  - **Template HTML** (`live-site-templates/`): skip — template files are not deployed as standalone pages
-  - **Non-webpage files** (`.md`, `.yml`, `.cff`, etc.): skip — only live-site HTML pages and their `.gs` counterparts get URLs
-  - **First response of session**: on the **first response that produces a LIVE URLS section** in each new session, **always** include these reference URLs at the top (before any file-specific URLs):
+  - **Live URLs**: output `🔗🔗LIVE URLS (label)🔗🔗` with a contextual label, followed by all live-site links. **Always present** in every response that has a CODING COMPLETE — never skipped. See the Live URLs bullet below for full rules on labeling, link content, and formatting
+- **Live URLs**: immediately before `✅✅CODING COMPLETE✅✅` (after ACTUAL TOTAL COMPLETION TIME), output `🔗🔗LIVE URLS (label)🔗🔗` followed by all live-site links. **Always present** — never skipped, regardless of what was edited. This gives the user one-click access to the live site on every response. Rules:
+  - **Always show all links**: every response includes the full set of reference URLs and all `live-site-pages/` page URLs. This is not conditional — even responses that only edit `.md` files or make no file changes at all still show the complete link set
+  - **Contextual label**: the heading includes a parenthetical label that describes what triggered the links in this response. Use the most specific applicable label:
+    - `First interaction` — first response of the session
+    - `Initialization` — after an `initialize` command
+    - `Edited HTML` — response edited files in `live-site-pages/`
+    - `Edited .gs` — response edited `.gs` files (use `Edited HTML & .gs` if both)
+    - `No site changes` — response made no changes to live-site HTML or `.gs` files (e.g. only edited `.md`, `.yml`, workflow files, or made no file changes at all)
+    - Labels can be combined when multiple apply (e.g. `First interaction · Initialization`)
+  - **Reference URLs** (always shown, every response):
     - `Template → https://github.com/ShadowAISolutions/htmltemplateautoupdate` (always this fixed URL — it's the origin template)
     - `Repository → https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME`
     - `Live Site → https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/` — **on the template repo**, replace the URL with a note: `Live Site → (template repo — no live site deployed)`
     - **On the template repo**, the Template and Repository URLs are identical — merge them into a single line: `Template & Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate`
-    - After these, list any `.html`/`.gs` page URLs that would normally appear (from files modified in the response). If no files were modified, the reference URLs alone are sufficient
-    - This gives the user one-glance access to the template origin, the repo, and the live site at the start of every session. On subsequent responses within the same session, only show file-specific URLs as usual
-  - **Initialization**: after an `initialize` command, the first-response-of-session rule above applies (since initialization is always the first response). Additionally, show **every** `live-site-pages/` page URL even though initialization doesn't directly edit those files — this is the first deployment, so the user needs all page URLs to verify deployment
-  - **Skip entirely** if no webpages or associated `.gs` files were edited in the response **and** it is not the first response of the session **and** it is not an initialization
-  - Format: one URL per line, prefixed with the file that triggered it (e.g. `live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/`)
+  - **Page URLs** (always shown, every response): list the GitHub Pages URL for every page in `live-site-pages/`. The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. For pages at `live-site-pages/index.html`, the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/`. For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`), the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/`. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`htmltemplateautoupdate` values on the template repo)
+  - **`.gs` files**: if a `.gs` file was edited, also note its associated embedding HTML page (from the GAS Projects table) next to the page URL. If the `.gs` file has no registered embedding page, note it separately
+  - **Format**: one URL per line, prefixed with the file that triggered it (e.g. `live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/`)
   - This section is part of the end-of-response block — it does **not** get a timestamp or `⏱️` annotation
 - **Last output**: for every user prompt, the very last line written to chat after all work is done must be exactly: `✅✅CODING COMPLETE✅✅`
 - These apply to **every single user message**, not just once per session
@@ -80,8 +82,8 @@
 | `📝📝SUMMARY📝📝` | Changes were made in the response | After WORTH NOTING | — | — |
 | `🔧🔧ESTIMATE CALIBRATED🔧🔧` | Estimate missed by >2 min | After SUMMARY, before PLAN EXECUTION TIME / ACTUAL TOTAL COMPLETION TIME (skip if ≤2 min gap) | — | — |
 | `⏳⏳PLAN EXECUTION TIME: Xm Ys (estimated Xm)⏳⏳` | Plan approval flow was used | After SUMMARY (or ESTIMATE CALIBRATED), before ACTUAL TOTAL COMPLETION TIME (skip if no plan approval) | — | Computed from post-approval CODING START → CODING COMPLETE |
-| `⏳⏳ACTUAL TOTAL COMPLETION TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE | Immediately before LIVE URLS or CODING COMPLETE (never skipped) | — | Computed from first CODING START → CODING COMPLETE |
-| `🔗🔗LIVE URLS🔗🔗` | Webpages or associated `.gs` files were edited | After ACTUAL TOTAL COMPLETION TIME, before CODING COMPLETE (skip if no web pages edited) | — | — |
+| `⏳⏳ACTUAL TOTAL COMPLETION TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE | Immediately before LIVE URLS (never skipped) | — | Computed from first CODING START → CODING COMPLETE |
+| `🔗🔗LIVE URLS (label)🔗🔗` | Every response with CODING COMPLETE | After ACTUAL TOTAL COMPLETION TIME, before CODING COMPLETE (never skipped) | — | — |
 | `✅✅CODING COMPLETE✅✅ [HH:MM:SS AM EST YYYY-MM-DD]` | All work done | Always the very last line of response | Required | — |
 
 ### Flow Examples
@@ -116,8 +118,9 @@
   - Updated X in `file.md` (edited)
   - Created `new-file.js` (created)
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 14s (estimated 4m)⏳⏳
-🔗🔗LIVE URLS🔗🔗
-  Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate
+🔗🔗LIVE URLS (First interaction · Edited HTML)🔗🔗
+  Template & Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate
+  Live Site → (template repo — no live site deployed)
   live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/
 ✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
 ```
@@ -185,8 +188,9 @@
   - Updated X in `file.md`
   - Pushed to remote
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 2m 9s (estimated 3m)⏳⏳
-🔗🔗LIVE URLS🔗🔗
-  Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate
+🔗🔗LIVE URLS (No site changes)🔗🔗
+  Template & Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate
+  Live Site → (template repo — no live site deployed)
   live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/
 ✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
 ```
@@ -275,7 +279,7 @@ If the user's prompt is just **"initialize"** (after the Session Start Checklist
 2. Update the `Last updated:` timestamp in `README.md` to the real current time
 3. Commit with message `Initialize deployment`
 4. Push to the `claude/*` branch (Pre-Push Checklist applies)
-5. **Show LIVE URLS** — the first-response-of-session rule in Chat Bookends (Live URLs → First response of session) automatically includes the Template, Repository, and root Pages URLs. Additionally, show **every** `live-site-pages/` page URL — even pages not directly edited — since this is the first deployment and the user needs all page URLs to verify deployment
+5. **Show LIVE URLS** — the Live URLs section (always present) will automatically use the `First interaction · Initialization` label and show all links. No special handling needed beyond the standard rules
 
 **No version bumps** — initialization never bumps `build-version`, `version.txt`, or any version-tracking files. It deploys whatever versions already exist. This applies on both the template repo and forks.
 
