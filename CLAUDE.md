@@ -34,11 +34,14 @@
   - **`.gs` files**: list the GitHub Pages URL of the **associated embedding HTML page** (from the GAS Projects table). If the `.gs` file has no registered embedding page, skip it
   - **Template HTML** (`live-site-templates/`): skip — template files are not deployed as standalone pages
   - **Non-webpage files** (`.md`, `.yml`, `.cff`, etc.): skip — only live-site HTML pages and their `.gs` counterparts get URLs
-  - **Initialization**: after an `initialize` command, **always** show the template repository URL, the fork's GitHub repo URL, the root GitHub Pages URL, **and** every `live-site-pages/` page URL — even though initialization doesn't directly edit those files. This is the first deployment, so the user needs all three reference URLs: the template for origin context, the repo URL for quick reference, and the live site URLs to verify deployment. Format each on its own line:
+  - **First response of session**: on the **first response that produces a LIVE URLS section** in each new session, **always** include these three reference URLs at the top (before any file-specific URLs):
     - `Template → https://github.com/ShadowAISolutions/htmltemplateautoupdate` (always this fixed URL — it's the origin template)
     - `Repository → https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME`
-    - Then the root GitHub Pages URL and every `live-site-pages/` page URL
-  - **Skip entirely** if no webpages or associated `.gs` files were edited in the response **and** the response is not an initialization
+    - Root GitHub Pages URL: `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/`
+    - After these three, list any `.html`/`.gs` page URLs that would normally appear (from files modified in the response). If no files were modified, the three reference URLs alone are sufficient
+    - This gives the user one-glance access to the template origin, the repo, and the live site at the start of every session. On subsequent responses within the same session, only show file-specific URLs as usual
+  - **Initialization**: after an `initialize` command, the first-response-of-session rule above applies (since initialization is always the first response). Additionally, show **every** `live-site-pages/` page URL even though initialization doesn't directly edit those files — this is the first deployment, so the user needs all page URLs to verify deployment
+  - **Skip entirely** if no webpages or associated `.gs` files were edited in the response **and** it is not the first response of the session **and** it is not an initialization
   - Format: one URL per line, prefixed with the file that triggered it (e.g. `live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/`)
   - This section is part of the end-of-response block — it does **not** get a timestamp or `⏱️` annotation
 - **Last output**: for every user prompt, the very last line written to chat after all work is done must be exactly: `✅✅CODING COMPLETE✅✅`
@@ -229,7 +232,7 @@ If the user's prompt is just **"initialize"** (after the Session Start Checklist
 2. Update the `Last updated:` timestamp in `README.md` to the real current time
 3. Commit with message `Initialize deployment`
 4. Push to the `claude/*` branch (Pre-Push Checklist applies)
-5. **Show LIVE URLS** — in the end-of-response block, always include `🔗🔗LIVE URLS🔗🔗` with the template repository URL first (`Template → https://github.com/ShadowAISolutions/htmltemplateautoupdate`), then the fork's GitHub repo URL, then the root GitHub Pages URL, then every `live-site-pages/` page URL. This is the first deployment — the user needs the template URL for origin context, the repo URL for quick reference, and the live site URLs to verify deployment (see LIVE URLS → Initialization rule in Chat Bookends)
+5. **Show LIVE URLS** — the first-response-of-session rule in Chat Bookends (Live URLs → First response of session) automatically includes the Template, Repository, and root Pages URLs. Additionally, show **every** `live-site-pages/` page URL — even pages not directly edited — since this is the first deployment and the user needs all page URLs to verify deployment
 
 **No version bumps** — initialization never bumps `build-version`, `version.txt`, or any version-tracking files. It deploys whatever versions already exist. This applies on both the template repo and forks.
 
