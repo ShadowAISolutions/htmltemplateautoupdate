@@ -37,9 +37,9 @@
   - **First response of session**: on the **first response that produces a LIVE URLS section** in each new session, **always** include these three reference URLs at the top (before any file-specific URLs):
     - `Template → https://github.com/ShadowAISolutions/htmltemplateautoupdate` (always this fixed URL — it's the origin template)
     - `Repository → https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME`
-    - `Live Site → https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/` — **skip this line on the template repo** (deployment is skipped on the template repo, so there is no live site)
+    - `Live Site → https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/` — **on the template repo**, replace the URL with a note: `Live Site → (template repo — no live site deployed)`
     - After these, list any `.html`/`.gs` page URLs that would normally appear (from files modified in the response). If no files were modified, the reference URLs alone are sufficient
-    - This gives the user one-glance access to the template origin, the repo, and (on forks) the live site at the start of every session. On subsequent responses within the same session, only show file-specific URLs as usual
+    - This gives the user one-glance access to the template origin, the repo, and the live site at the start of every session. On subsequent responses within the same session, only show file-specific URLs as usual
   - **Initialization**: after an `initialize` command, the first-response-of-session rule above applies (since initialization is always the first response). Additionally, show **every** `live-site-pages/` page URL even though initialization doesn't directly edit those files — this is the first deployment, so the user needs all page URLs to verify deployment
   - **Skip entirely** if no webpages or associated `.gs` files were edited in the response **and** it is not the first response of the session **and** it is not an initialization
   - Format: one URL per line, prefixed with the file that triggered it (e.g. `live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/`)
