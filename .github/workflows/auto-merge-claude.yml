@@ -23,9 +23,7 @@
 #   7. Direct pushes to main skip merge and just deploy
 #   8. On every main push, sweep and delete any stale claude/* branches
 #      that are already merged (self-healing cleanup)
-#   9. Brand-new repos (< 10 min old) skip deploy and cleanup — import
-#      push events are not user actions
-#  10. SHA update commits use [skip ci] to prevent cascading workflow runs
+#   9. SHA update commits use [skip ci] to prevent cascading workflow runs
 #
 # HOW TO ADD A NEW GAS PROJECT:
 #
@@ -181,7 +179,7 @@ jobs:
           fi
           echo "GUARD Check 1: Branch is NOT ancestor of origin/main — continuing"
 
-          # ── Check 2: Commit predates repo creation + repo age guard ──
+          # ── Check 2: Commit predates repo creation ──
           CREATED_AT=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "${{ github.api_url }}/repos/${{ github.repository }}" | jq -r '.created_at')
@@ -191,13 +189,9 @@ jobs:
             REPO_CREATED_EPOCH=$(date -d "$CREATED_AT" +%s 2>/dev/null || echo "0")
             COMMIT_AUTHOR_DATE=$(git log -1 --format='%aI' ${{ github.sha }})
             COMMIT_EPOCH=$(date -d "$COMMIT_AUTHOR_DATE" +%s 2>/dev/null || echo "0")
-            NOW_EPOCH=$(date +%s)
-            REPO_AGE=$((NOW_EPOCH - REPO_CREATED_EPOCH))
 
             echo "GUARD Check 2: Repo created epoch = $REPO_CREATED_EPOCH"
             echo "GUARD Check 2: Commit author date = $COMMIT_AUTHOR_DATE (epoch: $COMMIT_EPOCH)"
-            echo "GUARD Check 2: Current epoch = $NOW_EPOCH"
-            echo "GUARD Check 2: Repo age = ${REPO_AGE}s"
 
             # Timestamp check: commit older than repo (minus 5 min grace)?
             GRACE=300
@@ -209,15 +203,7 @@ jobs:
               exit 0
             fi
 
-            # Repo age guard: if repo is less than 10 minutes old, ALL claude/*
-            # branches are inherited
-            if [ "$REPO_AGE" -lt 600 ]; then
-              echo "::notice::Repo is only ${REPO_AGE}s old — all claude/* branches are inherited"
-              git push origin --delete ${{ github.ref_name }} || true
-              echo "skip=true" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-            echo "GUARD Check 2: Repo age ${REPO_AGE}s >= 600s, commit not older than repo — continuing"
+            echo "GUARD Check 2: Commit not older than repo — continuing"
           else
             echo "GUARD Check 2: API returned empty/null — fail-safe check"
             # API failed — fail-safe on early workflow runs
@@ -328,10 +314,7 @@ jobs:
           git push origin --delete ${{ github.ref_name }} || echo "Branch already deleted"
 
   cleanup-branches:
-    if: >-
-      github.ref == 'refs/heads/main' &&
-      needs.check-template.outputs.is-new-repo != 'true'
-    needs: [check-template]
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -365,7 +348,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       is-template: ${{ steps.check.outputs.is-template }}
-      is-new-repo: ${{ steps.repo-age.outputs.is-new-repo }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -382,30 +364,10 @@ jobs:
           else
             echo "is-template=false" >> "$GITHUB_OUTPUT"
           fi
-      - name: Check repo age
-        id: repo-age
-        run: |
-          # Brand-new repos (< 10 minutes old) should not deploy or run
-          # cleanup — any push events are from the import, not user actions.
-          CREATED_AT=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "${{ github.api_url }}/repos/${{ github.repository }}" | jq -r '.created_at')
-          if [ -n "$CREATED_AT" ] && [ "$CREATED_AT" != "null" ]; then
-            REPO_CREATED_EPOCH=$(date -d "$CREATED_AT" +%s 2>/dev/null || echo "0")
-            NOW_EPOCH=$(date +%s)
-            REPO_AGE=$((NOW_EPOCH - REPO_CREATED_EPOCH))
-            if [ "$REPO_AGE" -lt 600 ]; then
-              echo "::notice::Repo is only ${REPO_AGE}s old — flagging as new repo"
-              echo "is-new-repo=true" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-          fi
-          echo "is-new-repo=false" >> "$GITHUB_OUTPUT"
 
   deploy:
     if: >-
       needs.check-template.outputs.is-template != 'true' &&
-      needs.check-template.outputs.is-new-repo != 'true' &&
       always() &&
       (needs.auto-merge.result == 'skipped' ||
        (needs.auto-merge.result == 'success' && needs.auto-merge.outputs.pages-changed == 'true'))
@@ -430,4 +392,3 @@ jobs:
         uses: actions/deploy-pages@v4
 
 # Developed by: ShadowAISolutions
-
