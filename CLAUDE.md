@@ -130,6 +130,7 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 - When adding new rules to CLAUDE.md, add the actionable check to the appropriate checklist and put supporting details in a reference section — do not duplicate the rule in both places
 - When editing CLAUDE.md, check whether any existing reference section restates a checklist item — if so, remove the duplicate and add a `*Rule: see ... Checklist item #N*` pointer instead
 - **Content placement** — CLAUDE.md must stay focused on rules and process that Claude enforces every session (checklists, behavioral rules, formatting requirements). Domain-specific coding knowledge, architectural reference, and detailed technical context that Claude only needs when working on specific features should live in separate reference files (e.g. `repository-information/CODING-GUIDELINES.md`, `repository-information/TOKEN-BUDGETS.md`). Replace the extracted content with a one-line pointer: `*See \`repository-information/FILE.md\` — section "X"*`. Claude reads these files on demand when the relevant feature area is being worked on
+- **Section positioning** — when adding a new `##` section, place it in the correct attention zone per the Section Placement Guide (see below). Mandatory per-session actions go in the primacy zone; behavioral/meta-rules in the upper body; reference material in the lower body; high-frequency per-response formatting in the recency zone
 - **Section separators** — every `##` section in CLAUDE.md must end with a double-ruled banner. When adding a new `##` section, add the following block between the end of its content and the next `##` heading:
   ```
   ---
@@ -212,6 +213,39 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 
 ---
 > **--- END OF USER-PERSPECTIVE REASONING ---**
+---
+
+## Section Placement Guide (CLAUDE.md Structure)
+When adding, moving, or reorganizing `##` sections in this file, follow the attention zone model below. LLMs process long documents with uneven attention — instructions near the top (**primacy zone**) and bottom (**recency zone**) are recalled most reliably, while the middle (**body zone**) receives progressively less attention as the file grows.
+
+### Attention zones
+
+| Zone | Position | What belongs here | Recall reliability |
+|------|----------|-------------------|--------------------|
+| **Primacy zone** | Sections 1–6 | Mandatory checklists, safety gates, and instructions that must execute every session without exception (Template Variables, Session Start Checklist, Template Repo Guard, Pre-Commit Checklist, Pre-Push Checklist, Initialize Command) | Highest — first ~15% of content is almost never missed |
+| **Upper body** | Sections 7–10 | Behavioral rules and meta-rules that shape how work is done — execution style, pushback policy, user-perspective reasoning, and this placement guide | High — still in the first third of the file |
+| **Lower body** | Sections 11–N-3 | Reference material, detailed specifications, and context needed only when working on specific features (version bumping, build version, commit naming, architecture nodes, documentation sync, link reference, merge prevention, etc.) | Moderate to low — the "dead zone" where instructions are most likely to be missed on long files |
+| **Recency zone** | Sections N-2 to N | High-volume formatting rules that are needed on every response and benefit from recency bias (Chat Bookends, Developer Branding) | High — last ~15% of content gets a recall boost |
+
+### Placement rules for new content
+1. **Mandatory per-session actions** (checklists, gates, safety checks) → primacy zone. These must execute reliably every session regardless of context length
+2. **Behavioral constraints** (how to reason, when to push back, execution approach) → upper body. These shape decision-making and must be internalized early in processing
+3. **Meta-rules about CLAUDE.md itself** (this section, "Maintaining these checklists") → upper body. Structural rules must be loaded before any content modification begins
+4. **Feature-specific reference material** (version formats, directory layouts, link patterns, architectural details) → lower body. These are consulted on-demand when the relevant feature is being worked on — they don't need high baseline recall
+5. **High-frequency per-response formatting** (bookend markers, timestamps, end-of-response blocks) → recency zone. Chat Bookends is ~220 lines and applies to every single response — placing it last leverages recency bias to ensure formatting compliance
+6. **Developer Branding always stays last** — this is a fixed constraint (the section itself says so)
+
+### When to re-evaluate positioning
+- If CLAUDE.md grows past ~900 lines, the dead zone expands — consider extracting lower-body sections to `repository-information/` reference files with one-line pointers (per the "Content placement" rule in "Maintaining these checklists")
+- If a lower-body section starts being missed in practice (instructions skipped or forgotten), move it toward the primacy or recency zone — observed misses override theoretical positioning
+- After any major reorganization, verify the section order still follows this zone model by running `grep -n '^## ' CLAUDE.md` and checking the sequence
+
+### What this does NOT control
+- **Within-section ordering** (e.g. the order of items inside Pre-Commit Checklist) is governed by the section's own logic, not by attention zones
+- **Content extraction to reference files** is governed by the "Content placement" rule in "Maintaining these checklists" — this section only governs where `##` sections appear in CLAUDE.md itself
+
+---
+> **--- END OF SECTION PLACEMENT GUIDE ---**
 ---
 
 ## Version Bumping
