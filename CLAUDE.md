@@ -44,12 +44,13 @@
     - `Repository → https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME`
     - **On the template repo**, the Template and Repository URLs are identical — merge them into a single line: `Template & Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate`
   - **Page URLs** (always shown, every response): list every page in `live-site-pages/` with a `Homepage:` prefix (for the root `index.html`) or a descriptive label for subpages. The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`htmltemplateautoupdate` values on the template repo). Rules:
-    - **When the live site is deployed** (non-template repos): show the clickable URL — e.g. `Homepage: live-site-pages/index.html → https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/`
-    - **When no live site is deployed** (template repo): show a non-clickable note instead of a URL — e.g. `Homepage: live-site-pages/index.html → (template repo — no live site deployed)`
+    - **When the live site is deployed** (non-template repos): show the clickable URL — e.g. `Homepage: [live-site-pages/index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) → https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/`
+    - **When no live site is deployed** (template repo): show a non-clickable note instead of a URL — e.g. `Homepage: [live-site-pages/index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)`
     - For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`), the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/`
   - **`.gs` files**: if a `.gs` file was edited, also note its associated embedding HTML page (from the GAS Projects table) next to the page URL. If the `.gs` file has no registered embedding page, note it separately
-  - **Highlight affected pages**: when a page (or its associated `.gs` file) was directly changed in this response, **bold** its label — e.g. `**Homepage:** live-site-pages/index.html → ...`. Pages not affected by the response keep their label unbolded. This gives the user an at-a-glance indicator of which live URLs were impacted by the current changes
-  - **Format**: one URL per line (e.g. `**Homepage:** live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/` when affected, or `Homepage: live-site-pages/index.html → ...` when not)
+  - **Highlight affected pages**: when a page (or its associated `.gs` file) was directly changed in this response, **bold** its label — e.g. `**Homepage:** [live-site-pages/index.html](...) → ...`. Pages not affected by the response keep their label unbolded. This gives the user an at-a-glance indicator of which live URLs were impacted by the current changes
+  - **File path links**: every file path shown in the Live URLs section must be a clickable markdown link to the file's blob-view on GitHub. The URL pattern is `https://github.com/ORG/REPO/blob/main/PATH` — resolve `ORG` and `REPO` from `git remote -v` (using the actual values, e.g. `ShadowAISolutions/htmltemplateautoupdate` on the template repo). Examples: `[live-site-pages/index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html)`, `[googleAppsScripts/MyProject/Code.gs](https://github.com/MyOrg/my-repo/blob/main/googleAppsScripts/MyProject/Code.gs)`
+  - **Format**: one URL per line (e.g. `**Homepage:** [live-site-pages/index.html](https://github.com/.../blob/main/live-site-pages/index.html) → https://ShadowAISolutions.github.io/htmltemplateautoupdate/` when affected, or `Homepage: [live-site-pages/index.html](https://github.com/.../blob/main/live-site-pages/index.html) → ...` when not)
   - This section is part of the end-of-response block — it does **not** get a timestamp or `⏱️` annotation
 - **Last output**: for every user prompt, the very last line written to chat after all work is done must be exactly: `✅✅CODING COMPLETE✅✅`
 - These apply to **every single user message**, not just once per session
@@ -123,7 +124,7 @@
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 14s (estimated 4m)⏳⏳
 🔗🔗LIVE URLS (First interaction · Edited HTML)🔗🔗
   Template & Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate
-  **Homepage:** live-site-pages/index.html → (template repo — no live site deployed)
+  **Homepage:** [live-site-pages/index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 ✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
 ```
 
@@ -192,7 +193,7 @@
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 2m 9s (estimated 3m)⏳⏳
 🔗🔗LIVE URLS (No site changes)🔗🔗
   Template & Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate
-  Homepage: live-site-pages/index.html → (template repo — no live site deployed)
+  Homepage: [live-site-pages/index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 ✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
 ```
 
