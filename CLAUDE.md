@@ -645,7 +645,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
     - `No site changes` — response made no changes to live-site HTML or `.gs` files (e.g. only edited `.md`, `.yml`, workflow files, or made no file changes at all)
     - Labels can be combined when multiple apply (e.g. `First interaction · Initialization`)
   - **Reference URLs** (always shown, every response):
-    - `Template → https://github.com/ShadowAISolutions/htmltemplateautoupdate` (always this fixed URL — it's the origin template)
+    - `Template Repo → https://github.com/ShadowAISolutions/htmltemplateautoupdate` (always this fixed URL — it's the origin template)
     - `Repository → https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME`
     - **On the template repo**, the Template and Repository URLs are identical — merge them into a single line: `Template & Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate`
   - **Page URLs** (always shown, every response): list every page in `live-site-pages/` with a `Homepage:` prefix (for the root `index.html`) or a `Project Name | Homepage:` label for subdirectory `index.html` pages (e.g. `My Project | Homepage:`). The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`htmltemplateautoupdate` values on the template repo). Rules:
