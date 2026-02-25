@@ -42,11 +42,13 @@
   - **Reference URLs** (always shown, every response):
     - `Template → https://github.com/ShadowAISolutions/htmltemplateautoupdate` (always this fixed URL — it's the origin template)
     - `Repository → https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME`
-    - `Live Site → https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/` — **on the template repo**, replace the URL with a note: `Live Site → (template repo — no live site deployed)`
     - **On the template repo**, the Template and Repository URLs are identical — merge them into a single line: `Template & Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate`
-  - **Page URLs** (always shown, every response): list the GitHub Pages URL for every page in `live-site-pages/`. The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. For pages at `live-site-pages/index.html`, the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/`. For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`), the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/`. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`htmltemplateautoupdate` values on the template repo)
+  - **Page URLs** (always shown, every response): list every page in `live-site-pages/` with a `Homepage:` prefix (for the root `index.html`) or a descriptive label for subpages. The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`htmltemplateautoupdate` values on the template repo). Rules:
+    - **When the live site is deployed** (non-template repos): show the clickable URL — e.g. `Homepage: live-site-pages/index.html → https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/`
+    - **When no live site is deployed** (template repo): show a non-clickable note instead of a URL — e.g. `Homepage: live-site-pages/index.html → (template repo — no live site deployed)`
+    - For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`), the URL is `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/`
   - **`.gs` files**: if a `.gs` file was edited, also note its associated embedding HTML page (from the GAS Projects table) next to the page URL. If the `.gs` file has no registered embedding page, note it separately
-  - **Format**: one URL per line, prefixed with the file that triggered it (e.g. `live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/`)
+  - **Format**: one URL per line (e.g. `Homepage: live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/`)
   - This section is part of the end-of-response block — it does **not** get a timestamp or `⏱️` annotation
 - **Last output**: for every user prompt, the very last line written to chat after all work is done must be exactly: `✅✅CODING COMPLETE✅✅`
 - These apply to **every single user message**, not just once per session
@@ -120,8 +122,7 @@
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 14s (estimated 4m)⏳⏳
 🔗🔗LIVE URLS (First interaction · Edited HTML)🔗🔗
   Template & Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate
-  Live Site → (template repo — no live site deployed)
-  live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/
+  Homepage: live-site-pages/index.html → (template repo — no live site deployed)
 ✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
 ```
 
@@ -190,8 +191,7 @@
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 2m 9s (estimated 3m)⏳⏳
 🔗🔗LIVE URLS (No site changes)🔗🔗
   Template & Repository → https://github.com/ShadowAISolutions/htmltemplateautoupdate
-  Live Site → (template repo — no live site deployed)
-  live-site-pages/index.html → https://ShadowAISolutions.github.io/htmltemplateautoupdate/
+  Homepage: live-site-pages/index.html → (template repo — no live site deployed)
 ✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
 ```
 
