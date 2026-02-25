@@ -648,7 +648,8 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
     - `Template Repo →` [github.com/ShadowAISolutions/htmltemplateautoupdate](https://github.com/ShadowAISolutions/htmltemplateautoupdate) (always this fixed URL — it's the origin template). The visible text omits `https://` — the markdown link provides the full URL
     - `───` (a Unicode box-drawing divider between the template and repository lines — do NOT use `---` which markdown reinterprets as a setext heading)
     - `Repository →` [github.com/YOUR_ORG_NAME/YOUR_REPO_NAME](https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME)
-    - **On the template repo**, the Template and Repository URLs are identical — merge them into a single line: `Template & Repository →` [github.com/ShadowAISolutions/htmltemplateautoupdate](https://github.com/ShadowAISolutions/htmltemplateautoupdate)
+    - `───` (a second divider — separates reference URLs from page URLs)
+    - **On the template repo**, the Template and Repository URLs are identical — merge them into a single line: `Template & Repository →` [github.com/ShadowAISolutions/htmltemplateautoupdate](https://github.com/ShadowAISolutions/htmltemplateautoupdate), followed by `───` on the next line
     - **Display format for all URLs** — visible text never includes `https://`. The full URL is always preserved in the markdown link target. Format: `[domain/path](https://domain/path)`. This applies to reference URLs, live site URLs, and all other URLs in the Live URLs section
   - **Page URLs** (always shown, every response): list every page in `live-site-pages/` with a `Homepage:` prefix (for the root `index.html`) or a `Project Name | Homepage:` label for subdirectory `index.html` pages (e.g. `My Project | Homepage:`). The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`htmltemplateautoupdate` values on the template repo). Rules:
     - **When the live site is deployed** (non-template repos): show the clickable URL — e.g. `Homepage: [index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) →` [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/)
@@ -738,6 +739,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 14s (estimated 4m)⏳⏳
 🔗🔗LIVE URLS (First interaction · Edited HTML)🔗🔗
   Template & Repository → github.com/ShadowAISolutions/htmltemplateautoupdate
+  ───
   **✏️ Homepage:** [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 ✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
 ```
@@ -810,6 +812,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 2m 9s (estimated 3m)⏳⏳
 🔗🔗LIVE URLS (No site changes)🔗🔗
   Template & Repository → github.com/ShadowAISolutions/htmltemplateautoupdate
+  ───
   Homepage: [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 ✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
 ```
@@ -854,6 +857,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 15s (estimated 3m)⏳⏳
 🔗🔗LIVE URLS (No site changes)🔗🔗
   Template & Repository → github.com/ShadowAISolutions/htmltemplateautoupdate
+  ───
   Homepage: [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 ✅✅CODING COMPLETE✅✅ [01:18:16 AM EST 2026-01-15]
 ```
