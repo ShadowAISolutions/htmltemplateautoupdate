@@ -31,21 +31,3 @@
 - [ ] No `alert()` / `confirm()` / `prompt()` — custom modals only
 
 <!-- Developed by: ShadowAISolutions -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

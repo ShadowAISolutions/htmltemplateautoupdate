@@ -45,21 +45,3 @@ For external contributions, open a standard pull request against `main`.
 See [CLAUDE.md](CLAUDE.md) for the full list of project conventions.
 
 Developed by: ShadowAISolutions
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

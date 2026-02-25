@@ -881,16 +881,3 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 - This section must remain the **last section** in CLAUDE.md — do not add new sections below it (except Template Variables, which is at the top)
 
 Developed by: ShadowAISolutions
-
-
-
-
-
-
-
-
-
-
-
-
-

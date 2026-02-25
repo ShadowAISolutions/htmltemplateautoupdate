@@ -19,21 +19,3 @@
 | Auto-Update HTML | `live-site-templates/AutoUpdateOnlyHtmlTemplate.html` | v01.00w |
 
 Developed by: ShadowAISolutions
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

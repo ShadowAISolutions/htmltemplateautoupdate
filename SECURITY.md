@@ -42,21 +42,3 @@ This security policy covers:
 - CI/CD workflows (`.github/workflows/`)
 
 Developed by: ShadowAISolutions
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

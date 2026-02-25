@@ -27,21 +27,3 @@ All decisions regarding the project direction, feature additions, and architectu
 This governance model may be updated as the project evolves. Changes will be documented in the [CHANGELOG](CHANGELOG.md).
 
 Developed by: ShadowAISolutions
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
