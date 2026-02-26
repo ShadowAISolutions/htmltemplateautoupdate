@@ -554,6 +554,40 @@ Domain-specific coding constraints are maintained in a dedicated reference file.
 > **--- END OF CODING GUIDELINES REFERENCE ---**
 ---
 
+## CLI Accent Styling Reference
+The Claude Code CLI renders certain markdown constructs with colored/accented styling that can be used intentionally for visual emphasis in chat output. This section documents what works and what doesn't, based on empirical testing.
+
+### What triggers red/accent styling
+
+| Construct | Inside blockquote (`>`) | Outside blockquote | Example |
+|-----------|------------------------|-------------------|---------|
+| Backtick-wrapped text (`` `text` ``) | **Red/accent with bordered background** | Red/accent with bordered background | `` > `Label Text` `` |
+| Bare `─` box-drawing line (15+ chars) | Plain white — no styling | Red/accent | `───────────────` |
+| Bare `─` box-drawing line (< 15 chars) | Plain white | Plain white | `────────` |
+| Spaced `─` characters (`─ ─ ─ ─`) | Plain white | Plain white | Spaces break detection |
+| Other box-drawing chars (`━`, `┄`, `╌`, `╍`, `┅`) | Plain white | Plain white | Only `─` (U+2500) triggers it |
+| `· · · · ·` (middle dots) | Plain white | Plain white | No special treatment |
+
+### Key findings
+- **Backtick wrapping is the most reliable method** — it works both inside and outside blockquotes with consistent red/accent styling
+- The bare `─` (U+2500) character gets red styling only outside blockquotes and only when used in an unbroken sequence of sufficient length (~15+ characters)
+- No other Unicode box-drawing characters (`━` U+2501, `┄` U+2504, `╌` U+250C, `╍` U+254D, `┅` U+2505) trigger the accent styling
+- Spaces between characters break the detection — `─ ─ ─` renders as plain white even outside blockquotes
+- This is a **Claude Code CLI rendering behavior** — these styles do not appear on GitHub, VS Code markdown preview, or other markdown renderers
+
+### Recommended patterns
+- **Labels/headers in blockquotes**: `` > `Label Text` `` — ideal for creating visually distinct section headers within blockquoted content (used in Live URLs)
+- **Highlighted values**: `` > `important value` `` — draw attention to specific values within blockquoted output
+- **Status indicators**: `` > `✏️ Modified` `` or `` > `✅ Complete` `` — combine emoji with accent styling for maximum visibility
+- **General rule**: whenever you need text to visually "pop" inside a blockquote, wrap it in backticks
+
+### Where this is currently used
+- **Live URLs section** — all labels (`Template Repo`, `Repository`, `Homepage`, `✏️ Homepage`, etc.) use backtick-wrapped text on their own line to create red "headers" above each URL entry
+
+---
+> **--- END OF CLI ACCENT STYLING REFERENCE ---**
+---
+
 ## Web Search Confidence
 - When relaying information from web search results, **distinguish verified facts from untested inferences**. A search summarizer may stitch together separate facts into a plausible-sounding conclusion that no source actually confirms
 - **Before presenting a web search finding as fact**, check whether any of the underlying source links explicitly confirm the claim. If the conclusion is the summarizer's extrapolation (e.g. assuming a REST API parameter name also works as a URL query parameter), flag it: *"This might work but I can't verify it — you'd need to test it"*
@@ -658,7 +692,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - **Highlight affected pages**: when a page was affected by changes in this response — either directly (the HTML file itself was edited) or indirectly (a `.gs`/`.gas` file whose output is embedded in the page was edited, or a resource the page depends on was changed) — prepend `✏️` inside the backtick-wrapped label. Examples: `` > `✏️ Homepage` `` on its own line, then `> [index.html](...) →` [ORG.github.io/REPO/](https://ORG.github.io/REPO/) on the next line. For subpages: `` > `✏️ My Project | Homepage` `` followed by the URL line. Pages not affected by the response have no `✏️` prefix in their label (e.g. `` > `Homepage` ``). The `✏️` inside the red/accent label is unmissable — it combines the accent color with the emoji for maximum visibility. **Indirect affects**: use the GAS Projects table to determine which embedding page a `.gs` file maps to — if a `.gs` file was edited, its registered embedding page gets the indicator even though the HTML file wasn't touched, because the user-facing experience of that page changed
   - **File path links**: every file path shown in the Live URLs section must be a clickable markdown link to the file's blob-view on GitHub. The URL uses the full path: `https://github.com/ORG/REPO/blob/main/FULL_PATH`. The **link text** depends on the file's location within `live-site-pages/`: for files directly in `live-site-pages/` (no subdirectory), show just the filename (e.g. `index.html`); for files in a subdirectory, show the **containing folder + filename** (e.g. `my-project/index.html`). This gives the user enough context to identify which page the link refers to without showing the full repo path. Resolve `ORG` and `REPO` from `git remote -v` (using the actual values, e.g. `ShadowAISolutions/htmltemplateautoupdate` on the template repo). Examples: `[index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html)`, `[my-project/index.html](https://github.com/MyOrg/my-repo/blob/main/live-site-pages/my-project/index.html)`, `[Code.gs](https://github.com/MyOrg/my-repo/blob/main/googleAppsScripts/MyProject/Code.gs)`
   - **Blockquote formatting**: all URL lines below the `🔗🔗LIVE URLS (label)🔗🔗` heading must be wrapped in a blockquote (`>` prefix on every line). This visually sets the URLs apart from the rest of the end-of-response block with a left border/indent. The `🔗🔗LIVE URLS (label)🔗🔗` heading itself is NOT blockquoted — only the URL content lines beneath it
-  - **CLI red/accent text technique**: the Claude Code CLI renders backtick-wrapped inline code (`` ` ``) inside blockquotes with a red/accent color and a subtle bordered background. This is used for all labels in the Live URLs section — wrapping label text in backticks inside a blockquote makes it visually distinct as a red "header" for the URL that follows. The red labels act as natural visual dividers between entries, eliminating the need for separate divider lines. This technique can be applied to any text inside blockquotes that should stand out. Note: this is a Claude Code CLI rendering behavior, not standard markdown — the styling does not appear on GitHub or other markdown renderers
+  - **CLI red/accent text technique**: backtick-wrapped text inside blockquotes renders with red/accent styling in the Claude Code CLI. This is used for all labels in the Live URLs section — the red labels act as natural visual dividers between entries. *Full reference: see CLI Accent Styling Reference section for what works, what doesn't, and patterns for other uses*
   - **Format**: each entry uses two lines, both prefixed with `>`. Line 1: backtick-wrapped label (red/accent in CLI). Line 2: the URL. When affected: `` > `✏️ Homepage` `` then `> [index.html](https://github.com/.../blob/main/live-site-pages/index.html) →` [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/). When not affected: `` > `Homepage` `` then `> [index.html](https://github.com/.../blob/main/live-site-pages/index.html) → ...`. For subpages when affected: `` > `✏️ My Project | Homepage` `` then `> [my-project/index.html](https://github.com/.../blob/main/live-site-pages/my-project/index.html) →` [ORG.github.io/REPO/my-project/](https://ORG.github.io/REPO/my-project/)
   - This section is part of the end-of-response block — it does **not** get a timestamp or `⏱️` annotation
 - **Last output**: every response must end with exactly one of the following closing markers on its own line — which one depends on the response type:
