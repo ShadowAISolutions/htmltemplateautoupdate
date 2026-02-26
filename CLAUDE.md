@@ -721,11 +721,11 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - **Commit log**: output `📜📜COMMIT LOG📜📜` followed by a list of every commit made in the response, formatted as `SHORT_SHA — commit message`. Skip if no commits were made in the response
   - **Worth noting**: output `🔖🔖WORTH NOTING🔖🔖` followed by a list of anything that deserves attention but isn't a blocker (e.g. "Push-once already used — did not push again", "Template repo guard skipped version bumps", "Pre-commit hook modified files — re-staged"). Skip if there are nothing worth noting
   - **Summary of changes**: output `📝📝SUMMARY📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. Each bullet must indicate which file(s) were edited (e.g. "Updated build-version in `live-site-pages/index.html`"). If a bullet describes a non-file action (e.g. "Pushed to remote"), no file path is needed
-  - **Affected URLs**: output `✏️✏️AFFECTED URLS✏️✏️` followed by only the page URLs that were affected by changes in this response (the ones that would have the `✏️` indicator). **Always present** — when no pages were affected, output the header followed by a placeholder: `> *No pages were affected in this response*`. See the Live URLs bullet below for full rules on the affected/unaffected split
+  - **Affected URLs**: output `✏️✏️AFFECTED URLS✏️✏️` followed by only the page URLs that were affected by changes in this response (the ones that would have the `✏️` indicator). **Always present** — when no pages were affected, output the header followed by a placeholder: `> *No URL pages were affected in this response*`. See the Live URLs bullet below for full rules on the affected/unaffected split
   - **Estimate calibration** (conditional): if ACTUAL TOTAL COMPLETION TIME differs from the estimate by >2 minutes, output `🔧🔧ESTIMATE CALIBRATED🔧🔧` followed by what was adjusted. This is the **one exception** to the "no tool calls in the end-of-response block" rule — the calibration edits CLAUDE.md's heuristic values via an Edit tool call between AFFECTED URLS and ACTUAL TOTAL COMPLETION TIME. See the Estimate calibration bullet above for the full procedure
 - **Live URLs (split into two sections)**: the Live URLs are split into an **unaffected** group and an **affected** group, appearing in different positions within the end-of-response block. **Both are skipped when the response ends with RESEARCH COMPLETE or AWAITING USER RESPONSE.** Rules:
   - **Unaffected group** — `🔗🔗LIVE URLS (label)🔗🔗`: appears immediately after the divider, **before AGENTS USED**. Contains reference URLs and all **unaffected** page URLs (pages without `✏️`). **Always present** when the response ends with CODING COMPLETE — never skipped. When all pages are affected (no unaffected page URLs to show), the reference URLs still appear followed by a placeholder after the reference URL divider: `> *All pages were affected — see Affected URLs below*`
-  - **Affected group** — `✏️✏️AFFECTED URLS✏️✏️`: appears **after SUMMARY**. Contains only the page URLs that were affected by changes in this response (the ones with the `✏️` indicator). **Always present** — when no pages were affected (e.g. "No site changes" responses), output the header followed by a placeholder: `> *No pages were affected in this response*`
+  - **Affected group** — `✏️✏️AFFECTED URLS✏️✏️`: appears **after SUMMARY**. Contains only the page URLs that were affected by changes in this response (the ones with the `✏️` indicator). **Always present** — when no pages were affected (e.g. "No site changes" responses), output the header followed by a placeholder: `> *No URL pages were affected in this response*`
   - **Contextual label**: the `🔗🔗LIVE URLS (label)🔗🔗` heading includes a parenthetical label that describes what triggered the links in this response. Use the most specific applicable label:
     - `First interaction` — first response of the session
     - `Initialization` — after an `initialize` command
@@ -889,7 +889,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 📝📝SUMMARY📝📝
   - Updated X in `file.md`
 ✏️✏️AFFECTED URLS✏️✏️
-> *No pages were affected in this response*
+> *No URL pages were affected in this response*
 ⏳⏳PLAN EXECUTION TIME: 1m 15s (estimated 2m)⏳⏳
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 4m 30s (estimated 5m)⏳⏳
 ✅✅CODING COMPLETE✅✅ [01:19:31 AM EST 2026-01-15]
@@ -934,7 +934,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - Updated X in `file.md`
   - Pushed to remote
 ✏️✏️AFFECTED URLS✏️✏️
-> *No pages were affected in this response*
+> *No URL pages were affected in this response*
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 2m 9s (estimated 3m)⏳⏳
 ✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
 ```
@@ -987,7 +987,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 📝📝SUMMARY📝📝
   - Updated X in `file.md`
 ✏️✏️AFFECTED URLS✏️✏️
-> *No pages were affected in this response*
+> *No URL pages were affected in this response*
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 15s (estimated 3m)⏳⏳
 ✅✅CODING COMPLETE✅✅ [01:18:16 AM EST 2026-01-15]
 ```
