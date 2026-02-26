@@ -20,9 +20,11 @@
 #   4. Deploy GAS projects — only if their Code.gs was modified
 #   5. Delete the claude branch
 #   6. Deploy GitHub Pages — only if live-site-pages/ files were modified
-#   7. Direct pushes to main skip merge and just deploy
-#   8. On every main push, sweep and delete any stale claude/* branches
+#   7. After merging, sweep and delete any other stale claude/* branches
 #      that are already merged (self-healing cleanup)
+#   8. Workflow only triggers on claude/* pushes (not main) — prevents
+#      template copies from firing the workflow on their initial commit.
+#      workflow_dispatch is available for manual re-deploys
 #   9. ALL jobs (except check-template) require initialization OR being
 #      the template repo — on an uninitialized copy, only check-template
 #      runs; everything else is skipped. The template repo itself is
@@ -84,7 +86,6 @@ on:
   push:
     branches:
       - 'claude/**'
-      - 'main'
   workflow_dispatch:
 
 permissions:
@@ -323,24 +324,11 @@ jobs:
         run: |
           git push origin --delete ${{ github.ref_name }} || echo "Branch already deleted"
 
-  cleanup-branches:
-    if: >-
-      github.ref == 'refs/heads/main' &&
-      (needs.check-template.outputs.is-initialized == 'true' ||
-       needs.check-template.outputs.is-template == 'true')
-    needs: [check-template]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Delete stale claude branches
+      - name: Sweep stale claude branches
+        if: steps.guard.outputs.skip != 'true'
         run: |
-          # On every main push, sweep for claude/* branches already merged
-          # into main. This catches branches that survived due to workflow
+          # After merging, sweep for any other claude/* branches already
+          # merged into main. Catches branches that survived due to workflow
           # failures, race conditions, or re-pushes after deletion.
           git fetch origin main
           DELETED=0
@@ -393,10 +381,9 @@ jobs:
 
   # Deploy condition explained:
   #   - is-template: skip deploy on the template repo itself
-  #   - auto-merge skipped (push to main): requires is-initialized (defense
-  #     in depth — auto-merge is also gated on is-initialized, so it can
-  #     only be "skipped" on an initialized repo's main push or a truly
-  #     skipped uninitialized push where this gate blocks anyway)
+  #   - auto-merge skipped + is-initialized: handles workflow_dispatch on
+  #     initialized forks (manual re-deploy). Since main is not in the push
+  #     trigger, this path only fires via workflow_dispatch
   #   - auto-merge success: deploy if pages changed (includes initialization
   #     commit which sets IS_TEMPLATE_REPO = No)
   deploy:
