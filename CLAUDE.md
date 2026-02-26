@@ -568,7 +568,6 @@ The Claude Code CLI renders certain markdown constructs with colored/accented st
 | Diff code block — `-` lines | **Red** syntax highlighting | Fenced code block with `diff` language | `` ```diff `` then `- removed line` |
 | Colored emoji sequences | **Native emoji color** (red, yellow, green, etc.) | Anywhere | `🔴🟡🟢🟥⬛` |
 | Checkboxes (`- [x]`, `- [ ]`) | Rendered checkbox with visual checked/unchecked state | Inside and outside blockquotes | `> - [x] Done` / `> - [ ] Pending` |
-| Image alt text (`![text](...)`) | Distinct styled rendering of the alt text | Inside and outside blockquotes | `> ![Status: Active](nonexistent.png)` |
 | Language-hinted code blocks | **Multi-color** syntax highlighting (strings, keys, values) | Fenced code blocks with language hint | `` ```python ``, `` ```json ``, `` ```yaml `` |
 
 ### What does NOT trigger styling
@@ -594,7 +593,6 @@ The Claude Code CLI renders certain markdown constructs with colored/accented st
 - **Code-inside-link** (`` [`text`](url) ``) gives you red accent styling that is also a clickable link — useful when you want a label that navigates somewhere
 - **Diff code blocks** are the only way to get **green** text — use `` ```diff `` with `+` prefixed lines. Also produces red for `-` prefixed lines (distinct from the backtick red — this is syntax highlighting red)
 - **Colored emoji** are the only way to get arbitrary colors (red, yellow, green, black, etc.) — they render at native emoji color regardless of context
-- **Image alt text** (`![text](...)`) renders with distinct styling even when the image doesn't exist — the alt text gets a visual treatment that can be repurposed as a styled label or status display
 - **Checkboxes** (`- [x]` / `- [ ]`) render with visual checked/unchecked state — useful for progress indicators or checklists within formatted output
 - **Language-hinted code blocks** (`` ```python ``, `` ```json ``, `` ```yaml ``) produce multi-color syntax highlighting — different colors for strings, keys, values, keywords
 - The bare `─` (U+2500) character gets red styling only outside blockquotes and only when used in an unbroken sequence of sufficient length (~15+ characters)
@@ -618,7 +616,6 @@ These don't trigger color styling, but provide distinct visual structure in the 
 - **Red text (alt)**: `` ```diff `` with `- text` lines — syntax-highlighted red (different shade from backtick red)
 - **Colored bars/indicators**: emoji sequences (`🔴🟡🟢⬛🟥`) — arbitrary color through native emoji rendering
 - **Status indicators**: `` > `✏️ Modified` `` or `` > `✅ Complete` `` — combine emoji with accent styling for maximum visibility
-- **Image alt text labels**: `> ![Label Text](x)` — styled alt text as an alternative to backtick labels, with distinct visual treatment
 - **Multi-color syntax blocks**: `` ```python `` / `` ```json `` / `` ```yaml `` — richly colored output for structured data or code snippets
 
 **Interactive/state techniques:**
@@ -632,6 +629,10 @@ These don't trigger color styling, but provide distinct visual structure in the 
 
 ### Where this is currently used
 - **Live URLs section** — all labels (`Template Repo`, `Repository`, `Homepage`, `✏️ Homepage`, etc.) use backtick-wrapped text on their own line to create red "headers" above each URL entry
+
+### Known limitations
+
+**Image alt text (`![text](url)`)** — as of 2026-02-25, the Claude Code CLI does **not** render inline images. The `![alt](url)` syntax renders as a "Show image" clickable button that opens the URL in an external browser when clicked. The alt text itself is not visually displayed in the terminal. This is a known limitation — open feature requests exist (GitHub issues #2266 and #6389) for terminal graphics protocol support (Sixel, Kitty, iTerm2), but none have been implemented. The underlying `ink` (React for CLIs) framework does not natively support image rendering. **Do not use `![alt](url)` for styling purposes** unless the CLI adds inline image support in the future — check the feature requests for status updates before relying on this construct
 
 ---
 > **--- END OF CLI ACCENT STYLING REFERENCE ---**
