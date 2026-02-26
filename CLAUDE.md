@@ -735,7 +735,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
     - `` `Template Repo` `` on its own line (backtick-wrapped — renders as red/accent label in the CLI, no `>` prefix), followed by the URL on the next line in a blockquote (`>`): [github.com/ShadowAISolutions/htmltemplateautoupdate](https://github.com/ShadowAISolutions/htmltemplateautoupdate) (always this fixed URL — it's the origin template). The visible text omits `https://` — the markdown link provides the full URL
     - `` `Repository` `` on its own line (no `>` prefix), followed by the URL on the next line in a blockquote (`>`)
     - **On the template repo**, the Template and Repository URLs are identical — merge them into a single label: `` `Template & Repository` `` on its own line, followed by the URL in a blockquote on the next line
-    - **Reference URL divider** — after the URL line of `` `Template & Repository` ``, `` `Template Repo` ``, or `` `Repository` `` (whichever is last among the reference URLs), add a plain (non-backtick-wrapped) 25-character `─` divider line on its own line: `─────────────────────────`. This divider is NOT blockquoted — it sits at the top level, visually separating the reference URLs from the page URLs. The divider renders as regular white text (not red/accent) because it is not backtick-wrapped
+    - **Reference URL divider** — after the URL line of `` `Template & Repository` ``, `` `Template Repo` ``, or `` `Repository` `` (whichever is last among the reference URLs), insert a blank line to exit the blockquote context, then a plain (non-backtick-wrapped) 25-character `─` divider line on its own line: `─────────────────────────`. The blank line is critical — without it, the divider would be interpreted as a continuation of the blockquote. The divider sits at the top level (no `>` prefix), visually separating the reference URLs from the page URLs. It renders as regular white text (not red/accent) because it is not backtick-wrapped
     - **Display format for all URLs** — visible text never includes `https://`. The full URL is always preserved in the markdown link target. Format: `[domain/path](https://domain/path)`. This applies to reference URLs, live site URLs, and all other URLs in the Live URLs section
     - **Label-URL pair format** — every entry (reference URLs and page URLs) uses a two-line format separated by blank lines between pairs: (1) backtick-wrapped label on its own line with no blockquote prefix (renders as red/accent text in the CLI), (2) the URL on the next line inside a single-level blockquote (`>`). A blank line between each pair resets the blockquote context, so every label starts fresh at the top level with its URL visually indented beneath it. The red labels act as natural visual dividers between entries
   - **Page URLs** (always shown, every response): list every page in `live-site-pages/` using the label-URL pair format. Use `` `Homepage` `` as the label for the root `index.html`, or `` `Project Name | Homepage` `` for subdirectory pages (e.g. `` `My Project | Homepage` ``). Labels have no `>` prefix; URLs use `>`. The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`htmltemplateautoupdate` values on the template repo). Rules:
@@ -830,6 +830,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 
 `Template & Repository`
 > github.com/ShadowAISolutions/htmltemplateautoupdate
+
 ─────────────────────────
 
 `✏️ Homepage`
@@ -908,6 +909,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 
 `Template & Repository`
 > github.com/ShadowAISolutions/htmltemplateautoupdate
+
 ─────────────────────────
 
 `Homepage`
@@ -958,6 +960,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 
 `Template & Repository`
 > github.com/ShadowAISolutions/htmltemplateautoupdate
+
 ─────────────────────────
 
 `Homepage`
