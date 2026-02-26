@@ -563,7 +563,7 @@ The Claude Code CLI renders certain markdown constructs with colored/accented st
 |-----------|---------|---------------|---------|
 | Backtick-wrapped text (`` `text` ``) | **Red/accent** with bordered background | Inside and outside blockquotes | `` > `Label Text` `` |
 | Code-inside-link (`` [`text`](url) ``) | **Red/accent** on the code portion, clickable | Inside and outside blockquotes | `` > [`Homepage`](https://...) `` |
-| Bare `─` box-drawing line (15+ chars) | **Red/accent** | Outside blockquotes only | `───────────────` |
+| Bare `─` box-drawing line (15+ chars) | **Unreliable — may not render red** | Theoretically outside blockquotes only, but not consistently observed | `───────────────` |
 | Diff code block — `+` lines | **Green** syntax highlighting | Fenced code block with `diff` language | `` ```diff `` then `+ added line` |
 | Diff code block — `-` lines | **Red** syntax highlighting | Fenced code block with `diff` language | `` ```diff `` then `- removed line` |
 | Colored emoji sequences | **Native emoji color** (red, yellow, green, etc.) | Anywhere | `🔴🟡🟢🟥⬛` |
@@ -595,7 +595,7 @@ The Claude Code CLI renders certain markdown constructs with colored/accented st
 - **Colored emoji** are the only way to get arbitrary colors (red, yellow, green, black, etc.) — they render at native emoji color regardless of context
 - **Checkboxes** (`- [x]` / `- [ ]`) render with visual checked/unchecked state — useful for progress indicators or checklists within formatted output
 - **Language-hinted code blocks** (`` ```python ``, `` ```json ``, `` ```yaml ``) produce multi-color syntax highlighting — different colors for strings, keys, values, keywords
-- The bare `─` (U+2500) character gets red styling only outside blockquotes and only when used in an unbroken sequence of sufficient length (~15+ characters)
+- The bare `─` (U+2500) character was theorized to get red styling outside blockquotes, but this is **unreliable in practice** — use backtick-wrapping (`` `────────────────────────────` ``) for guaranteed red/accent styling on divider lines
 - This is a **Claude Code CLI rendering behavior** — these styles do not appear on GitHub, VS Code markdown preview, or other markdown renderers
 
 ### Other useful formatting constructs
@@ -711,7 +711,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   **Skip calibration entirely if the difference is ≤2 minutes** — small variances are normal and not worth correcting
 - **Hook anticipation**: before writing the closing marker (`✅✅CODING COMPLETE✅✅` or `🔬🔬RESEARCH COMPLETE🔬🔬`), check whether the stop hook (`~/.claude/stop-hook-git-check.sh`) will fire. **This check must happen after all actions in the current response are complete** (including any `git push`) — do not predict the pre-action state; check the actual post-action state. **Actually run** the three git commands (do not evaluate mentally): (a) uncommitted changes — `git diff --quiet && git diff --cached --quiet`, (b) untracked files — `git ls-files --others --exclude-standard`, (c) unpushed commits — `git rev-list origin/<branch>..HEAD --count`. If any condition is true, **omit** the closing marker and instead write `🐟🐟AWAITING HOOK🐟🐟` as the last line of the current response — the hook will fire, and the appropriate closing marker (CODING COMPLETE or RESEARCH COMPLETE) should close the hook feedback response instead. **Do not forget the `⏱️` duration annotation** — AWAITING HOOK is a bookend like any other, so the previous phase's `⏱️` must appear immediately before it. After the hook anticipation git commands complete, call `date`, compute the duration since the previous bookend's timestamp, write the `⏱️` line, then write AWAITING HOOK
 - **Hook feedback override**: if the triggering message is hook feedback (starts with "Stop hook feedback:", "hook feedback:", or contains `<user-prompt-submit-hook>`), use `⚓⚓HOOK FEEDBACK⚓⚓` as the first line instead of `🚩🚩CODING PLAN🚩🚩`, `⚡⚡CODING START⚡⚡`, or `🔬🔬RESEARCH START🔬🔬`. The coding plan (if applicable) follows immediately after `⚓⚓HOOK FEEDBACK⚓⚓`, then `⚡⚡CODING START⚡⚡`
-- **End-of-response sections**: after all work is done, output the following sections in this exact order. **Skip the entire block when the response ends with RESEARCH COMPLETE or AWAITING USER RESPONSE** — those endings have no end-of-response block. **The entire block — from the `───` divider through CODING COMPLETE — must be written as one continuous text output with no tool calls in between.** To achieve this, run the `date` command for CODING COMPLETE's timestamp **before** starting the block, then output: the last phase's `⏱️` duration, a `────────────────────────────` divider on its own line (Unicode light horizontal line — renders red/accent in the CLI, visually separating work phases from the end-of-response block), then AGENTS USED through CODING COMPLETE using the pre-fetched timestamp:
+- **End-of-response sections**: after all work is done, output the following sections in this exact order. **Skip the entire block when the response ends with RESEARCH COMPLETE or AWAITING USER RESPONSE** — those endings have no end-of-response block. **The entire block — from the divider through CODING COMPLETE — must be written as one continuous text output with no tool calls in between.** To achieve this, run the `date` command for CODING COMPLETE's timestamp **before** starting the block, then output: the last phase's `⏱️` duration, a backtick-wrapped divider line `` `────────────────────────────` `` on its own line (backtick-wrapping triggers red/accent styling in the CLI, visually separating work phases from the end-of-response block), then AGENTS USED through CODING COMPLETE using the pre-fetched timestamp:
   - **Agents used**: output `🕵🕵AGENTS USED🕵🕵` followed by a **numbered list** of all agents that contributed to this response — including Agent 0 (Main). Format: `1. Agent N (Type) — brief description of contribution`. Number each agent sequentially starting from 1. This appears in every response that ends with CODING COMPLETE
   - **Files changed**: output `📁📁FILES CHANGED📁📁` followed by a list of every file modified in the response, each tagged with the type of change: `(edited)`, `(created)`, or `(deleted)`. This gives a clean at-a-glance file manifest. Skip if no files were changed in the response
   - **Commit log**: output `🔗🔗COMMIT LOG🔗🔗` followed by a list of every commit made in the response, formatted as `SHORT_SHA — commit message`. Skip if no commits were made in the response
@@ -810,7 +810,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 🧪🧪VERIFYING🧪🧪 [01:18:00 AM EST]
   ... validating edits, running hook checks ...
   ⏱️ 15s
-────────────────────────────
+`────────────────────────────`
 🕵🕵AGENTS USED🕵🕵
   1. Agent 0 (Main) — applied changes, ran checklists
 📁📁FILES CHANGED📁📁
@@ -858,7 +858,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ⚡⚡CODING START⚡⚡ [01:18:16 AM EST 2026-01-15]
   ... applying changes ...
   ⏱️ 1m 15s
-────────────────────────────
+`────────────────────────────`
 🕵🕵AGENTS USED🕵🕵
   1. Agent 0 (Main) — researched, planned, implemented
 📁📁FILES CHANGED📁📁
@@ -888,7 +888,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ➡️➡️CHANGES PUSHED➡️➡️ [01:17:05 AM EST]
   Pushed to `claude/feature-xyz` — workflow will auto-merge to main
   ⏱️ 5s
-────────────────────────────
+`────────────────────────────`
 🕵🕵AGENTS USED🕵🕵
   1. Agent 0 (Main) — applied changes, pushed
 📁📁FILES CHANGED📁📁
@@ -940,7 +940,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   User chose option B — proceeding with implementation
   ... applying changes, committing, pushing ...
   ⏱️ 1m 30s
-────────────────────────────
+`────────────────────────────`
 🕵🕵AGENTS USED🕵🕵
   1. Agent 0 (Main) — researched options, implemented user's choice
 📁📁FILES CHANGED📁📁
