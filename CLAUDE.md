@@ -557,22 +557,38 @@ Domain-specific coding constraints are maintained in a dedicated reference file.
 ## CLI Accent Styling Reference
 The Claude Code CLI renders certain markdown constructs with colored/accented styling that can be used intentionally for visual emphasis in chat output. This section documents what works and what doesn't, based on empirical testing.
 
-### What triggers red/accent styling
+### What triggers colored/accent styling
 
-| Construct | Inside blockquote (`>`) | Outside blockquote | Example |
-|-----------|------------------------|-------------------|---------|
-| Backtick-wrapped text (`` `text` ``) | **Red/accent with bordered background** | Red/accent with bordered background | `` > `Label Text` `` |
-| Bare `─` box-drawing line (15+ chars) | Plain white — no styling | Red/accent | `───────────────` |
-| Bare `─` box-drawing line (< 15 chars) | Plain white | Plain white | `────────` |
-| Spaced `─` characters (`─ ─ ─ ─`) | Plain white | Plain white | Spaces break detection |
-| Other box-drawing chars (`━`, `┄`, `╌`, `╍`, `┅`) | Plain white | Plain white | Only `─` (U+2500) triggers it |
-| `· · · · ·` (middle dots) | Plain white | Plain white | No special treatment |
+| Construct | Styling | Where it works | Example |
+|-----------|---------|---------------|---------|
+| Backtick-wrapped text (`` `text` ``) | **Red/accent** with bordered background | Inside and outside blockquotes | `` > `Label Text` `` |
+| Code-inside-link (`` [`text`](url) ``) | **Red/accent** on the code portion, clickable | Inside and outside blockquotes | `` > [`Homepage`](https://...) `` |
+| Bare `─` box-drawing line (15+ chars) | **Red/accent** | Outside blockquotes only | `───────────────` |
+| Diff code block — `+` lines | **Green** syntax highlighting | Fenced code block with `diff` language | `` ```diff `` then `+ added line` |
+| Diff code block — `-` lines | **Red** syntax highlighting | Fenced code block with `diff` language | `` ```diff `` then `- removed line` |
+| Colored emoji sequences | **Native emoji color** (red, yellow, green, etc.) | Anywhere | `🔴🟡🟢🟥⬛` |
+
+### What does NOT trigger styling
+
+| Construct | Result | Notes |
+|-----------|--------|-------|
+| Bare `─` box-drawing line (< 15 chars) | Plain white | Minimum length threshold not met |
+| Bare `─` inside blockquotes | Plain white | Blockquote context suppresses the red treatment |
+| Spaced `─` characters (`─ ─ ─ ─`) | Plain white | Spaces break detection |
+| Other box-drawing chars (`━`, `┄`, `╌`, `╍`, `┅`) | Plain white | Only `─` (U+2500) triggers it |
+| `· · · · ·` (middle dots) | Plain white | No special treatment |
+| HTML tags (`<span style>`, `<mark>`, `<sub>`, etc.) | Plain text — tags visible | CLI does not interpret inline HTML |
+| GitHub alert syntax (`[!NOTE]`, `[!WARNING]`) | Plain text | CLI does not support admonition rendering |
+| Bold/italic wrapping code (`**\`text\`**`, `*\`text\`*`) | Same as plain backtick | No additional styling from bold/italic wrapper |
+| Strikethrough (`~~text~~`) | Plain text | No dimming or gray effect |
+| Definition lists (`: text`) | Plain text | No special rendering |
 
 ### Key findings
 - **Backtick wrapping is the most reliable method** — it works both inside and outside blockquotes with consistent red/accent styling
+- **Code-inside-link** (`` [`text`](url) ``) gives you red accent styling that is also a clickable link — useful when you want a label that navigates somewhere
+- **Diff code blocks** are the only way to get **green** text — use `` ```diff `` with `+` prefixed lines. Also produces red for `-` prefixed lines (distinct from the backtick red — this is syntax highlighting red)
+- **Colored emoji** are the only way to get arbitrary colors (red, yellow, green, black, etc.) — they render at native emoji color regardless of context
 - The bare `─` (U+2500) character gets red styling only outside blockquotes and only when used in an unbroken sequence of sufficient length (~15+ characters)
-- No other Unicode box-drawing characters (`━` U+2501, `┄` U+2504, `╌` U+250C, `╍` U+254D, `┅` U+2505) trigger the accent styling
-- Spaces between characters break the detection — `─ ─ ─` renders as plain white even outside blockquotes
 - This is a **Claude Code CLI rendering behavior** — these styles do not appear on GitHub, VS Code markdown preview, or other markdown renderers
 
 ### Other useful formatting constructs
@@ -585,10 +601,17 @@ These don't trigger color styling, but provide distinct visual structure in the 
 | Unicode block characters (`▓`, `░`, `▒`, `■`, `◆`) | Dense visual blocks — distinct texture from standard text | Progress bars, visual separators, density indicators | `> ▓▓▓▓▓░░░░░` |
 
 ### Recommended patterns
-- **Labels/headers in blockquotes**: `` > `Label Text` `` — ideal for creating visually distinct section headers within blockquoted content (used in Live URLs)
-- **Highlighted values**: `` > `important value` `` — draw attention to specific values within blockquoted output
+
+**Color techniques:**
+- **Red labels/headers**: `` > `Label Text` `` — backtick-wrapped text in blockquotes for section headers (used in Live URLs)
+- **Red clickable labels**: `` > [`Label`](url) `` — code-inside-link for accent-styled labels that also navigate somewhere
+- **Green text**: `` ```diff `` with `+ text` lines — the only way to produce green in the CLI
+- **Red text (alt)**: `` ```diff `` with `- text` lines — syntax-highlighted red (different shade from backtick red)
+- **Colored bars/indicators**: emoji sequences (`🔴🟡🟢⬛🟥`) — arbitrary color through native emoji rendering
 - **Status indicators**: `` > `✏️ Modified` `` or `` > `✅ Complete` `` — combine emoji with accent styling for maximum visibility
-- **Sub-grouping**: `>>` nested blockquotes — create visual hierarchy within a blockquoted block (e.g. a sub-note under a URL entry)
+
+**Structural techniques:**
+- **Sub-grouping**: `>>` nested blockquotes — create visual hierarchy within a blockquoted block
 - **Structured data**: markdown tables inside blockquotes — present tabular information with the blockquote's left-border context
 - **Visual weight/density**: unicode block chars (`▓░▒■◆`) — create visual separators or indicators with more presence than standard text
 - **General rule**: whenever you need text to visually "pop" inside a blockquote, wrap it in backticks. For structural separation, use nested blockquotes or tables
