@@ -721,11 +721,11 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - **Commit log**: output `📜📜COMMIT LOG📜📜` followed by a list of every commit made in the response, formatted as `SHORT_SHA — commit message`. Skip if no commits were made in the response
   - **Worth noting**: output `🔖🔖WORTH NOTING🔖🔖` followed by a list of anything that deserves attention but isn't a blocker (e.g. "Push-once already used — did not push again", "Template repo guard skipped version bumps", "Pre-commit hook modified files — re-staged"). Skip if there are nothing worth noting
   - **Summary of changes**: output `📝📝SUMMARY📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. Each bullet must indicate which file(s) were edited (e.g. "Updated build-version in `live-site-pages/index.html`"). If a bullet describes a non-file action (e.g. "Pushed to remote"), no file path is needed
-  - **Affected URLs**: output `✏️✏️AFFECTED URLS✏️✏️` followed by only the page URLs that were affected by changes in this response (the ones that would have the `✏️` indicator). **Always present** — when no pages were affected, output the header followed by a placeholder: `> *No URL pages were affected in this response*`. See the Unaffected/Affected URLs bullet below for full rules on the affected/unaffected split
+  - **Affected URLs**: output `🔗✏️AFFECTED URLS✏️🔗` followed by only the page URLs that were affected by changes in this response (the ones that would have the `✏️` indicator). **Always present** — when no pages were affected, output the header followed by a placeholder: `> *No URL pages were affected in this response*`. See the Unaffected/Affected URLs bullet below for full rules on the affected/unaffected split
   - **Estimate calibration** (conditional): if ACTUAL TOTAL COMPLETION TIME differs from the estimate by >2 minutes, output `🔧🔧ESTIMATE CALIBRATED🔧🔧` followed by what was adjusted. This is the **one exception** to the "no tool calls in the end-of-response block" rule — the calibration edits CLAUDE.md's heuristic values via an Edit tool call between AFFECTED URLS and ACTUAL TOTAL COMPLETION TIME. See the Estimate calibration bullet above for the full procedure
 - **Unaffected/Affected URLs (split into two sections)**: the URLs are split into an **unaffected** group and an **affected** group, appearing in different positions within the end-of-response block. **Both are skipped when the response ends with RESEARCH COMPLETE or AWAITING USER RESPONSE.** Rules:
   - **Unaffected group** — `🔗🔗UNAFFECTED URLS (label)🔗🔗`: appears immediately after the divider, **before AGENTS USED**. Contains reference URLs and all **unaffected** page URLs (pages without `✏️`). **Always present** when the response ends with CODING COMPLETE — never skipped. When all pages are affected (no unaffected page URLs to show), the reference URLs still appear followed by a placeholder after the reference URL divider: `> *No URL pages were unaffected in this response*`
-  - **Affected group** — `✏️✏️AFFECTED URLS✏️✏️`: appears **after SUMMARY**. Contains only the page URLs that were affected by changes in this response (the ones with the `✏️` indicator). **Always present** — when no pages were affected (e.g. "No site changes" responses), output the header followed by a placeholder: `> *No URL pages were affected in this response*`
+  - **Affected group** — `🔗✏️AFFECTED URLS✏️🔗`: appears **after SUMMARY**. Contains only the page URLs that were affected by changes in this response (the ones with the `✏️` indicator). **Always present** — when no pages were affected (e.g. "No site changes" responses), output the header followed by a placeholder: `> *No URL pages were affected in this response*`
   - **Contextual label**: the `🔗🔗UNAFFECTED URLS (label)🔗🔗` heading includes a parenthetical label that describes what triggered the links in this response. Use the most specific applicable label:
     - `First interaction` — first response of the session
     - `Initialization` — after an `initialize` command
@@ -744,10 +744,10 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
     - **When the live site is deployed** (non-template repos): label on its own line (no `>`), then the URL in a blockquote on the next line — e.g. `` `Homepage` `` followed by `> [index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) →` [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/)
     - **When no live site is deployed** (template repo): label on its own line (no `>`), then a non-clickable note in a blockquote — e.g. `` `Homepage` `` followed by `> [index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)`
     - For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`): `` `My Project | Homepage` `` followed by `> [my-project/index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/my-project/index.html) →` [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/)
-  - **Affected page URLs** (in the `✏️✏️AFFECTED URLS✏️✏️` section): list only pages affected by changes in this response — either directly (the HTML file itself was edited) or indirectly (a `.gs`/`.gas` file whose output is embedded in the page was edited, or a resource the page depends on was changed). Prepend `✏️` inside the backtick-wrapped label. Examples: `` `✏️ Homepage` `` on its own line (no `>`), then `> [index.html](...) →` [ORG.github.io/REPO/](https://ORG.github.io/REPO/) on the next line. For subpages: `` `✏️ My Project | Homepage` `` followed by the URL line in `>`. The `✏️` inside the red/accent label is unmissable — it combines the accent color with the emoji for maximum visibility. **Indirect affects**: use the GAS Projects table to determine which embedding page a `.gs` file maps to — if a `.gs` file was edited, its registered embedding page gets the indicator even though the HTML file wasn't touched, because the user-facing experience of that page changed
+  - **Affected page URLs** (in the `🔗✏️AFFECTED URLS✏️🔗` section): list only pages affected by changes in this response — either directly (the HTML file itself was edited) or indirectly (a `.gs`/`.gas` file whose output is embedded in the page was edited, or a resource the page depends on was changed). Prepend `✏️` inside the backtick-wrapped label. Examples: `` `✏️ Homepage` `` on its own line (no `>`), then `> [index.html](...) →` [ORG.github.io/REPO/](https://ORG.github.io/REPO/) on the next line. For subpages: `` `✏️ My Project | Homepage` `` followed by the URL line in `>`. The `✏️` inside the red/accent label is unmissable — it combines the accent color with the emoji for maximum visibility. **Indirect affects**: use the GAS Projects table to determine which embedding page a `.gs` file maps to — if a `.gs` file was edited, its registered embedding page gets the indicator even though the HTML file wasn't touched, because the user-facing experience of that page changed
   - **`.gs` files**: if a `.gs` file was edited, also note its associated embedding HTML page (from the GAS Projects table) next to the page URL in the affected group. If the `.gs` file has no registered embedding page, note it separately
   - **File path links**: every file path shown in either section must be a clickable markdown link to the file's blob-view on GitHub. The URL uses the full path: `https://github.com/ORG/REPO/blob/main/FULL_PATH`. The **link text** depends on the file's location within `live-site-pages/`: for files directly in `live-site-pages/` (no subdirectory), show just the filename (e.g. `index.html`); for files in a subdirectory, show the **containing folder + filename** (e.g. `my-project/index.html`). This gives the user enough context to identify which page the link refers to without showing the full repo path. Resolve `ORG` and `REPO` from `git remote -v` (using the actual values, e.g. `ShadowAISolutions/htmltemplateautoupdate` on the template repo). Examples: `[index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html)`, `[my-project/index.html](https://github.com/MyOrg/my-repo/blob/main/live-site-pages/my-project/index.html)`, `[Code.gs](https://github.com/MyOrg/my-repo/blob/main/googleAppsScripts/MyProject/Code.gs)`
-  - **Blockquote formatting**: URL lines use a single-level blockquote (`>` prefix). Labels do NOT use a blockquote prefix — they sit at the top level so the URL appears visually indented beneath them. A blank line separates each label/URL pair to reset the blockquote context. Both `🔗🔗UNAFFECTED URLS (label)🔗🔗` and `✏️✏️AFFECTED URLS✏️✏️` headings are NOT blockquoted
+  - **Blockquote formatting**: URL lines use a single-level blockquote (`>` prefix). Labels do NOT use a blockquote prefix — they sit at the top level so the URL appears visually indented beneath them. A blank line separates each label/URL pair to reset the blockquote context. Both `🔗🔗UNAFFECTED URLS (label)🔗🔗` and `🔗✏️AFFECTED URLS✏️🔗` headings are NOT blockquoted
   - **CLI red/accent text technique**: backtick-wrapped text renders with red/accent styling in the Claude Code CLI. Labels use this at the top level (no `>`) — they still get the red treatment. *Full reference: see CLI Accent Styling Reference section for what works, what doesn't, and patterns for other uses*
   - **Format**: each entry is a two-line pair separated by blank lines. Line 1: backtick-wrapped label at top level (no `>`, red/accent in CLI). Line 2: the URL in a blockquote (`>`). In the affected group: `` `✏️ Homepage` `` then `> [index.html](https://github.com/.../blob/main/live-site-pages/index.html) →` [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/). In the unaffected group: `` `Homepage` `` then `> [index.html](https://github.com/.../blob/main/live-site-pages/index.html) → ...`. For subpages in the affected group: `` `✏️ My Project | Homepage` `` then `> [my-project/index.html](https://github.com/.../blob/main/live-site-pages/my-project/index.html) →` [ORG.github.io/REPO/my-project/](https://ORG.github.io/REPO/my-project/)
   - Both sections are part of the end-of-response block — they do **not** get timestamps or `⏱️` annotations
@@ -789,7 +789,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 | `📜📜COMMIT LOG📜📜` | Commits were made | After FILES CHANGED (skip if no commits made) | — | — |
 | `🔖🔖WORTH NOTING🔖🔖` | Something deserves attention | After COMMIT LOG (skip if nothing worth noting) | — | — |
 | `📝📝SUMMARY📝📝` | Changes were made in the response | After WORTH NOTING | — | — |
-| `✏️✏️AFFECTED URLS✏️✏️` | Every response with CODING COMPLETE | After SUMMARY — affected pages, or placeholder if none (never skipped) | — | — |
+| `🔗✏️AFFECTED URLS✏️🔗` | Every response with CODING COMPLETE | After SUMMARY — affected pages, or placeholder if none (never skipped) | — | — |
 | `🔧🔧ESTIMATE CALIBRATED🔧🔧` | Estimate missed by >2 min | After AFFECTED URLS (or SUMMARY), before PLAN EXECUTION TIME / ACTUAL TOTAL COMPLETION TIME (skip if ≤2 min gap) | — | — |
 | `⏳⏳PLAN EXECUTION TIME: Xm Ys (estimated Xm)⏳⏳` | Plan approval flow was used | After AFFECTED URLS (or ESTIMATE CALIBRATED), before ACTUAL TOTAL COMPLETION TIME (skip if no plan approval) | — | Computed from post-approval CODING START → closing marker |
 | `⏳⏳ACTUAL TOTAL COMPLETION TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE or RESEARCH COMPLETE | Immediately before CODING COMPLETE (coding) or RESEARCH COMPLETE (research) | — | Computed from opening marker → closing marker |
@@ -837,7 +837,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 📝📝SUMMARY📝📝
   - Updated X in `file.md` (edited)
   - Created `new-file.js` (created)
-✏️✏️AFFECTED URLS✏️✏️
+🔗✏️AFFECTED URLS✏️🔗
 
 `✏️ Homepage`
 > [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
@@ -888,7 +888,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   `file.md` (edited)
 📝📝SUMMARY📝📝
   - Updated X in `file.md`
-✏️✏️AFFECTED URLS✏️✏️
+🔗✏️AFFECTED URLS✏️🔗
 > *No URL pages were affected in this response*
 ⏳⏳PLAN EXECUTION TIME: 1m 15s (estimated 2m)⏳⏳
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 4m 30s (estimated 5m)⏳⏳
@@ -933,7 +933,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 📝📝SUMMARY📝📝
   - Updated X in `file.md`
   - Pushed to remote
-✏️✏️AFFECTED URLS✏️✏️
+🔗✏️AFFECTED URLS✏️🔗
 > *No URL pages were affected in this response*
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 2m 9s (estimated 3m)⏳⏳
 ✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
@@ -986,7 +986,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   `file.md` (edited)
 📝📝SUMMARY📝📝
   - Updated X in `file.md`
-✏️✏️AFFECTED URLS✏️✏️
+🔗✏️AFFECTED URLS✏️🔗
 > *No URL pages were affected in this response*
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 15s (estimated 3m)⏳⏳
 ✅✅CODING COMPLETE✅✅ [01:18:16 AM EST 2026-01-15]
