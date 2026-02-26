@@ -575,11 +575,23 @@ The Claude Code CLI renders certain markdown constructs with colored/accented st
 - Spaces between characters break the detection — `─ ─ ─` renders as plain white even outside blockquotes
 - This is a **Claude Code CLI rendering behavior** — these styles do not appear on GitHub, VS Code markdown preview, or other markdown renderers
 
+### Other useful formatting constructs
+These don't trigger color styling, but provide distinct visual structure in the CLI that can be used intentionally:
+
+| Construct | Visual effect | Use case | Example |
+|-----------|--------------|----------|---------|
+| Nested blockquote levels (`>>`, `>>>`) | Progressively indented with stacked left borders | Visual hierarchy, sub-grouping within blockquoted content | `>> indented sub-item` |
+| Markdown table inside blockquote | Renders as a formatted table with borders inside the blockquote | Structured data display within blockquoted sections | `> \| Col A \| Col B \|` |
+| Unicode block characters (`▓`, `░`, `▒`, `■`, `◆`) | Dense visual blocks — distinct texture from standard text | Progress bars, visual separators, density indicators | `> ▓▓▓▓▓░░░░░` |
+
 ### Recommended patterns
 - **Labels/headers in blockquotes**: `` > `Label Text` `` — ideal for creating visually distinct section headers within blockquoted content (used in Live URLs)
 - **Highlighted values**: `` > `important value` `` — draw attention to specific values within blockquoted output
 - **Status indicators**: `` > `✏️ Modified` `` or `` > `✅ Complete` `` — combine emoji with accent styling for maximum visibility
-- **General rule**: whenever you need text to visually "pop" inside a blockquote, wrap it in backticks
+- **Sub-grouping**: `>>` nested blockquotes — create visual hierarchy within a blockquoted block (e.g. a sub-note under a URL entry)
+- **Structured data**: markdown tables inside blockquotes — present tabular information with the blockquote's left-border context
+- **Visual weight/density**: unicode block chars (`▓░▒■◆`) — create visual separators or indicators with more presence than standard text
+- **General rule**: whenever you need text to visually "pop" inside a blockquote, wrap it in backticks. For structural separation, use nested blockquotes or tables
 
 ### Where this is currently used
 - **Live URLs section** — all labels (`Template Repo`, `Repository`, `Homepage`, `✏️ Homepage`, etc.) use backtick-wrapped text on their own line to create red "headers" above each URL entry
