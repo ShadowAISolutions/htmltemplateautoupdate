@@ -23,9 +23,14 @@
 #   7. Direct pushes to main skip merge and just deploy
 #   8. On every main push, sweep and delete any stale claude/* branches
 #      that are already merged (self-healing cleanup)
-#   9. Brand-new repos (< 10 min old) skip deploy and cleanup — template
-#      creation push events are not user actions
+#   9. Direct-to-main deploys require initialization (IS_TEMPLATE_REPO = No)
+#      — prevents the template creation push from triggering a deploy
 #  10. SHA update commits use [skip ci] to prevent cascading workflow runs
+#
+# DO NOT use a repo-age guard (e.g. "skip if repo < 10 min old") to suppress
+# template creation deploys. It's a timing-based band-aid that breaks if the
+# workflow runs slowly or if the user acts quickly. The initialization-state
+# check (IS_TEMPLATE_REPO = No) is deterministic and correct by design.
 #
 # HOW TO ADD A NEW GAS PROJECT:
 #
@@ -96,11 +101,15 @@ jobs:
     outputs:
       pages-changed: ${{ steps.check-changes.outputs.pages-changed }}
     steps:
+      # GITHUB_TOKEN cannot push changes to .github/workflows/ files — GitHub
+      # requires the 'workflows' scope which only PATs have. If the repo has a
+      # PAT stored as WORKFLOW_PAT, use it; otherwise fall back to GITHUB_TOKEN
+      # (which works for all pushes except workflow file changes).
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.WORKFLOW_PAT || secrets.GITHUB_TOKEN }}
 
       - name: Guard against stale inherited branches
         id: guard
@@ -346,7 +355,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       is-template: ${{ steps.check.outputs.is-template }}
-      is-new-repo: ${{ steps.repo-age.outputs.is-new-repo }}
+      is-initialized: ${{ steps.check.outputs.is-initialized }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -363,32 +372,30 @@ jobs:
           else
             echo "is-template=false" >> "$GITHUB_OUTPUT"
           fi
-      - name: Check repo age
-        id: repo-age
-        run: |
-          # Brand-new repos (< 10 minutes old) should not deploy or run
-          # cleanup — any push events are from template creation, not user actions.
-          CREATED_AT=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "${{ github.api_url }}/repos/${{ github.repository }}" | jq -r '.created_at')
-          if [ -n "$CREATED_AT" ] && [ "$CREATED_AT" != "null" ]; then
-            REPO_CREATED_EPOCH=$(date -d "$CREATED_AT" +%s 2>/dev/null || echo "0")
-            NOW_EPOCH=$(date +%s)
-            REPO_AGE=$((NOW_EPOCH - REPO_CREATED_EPOCH))
-            if [ "$REPO_AGE" -lt 600 ]; then
-              echo "::notice::Repo is only ${REPO_AGE}s old — flagging as new repo"
-              echo "is-new-repo=true" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
+          # Initialization check: IS_TEMPLATE_REPO = "No" means the repo has
+          # been initialized via `initialize`. Uninitialized forks still have the
+          # template repo name here. This gates direct-to-main deploys — only
+          # initialized repos should auto-deploy on main pushes. The initialization
+          # commit itself deploys via the auto-merge success path (pages-changed),
+          # not the skipped path, so this doesn't block first deploy.
+          if [ "$TEMPLATE_VALUE" = "No" ]; then
+            echo "is-initialized=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is-initialized=false" >> "$GITHUB_OUTPUT"
           fi
-          echo "is-new-repo=false" >> "$GITHUB_OUTPUT"
 
+  # Deploy condition explained:
+  #   - is-template: skip deploy on the template repo itself
+  #   - auto-merge skipped (push to main): only deploy if initialized
+  #     (IS_TEMPLATE_REPO = No). This blocks the initial template creation
+  #     push from deploying before the user has set up Pages
+  #   - auto-merge success: deploy if pages changed (includes initialization
+  #     commit which sets IS_TEMPLATE_REPO = No)
   deploy:
     if: >-
       needs.check-template.outputs.is-template != 'true' &&
-      needs.check-template.outputs.is-new-repo != 'true' &&
       always() &&
-      (needs.auto-merge.result == 'skipped' ||
+      ((needs.auto-merge.result == 'skipped' && needs.check-template.outputs.is-initialized == 'true') ||
        (needs.auto-merge.result == 'success' && needs.auto-merge.outputs.pages-changed == 'true'))
     needs: [auto-merge, check-template]
     environment:
