@@ -186,6 +186,23 @@ else
 fi
 echo ""
 
+# ── PHASE 2b: ENABLE MAIN PUSH TRIGGER IN WORKFLOW ──────────────────────────
+# The template ships without 'main' in the push trigger to prevent template
+# copies from firing the workflow on their initial commit. Now that the repo
+# is initialized (IS_TEMPLATE_REPO = No), add 'main' back so direct-to-main
+# pushes auto-deploy.
+echo "[Phase 2b] Enabling main branch push trigger in workflow..."
+
+WORKFLOW_FILE="$REPO_ROOT/.github/workflows/auto-merge-claude.yml"
+if [ -f "$WORKFLOW_FILE" ]; then
+  # Insert "      - 'main'" after the "      - 'claude/**'" line
+  sed -i "/^      - 'claude\/\*\*'/a\\      - 'main'" "$WORKFLOW_FILE"
+  echo "  Added 'main' to push trigger branches."
+else
+  echo "  WARN: Workflow file not found, skipping."
+fi
+echo ""
+
 # ── PHASE 3: STATUS.MD PLACEHOLDER ───────────────────────────────────────────
 echo "[Phase 3] Replacing STATUS.md deployment placeholder..."
 
