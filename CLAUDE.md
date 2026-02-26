@@ -255,7 +255,7 @@ When adding, moving, or reorganizing `##` sections in this file, follow the atte
 - Do NOT bump VERSION if the commit doesn't touch the `.gs` file
 
 ### GAS Projects
-Each GAS project has a code file and a corresponding embedding page. Register them in the table below as you add them.
+Each GAS project has a code file and a corresponding embedding page. Register them in the table below as you add them. *For step-by-step instructions on adding a new GAS deploy step to the workflow, see the "HOW TO ADD A NEW GAS PROJECT" comment block at the top of `.github/workflows/auto-merge-claude.yml`.*
 
 | Project | Code File | Embedding Page |
 |---------|-----------|----------------|
