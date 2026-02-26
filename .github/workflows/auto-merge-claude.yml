@@ -23,8 +23,9 @@
 #   7. Direct pushes to main skip merge and just deploy
 #   8. On every main push, sweep and delete any stale claude/* branches
 #      that are already merged (self-healing cleanup)
-#   9. Direct-to-main deploys require initialization (IS_TEMPLATE_REPO = No)
-#      — prevents the template creation push from triggering a deploy
+#   9. ALL jobs (except check-template) require initialization
+#      (IS_TEMPLATE_REPO = No) — on an uninitialized repo (e.g. fresh
+#      template copy), only check-template runs; everything else is skipped
 #  10. SHA update commits use [skip ci] to prevent cascading workflow runs
 #
 # DO NOT use a repo-age guard (e.g. "skip if repo < 10 min old") to suppress
@@ -96,7 +97,10 @@ concurrency:
 
 jobs:
   auto-merge:
-    if: github.ref != 'refs/heads/main'
+    if: >-
+      github.ref != 'refs/heads/main' &&
+      needs.check-template.outputs.is-initialized == 'true'
+    needs: [check-template]
     runs-on: ubuntu-latest
     outputs:
       pages-changed: ${{ steps.check-changes.outputs.pages-changed }}
@@ -320,7 +324,7 @@ jobs:
   cleanup-branches:
     if: >-
       github.ref == 'refs/heads/main' &&
-      needs.check-template.outputs.is-new-repo != 'true'
+      needs.check-template.outputs.is-initialized == 'true'
     needs: [check-template]
     runs-on: ubuntu-latest
     steps:
@@ -386,9 +390,10 @@ jobs:
 
   # Deploy condition explained:
   #   - is-template: skip deploy on the template repo itself
-  #   - auto-merge skipped (push to main): only deploy if initialized
-  #     (IS_TEMPLATE_REPO = No). This blocks the initial template creation
-  #     push from deploying before the user has set up Pages
+  #   - auto-merge skipped (push to main): requires is-initialized (defense
+  #     in depth — auto-merge is also gated on is-initialized, so it can
+  #     only be "skipped" on an initialized repo's main push or a truly
+  #     skipped uninitialized push where this gate blocks anyway)
   #   - auto-merge success: deploy if pages changed (includes initialization
   #     commit which sets IS_TEMPLATE_REPO = No)
   deploy:
