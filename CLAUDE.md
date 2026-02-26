@@ -729,21 +729,21 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
     - `No site changes` — response made no changes to live-site HTML or `.gs` files (e.g. only edited `.md`, `.yml`, workflow files, or made no file changes at all)
     - Labels can be combined when multiple apply (e.g. `First interaction · Initialization`)
   - **Reference URLs** (always shown, every response):
-    - `` `Template Repo` `` on its own line (backtick-wrapped — renders as red/accent label in the CLI), followed by the URL on the next line: [github.com/ShadowAISolutions/htmltemplateautoupdate](https://github.com/ShadowAISolutions/htmltemplateautoupdate) (always this fixed URL — it's the origin template). The visible text omits `https://` — the markdown link provides the full URL
-    - `` `Repository` `` on its own line, followed by the URL on the next line: [github.com/YOUR_ORG_NAME/YOUR_REPO_NAME](https://github.com/YOUR_ORG_NAME/YOUR_REPO_NAME)
-    - **On the template repo**, the Template and Repository URLs are identical — merge them into a single label: `` `Template & Repository` `` on its own line, followed by the URL on the next line: [github.com/ShadowAISolutions/htmltemplateautoupdate](https://github.com/ShadowAISolutions/htmltemplateautoupdate)
+    - `` `Template Repo` `` on its own line (backtick-wrapped — renders as red/accent label in the CLI, no `>` prefix), followed by the URL on the next line in a blockquote (`>`): [github.com/ShadowAISolutions/htmltemplateautoupdate](https://github.com/ShadowAISolutions/htmltemplateautoupdate) (always this fixed URL — it's the origin template). The visible text omits `https://` — the markdown link provides the full URL
+    - `` `Repository` `` on its own line (no `>` prefix), followed by the URL on the next line in a blockquote (`>`)
+    - **On the template repo**, the Template and Repository URLs are identical — merge them into a single label: `` `Template & Repository` `` on its own line, followed by the URL in a blockquote on the next line
     - **Display format for all URLs** — visible text never includes `https://`. The full URL is always preserved in the markdown link target. Format: `[domain/path](https://domain/path)`. This applies to reference URLs, live site URLs, and all other URLs in the Live URLs section
-    - **Label-as-divider format** — every entry (reference URLs and page URLs) uses a two-line format: backtick-wrapped label on its own line (renders as red/accent text in the CLI), followed by the URL on the next line. The red labels act as natural visual dividers between entries — no separate divider lines are needed. This keeps the block clean while providing clear visual separation
-  - **Page URLs** (always shown, every response): list every page in `live-site-pages/` using the label-on-own-line format. Use `` `Homepage` `` as the label for the root `index.html`, or `` `Project Name | Homepage` `` for subdirectory pages (e.g. `` `My Project | Homepage` ``). The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`htmltemplateautoupdate` values on the template repo). Rules:
-    - **When the live site is deployed** (non-template repos): label on its own line, then the URL on the next line — e.g. `` > `Homepage` `` followed by `> [index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) →` [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/)
-    - **When no live site is deployed** (template repo): label on its own line, then a non-clickable note — e.g. `` > `Homepage` `` followed by `> [index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)`
-    - For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`): `` > `My Project | Homepage` `` followed by `> [my-project/index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/my-project/index.html) →` [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/)
+    - **Label-URL pair format** — every entry (reference URLs and page URLs) uses a two-line format separated by blank lines between pairs: (1) backtick-wrapped label on its own line with no blockquote prefix (renders as red/accent text in the CLI), (2) the URL on the next line inside a single-level blockquote (`>`). A blank line between each pair resets the blockquote context, so every label starts fresh at the top level with its URL visually indented beneath it. The red labels act as natural visual dividers between entries
+  - **Page URLs** (always shown, every response): list every page in `live-site-pages/` using the label-URL pair format. Use `` `Homepage` `` as the label for the root `index.html`, or `` `Project Name | Homepage` `` for subdirectory pages (e.g. `` `My Project | Homepage` ``). Labels have no `>` prefix; URLs use `>`. The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`htmltemplateautoupdate` values on the template repo). Rules:
+    - **When the live site is deployed** (non-template repos): label on its own line (no `>`), then the URL in a blockquote on the next line — e.g. `` `Homepage` `` followed by `> [index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) →` [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/)
+    - **When no live site is deployed** (template repo): label on its own line (no `>`), then a non-clickable note in a blockquote — e.g. `` `Homepage` `` followed by `> [index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)`
+    - For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`): `` `My Project | Homepage` `` followed by `> [my-project/index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/my-project/index.html) →` [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/)
   - **`.gs` files**: if a `.gs` file was edited, also note its associated embedding HTML page (from the GAS Projects table) next to the page URL. If the `.gs` file has no registered embedding page, note it separately
-  - **Highlight affected pages**: when a page was affected by changes in this response — either directly (the HTML file itself was edited) or indirectly (a `.gs`/`.gas` file whose output is embedded in the page was edited, or a resource the page depends on was changed) — prepend `✏️` inside the backtick-wrapped label. Examples: `` > `✏️ Homepage` `` on its own line, then `> [index.html](...) →` [ORG.github.io/REPO/](https://ORG.github.io/REPO/) on the next line. For subpages: `` > `✏️ My Project | Homepage` `` followed by the URL line. Pages not affected by the response have no `✏️` prefix in their label (e.g. `` > `Homepage` ``). The `✏️` inside the red/accent label is unmissable — it combines the accent color with the emoji for maximum visibility. **Indirect affects**: use the GAS Projects table to determine which embedding page a `.gs` file maps to — if a `.gs` file was edited, its registered embedding page gets the indicator even though the HTML file wasn't touched, because the user-facing experience of that page changed
+  - **Highlight affected pages**: when a page was affected by changes in this response — either directly (the HTML file itself was edited) or indirectly (a `.gs`/`.gas` file whose output is embedded in the page was edited, or a resource the page depends on was changed) — prepend `✏️` inside the backtick-wrapped label. Examples: `` `✏️ Homepage` `` on its own line (no `>`), then `> [index.html](...) →` [ORG.github.io/REPO/](https://ORG.github.io/REPO/) on the next line. For subpages: `` `✏️ My Project | Homepage` `` followed by the URL line in `>`. Pages not affected by the response have no `✏️` prefix in their label (e.g. `` `Homepage` ``). The `✏️` inside the red/accent label is unmissable — it combines the accent color with the emoji for maximum visibility. **Indirect affects**: use the GAS Projects table to determine which embedding page a `.gs` file maps to — if a `.gs` file was edited, its registered embedding page gets the indicator even though the HTML file wasn't touched, because the user-facing experience of that page changed
   - **File path links**: every file path shown in the Live URLs section must be a clickable markdown link to the file's blob-view on GitHub. The URL uses the full path: `https://github.com/ORG/REPO/blob/main/FULL_PATH`. The **link text** depends on the file's location within `live-site-pages/`: for files directly in `live-site-pages/` (no subdirectory), show just the filename (e.g. `index.html`); for files in a subdirectory, show the **containing folder + filename** (e.g. `my-project/index.html`). This gives the user enough context to identify which page the link refers to without showing the full repo path. Resolve `ORG` and `REPO` from `git remote -v` (using the actual values, e.g. `ShadowAISolutions/htmltemplateautoupdate` on the template repo). Examples: `[index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html)`, `[my-project/index.html](https://github.com/MyOrg/my-repo/blob/main/live-site-pages/my-project/index.html)`, `[Code.gs](https://github.com/MyOrg/my-repo/blob/main/googleAppsScripts/MyProject/Code.gs)`
-  - **Blockquote formatting**: all URL lines below the `🔗🔗LIVE URLS (label)🔗🔗` heading must be wrapped in a blockquote (`>` prefix on every line). This visually sets the URLs apart from the rest of the end-of-response block with a left border/indent. The `🔗🔗LIVE URLS (label)🔗🔗` heading itself is NOT blockquoted — only the URL content lines beneath it
-  - **CLI red/accent text technique**: backtick-wrapped text inside blockquotes renders with red/accent styling in the Claude Code CLI. This is used for all labels in the Live URLs section — the red labels act as natural visual dividers between entries. *Full reference: see CLI Accent Styling Reference section for what works, what doesn't, and patterns for other uses*
-  - **Format**: each entry uses two lines, both prefixed with `>`. Line 1: backtick-wrapped label (red/accent in CLI). Line 2: the URL. When affected: `` > `✏️ Homepage` `` then `> [index.html](https://github.com/.../blob/main/live-site-pages/index.html) →` [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/). When not affected: `` > `Homepage` `` then `> [index.html](https://github.com/.../blob/main/live-site-pages/index.html) → ...`. For subpages when affected: `` > `✏️ My Project | Homepage` `` then `> [my-project/index.html](https://github.com/.../blob/main/live-site-pages/my-project/index.html) →` [ORG.github.io/REPO/my-project/](https://ORG.github.io/REPO/my-project/)
+  - **Blockquote formatting**: URL lines use a single-level blockquote (`>` prefix). Labels do NOT use a blockquote prefix — they sit at the top level so the URL appears visually indented beneath them. A blank line separates each label/URL pair to reset the blockquote context. The `🔗🔗LIVE URLS (label)🔗🔗` heading itself is NOT blockquoted
+  - **CLI red/accent text technique**: backtick-wrapped text renders with red/accent styling in the Claude Code CLI. Labels use this at the top level (no `>`) — they still get the red treatment. *Full reference: see CLI Accent Styling Reference section for what works, what doesn't, and patterns for other uses*
+  - **Format**: each entry is a two-line pair separated by blank lines. Line 1: backtick-wrapped label at top level (no `>`, red/accent in CLI). Line 2: the URL in a blockquote (`>`). When affected: `` `✏️ Homepage` `` then `> [index.html](https://github.com/.../blob/main/live-site-pages/index.html) →` [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/). When not affected: `` `Homepage` `` then `> [index.html](https://github.com/.../blob/main/live-site-pages/index.html) → ...`. For subpages when affected: `` `✏️ My Project | Homepage` `` then `> [my-project/index.html](https://github.com/.../blob/main/live-site-pages/my-project/index.html) →` [ORG.github.io/REPO/my-project/](https://ORG.github.io/REPO/my-project/)
   - This section is part of the end-of-response block — it does **not** get a timestamp or `⏱️` annotation
 - **Last output**: every response must end with exactly one of the following closing markers on its own line — which one depends on the response type:
   - `✅✅CODING COMPLETE✅✅` — the response made code changes, file edits, commits, or pushes (i.e. any non-trivial action beyond pure research)
@@ -823,10 +823,13 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - Created `new-file.js` (created)
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 14s (estimated 4m)⏳⏳
 🔗🔗LIVE URLS (First interaction · Edited HTML)🔗🔗
-> `Template & Repository`
+
+`Template & Repository`
 > github.com/ShadowAISolutions/htmltemplateautoupdate
-> `✏️ Homepage`
+
+`✏️ Homepage`
 > [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+
 ✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
 ```
 
@@ -897,10 +900,13 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - Pushed to remote
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 2m 9s (estimated 3m)⏳⏳
 🔗🔗LIVE URLS (No site changes)🔗🔗
-> `Template & Repository`
+
+`Template & Repository`
 > github.com/ShadowAISolutions/htmltemplateautoupdate
-> `Homepage`
+
+`Homepage`
 > [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+
 ✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
 ```
 
@@ -943,10 +949,13 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - Updated X in `file.md`
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 15s (estimated 3m)⏳⏳
 🔗🔗LIVE URLS (No site changes)🔗🔗
-> `Template & Repository`
+
+`Template & Repository`
 > github.com/ShadowAISolutions/htmltemplateautoupdate
-> `Homepage`
+
+`Homepage`
 > [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+
 ✅✅CODING COMPLETE✅✅ [01:18:16 AM EST 2026-01-15]
 ```
 
