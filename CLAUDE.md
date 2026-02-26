@@ -688,7 +688,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 
 > **Feature toggle gate** — before emitting any bookend, check the Template Variables table:
 > - If `CHAT_BOOKENDS` = `Off`: **skip all mid-response bookends** — CODING PLAN, CODING START, RESEARCH START, RESEARCHING, NEXT PHASE, CHECKLIST, BLOCKED, VERIFYING, CHANGES PUSHED, AWAITING HOOK, HOOK FEEDBACK, ESTIMATED TIME, REVISED ESTIMATED TIME, ACTUAL PLANNING TIME, PLAN APPROVED, and all `⏱️` duration annotations. Proceed directly to the work. The hook anticipation logic (running the three git commands) still executes — only its bookend output is suppressed
-> - If `END_OF_RESPONSE_BLOCK` = `Off`: **skip the entire end-of-response block** — no `━━━` divider, no AGENTS USED, FILES CHANGED, COMMIT LOG, WORTH NOTING, SUMMARY, ESTIMATE CALIBRATED, PLAN EXECUTION TIME, ACTUAL TOTAL COMPLETION TIME, LIVE URLS, or closing marker (CODING COMPLETE / RESEARCH COMPLETE)
+> - If `END_OF_RESPONSE_BLOCK` = `Off`: **skip the entire end-of-response block** — no `━━━` divider, no AGENTS USED, FILES CHANGED, COMMIT LOG, WORTH NOTING, LIVE URLS, SUMMARY, ESTIMATE CALIBRATED, PLAN EXECUTION TIME, ACTUAL TOTAL COMPLETION TIME, or closing marker (CODING COMPLETE / RESEARCH COMPLETE)
 > - Both variables are independent — setting one to `Off` does not affect the other. When both are `Off`, the response contains only work output with no bookends at all
 > - When both are `On` (the default), all rules below apply as written
 
@@ -719,10 +719,10 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - **Files changed**: output `📁📁FILES CHANGED📁📁` followed by a list of every file modified in the response, each tagged with the type of change: `(edited)`, `(created)`, or `(deleted)`. This gives a clean at-a-glance file manifest. Skip if no files were changed in the response
   - **Commit log**: output `🔗🔗COMMIT LOG🔗🔗` followed by a list of every commit made in the response, formatted as `SHORT_SHA — commit message`. Skip if no commits were made in the response
   - **Worth noting**: output `🔖🔖WORTH NOTING🔖🔖` followed by a list of anything that deserves attention but isn't a blocker (e.g. "Push-once already used — did not push again", "Template repo guard skipped version bumps", "Pre-commit hook modified files — re-staged"). Skip if there are nothing worth noting
+  - **Live URLs**: output `🔗🔗LIVE URLS (label)🔗🔗` with a contextual label, followed by all live-site links. **Always present** in every response that ends with CODING COMPLETE — never skipped. See the Live URLs bullet below for full rules on labeling, link content, and formatting
   - **Summary of changes**: output `📝📝SUMMARY📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. Each bullet must indicate which file(s) were edited (e.g. "Updated build-version in `live-site-pages/index.html`"). If a bullet describes a non-file action (e.g. "Pushed to remote"), no file path is needed
   - **Estimate calibration** (conditional): if ACTUAL TOTAL COMPLETION TIME differs from the estimate by >2 minutes, output `🔧🔧ESTIMATE CALIBRATED🔧🔧` followed by what was adjusted. This is the **one exception** to the "no tool calls in the end-of-response block" rule — the calibration edits CLAUDE.md's heuristic values via an Edit tool call between SUMMARY and ACTUAL TOTAL COMPLETION TIME. See the Estimate calibration bullet above for the full procedure
-  - **Live URLs**: output `🔗🔗LIVE URLS (label)🔗🔗` with a contextual label, followed by all live-site links. **Always present** in every response that ends with CODING COMPLETE — never skipped. See the Live URLs bullet below for full rules on labeling, link content, and formatting
-- **Live URLs**: immediately before `✅✅CODING COMPLETE✅✅` (after ACTUAL TOTAL COMPLETION TIME), output `🔗🔗LIVE URLS (label)🔗🔗` followed by all live-site links. **Always present when the response ends with CODING COMPLETE** — never skipped for those responses, regardless of what was edited. **Skipped when the response ends with RESEARCH COMPLETE or AWAITING USER RESPONSE.** This gives the user one-click access to the live site on every coding response. Rules:
+- **Live URLs**: after WORTH NOTING (or COMMIT LOG if nothing worth noting) and before SUMMARY, output `🔗🔗LIVE URLS (label)🔗🔗` followed by all live-site links. **Always present when the response ends with CODING COMPLETE** — never skipped for those responses, regardless of what was edited. **Skipped when the response ends with RESEARCH COMPLETE or AWAITING USER RESPONSE.** This gives the user one-click access to the live site on every coding response. Rules:
   - **Always show all links**: every CODING COMPLETE response includes the full set of reference URLs and all `live-site-pages/` page URLs. This is not conditional — even responses that only edit `.md` files still show the complete link set
   - **Contextual label**: the heading includes a parenthetical label that describes what triggered the links in this response. Use the most specific applicable label:
     - `First interaction` — first response of the session
@@ -751,7 +751,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - This section is part of the end-of-response block — it does **not** get a timestamp or `⏱️` annotation
 - **Last output**: every response must end with exactly one of the following closing markers on its own line — which one depends on the response type:
   - `✅✅CODING COMPLETE✅✅` — the response made code changes, file edits, commits, or pushes (i.e. any non-trivial action beyond pure research)
-  - `🔬🔬RESEARCH COMPLETE🔬🔬` — the response was purely informational — answered a question, explained code, researched a topic, or provided guidance with **no** file changes, commits, or pushes. When this ending is used, the full end-of-response block (AGENTS USED through LIVE URLS) is **skipped** — write only RESEARCH COMPLETE as the final line (with its timestamp). The ESTIMATED TIME and ACTUAL TOTAL COMPLETION TIME rules still apply: output ESTIMATED TIME before RESEARCH START as usual, and output ACTUAL TOTAL COMPLETION TIME immediately before RESEARCH COMPLETE
+  - `🔬🔬RESEARCH COMPLETE🔬🔬` — the response was purely informational — answered a question, explained code, researched a topic, or provided guidance with **no** file changes, commits, or pushes. When this ending is used, the full end-of-response block (AGENTS USED through SUMMARY) is **skipped** — write only RESEARCH COMPLETE as the final line (with its timestamp). The ESTIMATED TIME and ACTUAL TOTAL COMPLETION TIME rules still apply: output ESTIMATED TIME before RESEARCH START as usual, and output ACTUAL TOTAL COMPLETION TIME immediately before RESEARCH COMPLETE
   - `⏸️⏸️AWAITING USER RESPONSE⏸️⏸️` — the response ends with a question to the user via `AskUserQuestion` (not mid-response, but as the **final action** — no more work follows in this response). When this ending is used, output the `⏱️` duration and `⏳⏳ACTUAL PLANNING TIME⏳⏳` before the `AskUserQuestion` call (per the "Duration before user interaction" rule), then after the user answers, the continuation response opens with `🔄🔄NEXT PHASE🔄🔄` as normal. **Do not write the end-of-response block before AWAITING USER RESPONSE** — it belongs to the continuation response that finishes the work. The `⏸️⏸️AWAITING USER RESPONSE⏸️⏸️` line is written immediately before the `AskUserQuestion` tool call
 - These apply to **every single user message**, not just once per session
 - These bookend lines are standalone — do not combine them with other text on the same line
@@ -785,11 +785,11 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 | `📁📁FILES CHANGED📁📁` | Files were modified/created/deleted | After AGENTS USED (skip if no files changed) | — | — |
 | `🔗🔗COMMIT LOG🔗🔗` | Commits were made | After FILES CHANGED (skip if no commits made) | — | — |
 | `🔖🔖WORTH NOTING🔖🔖` | Something deserves attention | After COMMIT LOG (skip if nothing worth noting) | — | — |
-| `📝📝SUMMARY📝📝` | Changes were made in the response | After WORTH NOTING | — | — |
+| `🔗🔗LIVE URLS (label)🔗🔗` | Every response with CODING COMPLETE | After WORTH NOTING, before SUMMARY (never skipped for coding responses) | — | — |
+| `📝📝SUMMARY📝📝` | Changes were made in the response | After LIVE URLS | — | — |
 | `🔧🔧ESTIMATE CALIBRATED🔧🔧` | Estimate missed by >2 min | After SUMMARY, before PLAN EXECUTION TIME / ACTUAL TOTAL COMPLETION TIME (skip if ≤2 min gap) | — | — |
 | `⏳⏳PLAN EXECUTION TIME: Xm Ys (estimated Xm)⏳⏳` | Plan approval flow was used | After SUMMARY (or ESTIMATE CALIBRATED), before ACTUAL TOTAL COMPLETION TIME (skip if no plan approval) | — | Computed from post-approval CODING START → closing marker |
-| `⏳⏳ACTUAL TOTAL COMPLETION TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE or RESEARCH COMPLETE | Immediately before LIVE URLS (coding) or RESEARCH COMPLETE (research) | — | Computed from opening marker → closing marker |
-| `🔗🔗LIVE URLS (label)🔗🔗` | Every response with CODING COMPLETE | After ACTUAL TOTAL COMPLETION TIME, before CODING COMPLETE (never skipped for coding responses) | — | — |
+| `⏳⏳ACTUAL TOTAL COMPLETION TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE or RESEARCH COMPLETE | Immediately before CODING COMPLETE (coding) or RESEARCH COMPLETE (research) | — | Computed from opening marker → closing marker |
 | `✅✅CODING COMPLETE✅✅ [HH:MM:SS AM EST YYYY-MM-DD]` | Response made code changes/commits/pushes | Very last line of coding responses | Required | — |
 | `🔬🔬RESEARCH COMPLETE🔬🔬 [HH:MM:SS AM EST YYYY-MM-DD]` | Response was purely informational (no file changes) | Very last line of research responses (no end-of-response block) | Required | — |
 | `⏸️⏸️AWAITING USER RESPONSE⏸️⏸️ [HH:MM:SS AM EST]` | Response ends with a question to the user | Immediately before `AskUserQuestion` (no end-of-response block) | Required | — |
@@ -822,10 +822,6 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   `new-file.js` (created)
 🔗🔗COMMIT LOG🔗🔗
   abc1234 — Add feature X
-📝📝SUMMARY📝📝
-  - Updated X in `file.md` (edited)
-  - Created `new-file.js` (created)
-⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 14s (estimated 4m)⏳⏳
 🔗🔗LIVE URLS (First interaction · Edited HTML)🔗🔗
 
 `Template & Repository`
@@ -836,6 +832,10 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 `✏️ Homepage`
 > [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 
+📝📝SUMMARY📝📝
+  - Updated X in `file.md` (edited)
+  - Created `new-file.js` (created)
+⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 14s (estimated 4m)⏳⏳
 ✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
 ```
 
@@ -869,6 +869,16 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   1. Agent 0 (Main) — researched, planned, implemented
 📁📁FILES CHANGED📁📁
   `file.md` (edited)
+🔗🔗LIVE URLS (No site changes)🔗🔗
+
+`Template & Repository`
+> github.com/ShadowAISolutions/htmltemplateautoupdate
+
+─────────────────────────
+
+`Homepage`
+> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+
 📝📝SUMMARY📝📝
   - Updated X in `file.md`
 ⏳⏳PLAN EXECUTION TIME: 1m 15s (estimated 2m)⏳⏳
@@ -901,10 +911,6 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   `file.md` (edited)
 🔗🔗COMMIT LOG🔗🔗
   abc1234 — Add feature X
-📝📝SUMMARY📝📝
-  - Updated X in `file.md`
-  - Pushed to remote
-⏳⏳ACTUAL TOTAL COMPLETION TIME: 2m 9s (estimated 3m)⏳⏳
 🔗🔗LIVE URLS (No site changes)🔗🔗
 
 `Template & Repository`
@@ -915,6 +921,10 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 `Homepage`
 > [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 
+📝📝SUMMARY📝📝
+  - Updated X in `file.md`
+  - Pushed to remote
+⏳⏳ACTUAL TOTAL COMPLETION TIME: 2m 9s (estimated 3m)⏳⏳
 ✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
 ```
 
@@ -953,9 +963,6 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   1. Agent 0 (Main) — researched options, implemented user's choice
 📁📁FILES CHANGED📁📁
   `file.md` (edited)
-📝📝SUMMARY📝📝
-  - Updated X in `file.md`
-⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 15s (estimated 3m)⏳⏳
 🔗🔗LIVE URLS (No site changes)🔗🔗
 
 `Template & Repository`
@@ -966,6 +973,9 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 `Homepage`
 > [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 
+📝📝SUMMARY📝📝
+  - Updated X in `file.md`
+⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 15s (estimated 3m)⏳⏳
 ✅✅CODING COMPLETE✅✅ [01:18:16 AM EST 2026-01-15]
 ```
 
