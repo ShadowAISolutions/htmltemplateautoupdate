@@ -555,6 +555,8 @@ Domain-specific coding constraints are maintained in a dedicated reference file.
 ---
 
 ## CLI Accent Styling Reference
+> **"Make it red" = backtick-wrap it.** Whenever the user asks to make text, labels, dividers, or any element "red" or "colored" in the CLI, the answer is **always** backtick-wrapping (`` `text` ``). This is the only reliable method for red/accent styling. Do not attempt bare Unicode characters, HTML tags, or any other approach — they do not work. Backtick-wrapping works on any text content: labels, dividers, status indicators, headers, etc.
+
 The Claude Code CLI renders certain markdown constructs with colored/accented styling that can be used intentionally for visual emphasis in chat output. This section documents what works and what doesn't, based on empirical testing.
 
 ### What triggers colored/accent styling
@@ -628,6 +630,7 @@ These don't trigger color styling, but provide distinct visual structure in the 
 - **General rule**: whenever you need text to visually "pop" inside a blockquote, wrap it in backticks. For structural separation, use nested blockquotes or tables
 
 ### Where this is currently used
+- **End-of-response divider** — `` `────────────────────────────` `` uses backtick-wrapping to render the divider line in red/accent, visually separating work phases from the summary block
 - **Live URLs section** — all labels (`Template Repo`, `Repository`, `Homepage`, `✏️ Homepage`, etc.) use backtick-wrapped text on their own line to create red "headers" above each URL entry
 
 ### Known limitations
