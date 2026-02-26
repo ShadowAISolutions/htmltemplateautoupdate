@@ -717,7 +717,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 - **End-of-response sections**: after all work is done, output the following sections in this exact order. **Skip the entire block when the response ends with RESEARCH COMPLETE or AWAITING USER RESPONSE** — those endings have no end-of-response block. **The entire block — from the divider through CODING COMPLETE — must be written as one continuous text output with no tool calls in between.** To achieve this, run the `date` command for CODING COMPLETE's timestamp **before** starting the block, then output: the last phase's `⏱️` duration, a backtick-wrapped divider line `` `─────────────────────────` `` on its own line (backtick-wrapping triggers red/accent styling in the CLI, visually separating work phases from the end-of-response block), then AGENTS USED through CODING COMPLETE using the pre-fetched timestamp:
   - **Agents used**: output `🕵🕵AGENTS USED🕵🕵` followed by a **numbered list** of all agents that contributed to this response — including Agent 0 (Main). Format: `1. Agent N (Type) — brief description of contribution`. Number each agent sequentially starting from 1. This appears in every response that ends with CODING COMPLETE
   - **Files changed**: output `📁📁FILES CHANGED📁📁` followed by a list of every file modified in the response, each tagged with the type of change: `(edited)`, `(created)`, or `(deleted)`. This gives a clean at-a-glance file manifest. Skip if no files were changed in the response
-  - **Commit log**: output `🔗🔗COMMIT LOG🔗🔗` followed by a list of every commit made in the response, formatted as `SHORT_SHA — commit message`. Skip if no commits were made in the response
+  - **Commit log**: output `📜📜COMMIT LOG📜📜` followed by a list of every commit made in the response, formatted as `SHORT_SHA — commit message`. Skip if no commits were made in the response
   - **Worth noting**: output `🔖🔖WORTH NOTING🔖🔖` followed by a list of anything that deserves attention but isn't a blocker (e.g. "Push-once already used — did not push again", "Template repo guard skipped version bumps", "Pre-commit hook modified files — re-staged"). Skip if there are nothing worth noting
   - **Live URLs**: output `🔗🔗LIVE URLS (label)🔗🔗` with a contextual label, followed by all live-site links. **Always present** in every response that ends with CODING COMPLETE — never skipped. See the Live URLs bullet below for full rules on labeling, link content, and formatting
   - **Summary of changes**: output `📝📝SUMMARY📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. Each bullet must indicate which file(s) were edited (e.g. "Updated build-version in `live-site-pages/index.html`"). If a bullet describes a non-file action (e.g. "Pushed to remote"), no file path is needed
@@ -783,7 +783,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 | `─────────────────────────` | End-of-response block begins | After last `⏱️`, before AGENTS USED | — | — |
 | `🕵🕵AGENTS USED🕵🕵` | Response performed work | First end-of-response section | — | — |
 | `📁📁FILES CHANGED📁📁` | Files were modified/created/deleted | After AGENTS USED (skip if no files changed) | — | — |
-| `🔗🔗COMMIT LOG🔗🔗` | Commits were made | After FILES CHANGED (skip if no commits made) | — | — |
+| `📜📜COMMIT LOG📜📜` | Commits were made | After FILES CHANGED (skip if no commits made) | — | — |
 | `🔖🔖WORTH NOTING🔖🔖` | Something deserves attention | After COMMIT LOG (skip if nothing worth noting) | — | — |
 | `🔗🔗LIVE URLS (label)🔗🔗` | Every response with CODING COMPLETE | After WORTH NOTING, before SUMMARY (never skipped for coding responses) | — | — |
 | `📝📝SUMMARY📝📝` | Changes were made in the response | After LIVE URLS | — | — |
@@ -820,7 +820,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 📁📁FILES CHANGED📁📁
   `file.md` (edited)
   `new-file.js` (created)
-🔗🔗COMMIT LOG🔗🔗
+📜📜COMMIT LOG📜📜
   abc1234 — Add feature X
 🔗🔗LIVE URLS (First interaction · Edited HTML)🔗🔗
 
@@ -909,7 +909,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   1. Agent 0 (Main) — applied changes, pushed
 📁📁FILES CHANGED📁📁
   `file.md` (edited)
-🔗🔗COMMIT LOG🔗🔗
+📜📜COMMIT LOG📜📜
   abc1234 — Add feature X
 🔗🔗LIVE URLS (No site changes)🔗🔗
 
