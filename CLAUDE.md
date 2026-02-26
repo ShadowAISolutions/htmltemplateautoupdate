@@ -567,6 +567,9 @@ The Claude Code CLI renders certain markdown constructs with colored/accented st
 | Diff code block — `+` lines | **Green** syntax highlighting | Fenced code block with `diff` language | `` ```diff `` then `+ added line` |
 | Diff code block — `-` lines | **Red** syntax highlighting | Fenced code block with `diff` language | `` ```diff `` then `- removed line` |
 | Colored emoji sequences | **Native emoji color** (red, yellow, green, etc.) | Anywhere | `🔴🟡🟢🟥⬛` |
+| Checkboxes (`- [x]`, `- [ ]`) | Rendered checkbox with visual checked/unchecked state | Inside and outside blockquotes | `> - [x] Done` / `> - [ ] Pending` |
+| Image alt text (`![text](...)`) | Distinct styled rendering of the alt text | Inside and outside blockquotes | `> ![Status: Active](nonexistent.png)` |
+| Language-hinted code blocks | **Multi-color** syntax highlighting (strings, keys, values) | Fenced code blocks with language hint | `` ```python ``, `` ```json ``, `` ```yaml `` |
 
 ### What does NOT trigger styling
 
@@ -582,12 +585,18 @@ The Claude Code CLI renders certain markdown constructs with colored/accented st
 | Bold/italic wrapping code (`**\`text\`**`, `*\`text\`*`) | Same as plain backtick | No additional styling from bold/italic wrapper |
 | Strikethrough (`~~text~~`) | Plain text | No dimming or gray effect |
 | Definition lists (`: text`) | Plain text | No special rendering |
+| LaTeX/math (`$E=mc^2$`, `$$...$$`) | Plain text | CLI does not render math notation |
+| `<kbd>` tags | Plain text — tags visible | CLI does not interpret keyboard key HTML |
+| Unicode symbols (`▶`, `◉`, `⊕`, `⟫`, `❯`) | Plain white text | No color treatment — rendered but unstyled |
 
 ### Key findings
 - **Backtick wrapping is the most reliable method** — it works both inside and outside blockquotes with consistent red/accent styling
 - **Code-inside-link** (`` [`text`](url) ``) gives you red accent styling that is also a clickable link — useful when you want a label that navigates somewhere
 - **Diff code blocks** are the only way to get **green** text — use `` ```diff `` with `+` prefixed lines. Also produces red for `-` prefixed lines (distinct from the backtick red — this is syntax highlighting red)
 - **Colored emoji** are the only way to get arbitrary colors (red, yellow, green, black, etc.) — they render at native emoji color regardless of context
+- **Image alt text** (`![text](...)`) renders with distinct styling even when the image doesn't exist — the alt text gets a visual treatment that can be repurposed as a styled label or status display
+- **Checkboxes** (`- [x]` / `- [ ]`) render with visual checked/unchecked state — useful for progress indicators or checklists within formatted output
+- **Language-hinted code blocks** (`` ```python ``, `` ```json ``, `` ```yaml ``) produce multi-color syntax highlighting — different colors for strings, keys, values, keywords
 - The bare `─` (U+2500) character gets red styling only outside blockquotes and only when used in an unbroken sequence of sufficient length (~15+ characters)
 - This is a **Claude Code CLI rendering behavior** — these styles do not appear on GitHub, VS Code markdown preview, or other markdown renderers
 
@@ -609,6 +618,11 @@ These don't trigger color styling, but provide distinct visual structure in the 
 - **Red text (alt)**: `` ```diff `` with `- text` lines — syntax-highlighted red (different shade from backtick red)
 - **Colored bars/indicators**: emoji sequences (`🔴🟡🟢⬛🟥`) — arbitrary color through native emoji rendering
 - **Status indicators**: `` > `✏️ Modified` `` or `` > `✅ Complete` `` — combine emoji with accent styling for maximum visibility
+- **Image alt text labels**: `> ![Label Text](x)` — styled alt text as an alternative to backtick labels, with distinct visual treatment
+- **Multi-color syntax blocks**: `` ```python `` / `` ```json `` / `` ```yaml `` — richly colored output for structured data or code snippets
+
+**Interactive/state techniques:**
+- **Progress checklists**: `> - [x] Step 1 done` / `> - [ ] Step 2 pending` — visual checked/unchecked indicators
 
 **Structural techniques:**
 - **Sub-grouping**: `>>` nested blockquotes — create visual hierarchy within a blockquoted block
