@@ -658,7 +658,8 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - **`.gs` files**: if a `.gs` file was edited, also note its associated embedding HTML page (from the GAS Projects table) next to the page URL. If the `.gs` file has no registered embedding page, note it separately
   - **Highlight affected pages**: when a page was affected by changes in this response — either directly (the HTML file itself was edited) or indirectly (a `.gs`/`.gas` file whose output is embedded in the page was edited, or a resource the page depends on was changed) — **bold** its label AND prepend `✏️` before the label text (inside the bold). Examples: `**✏️ Homepage:** [index.html](...) →` [ORG.github.io/REPO/](https://ORG.github.io/REPO/), `**✏️ My Project | Homepage:** [my-project/index.html](...) →` [ORG.github.io/REPO/my-project/](https://ORG.github.io/REPO/my-project/). Pages not affected by the response keep their label unbolded and have no `✏️` prefix. The bold + `✏️` prefix combination provides two levels of visibility — the bold is subtle for scanning, the emoji prefix is unmissable. **Indirect affects**: use the GAS Projects table to determine which embedding page a `.gs` file maps to — if a `.gs` file was edited, its registered embedding page gets the indicator even though the HTML file wasn't touched, because the user-facing experience of that page changed
   - **File path links**: every file path shown in the Live URLs section must be a clickable markdown link to the file's blob-view on GitHub. The URL uses the full path: `https://github.com/ORG/REPO/blob/main/FULL_PATH`. The **link text** depends on the file's location within `live-site-pages/`: for files directly in `live-site-pages/` (no subdirectory), show just the filename (e.g. `index.html`); for files in a subdirectory, show the **containing folder + filename** (e.g. `my-project/index.html`). This gives the user enough context to identify which page the link refers to without showing the full repo path. Resolve `ORG` and `REPO` from `git remote -v` (using the actual values, e.g. `ShadowAISolutions/htmltemplateautoupdate` on the template repo). Examples: `[index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html)`, `[my-project/index.html](https://github.com/MyOrg/my-repo/blob/main/live-site-pages/my-project/index.html)`, `[Code.gs](https://github.com/MyOrg/my-repo/blob/main/googleAppsScripts/MyProject/Code.gs)`
-  - **Format**: one URL per line. When affected: `**✏️ Homepage:** [index.html](https://github.com/.../blob/main/live-site-pages/index.html) →` [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/). When not affected: `Homepage: [index.html](https://github.com/.../blob/main/live-site-pages/index.html) → ...` (no bold, no `✏️` prefix). For subpages when affected: `**✏️ My Project | Homepage:** [my-project/index.html](https://github.com/.../blob/main/live-site-pages/my-project/index.html) →` [ORG.github.io/REPO/my-project/](https://ORG.github.io/REPO/my-project/)
+  - **Blockquote formatting**: all URL lines below the `🔗🔗LIVE URLS (label)🔗🔗` heading must be wrapped in a blockquote (`>` prefix on every line). This visually sets the URLs apart from the rest of the end-of-response block with a left border/indent. The `🔗🔗LIVE URLS (label)🔗🔗` heading itself is NOT blockquoted — only the URL content lines beneath it
+  - **Format**: one URL per line, each prefixed with `>`. When affected: `> **✏️ Homepage:** [index.html](https://github.com/.../blob/main/live-site-pages/index.html) →` [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/). When not affected: `> Homepage: [index.html](https://github.com/.../blob/main/live-site-pages/index.html) → ...` (no bold, no `✏️` prefix). For subpages when affected: `> **✏️ My Project | Homepage:** [my-project/index.html](https://github.com/.../blob/main/live-site-pages/my-project/index.html) →` [ORG.github.io/REPO/my-project/](https://ORG.github.io/REPO/my-project/)
   - This section is part of the end-of-response block — it does **not** get a timestamp or `⏱️` annotation
 - **Last output**: every response must end with exactly one of the following closing markers on its own line — which one depends on the response type:
   - `✅✅CODING COMPLETE✅✅` — the response made code changes, file edits, commits, or pushes (i.e. any non-trivial action beyond pure research)
@@ -738,9 +739,9 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - Created `new-file.js` (created)
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 14s (estimated 4m)⏳⏳
 🔗🔗LIVE URLS (First interaction · Edited HTML)🔗🔗
-  Template & Repository → github.com/ShadowAISolutions/htmltemplateautoupdate
-  ───────────────
-  **✏️ Homepage:** [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+> Template & Repository → github.com/ShadowAISolutions/htmltemplateautoupdate
+> ───────────────
+> **✏️ Homepage:** [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 ✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
 ```
 
@@ -811,9 +812,9 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - Pushed to remote
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 2m 9s (estimated 3m)⏳⏳
 🔗🔗LIVE URLS (No site changes)🔗🔗
-  Template & Repository → github.com/ShadowAISolutions/htmltemplateautoupdate
-  ───────────────
-  Homepage: [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+> Template & Repository → github.com/ShadowAISolutions/htmltemplateautoupdate
+> ───────────────
+> Homepage: [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 ✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
 ```
 
@@ -856,9 +857,9 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - Updated X in `file.md`
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 15s (estimated 3m)⏳⏳
 🔗🔗LIVE URLS (No site changes)🔗🔗
-  Template & Repository → github.com/ShadowAISolutions/htmltemplateautoupdate
-  ───────────────
-  Homepage: [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+> Template & Repository → github.com/ShadowAISolutions/htmltemplateautoupdate
+> ───────────────
+> Homepage: [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 ✅✅CODING COMPLETE✅✅ [01:18:16 AM EST 2026-01-15]
 ```
 
