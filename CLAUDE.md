@@ -711,7 +711,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   **Skip calibration entirely if the difference is ≤2 minutes** — small variances are normal and not worth correcting
 - **Hook anticipation**: before writing the closing marker (`✅✅CODING COMPLETE✅✅` or `🔬🔬RESEARCH COMPLETE🔬🔬`), check whether the stop hook (`~/.claude/stop-hook-git-check.sh`) will fire. **This check must happen after all actions in the current response are complete** (including any `git push`) — do not predict the pre-action state; check the actual post-action state. **Actually run** the three git commands (do not evaluate mentally): (a) uncommitted changes — `git diff --quiet && git diff --cached --quiet`, (b) untracked files — `git ls-files --others --exclude-standard`, (c) unpushed commits — `git rev-list origin/<branch>..HEAD --count`. If any condition is true, **omit** the closing marker and instead write `🐟🐟AWAITING HOOK🐟🐟` as the last line of the current response — the hook will fire, and the appropriate closing marker (CODING COMPLETE or RESEARCH COMPLETE) should close the hook feedback response instead. **Do not forget the `⏱️` duration annotation** — AWAITING HOOK is a bookend like any other, so the previous phase's `⏱️` must appear immediately before it. After the hook anticipation git commands complete, call `date`, compute the duration since the previous bookend's timestamp, write the `⏱️` line, then write AWAITING HOOK
 - **Hook feedback override**: if the triggering message is hook feedback (starts with "Stop hook feedback:", "hook feedback:", or contains `<user-prompt-submit-hook>`), use `⚓⚓HOOK FEEDBACK⚓⚓` as the first line instead of `🚩🚩CODING PLAN🚩🚩`, `⚡⚡CODING START⚡⚡`, or `🔬🔬RESEARCH START🔬🔬`. The coding plan (if applicable) follows immediately after `⚓⚓HOOK FEEDBACK⚓⚓`, then `⚡⚡CODING START⚡⚡`
-- **End-of-response sections**: after all work is done, output the following sections in this exact order. **Skip the entire block when the response ends with RESEARCH COMPLETE or AWAITING USER RESPONSE** — those endings have no end-of-response block. **The entire block — from the `━━━` divider through CODING COMPLETE — must be written as one continuous text output with no tool calls in between.** To achieve this, run the `date` command for CODING COMPLETE's timestamp **before** starting the block, then output: the last phase's `⏱️` duration, a `━━━━━━━━━━━━━━━━━━━━━━━━━━━━` divider on its own line (Unicode heavy horizontal line — visually separating work phases from the end-of-response block), then AGENTS USED through CODING COMPLETE using the pre-fetched timestamp:
+- **End-of-response sections**: after all work is done, output the following sections in this exact order. **Skip the entire block when the response ends with RESEARCH COMPLETE or AWAITING USER RESPONSE** — those endings have no end-of-response block. **The entire block — from the `───` divider through CODING COMPLETE — must be written as one continuous text output with no tool calls in between.** To achieve this, run the `date` command for CODING COMPLETE's timestamp **before** starting the block, then output: the last phase's `⏱️` duration, a `────────────────────────────` divider on its own line (Unicode light horizontal line — renders red/accent in the CLI, visually separating work phases from the end-of-response block), then AGENTS USED through CODING COMPLETE using the pre-fetched timestamp:
   - **Agents used**: output `🕵🕵AGENTS USED🕵🕵` followed by a **numbered list** of all agents that contributed to this response — including Agent 0 (Main). Format: `1. Agent N (Type) — brief description of contribution`. Number each agent sequentially starting from 1. This appears in every response that ends with CODING COMPLETE
   - **Files changed**: output `📁📁FILES CHANGED📁📁` followed by a list of every file modified in the response, each tagged with the type of change: `(edited)`, `(created)`, or `(deleted)`. This gives a clean at-a-glance file manifest. Skip if no files were changed in the response
   - **Commit log**: output `🔗🔗COMMIT LOG🔗🔗` followed by a list of every commit made in the response, formatted as `SHORT_SHA — commit message`. Skip if no commits were made in the response
@@ -776,7 +776,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 | `⚓⚓HOOK FEEDBACK⚓⚓ [HH:MM:SS AM EST]` | Hook feedback triggers a follow-up | First line of hook response (replaces CODING PLAN as opener) | Required | `⏱️` before end-of-response block |
 | `⏱️ Xs` | Phase just ended | Immediately before the next bookend marker, and before `ExitPlanMode`/`AskUserQuestion` calls | — | Computed |
 | `⏳⏳ACTUAL PLANNING TIME: Xm Ys (estimated Xm)⏳⏳` | About to prompt user via ExitPlanMode/AskUserQuestion | After `⏱️`, immediately before the tool call | — | Computed from opening marker → now |
-| `━━━━━━━━━━━━━━━━━━━━━━━━━━━━` | End-of-response block begins | After last `⏱️`, before AGENTS USED | — | — |
+| `────────────────────────────` | End-of-response block begins | After last `⏱️`, before AGENTS USED | — | — |
 | `🕵🕵AGENTS USED🕵🕵` | Response performed work | First end-of-response section | — | — |
 | `📁📁FILES CHANGED📁📁` | Files were modified/created/deleted | After AGENTS USED (skip if no files changed) | — | — |
 | `🔗🔗COMMIT LOG🔗🔗` | Commits were made | After FILES CHANGED (skip if no commits made) | — | — |
@@ -810,7 +810,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 🧪🧪VERIFYING🧪🧪 [01:18:00 AM EST]
   ... validating edits, running hook checks ...
   ⏱️ 15s
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+────────────────────────────
 🕵🕵AGENTS USED🕵🕵
   1. Agent 0 (Main) — applied changes, ran checklists
 📁📁FILES CHANGED📁📁
@@ -858,7 +858,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ⚡⚡CODING START⚡⚡ [01:18:16 AM EST 2026-01-15]
   ... applying changes ...
   ⏱️ 1m 15s
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+────────────────────────────
 🕵🕵AGENTS USED🕵🕵
   1. Agent 0 (Main) — researched, planned, implemented
 📁📁FILES CHANGED📁📁
@@ -888,7 +888,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ➡️➡️CHANGES PUSHED➡️➡️ [01:17:05 AM EST]
   Pushed to `claude/feature-xyz` — workflow will auto-merge to main
   ⏱️ 5s
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+────────────────────────────
 🕵🕵AGENTS USED🕵🕵
   1. Agent 0 (Main) — applied changes, pushed
 📁📁FILES CHANGED📁📁
@@ -940,7 +940,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   User chose option B — proceeding with implementation
   ... applying changes, committing, pushing ...
   ⏱️ 1m 30s
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+────────────────────────────
 🕵🕵AGENTS USED🕵🕵
   1. Agent 0 (Main) — researched options, implemented user's choice
 📁📁FILES CHANGED📁📁
