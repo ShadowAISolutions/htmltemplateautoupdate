@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-26 01:53:06 AM EST`
+Last updated: `2026-02-26 01:58:26 AM EST`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -17,10 +17,11 @@ Initialize your repository and Claude will update the live site link and QR code
 
 ### Method 1: Use This Template (Recommended)
 
-1. Click the green **Use this template** button at the top of this page
-2. Select **Create a new repository**
-3. Fill in the **Repository name** field with a descriptive name of your choice
-4. Click **Create repository**
+> <sub>**Tip:** Link below navigates away from this page. `Shift + click` (or `Right-click` → `Open link in new window`) to keep this ReadMe visible while you work.</sub>
+
+1. Click the green **Use this template** button at the top of this page, or go to [**Create from template**](https://github.com/new?template_name=htmltemplateautoupdate&template_owner=ShadowAISolutions)
+2. Fill in the **Repository name** field with a descriptive name of your choice
+3. Click **Create repository**
 
 ### Method 2: GitHub Importer
 
