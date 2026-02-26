@@ -23,9 +23,10 @@
 #   7. Direct pushes to main skip merge and just deploy
 #   8. On every main push, sweep and delete any stale claude/* branches
 #      that are already merged (self-healing cleanup)
-#   9. ALL jobs (except check-template) require initialization
-#      (IS_TEMPLATE_REPO = No) — on an uninitialized repo (e.g. fresh
-#      template copy), only check-template runs; everything else is skipped
+#   9. ALL jobs (except check-template) require initialization OR being
+#      the template repo — on an uninitialized copy, only check-template
+#      runs; everything else is skipped. The template repo itself is
+#      always allowed through (is-template = true)
 #  10. SHA update commits use [skip ci] to prevent cascading workflow runs
 #
 # DO NOT use a repo-age guard (e.g. "skip if repo < 10 min old") to suppress
@@ -99,7 +100,8 @@ jobs:
   auto-merge:
     if: >-
       github.ref != 'refs/heads/main' &&
-      needs.check-template.outputs.is-initialized == 'true'
+      (needs.check-template.outputs.is-initialized == 'true' ||
+       needs.check-template.outputs.is-template == 'true')
     needs: [check-template]
     runs-on: ubuntu-latest
     outputs:
@@ -324,7 +326,8 @@ jobs:
   cleanup-branches:
     if: >-
       github.ref == 'refs/heads/main' &&
-      needs.check-template.outputs.is-initialized == 'true'
+      (needs.check-template.outputs.is-initialized == 'true' ||
+       needs.check-template.outputs.is-template == 'true')
     needs: [check-template]
     runs-on: ubuntu-latest
     steps:
