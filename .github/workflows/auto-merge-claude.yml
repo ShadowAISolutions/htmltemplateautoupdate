@@ -31,6 +31,10 @@
 #      always allowed through (is-template = true)
 #  10. SHA update commits use [skip ci] to prevent cascading workflow runs
 #
+# DO NOT add 'main' back to the push trigger. It was deliberately removed so
+# that "Use this template" copies produce zero workflow activity. All deploys
+# flow through claude/* branches. workflow_dispatch handles manual re-deploys.
+#
 # DO NOT use a repo-age guard (e.g. "skip if repo < 10 min old") to suppress
 # template creation deploys. It's a timing-based band-aid that breaks if the
 # workflow runs slowly or if the user acts quickly. The initialization-state

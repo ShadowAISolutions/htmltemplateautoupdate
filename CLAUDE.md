@@ -52,7 +52,14 @@ These rules apply universally — they are **NOT** skipped by the template repo 
   1. Guards against stale inherited branches (from template forks) via commit-timestamp-vs-repo-creation check, IS_TEMPLATE_REPO mismatch (reads from both main and pushed branch), and already-merged check — deletes them without merging
   2. Merges the claude branch into main
   3. Deletes the claude branch
-  4. Deploys to GitHub Pages
+  4. Sweeps and deletes any other stale claude/* branches already merged into main
+  5. Deploys to GitHub Pages
+- **Trigger design** — the workflow only triggers on `claude/**` pushes (not `main`). This is intentional:
+  - GitHub's "Use this template" creates a fresh commit on `main` in the new repo. If `main` were in the push trigger, the workflow would fire on every template copy — even though all jobs would skip (via `is-initialized` / `is-template` gates), the workflow run still appears in the Actions tab
+  - By excluding `main` from the trigger, template copies produce **zero** workflow activity — no run appears at all
+  - `workflow_dispatch` is still available for manual re-deploys on initialized forks
+  - The auto-merge job's push to `main` (after merging) uses `[skip ci]` in the commit message, so it wouldn't re-trigger regardless — but excluding `main` from the trigger is belt-and-suspenders
+  - **Do NOT add `main` back to the push trigger** — it was deliberately removed to solve the template copy workflow problem. All legitimate deploys flow through `claude/*` branches
 - The "Create a pull request" message in push output is just GitHub boilerplate — ignore it, the workflow handles merging automatically
 - **Push only once per branch** — do NOT push multiple times to the same `claude/*` branch in a single session. The workflow uses a shared concurrency group (`"pages"`) with `cancel-in-progress: false`, so each push queues a separate workflow run. If an earlier run merges and deletes the branch, subsequent queued runs fail with exit code 128 because the branch no longer exists. **This includes sequential user requests** — if the user asks for task A and then task B in the same session, commit both locally and push once after all work is done. Do NOT push after task A and then push again after task B. The only exception is if a re-push is needed to recover from a failed workflow (e.g. the branch still exists on the remote but the merge didn't happen)
 - **Pre-push verification** — before executing any `git push`, run the Pre-Push Checklist (see below). This is mandatory even when the Deployment Flow rules are satisfied
