@@ -294,7 +294,7 @@ The version.txt polling system supports a **maintenance mode** that displays a f
 - **Activate**: change the first field from empty to `maintenance` (e.g. `|v01.02w|` → `maintenance|v01.02w|`)
 - **Activate with timestamp**: also fill the third field with the start time (e.g. `maintenance|v01.02w|2026-02-26 10:00:00 PM EST`). The timestamp is displayed below the logo on the overlay as "As of: 10:00:00 PM EST 02/26/2026" — the JS reformats the `YYYY-MM-DD TIME` input into `TIME MM/DD/YYYY` display format
 - **Deactivate**: clear the first field back to empty (e.g. `maintenance|v01.02w|` → `|v01.02w|`)
-- When the polling logic detects the `maintenance` prefix, it displays an orange full-screen overlay with the developer logo centered and a "This Webpage is Under Maintenance" title — similar to the green "Website Ready" splash but persistent
+- When the polling logic detects the `maintenance` prefix, it displays an orange full-screen overlay with the developer logo centered and a "🔧This Webpage is Undergoing Maintenance🔧" title — similar to the green "Website Ready" splash but persistent
 - The overlay stays visible as long as the version.txt content starts with `maintenance` — it does not auto-dismiss
 - The version indicator pill remains visible on top of the maintenance overlay (the maintenance overlay uses `z-index: 9998`, below the version indicator's `z-index: 9999`)
 - When the `maintenance` prefix is removed: if the underlying version also changed, the page auto-reloads; if the version is unchanged, the overlay fades out gracefully
