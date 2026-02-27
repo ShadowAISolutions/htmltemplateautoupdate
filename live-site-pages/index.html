@@ -233,9 +233,10 @@
                   var tsEl = document.getElementById('maintenance-timestamp');
                   if (tsEl) {
                     if (parsed.timestamp) {
-                      // Reformat "YYYY-MM-DD HH:MM:SS AM/PM EST" → "HH:MM:SS AM/PM EST MM/DD/YYYY"
+                      // Reformat "YYYY-MM-DD HH:MM:SS AM/PM EST" → "As of: HH:MM:SS AM/PM EST MM/DD/YYYY"
+                      // Pure timestamp → "As of: ..." prefix; anything else (custom text, timestamp+text) → shown verbatim
                       var tsParts = parsed.timestamp.match(/^(\d{4})-(\d{2})-(\d{2})\s+(.+)$/);
-                      tsEl.textContent = 'As of: ' + (tsParts ? tsParts[4] + ' ' + tsParts[2] + '/' + tsParts[3] + '/' + tsParts[1] : parsed.timestamp);
+                      tsEl.textContent = tsParts ? 'As of: ' + tsParts[4] + ' ' + tsParts[2] + '/' + tsParts[3] + '/' + tsParts[1] : parsed.timestamp;
                     } else { tsEl.textContent = ''; }
                   }
                 }
