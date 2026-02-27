@@ -235,6 +235,14 @@
                   } else { tsEl.textContent = ''; }
                 }
               }
+              // Check if version also changed during maintenance
+              if (parsed.version && parsed.version !== currentVersion) {
+                if (dot) dot.className = 'dot found';
+                if (indicator) indicator.querySelector('.label').textContent = 'Updating...';
+                sessionStorage.setItem('web-pending-sound', '1');
+                setTimeout(function() { window.location.reload(); }, 2000);
+                return;
+              }
               if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
               setTimeout(checkForUpdate, POLL_INTERVAL);
             } else if (parsed.version && parsed.version !== currentVersion) {
