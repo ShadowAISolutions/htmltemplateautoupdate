@@ -185,6 +185,7 @@
       var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + pageName + '.version.txt';
 
       var currentVersion = null;
+      var currentTimestamp = null;
       var indicator = null;
       var dot = null;
 
@@ -226,13 +227,17 @@
               // Show maintenance overlay — stays until maintenance prefix is removed
               if (maintenanceSplash && !sessionStorage.getItem('maint-bypassed')) {
                 maintenanceSplash.style.display = 'flex'; maintenanceSplash.style.opacity = '1';
-                var tsEl = document.getElementById('maintenance-timestamp');
-                if (tsEl) {
-                  if (parsed.timestamp) {
-                    // Reformat "YYYY-MM-DD HH:MM:SS AM/PM EST" → "HH:MM:SS AM/PM EST MM/DD/YYYY"
-                    var tsParts = parsed.timestamp.match(/^(\d{4})-(\d{2})-(\d{2})\s+(.+)$/);
-                    tsEl.textContent = 'As of: ' + (tsParts ? tsParts[4] + ' ' + tsParts[2] + '/' + tsParts[3] + '/' + tsParts[1] : parsed.timestamp);
-                  } else { tsEl.textContent = ''; }
+                // Update timestamp display if timestamp changed (or on first show)
+                if (parsed.timestamp !== currentTimestamp) {
+                  currentTimestamp = parsed.timestamp;
+                  var tsEl = document.getElementById('maintenance-timestamp');
+                  if (tsEl) {
+                    if (parsed.timestamp) {
+                      // Reformat "YYYY-MM-DD HH:MM:SS AM/PM EST" → "HH:MM:SS AM/PM EST MM/DD/YYYY"
+                      var tsParts = parsed.timestamp.match(/^(\d{4})-(\d{2})-(\d{2})\s+(.+)$/);
+                      tsEl.textContent = 'As of: ' + (tsParts ? tsParts[4] + ' ' + tsParts[2] + '/' + tsParts[3] + '/' + tsParts[1] : parsed.timestamp);
+                    } else { tsEl.textContent = ''; }
+                  }
                 }
               }
               // Check if version also changed during maintenance
