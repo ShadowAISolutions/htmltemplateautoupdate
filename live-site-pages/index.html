@@ -237,10 +237,11 @@
                   }
                 }
               }
-              // Check if version also changed during maintenance — reload silently (no splash/sound)
+              // Check if version also changed during maintenance — reload silently unless user bypassed maintenance
               if (parsed.version && parsed.version !== currentVersion) {
                 if (dot) dot.className = 'dot found';
                 if (indicator) indicator.querySelector('.label').textContent = 'Updating...';
+                if (sessionStorage.getItem('maint-bypassed')) sessionStorage.setItem('web-pending-sound', '1');
                 setTimeout(function() { window.location.reload(); }, 2000);
                 return;
               }
