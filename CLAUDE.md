@@ -119,7 +119,7 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 0. **Commit belongs to this repo and task** — before staging or committing ANY changes, verify: (a) `git remote -v` still matches the repo you are working on — if it doesn't, STOP and do not commit; (b) every file being staged was modified by THIS session's task, not inherited from a prior session or a different repo; (c) the commit message describes work you actually performed in this session — never commit with a message copied from a prior session's commit. If any of these checks fail, discard the stale changes and proceed only with the user's current request. **This item is never skipped** — it applies on every repo including the template repo
 1. **Version bump (.gs)** — if any `.gs` file was modified, increment its `VERSION` variable by 0.01 (e.g. `"01.13g"` → `"01.14g"`)
 2. **Version bump (HTML)** — if any embedding HTML page in `live-site-pages/` was modified, increment its `<meta name="build-version">` by 0.01 (e.g. `"01.01w"` → `"01.02w"`). **Skip if Template Repo Guard applies (see above)**
-3. **Version.txt sync** — if a `build-version` was bumped, update the corresponding `<page-name>.version.txt` to the same value. **Skip if Template Repo Guard applies**
+3. **Version.txt sync** — if a `build-version` was bumped, update the corresponding `<page-name>.version.txt` to the same value **with a `v` prefix** (e.g. if build-version is `01.02w`, version.txt becomes `v01.02w`). The `v` prefix matches the visual display on the webpage. **Skip if Template Repo Guard applies**
 4. **Template version freeze** — never bump `live-site-templates/AutoUpdateOnlyHtmlTemplate.html` — its version must always stay at `01.00w`
 5. **STATUS.md** — if any version was bumped, update the matching version in `repository-information/STATUS.md`. **Skip if Template Repo Guard applies**
 6. **ARCHITECTURE.md** — if any version was bumped or the project structure changed, update the diagram in `repository-information/ARCHITECTURE.md`. **Version-bump portion: skip if Template Repo Guard applies.** Structure changes still apply on the template repo. **When versions are bumped, update every Mermaid node that displays a version string** — not just the HTML node. Specifically check: `INDEX["index.html\n(build-version: XX.XXw)"]`, `VERTXT["index.version.txt\n(XX.XXw)"]`, and any future page/GAS nodes with version text. The VERTXT version must always match the INDEX build-version (since version.txt tracks the HTML page). The TPL node (`01.00w`) is frozen and never changes
@@ -281,13 +281,22 @@ Each GAS project has a code file and a corresponding embedding page. Register th
 ### Auto-Refresh via version.txt Polling
 - **All embedding pages must use the `version.txt` polling method** — do NOT poll the page's own HTML
 - **Version file naming**: the version file must be named `<page-name>.version.txt`, matching the HTML file it tracks (e.g. `index.html` → `index.version.txt`, `dashboard.html` → `dashboard.version.txt`). The `.version.txt` double extension ensures the version file sorts **after** the `.html` file alphabetically
-- Each version file holds only the current build-version string (e.g. `01.08w`)
+- Each version file holds the current build-version string with a `v` prefix (e.g. `v01.08w`). The `v` prefix matches the visual display in the version indicator pill. The polling logic strips the prefix before comparing against the `<meta>` build-version value
 - The polling logic fetches the version file (~7 bytes) instead of the full HTML page, reducing bandwidth per poll from kilobytes to bytes
 - URL resolution: derive the version file URL relative to the current page's directory, using the page's own filename. See the template file (`live-site-templates/AutoUpdateOnlyHtmlTemplate.html`) for the implementation
 - **The `if (!pageName)` fallback is critical** — when a page is accessed via a directory URL (e.g. `https://example.github.io/myapp/`), `pageName` resolves to an empty string. Without the fallback to `'index'`, the poll fetches `.version.txt` (wrong file) and triggers an infinite reload loop
 - Cache-bust with a query param: `fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })`
-- Compare the trimmed response text against the page's `<meta name="build-version">` content
+- Compare the trimmed response text (with `v` and `maintenance` prefixes stripped) against the page's `<meta name="build-version">` content
 - The template in `live-site-templates/AutoUpdateOnlyHtmlTemplate.html` already implements this pattern — use it as a starting point for new projects
+
+### Maintenance Mode via version.txt
+The version.txt polling system supports a **maintenance mode** that displays a full-screen orange overlay when the version.txt content is prefixed with `maintenance`:
+- **Activate**: edit the version.txt file and prepend `maintenance` to the existing content (e.g. `v01.02w` → `maintenancev01.02w`)
+- **Deactivate**: remove the `maintenance` prefix (e.g. `maintenancev01.02w` → `v01.02w`)
+- When the polling logic detects the `maintenance` prefix, it displays an orange full-screen overlay with the developer logo centered and an "Under Maintenance" title — similar to the green "Website Ready" splash but persistent
+- The overlay stays visible as long as the version.txt content starts with `maintenance` — it does not auto-dismiss
+- The version indicator pill remains visible on top of the maintenance overlay (the maintenance overlay uses `z-index: 9998`, below the version indicator's `z-index: 9999`)
+- When the `maintenance` prefix is removed: if the underlying version also changed, the page auto-reloads; if the version is unchanged, the overlay fades out gracefully
 
 ### New Embedding Page Setup Checklist
 When creating a **new** HTML embedding page, follow every step below:
@@ -297,12 +306,13 @@ When creating a **new** HTML embedding page, follow every step below:
    - Version file polling logic (10-second interval)
    - Version indicator pill (bottom-right corner)
    - Green "Website Ready" splash overlay + sound playback
+   - Orange "Under Maintenance" splash overlay (triggered by `maintenance` prefix in version.txt)
    - AudioContext handling and screen wake lock
 2. **Choose the directory** — create a new subdirectory under `live-site-pages/` named after the project (e.g. `live-site-pages/my-project/`)
-3. **Create the version file** — place a `<page-name>.version.txt` file in the **same directory** as the HTML page (e.g. `index.version.txt` for `index.html`), containing only the initial build-version string (e.g. `01.00w`)
+3. **Create the version file** — place a `<page-name>.version.txt` file in the **same directory** as the HTML page (e.g. `index.version.txt` for `index.html`), containing the initial build-version string with `v` prefix (e.g. `v01.00w`)
 4. **Update the polling URL in the template** — ensure the JS version-file URL derivation matches the HTML filename (the template defaults to deriving it from the page's own filename)
 5. **Create `sounds/` directory** — copy the `sounds/` folder (containing `Website_Ready_Voice_1.mp3`) into the new page's directory so the splash sound works
-6. **Set the initial build-version** — in the HTML `<head>`, set `<meta name="build-version" content="01.00w">` and match it in `<page-name>.version.txt`
+6. **Set the initial build-version** — in the HTML `<head>`, set `<meta name="build-version" content="01.00w">` and set `<page-name>.version.txt` to `v01.00w` (the `v` prefix is required in version.txt)
 7. **Update the page title** — replace `YOUR_PROJECT_TITLE` in `<title>` with the actual project name
 8. **Register in GAS Projects table** — if this page embeds a GAS iframe, add a row to the GAS Projects table in the Version Bumping section above
 9. **Add developer branding** — ensure `<!-- Developed by: DEVELOPER_NAME -->` is the last line of the HTML file
@@ -312,7 +322,7 @@ When creating a **new** HTML embedding page, follow every step below:
 live-site-pages/
 ├── <page-name>/
 │   ├── index.html               # The embedding page (from template)
-│   ├── index.version.txt        # Tracks index.html build-version (e.g. "01.00w")
+│   ├── index.version.txt        # Tracks index.html build-version (e.g. "v01.00w")
 │   └── sounds/
 │       └── Website_Ready_Voice_1.mp3
 ```

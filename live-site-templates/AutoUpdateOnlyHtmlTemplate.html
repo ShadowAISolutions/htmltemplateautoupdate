@@ -16,6 +16,7 @@
     .splash .splash-title { color: #fff; font: bold 36px/1 sans-serif; margin-bottom: 20px; }
     .splash img { max-width: 500px; max-height: 500px; }
     #splash-green { background: #1b5e20; }
+    #splash-maintenance { background: #e65100; z-index: 9998; }
     #version-indicator {
       position: fixed; bottom: 8px; right: 8px; z-index: 9999;
       display: flex; align-items: center; gap: 6px;
@@ -35,6 +36,7 @@
 </head>
 <body>
   <div id="splash-green" class="splash"><div class="splash-title">Website Ready</div><img id="splash-logo" src="" alt=""></div>
+  <div id="splash-maintenance" class="splash"><div class="splash-title">Under Maintenance</div><img id="maintenance-logo" src="" alt=""></div>
 
   <!-- YOUR PAGE CONTENT HERE -->
 
@@ -54,6 +56,7 @@
 
     // Set splash logo from config variable
     document.getElementById('splash-logo').src = LOGO_URL;
+    document.getElementById('maintenance-logo').src = LOGO_URL;
 
     // Clear stale audio-unlocked flag on non-reload navigations (e.g. Chrome "Duplicate Tab")
     var _navEntries = performance.getEntriesByType('navigation');
@@ -179,13 +182,29 @@
         fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
           .then(function(res) { return res.text(); })
           .then(function(v) {
-            var remoteVersion = v.trim();
-            if (remoteVersion && remoteVersion !== currentVersion) {
+            var remoteRaw = v.trim();
+            var isMaintenance = remoteRaw.indexOf('maintenance') === 0;
+            var rawVersion = remoteRaw.replace(/^maintenance/, '').replace(/^v/, '');
+            var maintenanceSplash = document.getElementById('splash-maintenance');
+
+            if (isMaintenance) {
+              // Show maintenance overlay — stays until prefix is removed
+              if (maintenanceSplash) { maintenanceSplash.style.display = 'flex'; maintenanceSplash.style.opacity = '1'; }
+              dot.className = 'dot';
+              setTimeout(checkForUpdate, POLL_INTERVAL);
+            } else if (rawVersion && rawVersion !== currentVersion) {
+              // Version changed — hide maintenance if showing, trigger reload
+              if (maintenanceSplash) maintenanceSplash.style.display = 'none';
               dot.className = 'dot found';
               indicator.querySelector('.label').textContent = 'Updating...';
               sessionStorage.setItem('web-pending-sound', '1');
               setTimeout(function() { window.location.reload(); }, 2000);
             } else {
+              // Same version, no maintenance — fade out maintenance if it was showing
+              if (maintenanceSplash && maintenanceSplash.style.display === 'flex') {
+                maintenanceSplash.style.opacity = '0';
+                setTimeout(function() { maintenanceSplash.style.display = 'none'; }, 300);
+              }
               setTimeout(function() { dot.className = 'dot'; }, 800);
               setTimeout(checkForUpdate, POLL_INTERVAL);
             }
