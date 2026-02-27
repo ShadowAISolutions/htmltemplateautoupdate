@@ -37,7 +37,7 @@
 </head>
 <body>
   <div id="splash-green" class="splash"><div class="splash-title">Website Ready</div><img id="splash-logo" src="" alt=""></div>
-  <div id="splash-maintenance" class="splash"><div class="splash-title">🔧This Webpage is Undergoing Maintenance🔧</div><img id="maintenance-logo" src="" alt=""><div id="maintenance-timestamp" class="maintenance-timestamp"></div></div>
+  <div id="splash-maintenance" class="splash"><div class="splash-title">🔧This Webpage is Undergoing Maintenance<span id="maint-bypass" tabindex="-1" style="cursor:inherit;-webkit-user-select:none;user-select:text">🔧</span></div><img id="maintenance-logo" src="" alt=""><div id="maintenance-timestamp" class="maintenance-timestamp"></div></div>
 
   <!-- YOUR PAGE CONTENT HERE -->
 
@@ -58,6 +58,22 @@
     // Set splash logo from config variable
     document.getElementById('splash-logo').src = LOGO_URL;
     document.getElementById('maintenance-logo').src = LOGO_URL;
+
+    // Hidden maintenance bypass — triple-click the second wrench to dismiss
+    (function() {
+      var bp = document.getElementById('maint-bypass');
+      if (!bp) return;
+      bp.addEventListener('click', function(e) {
+        if (e.detail !== 3) return;
+        e.stopPropagation();
+        var overlay = document.getElementById('splash-maintenance');
+        if (overlay && overlay.style.display === 'flex') {
+          sessionStorage.setItem('maint-bypassed', '1');
+          overlay.style.opacity = '0';
+          setTimeout(function() { overlay.style.display = 'none'; }, 300);
+        }
+      });
+    })();
 
     // Clear stale audio-unlocked flag on non-reload navigations (e.g. Chrome "Duplicate Tab")
     var _navEntries = performance.getEntriesByType('navigation');
@@ -208,7 +224,7 @@
 
             if (parsed.maintenance) {
               // Show maintenance overlay — stays until maintenance prefix is removed
-              if (maintenanceSplash) {
+              if (maintenanceSplash && !sessionStorage.getItem('maint-bypassed')) {
                 maintenanceSplash.style.display = 'flex'; maintenanceSplash.style.opacity = '1';
                 var tsEl = document.getElementById('maintenance-timestamp');
                 if (tsEl) {
@@ -223,6 +239,7 @@
               setTimeout(checkForUpdate, POLL_INTERVAL);
             } else if (parsed.version && parsed.version !== currentVersion) {
               // Version changed — hide maintenance if showing, trigger reload
+              sessionStorage.removeItem('maint-bypassed');
               if (maintenanceSplash) maintenanceSplash.style.display = 'none';
               if (dot) dot.className = 'dot found';
               if (indicator) indicator.querySelector('.label').textContent = 'Updating...';
@@ -230,6 +247,7 @@
               setTimeout(function() { window.location.reload(); }, 2000);
             } else {
               // Same version, no maintenance — fade out maintenance if it was showing
+              sessionStorage.removeItem('maint-bypassed');
               if (maintenanceSplash && maintenanceSplash.style.display === 'flex') {
                 maintenanceSplash.style.opacity = '0';
                 setTimeout(function() { maintenanceSplash.style.display = 'none'; }, 300);
