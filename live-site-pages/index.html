@@ -221,6 +221,8 @@
               // First fetch — establish baseline version from version.txt
               currentVersion = parsed.version;
               createIndicator(currentVersion);
+              // Show maintenance prefix in version pill if already in maintenance mode
+              if (parsed.maintenance && indicator) indicator.querySelector('.label').textContent = '\uD83D\uDD27 v' + currentVersion;
             }
 
             if (parsed.maintenance) {
@@ -245,6 +247,8 @@
                 setTimeout(function() { window.location.reload(); }, 2000);
                 return;
               }
+              // Keep version pill showing maintenance prefix
+              if (indicator) indicator.querySelector('.label').textContent = '\uD83D\uDD27 v' + currentVersion;
               if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
               setTimeout(checkForUpdate, POLL_INTERVAL);
             } else if (parsed.version && parsed.version !== currentVersion) {
@@ -262,6 +266,8 @@
                 maintenanceSplash.style.opacity = '0';
                 setTimeout(function() { maintenanceSplash.style.display = 'none'; }, 300);
               }
+              // Reset version pill to normal (remove maintenance prefix)
+              if (indicator) indicator.querySelector('.label').textContent = 'v' + currentVersion;
               if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
               setTimeout(checkForUpdate, POLL_INTERVAL);
             }
