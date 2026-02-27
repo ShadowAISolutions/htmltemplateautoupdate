@@ -192,7 +192,7 @@
       function parseVersionTxt(raw) {
         var parts = raw.split('|');
         return {
-          maintenance: parts[0] === 'maintenance',
+          maintenance: parts[0].toLowerCase() === 'maintenance',
           version: (parts[1] || '').replace(/^v/, ''),
           timestamp: parts[2] || ''
         };
