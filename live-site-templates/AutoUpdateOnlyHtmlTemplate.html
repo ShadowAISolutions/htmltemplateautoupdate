@@ -17,6 +17,7 @@
     .splash img { max-width: 500px; max-height: 500px; }
     #splash-green { background: #1b5e20; }
     #splash-maintenance { background: #e65100; z-index: 9998; }
+    .maintenance-timestamp { color: rgba(255,255,255,0.85); font: 16px/1.4 monospace; margin-top: 20px; }
     #version-indicator {
       position: fixed; bottom: 8px; right: 8px; z-index: 9999;
       display: flex; align-items: center; gap: 6px;
@@ -36,7 +37,7 @@
 </head>
 <body>
   <div id="splash-green" class="splash"><div class="splash-title">Website Ready</div><img id="splash-logo" src="" alt=""></div>
-  <div id="splash-maintenance" class="splash"><div class="splash-title">Under Maintenance</div><img id="maintenance-logo" src="" alt=""></div>
+  <div id="splash-maintenance" class="splash"><div class="splash-title">This Webpage is Under Maintenance</div><img id="maintenance-logo" src="" alt=""><div id="maintenance-timestamp" class="maintenance-timestamp"></div></div>
 
   <!-- YOUR PAGE CONTENT HERE -->
 
@@ -183,13 +184,20 @@
           .then(function(res) { return res.text(); })
           .then(function(v) {
             var remoteRaw = v.trim();
-            var isMaintenance = remoteRaw.indexOf('maintenance') === 0;
-            var rawVersion = remoteRaw.replace(/^maintenance/, '').replace(/^v/, '');
+            var pipeIdx = remoteRaw.indexOf('|');
+            var maintenanceTimestamp = pipeIdx !== -1 ? remoteRaw.substring(pipeIdx + 1) : '';
+            var versionPart = pipeIdx !== -1 ? remoteRaw.substring(0, pipeIdx) : remoteRaw;
+            var isMaintenance = versionPart.indexOf('maintenance') === 0;
+            var rawVersion = versionPart.replace(/^maintenance/, '').replace(/^v/, '');
             var maintenanceSplash = document.getElementById('splash-maintenance');
 
             if (isMaintenance) {
               // Show maintenance overlay — stays until prefix is removed
-              if (maintenanceSplash) { maintenanceSplash.style.display = 'flex'; maintenanceSplash.style.opacity = '1'; }
+              if (maintenanceSplash) {
+                maintenanceSplash.style.display = 'flex'; maintenanceSplash.style.opacity = '1';
+                var tsEl = document.getElementById('maintenance-timestamp');
+                if (tsEl) tsEl.textContent = maintenanceTimestamp ? 'Since: ' + maintenanceTimestamp : '';
+              }
               dot.className = 'dot';
               setTimeout(checkForUpdate, POLL_INTERVAL);
             } else if (rawVersion && rawVersion !== currentVersion) {

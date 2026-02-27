@@ -182,7 +182,7 @@ If the user's prompt is just **"initialize"** (after the Session Start Checklist
 2. Update the `Last updated:` timestamp in `README.md` to the real current time
 3. Commit with message `Initialize deployment`
 4. Push to the `claude/*` branch (Pre-Push Checklist applies)
-5. **Show UNAFFECTED URLS** — the Unaffected URLs section (always present) will show all reference and unaffected page links. No special handling needed beyond the standard rules
+5. **Affected URLs** — upon initialization, all pages in `live-site-pages/` are treated as **affected** (marked with `✏️`) because the deployment makes them live for the first time. Even though the HTML files themselves were not edited, the user-facing experience changed — the pages went from non-existent to deployed. This is an indirect affect similar to how editing a `.gs` file affects its embedding page
 
 **No version bumps** — initialization never bumps `build-version`, `version.txt`, or any version-tracking files. It deploys whatever versions already exist. This applies on both the template repo and forks.
 
@@ -292,8 +292,9 @@ Each GAS project has a code file and a corresponding embedding page. Register th
 ### Maintenance Mode via version.txt
 The version.txt polling system supports a **maintenance mode** that displays a full-screen orange overlay when the version.txt content is prefixed with `maintenance`:
 - **Activate**: edit the version.txt file and prepend `maintenance` to the existing content (e.g. `v01.02w` → `maintenancev01.02w`)
+- **Activate with timestamp**: append a `|` followed by the maintenance start time (e.g. `maintenancev01.02w|2026-02-26 10:00:00 PM EST`). The timestamp is displayed below the logo on the overlay as "Since: ..."
 - **Deactivate**: remove the `maintenance` prefix (e.g. `maintenancev01.02w` → `v01.02w`)
-- When the polling logic detects the `maintenance` prefix, it displays an orange full-screen overlay with the developer logo centered and an "Under Maintenance" title — similar to the green "Website Ready" splash but persistent
+- When the polling logic detects the `maintenance` prefix, it displays an orange full-screen overlay with the developer logo centered and a "This Webpage is Under Maintenance" title — similar to the green "Website Ready" splash but persistent
 - The overlay stays visible as long as the version.txt content starts with `maintenance` — it does not auto-dismiss
 - The version indicator pill remains visible on top of the maintenance overlay (the maintenance overlay uses `z-index: 9998`, below the version indicator's `z-index: 9999`)
 - When the `maintenance` prefix is removed: if the underlying version also changed, the page auto-reloads; if the version is unchanged, the overlay fades out gracefully
