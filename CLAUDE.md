@@ -118,9 +118,9 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 
 0. **Commit belongs to this repo and task** — before staging or committing ANY changes, verify: (a) `git remote -v` still matches the repo you are working on — if it doesn't, STOP and do not commit; (b) every file being staged was modified by THIS session's task, not inherited from a prior session or a different repo; (c) the commit message describes work you actually performed in this session — never commit with a message copied from a prior session's commit. If any of these checks fail, discard the stale changes and proceed only with the user's current request. **This item is never skipped** — it applies on every repo including the template repo
 1. **Version bump (.gs)** — if any `.gs` file was modified, increment its `VERSION` variable by 0.01 (e.g. `"01.13g"` → `"01.14g"`)
-2. **Version bump (version.txt)** — if any embedding HTML page in `live-site-pages/` was modified, increment the version in its `<page-name>.version.txt` by 0.01 (e.g. `v01.01w` → `v01.02w`). The version.txt file is the **single source of truth** — the HTML contains no hardcoded version. **Skip if Template Repo Guard applies (see above)**
-3. **Version.txt is single source** — there is no `<meta name="build-version">` tag in the HTML. The polling logic reads version.txt on page load to establish the current version, then polls for changes. Version bumps happen only in version.txt. **Skip if Template Repo Guard applies**
-4. **Template version freeze** — never bump `live-site-templates/AutoUpdateOnlyHtmlTemplate.version.txt` — its version must always stay at `v01.00w`
+2. **Version bump (version.txt)** — if any embedding HTML page in `live-site-pages/` was modified, increment the version in its `<page-name>.version.txt` by 0.01 (e.g. `|v01.01w|` → `|v01.02w|`). The version.txt file is the **single source of truth** — the HTML contains no hardcoded version. **Skip if Template Repo Guard applies (see above)**
+3. **Version.txt is single source** — there is no `<meta name="build-version">` tag in the HTML. The polling logic reads version.txt on page load to establish the current version, then polls for changes. Version bumps happen only in version.txt. The format uses pipe delimiters: `|v01.00w|` (version is always the middle field). **Skip if Template Repo Guard applies**
+4. **Template version freeze** — never bump `live-site-templates/AutoUpdateOnlyHtmlTemplate.version.txt` — its version must always stay at `|v01.00w|`
 5. **STATUS.md** — if any version was bumped, update the matching version in `repository-information/STATUS.md`. **Skip if Template Repo Guard applies**
 6. **ARCHITECTURE.md** — if any version was bumped or the project structure changed, update the diagram in `repository-information/ARCHITECTURE.md`. **Version-bump portion: skip if Template Repo Guard applies.** Structure changes still apply on the template repo. **When versions are bumped, update every Mermaid node that displays a version string** — specifically check: `VERTXT["index.version.txt\n(vXX.XXw)"]`, and any future page/GAS nodes with version text. The HTML pages no longer contain a hardcoded version — the version lives solely in version.txt. The TPL node (`v01.00w`) is frozen and never changes
 7. **CHANGELOG.md** — every user-facing change must have an entry under `## [Unreleased]` in `repository-information/CHANGELOG.md`. Each entry must include an EST timestamp down to the second (format: `` `YYYY-MM-DD HH:MM:SS EST` — Description``). The `[Unreleased]` section header must also show the date/time of the most recent entry. **Timestamps must be real** — run `TZ=America/New_York date '+%Y-%m-%d %H:%M:%S EST'` to get the actual current time; never fabricate or increment timestamps. **Skip if Template Repo Guard applies (see above)**
@@ -275,14 +275,14 @@ Each GAS project has a code file and a corresponding embedding page. Register th
 ## Build Version (Auto-Refresh for embedding pages)
 *Rules: see Pre-Commit Checklist items #2, #3, #4. Reference details below.*
 - The version lives **solely** in `<page-name>.version.txt` — the HTML contains no hardcoded version
-- Format includes a `v` prefix and `w` suffix: e.g. `v01.11w` → `v01.12w`
+- Format uses pipe delimiters with the version in the middle field: e.g. `|v01.11w|` → `|v01.12w|`
 - Each embedding page fetches `version.txt` on load to establish its baseline version, then polls every 10 seconds — when the deployed version differs from the loaded version, it auto-reloads
 
 ### Auto-Refresh via version.txt Polling
 - **All embedding pages must use the `version.txt` polling method** — do NOT poll the page's own HTML
 - **Version file naming**: the version file must be named `<page-name>.version.txt`, matching the HTML file it tracks (e.g. `index.html` → `index.version.txt`, `dashboard.html` → `dashboard.version.txt`). The `.version.txt` double extension ensures the version file sorts **after** the `.html` file alphabetically
-- Each version file holds the current build-version string with a `v` prefix (e.g. `v01.08w`). The `v` prefix matches the visual display in the version indicator pill. The polling logic strips the `v` prefix internally for comparison
-- **version.txt is the single source of truth** — the HTML pages contain no `<meta name="build-version">` tag. On page load, the polling logic immediately fetches version.txt, stores the version as the baseline, creates the version indicator pill, and begins the 10-second polling loop. This means bumping the version in version.txt alone (without editing the HTML) will trigger a reload — after the reload, the page establishes the new version as its baseline, preventing an infinite loop
+- Each version file uses pipe delimiters: `|v01.08w|`. The version is always the middle field (between the pipes). The polling logic splits on `|` and reads `parts[1]`, stripping the `v` prefix for internal comparison. The pipes stay in place at all times — switching to maintenance mode only changes the first field
+- **version.txt is the single source of truth** — the HTML pages contain no hardcoded version. On page load, the polling logic immediately fetches version.txt, stores the version as the baseline, creates the version indicator pill, and begins the 10-second polling loop. This means bumping the version in version.txt alone (without editing the HTML) will trigger a reload — after the reload, the page establishes the new version as its baseline, preventing an infinite loop
 - The polling logic fetches the version file (~7 bytes) instead of the full HTML page, reducing bandwidth per poll from kilobytes to bytes
 - URL resolution: derive the version file URL relative to the current page's directory, using the page's own filename. See the template file (`live-site-templates/AutoUpdateOnlyHtmlTemplate.html`) for the implementation
 - **The `if (!pageName)` fallback is critical** — when a page is accessed via a directory URL (e.g. `https://example.github.io/myapp/`), `pageName` resolves to an empty string. Without the fallback to `'index'`, the poll fetches `.version.txt` (wrong file) and triggers an infinite reload loop
@@ -290,10 +290,10 @@ Each GAS project has a code file and a corresponding embedding page. Register th
 - The template in `live-site-templates/AutoUpdateOnlyHtmlTemplate.html` already implements this pattern — use it as a starting point for new projects
 
 ### Maintenance Mode via version.txt
-The version.txt polling system supports a **maintenance mode** that displays a full-screen orange overlay when the version.txt content starts with `maintenance|`. The format uses pipe (`|`) delimiters throughout:
-- **Activate**: edit the version.txt file to `maintenance|v01.02w` (e.g. from `v01.02w` → `maintenance|v01.02w`)
-- **Activate with timestamp**: append a `|` followed by the maintenance start time (e.g. `maintenance|v01.02w|2026-02-26 10:00:00 PM EST`). The timestamp is displayed below the logo on the overlay as "Since: ..."
-- **Deactivate**: remove the `maintenance|` prefix (e.g. `maintenance|v01.02w` → `v01.02w`)
+The version.txt polling system supports a **maintenance mode** that displays a full-screen orange overlay when the first field is `maintenance`. The format always uses pipe (`|`) delimiters — you never need to add or remove pipes, just edit the fields:
+- **Activate**: change the first field from empty to `maintenance` (e.g. `|v01.02w|` → `maintenance|v01.02w|`)
+- **Activate with timestamp**: also fill the third field with the start time (e.g. `maintenance|v01.02w|2026-02-26 10:00:00 PM EST`). The timestamp is displayed below the logo on the overlay as "Since: ..."
+- **Deactivate**: clear the first field back to empty (e.g. `maintenance|v01.02w|` → `|v01.02w|`)
 - When the polling logic detects the `maintenance` prefix, it displays an orange full-screen overlay with the developer logo centered and a "This Webpage is Under Maintenance" title — similar to the green "Website Ready" splash but persistent
 - The overlay stays visible as long as the version.txt content starts with `maintenance` — it does not auto-dismiss
 - The version indicator pill remains visible on top of the maintenance overlay (the maintenance overlay uses `z-index: 9998`, below the version indicator's `z-index: 9999`)
@@ -309,10 +309,10 @@ When creating a **new** HTML embedding page, follow every step below:
    - Orange "Under Maintenance" splash overlay (triggered by `maintenance|` prefix in version.txt)
    - AudioContext handling and screen wake lock
 2. **Choose the directory** — create a new subdirectory under `live-site-pages/` named after the project (e.g. `live-site-pages/my-project/`)
-3. **Create the version file** — place a `<page-name>.version.txt` file in the **same directory** as the HTML page (e.g. `index.version.txt` for `index.html`), containing the initial version string (e.g. `v01.00w`). This is the **single source of truth** for the page version — the HTML contains no hardcoded version
+3. **Create the version file** — place a `<page-name>.version.txt` file in the **same directory** as the HTML page (e.g. `index.version.txt` for `index.html`), containing the initial version string in pipe-delimited format (e.g. `|v01.00w|`). This is the **single source of truth** for the page version — the HTML contains no hardcoded version
 4. **Update the polling URL in the template** — ensure the JS version-file URL derivation matches the HTML filename (the template defaults to deriving it from the page's own filename)
 5. **Create `sounds/` directory** — copy the `sounds/` folder (containing `Website_Ready_Voice_1.mp3`) into the new page's directory so the splash sound works
-6. **Set the initial version** — set `<page-name>.version.txt` to `v01.00w`
+6. **Set the initial version** — set `<page-name>.version.txt` to `|v01.00w|`
 7. **Update the page title** — replace `YOUR_PROJECT_TITLE` in `<title>` with the actual project name
 8. **Register in GAS Projects table** — if this page embeds a GAS iframe, add a row to the GAS Projects table in the Version Bumping section above
 9. **Add developer branding** — ensure `<!-- Developed by: DEVELOPER_NAME -->` is the last line of the HTML file
@@ -322,7 +322,7 @@ When creating a **new** HTML embedding page, follow every step below:
 live-site-pages/
 ├── <page-name>/
 │   ├── index.html               # The embedding page (from template)
-│   ├── index.version.txt        # Tracks index.html build-version (e.g. "v01.00w")
+│   ├── index.version.txt        # Tracks index.html version (e.g. "|v01.00w|")
 │   └── sounds/
 │       └── Website_Ready_Voice_1.mp3
 ```
@@ -353,8 +353,8 @@ The Mermaid diagram in `repository-information/ARCHITECTURE.md` contains nodes t
 | Node ID | What it represents | Example text | Tracks |
 |---------|--------------------|-------------|--------|
 | `INDEX` | `index.html` | `INDEX["index.html"]` | The embedding page (version lives in version.txt, not in the HTML) |
-| `VERTXT` | `index.version.txt` | `VERTXT["index.version.txt\n(v01.00w)"]` | The single source of truth for the page version |
-| `TPL` | `AutoUpdateOnlyHtmlTemplate.html` | `TPL["...\n(v01.00w — never bumped)"]` | Frozen at `v01.00w` — never changes |
+| `VERTXT` | `index.version.txt` | `VERTXT["index.version.txt\n(\|v01.00w\|)"]` | The single source of truth for the page version |
+| `TPL` | `AutoUpdateOnlyHtmlTemplate.html` | `TPL["...\n(\|v01.00w\| — never bumped)"]` | Frozen at `\|v01.00w\|` — never changes |
 
 ### Why the miss happens
 The `.version.txt` file gets bumped by Pre-Commit item #2, but the VERTXT *Mermaid node* is a separate representation of the same version. It's easy to bump the file and forget the diagram node. Always check the VERTXT node when bumping a version.

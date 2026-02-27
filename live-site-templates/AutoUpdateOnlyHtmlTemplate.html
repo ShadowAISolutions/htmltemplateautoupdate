@@ -171,13 +171,14 @@
       var indicator = null;
       var dot = null;
 
-      // Parse version.txt content: "v01.00w" or "maintenance|v01.00w" or "maintenance|v01.00w|timestamp"
+      // Parse version.txt content: "|v01.00w|" or "maintenance|v01.00w|" or "maintenance|v01.00w|timestamp"
       function parseVersionTxt(raw) {
         var parts = raw.split('|');
-        if (parts[0] === 'maintenance') {
-          return { maintenance: true, version: (parts[1] || '').replace(/^v/, ''), timestamp: parts[2] || '' };
-        }
-        return { maintenance: false, version: parts[0].replace(/^v/, ''), timestamp: '' };
+        return {
+          maintenance: parts[0] === 'maintenance',
+          version: (parts[1] || '').replace(/^v/, ''),
+          timestamp: parts[2] || ''
+        };
       }
 
       function createIndicator(version) {
