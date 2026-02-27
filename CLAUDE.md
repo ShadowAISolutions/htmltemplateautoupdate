@@ -709,6 +709,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 > - When both are `On` (the default), all rules below apply as written
 
 - **First output — coding plan**: for every user prompt that will involve changes, the very first line written to chat must be `🚩🚩CODING PLAN🚩🚩` on its own line, followed by a brief bullet-point list of what will be done in this response, then a **blank line** followed by `⚡⚡CODING START⚡⚡` on its own line to signal work is beginning. The blank line is required to break out of the bullet list context so CODING START renders left-aligned. Keep the plan concise — one bullet per distinct action (e.g. "Edit CLAUDE.md to add coding plan rule", "Update README.md timestamp"). This is for transparency, not approval — do NOT wait for user confirmation before proceeding. If the response is purely informational with no changes to make, skip the plan and open with `🔬🔬RESEARCH START🔬🔬` directly (instead of CODING START). **CODING PLAN and CODING START / RESEARCH START appear exactly once per response** — never repeat them mid-response. Use `🔄🔄NEXT PHASE🔄🔄` instead (see below)
+- **Planned affected URLs**: immediately after the coding plan bullets (after the blank line that ends the bullet list, before ESTIMATED TIME), output `🔗✏️PLANNED AFFECTED URLS✏️🔗` followed by the page URLs expected to be affected by this response — using the same label-URL pair format as the end-of-response `🔗✏️AFFECTED URLS✏️🔗` section (backtick-wrapped `✏️` labels, blockquoted URLs). This gives the user clickable links to the files' current state so they can open them while work is in progress. **Best-effort prediction** — base it on the coding plan bullets; if the scope changes mid-work, the final AFFECTED URLS at the end may differ. When no pages are expected to be affected, output the header followed by `> *No URL pages expected to be affected*`. **Skip entirely for RESEARCH START responses** (no plan, no affected URLs). When the coding plan repeats after `📋📋PLAN APPROVED📋📋`, include PLANNED AFFECTED URLS again after those plan bullets (the prediction may be more accurate post-research)
 - **Continuation after user interaction**: when `AskUserQuestion` or `ExitPlanMode` returns mid-response (the user answered a question or approved a plan), the response continues but must **NOT** repeat `🚩🚩CODING PLAN🚩🚩`, `⚡⚡CODING START⚡⚡`, or `🔬🔬RESEARCH START🔬🔬`. Instead:
   - After `AskUserQuestion`: use `🔄🔄NEXT PHASE🔄🔄` with a description incorporating the user's choice (e.g. "User chose option A — proceeding with implementation")
   - After `ExitPlanMode` (plan approved): output `📋📋PLAN APPROVED📋📋` on its own line, followed by `🚩🚩CODING PLAN🚩🚩` with the execution plan bullets, then `⚡⚡CODING START⚡⚡`. This is the **only** scenario where CODING PLAN/CODING START may appear a second time — because plan approval is a distinct boundary between planning and execution, and the user needs to see the execution plan clearly. The `📋📋PLAN APPROVED📋📋` marker signals that this is a continuation, not a new prompt
@@ -775,9 +776,10 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 | Bookend | When | Position | Timestamp | Duration |
 |---------|------|----------|-----------|----------|
 | `🚩🚩CODING PLAN🚩🚩 [HH:MM:SS AM EST YYYY-MM-DD]` | Response will make changes | Very first line of response (skip if purely informational) | Required | — |
-| `⚡⚡CODING START⚡⚡ [HH:MM:SS AM EST YYYY-MM-DD]` | Coding work is beginning | After coding plan bullets | Required | `⏱️` before next bookend |
+| `🔗✏️PLANNED AFFECTED URLS✏️🔗` | Coding response (skip for research) | After coding plan bullets, before ESTIMATED TIME — predicted affected page URLs | — | — |
+| `⚡⚡CODING START⚡⚡ [HH:MM:SS AM EST YYYY-MM-DD]` | Coding work is beginning | After PLANNED AFFECTED URLS + ESTIMATED TIME | Required | `⏱️` before next bookend |
 | `🔬🔬RESEARCH START🔬🔬 [HH:MM:SS AM EST YYYY-MM-DD]` | Research-only response (no code changes expected) | First line of response (no CODING PLAN needed) | Required | `⏱️` before next bookend |
-| `⏳⏳ESTIMATED TIME ≈ Xm⏳⏳` (overall) | Every response | Immediately before CODING START or RESEARCH START (never skipped) | — | — |
+| `⏳⏳ESTIMATED TIME ≈ Xm⏳⏳` (overall) | Every response | After PLANNED AFFECTED URLS, immediately before CODING START or RESEARCH START (never skipped) | — | — |
 | `⏳⏳ESTIMATED TIME ≈ Xm⏳⏳` (per-phase) | Next phase estimated >2 min | Immediately before the phase's bookend marker | — | — |
 | `⏳⏳REVISED ESTIMATED TIME ≈ Xm⏳⏳ [HH:MM:SS AM EST]` | Estimate changed ≥1m after reads | After initial reads/exploration complete, before next action | Required | — |
 | `📋📋PLAN APPROVED📋📋 [HH:MM:SS AM EST]` | User approved a plan via ExitPlanMode | Before execution begins; followed by CODING PLAN + CODING START (only allowed repeat) | Required | — |
@@ -812,6 +814,11 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ```
 🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 2026-01-15]
   - brief bullet plan of intended changes
+
+🔗✏️PLANNED AFFECTED URLS✏️🔗
+
+`✏️ Homepage`
+> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
 
 ⏳⏳ESTIMATED TIME ≈ 2m⏳⏳ — ~3 file reads + ~4 edits + commit + push cycle
 ⚡⚡CODING START⚡⚡ [01:15:01 AM EST 2026-01-15]
@@ -861,6 +868,9 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - Research the codebase and design an approach
   - Present plan for approval
 
+🔗✏️PLANNED AFFECTED URLS✏️🔗
+> *No URL pages expected to be affected*
+
 ⏳⏳ESTIMATED TIME ≈ 5m⏳⏳ — ~research + plan design + implementation
 ⚡⚡CODING START⚡⚡ [01:15:01 AM EST 2026-01-15]
 🔍🔍RESEARCHING🔍🔍 [01:15:01 AM EST]
@@ -875,6 +885,9 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
   - Edit file X
   - Update file Y
   - Commit and push
+
+🔗✏️PLANNED AFFECTED URLS✏️🔗
+> *No URL pages expected to be affected*
 
 ⏳⏳ESTIMATED TIME ≈ 2m⏳⏳ — ~3 edits + commit + push cycle
 ⚡⚡CODING START⚡⚡ [01:18:16 AM EST 2026-01-15]
@@ -908,6 +921,9 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ```
 🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 2026-01-15]
   - brief bullet plan of intended changes
+
+🔗✏️PLANNED AFFECTED URLS✏️🔗
+> *No URL pages expected to be affected*
 
 ⏳⏳ESTIMATED TIME ≈ 3m⏳⏳ — ~4 file edits + commit + push cycle
 ⚡⚡CODING START⚡⚡ [01:15:01 AM EST 2026-01-15]
@@ -964,6 +980,9 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 2026-01-15]
   - Research the two possible approaches
   - Ask user which approach to take
+
+🔗✏️PLANNED AFFECTED URLS✏️🔗
+> *No URL pages expected to be affected*
 
 ⏳⏳ESTIMATED TIME ≈ 3m⏳⏳ — ~research + implementation after user decision
 ⚡⚡CODING START⚡⚡ [01:15:01 AM EST 2026-01-15]
