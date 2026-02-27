@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="build-version" content="01.00w">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
   <title>CHANGE THIS PROJECT TITLE TEMPLATE</title>
   <style>
@@ -156,55 +155,69 @@
       }
     }
 
-    // Auto-refresh: poll version.txt every 10s for build-version changes
+    // Auto-refresh: poll version.txt for version changes and maintenance mode
+    // Version is sourced entirely from version.txt (no hardcoded version in HTML)
     (function() {
       var POLL_INTERVAL = 10000;
-      var currentVersion = (document.querySelector('meta[name="build-version"]') || {}).content;
-      if (!currentVersion) return;
       if (!AUTO_REFRESH) return;
 
-      var indicator = document.createElement('div');
-      indicator.id = 'version-indicator';
-      indicator.innerHTML = '<span class="dot"></span><span class="label">v' + currentVersion + '</span><span id="audio-status"></span>';
-      if (SHOW_WEB_VERSION) document.body.appendChild(indicator);
-      updateAudioStatus();
-      // Catch the case where onstatechange fired before the element existed
-      if (_resumePromise) _resumePromise.then(function() { updateAudioStatus(); });
-      var dot = indicator.querySelector('.dot');
-
-      // Resolve <page-name>-version.txt URL relative to the current page
+      // Resolve <page-name>.version.txt URL relative to the current page
       var basePath = window.location.href.split('?')[0].split('#')[0];
       var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
       if (!pageName) pageName = 'index';
       var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + pageName + '.version.txt';
 
+      var currentVersion = null;
+      var indicator = null;
+      var dot = null;
+
+      // Parse version.txt content: "v01.00w" or "maintenance|v01.00w" or "maintenance|v01.00w|timestamp"
+      function parseVersionTxt(raw) {
+        var parts = raw.split('|');
+        if (parts[0] === 'maintenance') {
+          return { maintenance: true, version: (parts[1] || '').replace(/^v/, ''), timestamp: parts[2] || '' };
+        }
+        return { maintenance: false, version: parts[0].replace(/^v/, ''), timestamp: '' };
+      }
+
+      function createIndicator(version) {
+        indicator = document.createElement('div');
+        indicator.id = 'version-indicator';
+        indicator.innerHTML = '<span class="dot"></span><span class="label">v' + version + '</span><span id="audio-status"></span>';
+        if (SHOW_WEB_VERSION) document.body.appendChild(indicator);
+        updateAudioStatus();
+        if (_resumePromise) _resumePromise.then(function() { updateAudioStatus(); });
+        dot = indicator.querySelector('.dot');
+      }
+
       function checkForUpdate() {
-        dot.className = 'dot checking';
+        if (dot) dot.className = 'dot checking';
         fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
           .then(function(res) { return res.text(); })
           .then(function(v) {
-            var remoteRaw = v.trim();
-            var pipeIdx = remoteRaw.indexOf('|');
-            var maintenanceTimestamp = pipeIdx !== -1 ? remoteRaw.substring(pipeIdx + 1) : '';
-            var versionPart = pipeIdx !== -1 ? remoteRaw.substring(0, pipeIdx) : remoteRaw;
-            var isMaintenance = versionPart.indexOf('maintenance') === 0;
-            var rawVersion = versionPart.replace(/^maintenance/, '').replace(/^v/, '');
+            var parsed = parseVersionTxt(v.trim());
             var maintenanceSplash = document.getElementById('splash-maintenance');
 
-            if (isMaintenance) {
-              // Show maintenance overlay — stays until prefix is removed
+            if (!currentVersion) {
+              // First fetch — establish baseline version from version.txt
+              currentVersion = parsed.version;
+              createIndicator(currentVersion);
+            }
+
+            if (parsed.maintenance) {
+              // Show maintenance overlay — stays until maintenance prefix is removed
               if (maintenanceSplash) {
                 maintenanceSplash.style.display = 'flex'; maintenanceSplash.style.opacity = '1';
                 var tsEl = document.getElementById('maintenance-timestamp');
-                if (tsEl) tsEl.textContent = maintenanceTimestamp ? 'Since: ' + maintenanceTimestamp : '';
+                if (tsEl) tsEl.textContent = parsed.timestamp ? 'Since: ' + parsed.timestamp : '';
               }
-              dot.className = 'dot';
+              if (dot) dot.className = 'dot';
               setTimeout(checkForUpdate, POLL_INTERVAL);
-            } else if (rawVersion && rawVersion !== currentVersion) {
+            } else if (parsed.version && parsed.version !== currentVersion) {
               // Version changed — hide maintenance if showing, trigger reload
               if (maintenanceSplash) maintenanceSplash.style.display = 'none';
-              dot.className = 'dot found';
-              indicator.querySelector('.label').textContent = 'Updating...';
+              if (dot) dot.className = 'dot found';
+              if (indicator) indicator.querySelector('.label').textContent = 'Updating...';
               sessionStorage.setItem('web-pending-sound', '1');
               setTimeout(function() { window.location.reload(); }, 2000);
             } else {
@@ -213,17 +226,21 @@
                 maintenanceSplash.style.opacity = '0';
                 setTimeout(function() { maintenanceSplash.style.display = 'none'; }, 300);
               }
-              setTimeout(function() { dot.className = 'dot'; }, 800);
+              if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
               setTimeout(checkForUpdate, POLL_INTERVAL);
             }
           })
           .catch(function() {
-            dot.className = 'dot error';
-            setTimeout(function() { dot.className = 'dot'; }, 2000);
+            if (dot) {
+              dot.className = 'dot error';
+              setTimeout(function() { dot.className = 'dot'; }, 2000);
+            }
             setTimeout(checkForUpdate, POLL_INTERVAL);
           });
       }
-      setTimeout(checkForUpdate, POLL_INTERVAL);
+
+      // Fetch immediately on load to establish baseline version
+      checkForUpdate();
     })();
 
     // Screen Wake Lock — keep screen on while page is visible
