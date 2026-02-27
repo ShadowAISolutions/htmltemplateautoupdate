@@ -292,7 +292,7 @@ Each GAS project has a code file and a corresponding embedding page. Register th
 ### Maintenance Mode via version.txt
 The version.txt polling system supports a **maintenance mode** that displays a full-screen orange overlay when the first field is `maintenance`. The format always uses pipe (`|`) delimiters — you never need to add or remove pipes, just edit the fields:
 - **Activate**: change the first field from empty to `maintenance` (e.g. `|v01.02w|` → `maintenance|v01.02w|`)
-- **Activate with timestamp**: also fill the third field with the start time (e.g. `maintenance|v01.02w|2026-02-26 10:00:00 PM EST`). The timestamp is displayed below the logo on the overlay as "Since: ..."
+- **Activate with timestamp**: also fill the third field with the start time (e.g. `maintenance|v01.02w|2026-02-26 10:00:00 PM EST`). The timestamp is displayed below the logo on the overlay as "As of: 10:00:00 PM EST 02/26/2026" — the JS reformats the `YYYY-MM-DD TIME` input into `TIME MM/DD/YYYY` display format
 - **Deactivate**: clear the first field back to empty (e.g. `maintenance|v01.02w|` → `|v01.02w|`)
 - When the polling logic detects the `maintenance` prefix, it displays an orange full-screen overlay with the developer logo centered and a "This Webpage is Under Maintenance" title — similar to the green "Website Ready" splash but persistent
 - The overlay stays visible as long as the version.txt content starts with `maintenance` — it does not auto-dismiss
