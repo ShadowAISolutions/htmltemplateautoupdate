@@ -3,11 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 34/50`
+`Sections: 35/50`
 
 ## [Unreleased]
 
-## [v01.34r] — 2026-02-28 06:33:58 PM EST — SHA: *pending next push*
+## [v01.35r] — 2026-02-28 06:38:00 PM EST — SHA: *pending next push*
+
+### Changed
+- Consolidated two specific self-improvement rules (URL format gate, Reminders compacted-context guard) into a single general "Context compaction recovery" rule in the Session Start Checklist — on compacted/continued contexts, re-read the actual CLAUDE.md rules and re-execute the full Session Start Checklist instead of relying on patterns from the session summary; covers all future cases without needing to enumerate each one
+
+## [v01.34r] — 2026-02-28 06:33:58 PM EST — SHA: [`2908cb7`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2908cb798ee9a60a4d284d32b7234159c38c6f8c)
 
 ### Added
 - Added self-improvement rule to Reminders instruction in CLAUDE.md — explicitly states that reminders must be surfaced on compacted-context continuations and continued sessions, not just fresh sessions; prevents assuming reminders were already shown based on prior context
