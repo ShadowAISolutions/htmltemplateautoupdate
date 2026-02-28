@@ -69,6 +69,8 @@ These rules apply universally — they are **NOT** skipped by the template repo 
 
 **Initialized repo short-circuit** — check if `README.md` contains the placeholder text `You are currently using the **`. If it does NOT, the repo has already been initialized — skip the Template Drift Checks below and proceed directly to the user's request. If it DOES, the repo is a fresh fork that needs initialization — continue to the Template Drift Checks.
 
+**Reminders** — read `repository-information/REMINDERS.md`. If the `## Active Reminders` section contains any entries, surface them to the user before proceeding to their request. Format: output `📌 Reminders from last session:` followed by each reminder as a bullet point. After surfacing, proceed normally — do not wait for acknowledgment. If the user says "remind me next time" (or similar phrasing like "next session remember", "don't let me forget") about anything during a session, add it to the `## Active Reminders` section with a timestamp. When a reminder has been addressed or the user dismisses it, move it to `## Completed Reminders` with a completion timestamp.
+
 ### Template Drift Checks (forks/clones only)
 These checks catch template drift that accumulates when the repo is cloned/forked into a new name. They do **not** apply to the template repo itself.
 
@@ -772,6 +774,34 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 
 ---
 > **--- END OF AGENT ATTRIBUTION ---**
+---
+
+## Reminder System
+*Rule: see Session Start Checklist — "Reminders" in the Always Run section. File location and format below.*
+
+The reminder system provides cross-session continuity by persisting user-requested reminders in a structured file that Claude reads at the start of every session.
+
+### File location
+`repository-information/REMINDERS.md`
+
+### How it works
+- **Adding reminders**: when the user says "remind me next time" (or similar — "next session remember", "don't let me forget", "bring this up next time"), add an entry to `## Active Reminders` with a timestamp and description
+- **Surfacing reminders**: during the Session Start Checklist, read the file and output any active reminders before proceeding to the user's request
+- **Completing reminders**: when a reminder has been addressed or the user explicitly dismisses it, move it from `## Active Reminders` to `## Completed Reminders` with a completion timestamp
+- **Trigger phrases**: the user does not need to use exact phrasing — any intent to be reminded in a future session should be captured. Examples: "remind me next time", "next session bring up", "don't forget to mention", "remember to tell me"
+
+### Entry format
+```
+- `YYYY-MM-DD HH:MM:SS AM/PM EST` — **Brief title** — longer description if needed
+```
+
+### Completed entry format
+```
+- ~~`YYYY-MM-DD HH:MM:SS AM/PM EST` — **Brief title** — description~~ — completed `YYYY-MM-DD HH:MM:SS AM/PM EST`
+```
+
+---
+> **--- END OF REMINDER SYSTEM ---**
 ---
 
 ## Provenance Markers
