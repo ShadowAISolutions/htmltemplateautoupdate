@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-28 04:33:38 PM EST` · Repo version: `v01.25r`
+Last updated: `2026-02-28 04:44:17 PM EST` · Repo version: `v01.26r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -73,7 +73,7 @@ Your site will be live at `https://<your-org>.github.io/<your-repo>/`
 ## How It Works
 
 ### Auto-Refresh via Version Polling
-Every hosted page polls a lightweight `.htmlversion.txt` file every 10 seconds. When a new version is deployed, the page detects the mismatch and auto-reloads — showing a green "Website Ready" splash with audio feedback.
+Every hosted page polls a lightweight `html.version.txt` file every 10 seconds. When a new version is deployed, the page detects the mismatch and auto-reloads — showing a green "Website Ready" splash with audio feedback.
 
 ### CI/CD Auto-Merge Flow
 1. Push to a `claude/*` branch
@@ -93,17 +93,17 @@ Google Apps Script projects are embedded as iframes in GitHub Pages. The framewo
 htmltemplateautoupdate/
 ├── live-site-pages/             # Deployed to GitHub Pages
 │   ├── index.html              # Live landing page
-│   ├── index.htmlversion.txt   # Version file for auto-refresh
+│   ├── indexhtml.version.txt   # Version file for auto-refresh
 │   ├── indexhtml.changelog.md   # User-facing changelog for landing page
 │   ├── indexhtml.changelog-archive.md # Older changelog sections (rotated)
 │   ├── test.html               # GAS Self-Update Dashboard test page
-│   ├── test.htmlversion.txt    # Version file for test page auto-refresh
+│   ├── testhtml.version.txt    # Version file for test page auto-refresh
 │   ├── testhtml.changelog.md   # User-facing changelog for test page
 │   ├── testhtml.changelog-archive.md  # Older changelog sections (rotated)
 │   └── sounds/                 # Audio feedback files
 ├── live-site-templates/        # Template for new pages
 │   ├── AutoUpdateOnlyHtmlTemplate.html           # Template HTML page
-│   ├── AutoUpdateOnlyHtmlTemplate.htmlversion.txt # Template version file (frozen at v01.00w)
+│   ├── AutoUpdateOnlyHtmlTemplatehtml.version.txt # Template version file (frozen at v01.00w)
 │   ├── AutoUpdateOnlyHtmlTemplatehtml.changelog.md # Template page changelog
 │   └── AutoUpdateOnlyHtmlTemplatehtml.changelog-archive.md # Template page changelog archive
 ├── googleAppsScripts/          # Google Apps Script projects

@@ -14,7 +14,7 @@
 
 - [ ] `.gs` file changed → `VERSION` incremented (e.g. `01.13g` → `01.14g`)
 - [ ] Embedding HTML changed → `build-version` incremented (e.g. `01.00w` → `01.01w`)
-- [ ] Corresponding `.htmlversion.txt` file updated to match
+- [ ] Corresponding `html.version.txt` file updated to match
 - [ ] No version-tracked files were changed
 
 ## Testing

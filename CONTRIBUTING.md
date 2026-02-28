@@ -24,7 +24,7 @@ For external contributions, open a standard pull request against `main`.
 ### Version Bumping
 
 - **`.gs` files:** Increment the `VERSION` variable by 0.01 (e.g. `"01.13g"` → `"01.14g"`)
-- **Embedding HTML pages:** Increment the `build-version` meta tag by 0.01 (e.g. `"01.00w"` → `"01.01w"`) and update the corresponding `.htmlversion.txt` file
+- **Embedding HTML pages:** Increment the `build-version` meta tag by 0.01 (e.g. `"01.00w"` → `"01.01w"`) and update the corresponding `html.version.txt` file
 
 ### Commit Messages
 

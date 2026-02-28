@@ -3,11 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 25/50`
+`Sections: 26/50`
 
 ## [Unreleased]
 
-## [v01.25r v01.01w] — 2026-02-28 04:32:51 PM EST — SHA: *pending next push*
+## [v01.26r v01.02w] — 2026-02-28 04:44:00 PM EST — SHA: *pending next push*
+
+### Changed
+- Standardized HTML version file naming from dot-separated (`index.htmlversion.txt`) to concatenated (`indexhtml.version.txt`) — now uniform with changelog naming pattern (`indexhtml.changelog.md`) and GAS naming pattern (`indexgs.version.txt`)
+- Updated JavaScript auto-refresh polling URL construction from `pageName + '.htmlversion.txt'` to `pageName + 'html.version.txt'`
+
+## [v01.25r v01.01w] — 2026-02-28 04:32:51 PM EST — SHA: [`2cf6582`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2cf658251efcf92cd00c629098c85c75edf599fa)
 
 ### Changed
 - Renamed HTML page version files to include `html` in filename — `index.version.txt` → `index.htmlversion.txt`, `test.version.txt` → `test.htmlversion.txt`, `AutoUpdateOnlyHtmlTemplate.version.txt` → `AutoUpdateOnlyHtmlTemplate.htmlversion.txt` — completing the disambiguation between HTML and GAS version files
