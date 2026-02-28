@@ -115,7 +115,7 @@ var FILE_PATH     = "googleAppsScripts/Index/Code.gs";
 var DEPLOYMENT_ID = "YOUR_DEPLOYMENT_ID";
 
 // Google Sheets config (optional — for version tracking in a linked sheet)
-var SPREADSHEET_ID = "YOUR_SPREADSHEET_ID";
+var SPREADSHEET_ID = "1fZhpw9h_Ci4bIQTwyT-3txrKmtg1tWASBHM2n0UFCRY";
 var SHEET_NAME     = "Live_Sheet";
 
 // Sound config (Google Drive file ID for notification sound)
