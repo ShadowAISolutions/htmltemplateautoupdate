@@ -104,7 +104,7 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 > - **All version bumps are skipped** — Pre-Commit Checklist items #1 (`.gs` version bump), #2 (version.txt bump), #3 (version.txt single source), #5 (STATUS.md), **#7 (CHANGELOG.md)**, #9 (version prefix in commit message), and #14 (QR code generation) are all skipped unless the user explicitly requests them. **DO NOT add CHANGELOG entries on the template repo** — the CHANGELOG must stay clean with `*(No changes yet)*` so that forks start with a blank history
 > - **GitHub Pages deployment is skipped** — the workflow's `deploy` job reads `IS_TEMPLATE_REPO` from `CLAUDE.md` and compares it against the repo name; deployment is skipped when they match
 > - **`YOUR_ORG_NAME` and `YOUR_REPO_NAME` are frozen as placeholders** — in the Template Variables table, these values must stay as `YourOrgName` and `YourRepoName` (generic placeholders). Do NOT update them to match the actual org/repo (`ShadowAISolutions`/`htmltemplateautoupdate`). The code files throughout the repo use the real `ShadowAISolutions/htmltemplateautoupdate` values so that links are functional. On forks, the Session Start drift checks detect the mismatch between the placeholder table values and the actual `git remote -v` values, then find and replace the template repo's real values (`ShadowAISolutions`/`htmltemplateautoupdate`) in the listed files with the fork's actual org/repo
-> - Pre-Commit items #0, #4, #6, #8, #10, #11, #12, #13 still apply normally
+> - Pre-Commit items #0, #4, #6, #8, #10, #11, #12, #13, #15 still apply normally
 > - **Pre-Push Checklist is never skipped** — all 5 items apply on every repo including the template repo
 
 ---
@@ -114,7 +114,7 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 ## Pre-Commit Checklist
 **Before every commit, verify ALL of the following:**
 
-> **TEMPLATE REPO GATE** — before running any numbered item, check: does the actual repo name (from `git remote -v`) match `IS_TEMPLATE_REPO` in the Template Variables table? If **yes**, items #1, #2, #3, #5, #6 (version-bump portion), #7, #9, and #14 are **all skipped** — do NOT bump versions, update version-tracking files, add CHANGELOG entries, use version prefixes in commit messages, or generate QR codes. Proceed directly to the items that still apply (#0, #4, #8, #10, #11, #12, #13). This gate also applies during `initialize` — initialization never bumps versions on any repo
+> **TEMPLATE REPO GATE** — before running any numbered item, check: does the actual repo name (from `git remote -v`) match `IS_TEMPLATE_REPO` in the Template Variables table? If **yes**, items #1, #2, #3, #5, #6 (version-bump portion), #7, #9, and #14 are **all skipped** — do NOT bump versions, update version-tracking files, add CHANGELOG entries, use version prefixes in commit messages, or generate QR codes. Proceed directly to the items that still apply (#0, #4, #8, #10, #11, #12, #13, #15). This gate also applies during `initialize` — initialization never bumps versions on any repo
 
 0. **Commit belongs to this repo and task** — before staging or committing ANY changes, verify: (a) `git remote -v` still matches the repo you are working on — if it doesn't, STOP and do not commit; (b) every file being staged was modified by THIS session's task, not inherited from a prior session or a different repo; (c) the commit message describes work you actually performed in this session — never commit with a message copied from a prior session's commit. If any of these checks fail, discard the stale changes and proceed only with the user's current request. **This item is never skipped** — it applies on every repo including the template repo
 1. **Version bump (.gs)** — if any `.gs` file was modified, increment its `VERSION` variable by 0.01 (e.g. `"01.13g"` → `"01.14g"`)
@@ -131,6 +131,7 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 12. **Internal link integrity** — if any markdown file is added, moved, or renamed, verify that all internal links (`[text](path)`) in the repo still resolve to existing files. Pay special attention to cross-directory links — see the Internal Link Reference section for the correct relative paths
 13. **README section link tips** — every `##` section in `README.md` that contains (or will contain) any clickable links must have this blockquote as the first line after the heading (before any other content): `> **Tip:** Links below navigate away from this page. **Ctrl + click** (or right-click → *Open in new tab*) to keep this ReadMe visible while you work.` — Sections with no links (e.g. a section with only a code block or plain text) do not need the tip
 14. **QR code generation** — if the commit changes the live site URL in `README.md` (i.e. the `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME` link — typically during initialization or org/repo name changes), regenerate `repository-information/readme-qr-code.png` to encode the **live site URL** (the `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME` GitHub Pages URL — NOT the GitHub repo URL). Use the Python `qrcode` library: `python3 -c "import qrcode; qrcode.make('https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME').save('repository-information/readme-qr-code.png')"` (with resolved values). If `qrcode` is not installed, install it first with `pip install qrcode[pil]`. Stage the updated PNG alongside the other changes so it lands in the same commit. **Skip if Template Repo Guard applies** — the template repo uses placeholder URLs, so no QR code should be generated for them
+15. **GAS config sync** — if any `config.json` file under `googleAppsScripts/` was modified, sync its values to the corresponding `Code.gs` and embedding HTML page. `config.json` is the **single source of truth** for project-unique GAS variables (`TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, `SOUND_FILE_ID`). Sync targets: (a) the `Code.gs` in the same directory — update the matching `var` declarations, (b) the embedding HTML page (from the GAS Projects table) — update `<title>` (from `TITLE`) and `var GAS_DEPLOYMENT_URL` (constructed as `https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec` when `DEPLOYMENT_ID` is not a placeholder, or `''` when it is). **Reverse sync**: if `Code.gs` was edited and a config-tracked variable was changed directly in the code, update `config.json` to match — the config file must always reflect the current values. **This item is never skipped** — it applies on every repo including the template repo
 
 ### Maintaining these checklists
 - The Session Start, Pre-Commit, and Pre-Push checklists are the **single source of truth** for all actionable rules. Detailed sections below provide reference context only
@@ -264,9 +265,9 @@ When adding, moving, or reorganizing `##` sections in this file, follow the atte
 ### GAS Projects
 Each GAS project has a code file and a corresponding embedding page. Register them in the table below as you add them. *For step-by-step instructions on adding a new GAS deploy step to the workflow, see the "HOW TO ADD A NEW GAS PROJECT" comment block at the top of `.github/workflows/auto-merge-claude.yml`.*
 
-| Project | Code File | Embedding Page |
-|---------|-----------|----------------|
-| Index | `googleAppsScripts/Index/Code.gs` | `live-site-pages/index.html` |
+| Project | Code File | Config File | Embedding Page |
+|---------|-----------|-------------|----------------|
+| Index | `googleAppsScripts/Index/Code.gs` | `googleAppsScripts/Index/config.json` | `live-site-pages/index.html` |
 
 ---
 > **--- END OF VERSION BUMPING ---**
@@ -315,7 +316,8 @@ When creating a **new** HTML embedding page, follow every step below:
 6. **Set the initial version** — set `<page-name>.version.txt` to `|v01.00w|`
 7. **Update the page title** — replace `YOUR_PROJECT_TITLE` in `<title>` with the actual project name
 8. **Register in GAS Projects table** — if this page embeds a GAS iframe, add a row to the GAS Projects table in the Version Bumping section above
-9. **Add developer branding** — ensure `<!-- Developed by: DEVELOPER_NAME -->` is the last line of the HTML file
+9. **Create GAS config file** — if this page embeds a GAS iframe, copy `googleAppsScripts/AutoUpdateOnlyHtmlTemplate/config.json` into the new GAS project directory (e.g. `googleAppsScripts/MyProject/config.json`) and fill in the project-specific values. This is the single source of truth for `TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, and `SOUND_FILE_ID` — Pre-Commit item #15 syncs these values to Code.gs and the embedding HTML
+10. **Add developer branding** — ensure `<!-- Developed by: DEVELOPER_NAME -->` is the last line of the HTML file
 
 ### Directory Structure (per embedding page)
 ```
@@ -367,6 +369,39 @@ When a new embedding page is created (see New Embedding Page Setup Checklist), a
 
 ---
 > **--- END OF ARCHITECTURE.MD VERSION NODES ---**
+---
+
+## GAS Project Config (config.json)
+*Rule: see Pre-Commit Checklist item #15. Reference details below.*
+
+Each GAS project directory contains a `config.json` file that is the **single source of truth** for project-unique variables. This mirrors the `version.txt` pattern — one small file to edit, with sync rules that propagate values to Code.gs and the embedding HTML page.
+
+### Config file contents
+
+| Key | Description | Syncs to |
+|-----|-------------|----------|
+| `TITLE` | Project title shown in browser tabs and GAS UI | Code.gs `var TITLE`, HTML `<title>` tag |
+| `DEPLOYMENT_ID` | GAS deployment ID (`AKfycb...` string) | Code.gs `var DEPLOYMENT_ID`, HTML `var GAS_DEPLOYMENT_URL` (derived) |
+| `SPREADSHEET_ID` | Google Sheets ID for version tracking | Code.gs `var SPREADSHEET_ID` |
+| `SHEET_NAME` | Sheet tab name | Code.gs `var SHEET_NAME` |
+| `SOUND_FILE_ID` | Google Drive file ID for deploy notification sound | Code.gs `var SOUND_FILE_ID` |
+
+### What is NOT in config.json
+- `VERSION` — auto-bumped by Pre-Commit item #1, lives only in Code.gs
+- `GITHUB_OWNER`, `GITHUB_REPO`, `FILE_PATH` — derived from repo structure, managed by init script
+- `EMBED_PAGE_URL`, `SPLASH_LOGO_URL` — repo-wide settings, managed by init script
+- `GITHUB_BRANCH` — always `main`
+
+### GAS_DEPLOYMENT_URL derivation
+The HTML page's `var GAS_DEPLOYMENT_URL` is derived from `DEPLOYMENT_ID`:
+- If `DEPLOYMENT_ID` is not a placeholder → `'https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec'`
+- If `DEPLOYMENT_ID` is a placeholder (`YOUR_DEPLOYMENT_ID`) → `''` (empty, iframe stays hidden)
+
+### Template config
+`googleAppsScripts/AutoUpdateOnlyHtmlTemplate/config.json` contains placeholder values. When creating a new GAS project, copy it to the new project directory and fill in the real values.
+
+---
+> **--- END OF GAS PROJECT CONFIG ---**
 ---
 
 ## Keeping Documentation Files in Sync

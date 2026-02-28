@@ -59,7 +59,9 @@ graph TB
         subgraph "Google Apps Scripts"
             direction LR
             GAS_INDEX["googleAppsScripts/Index/Code.gs\n(v01.00g)"]
+            GAS_CFG["config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
             GAS_TPL["googleAppsScripts/AutoUpdateOnlyHtmlTemplate/Code.gs\n(template)"]
+            GAS_TPL_CFG["config.json\n(template placeholders)"]
         end
 
         subgraph "GAS Self-Update Loop"
@@ -92,6 +94,9 @@ graph TB
 
     TPL -.->|"copy to create\nnew pages"| INDEX
     GAS_TPL -.->|"copy to create\nnew GAS projects"| GAS_INDEX
+    GAS_TPL_CFG -.->|"copy to create\nnew configs"| GAS_CFG
+    GAS_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_INDEX
+    GAS_CFG -.->|"syncs to\n(Pre-Commit #15)"| INDEX
     LIVE -.->|"serves"| BROWSER
     INDEX -.->|"iframes"| GAS_APP
     GAS_POSTMSG -.->|"tells embedding\npage to reload"| BROWSER
@@ -108,6 +113,8 @@ graph TB
     style TPL fill:#ffa726,color:#000
     style GAS_INDEX fill:#ff7043,color:#fff
     style GAS_TPL fill:#ffa726,color:#000
+    style GAS_CFG fill:#ffe082,color:#000
+    style GAS_TPL_CFG fill:#ffe082,color:#000
     style GAS_APP fill:#42a5f5,color:#fff
     style CLAUDE_MD fill:#ce93d8,color:#000
     style INIT_SCRIPT fill:#78909c,color:#fff

@@ -77,11 +77,17 @@
 // =============================================
 
 // ── PROJECT CONFIG ────────────────────────────────────────────────
-// Fill in these values after creating your GAS deployment.
-// See SETUP STEPS above for how to obtain each value.
+// config.json (same directory) is the SINGLE SOURCE OF TRUTH for
+// project-unique values: TITLE, DEPLOYMENT_ID, SPREADSHEET_ID,
+// SHEET_NAME, SOUND_FILE_ID. Edit config.json; the Pre-Commit
+// Checklist syncs the values here and to the embedding HTML page.
+//
+// VERSION and repo-derived values (GITHUB_OWNER, GITHUB_REPO,
+// FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
+// in this file — they are NOT in config.json.
 
 var VERSION = "01.00g";
-var TITLE = "YOUR_PROJECT_TITLE";
+var TITLE = "YOUR_PROJECT_TITLE";                                // ← config.json
 
 // GitHub config — where to pull code from
 var GITHUB_OWNER  = "YOUR_ORG_NAME";
@@ -90,14 +96,14 @@ var GITHUB_BRANCH = "main";
 var FILE_PATH     = "googleAppsScripts/YOUR_PROJECT_FOLDER/Code.gs";
 
 // Apps Script deployment ID (from Deploy → Manage deployments)
-var DEPLOYMENT_ID = "YOUR_DEPLOYMENT_ID";
+var DEPLOYMENT_ID = "YOUR_DEPLOYMENT_ID";                        // ← config.json
 
 // Google Sheets config (optional — for version tracking)
-var SPREADSHEET_ID = "YOUR_SPREADSHEET_ID";
-var SHEET_NAME     = "Live_Sheet";
+var SPREADSHEET_ID = "YOUR_SPREADSHEET_ID";                      // ← config.json
+var SHEET_NAME     = "Live_Sheet";                               // ← config.json
 
 // Sound config (optional — Google Drive file ID for notification sound)
-var SOUND_FILE_ID = "";
+var SOUND_FILE_ID = "";                                          // ← config.json
 
 // Embedding page URL — the GitHub Pages page that iframes this GAS app
 var EMBED_PAGE_URL = "YOUR_EMBED_PAGE_URL";
