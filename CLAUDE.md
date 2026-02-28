@@ -232,6 +232,17 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 > **--- END OF SOLUTION DEPTH ---**
 ---
 
+## Confidence Disclosure
+- When proposing a solution, **explicitly flag the confidence level** — distinguish between behavior you have confirmed (documentation, tested, directly observed) and behavior you have inferred by combining separate facts into an untested conclusion
+- This is broader than the Web Search Confidence rule (which covers web search results specifically). This applies to **any** solution — whether derived from research, reasoning, code reading, or experience. If the solution depends on two or more individually-confirmed facts working together in a way no source explicitly confirms, that combination is an untested inference and must be disclosed
+- **Format**: when presenting a solution that involves logical leaps, include a brief confidence note — e.g. *"Each piece is documented individually, but I haven't found confirmation they work together in this exact scenario"* or *"This is a logical inference — [specific assumption] is unverified"*
+- **Do not bury caveats** — place them prominently near the recommendation, not in a footnote or afterthought. The user should see the confidence level before deciding to adopt the approach
+- Quick tasks with well-established patterns (version bumps, standard API usage, documented configurations) do not need disclosure — apply this when the solution involves novel combinations or edge-case reasoning
+
+---
+> **--- END OF CONFIDENCE DISCLOSURE ---**
+---
+
 ## User-Perspective Reasoning
 - When organizing, ordering, or explaining anything in this repo, **always reason from the user's perspective** — how they experience the flow, read the output, or understand the structure. Never reason from internal implementation details (response-turn boundaries, tool-call mechanics, API round-trips) when the user-facing view tells a different story
 - The trap: internal mechanics can suggest one ordering/grouping, while the user's actual experience suggests another. When these conflict, the user's experience wins every time
