@@ -5,7 +5,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pe
 
 ## [Unreleased]
 
-## [v01.02r] — 2026-02-28
+## [v01.03r] — 2026-02-28
+
+### Changed
+- `2026-02-28 13:29:17 EST` — Changed repo version bump (#16) from per-commit to per-push — version now increments only on the final commit before `git push`
+- `2026-02-28 13:29:17 EST` — Changed CHANGELOG version section creation (#7) from per-commit to per-push — one section per push instead of one per commit, reducing CHANGELOG growth
+- `2026-02-28 13:29:17 EST` — Updated commit message format (#9) to distinguish push commits (with `r` prefix) from intermediate commits (with `g`/`w` prefix or no prefix)
+- `2026-02-28 13:29:17 EST` — Added push commit concept definition to Pre-Commit Checklist header
+- `2026-02-28 13:29:17 EST` — Updated Commit Message Naming reference section with intermediate commit examples
+- `2026-02-28 13:29:17 EST` — Clarified Pre-Commit #11 that repo version display stays unchanged on intermediate commits
+
+## [v01.02r] — 2026-02-28 — `dceafab`
 
 ### Added
 - `2026-02-28 13:13:35 EST` — Added repo version display next to `Last updated:` timestamp in README.md (format: `Last updated: TIMESTAMP · Repo version: vXX.XXr`)
