@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.02w">
+  <meta name="build-version" content="v01.03w">
   <title>CHANGE THIS PROJECT TITLE TEMPLATE</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -40,7 +40,7 @@
   <div id="splash-maintenance" class="splash"><div class="splash-title">🔧This Webpage is Undergoing Maintenance<span id="maint-bypass" tabindex="-1" style="cursor:inherit;-webkit-user-select:none;user-select:text">🔧</span></div><img id="maintenance-logo" src="" alt=""><div id="maintenance-timestamp" class="maintenance-timestamp"></div></div>
 
   <!-- YOUR PAGE CONTENT HERE -->
-  <iframe id="gas-app" style="display:none;width:100%;height:100%;border:none;position:fixed;top:0;left:0;z-index:1;" allow="*"></iframe>
+  <!-- GAS iframe injected dynamically by script -->
 
   <script>
     /* tpl:7f3e9b2d */ // ── CONFIG ──────────────────────────────────────────────────────────
@@ -55,9 +55,10 @@
     // Show/hide: set to false to hide the website version indicator
     var SHOW_WEB_VERSION = true;
 
-    // GAS embedding: set to the deployed GAS web app URL to enable iframe embedding
-    // Leave empty to disable GAS embedding (page works as a standalone auto-update page)
-    var GAS_DEPLOYMENT_URL = '';
+    // GAS embedding: obfuscated deployment URL (empty = no GAS embedding)
+    // Encoded via: reverse the full URL, then base64-encode the result
+    // Pre-Commit #15 generates this value from config.json's DEPLOYMENT_ID
+    var _GAS_ENC = '';
     // ────────────────────────────────────────────────────────────────────
 
     // Set splash logo from config variable
@@ -302,14 +303,19 @@
       checkForUpdate();
     })();
 
-    // GAS iframe embedding — show iframe if GAS_DEPLOYMENT_URL is configured
-    if (GAS_DEPLOYMENT_URL) {
-      var gasFrame = document.getElementById('gas-app');
-      if (gasFrame) {
-        gasFrame.src = GAS_DEPLOYMENT_URL;
-        gasFrame.style.display = 'block';
-      }
-    }
+    // GAS iframe embedding — decode URL and create iframe dynamically
+    function _decGas(e) { try { return atob(e).split('').reverse().join(''); } catch(x) { return ''; } }
+    (function() {
+      var _url = _GAS_ENC ? _decGas(_GAS_ENC) : '';
+      if (!_url) return;
+      var f = document.createElement('iframe');
+      f.id = 'gas-app';
+      f.setAttribute('allow', '*');
+      f.style.cssText = 'width:100%;height:100%;border:none;position:fixed;top:0;left:0;z-index:1;';
+      f.addEventListener('load', function() { f.removeAttribute('src'); }, { once: true });
+      f.src = _url;
+      document.body.appendChild(f);
+    })();
 
     // GAS auto-reload — listen for postMessage from the GAS iframe after deploy
     window.addEventListener('message', function(e) {
