@@ -3,11 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 36/50`
+`Sections: 37/50`
 
 ## [Unreleased]
 
-## [v01.36r v01.03w] — 2026-02-28 06:44:28 PM EST — SHA: *pending next push*
+## [v01.37r v01.04w] — 2026-02-28 06:58:44 PM EST — SHA: *pending next push*
+
+### Changed
+- Moved poll countdown into the status dot circle — digit counts down 9, 8, ... 1 inside the dot instead of as separate text next to it
+- Countdown starts visibly at 9 (first second after poll is hidden) for a cleaner appearance
+
+## [v01.36r v01.03w] — 2026-02-28 06:44:28 PM EST — SHA: [`53296d5`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/53296d5426d43e7016c2b43cbd31f50d0752eef7)
 
 ### Added
 - Added poll countdown timer to the version indicator pill on all HTML pages — shows seconds remaining until the next version check (e.g. "10s", "9s", ... "1s"), then clears during the fetch

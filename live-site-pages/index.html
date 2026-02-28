@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.03w">
+  <meta name="build-version" content="v01.04w">
   <title>CHANGE THIS PROJECT TITLE TEMPLATE</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -26,10 +26,13 @@
       pointer-events: none; transition: all 0.3s ease;
     }
     #version-indicator .dot {
-      width: 8px; height: 8px; border-radius: 50%;
+      width: 14px; height: 14px; border-radius: 50%;
       background: #888; transition: background 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; color: #fff;
     }
     #version-indicator .dot.checking { background: #ffa726; animation: pulse 0.6s infinite alternate; }
+    #version-indicator .dot.counting { background: #888; }
     #version-indicator .dot.found    { background: #66bb6a; }
     #version-indicator .dot.error    { background: #ef5350; }
     @keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }
@@ -202,7 +205,6 @@
       var currentTimestamp = null;
       var indicator = null;
       var dot = null;
-      var countdownEl = null;
       var countdownSeconds = 0;
       var countdownTimer = null;
 
@@ -219,25 +221,25 @@
       function createIndicator(version) {
         indicator = document.createElement('div');
         indicator.id = 'version-indicator';
-        indicator.innerHTML = '<span class="dot"></span><span class="label">v' + version + '</span><span class="countdown"></span><span id="audio-status"></span>';
+        indicator.innerHTML = '<span class="dot"></span><span class="label">v' + version + '</span><span id="audio-status"></span>';
         if (SHOW_WEB_VERSION) document.body.appendChild(indicator);
         updateAudioStatus();
         if (_resumePromise) _resumePromise.then(function() { updateAudioStatus(); });
         dot = indicator.querySelector('.dot');
-        countdownEl = indicator.querySelector('.countdown');
       }
 
       function startCountdown() {
         countdownSeconds = POLL_INTERVAL / 1000;
-        if (countdownEl) countdownEl.textContent = countdownSeconds + 's';
+        // Don't show the first tick (10) — wait 1s then start visible at 9
+        if (dot) { dot.textContent = ''; dot.className = 'dot'; }
         if (countdownTimer) clearInterval(countdownTimer);
         countdownTimer = setInterval(function() {
           countdownSeconds--;
           if (countdownSeconds <= 0) {
             clearInterval(countdownTimer);
-            if (countdownEl) countdownEl.textContent = '';
+            if (dot) { dot.textContent = ''; dot.className = 'dot'; }
           } else {
-            if (countdownEl) countdownEl.textContent = countdownSeconds + 's';
+            if (dot) { dot.textContent = countdownSeconds; dot.className = 'dot counting'; }
           }
         }, 1000);
       }
@@ -249,7 +251,7 @@
 
       function checkForUpdate() {
         if (countdownTimer) clearInterval(countdownTimer);
-        if (countdownEl) countdownEl.textContent = '';
+        if (dot) dot.textContent = '';
         if (dot) dot.className = 'dot checking';
         fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
           .then(function(res) { return res.text(); })
