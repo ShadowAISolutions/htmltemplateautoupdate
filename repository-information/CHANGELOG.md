@@ -3,9 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with per-entry EST timestamps and project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 20 version sections.
 
+`Sections: 8/20`
+
 ## [Unreleased]
 
-## [v01.07r] — 2026-02-28
+## [v01.08r] — 2026-02-28
+
+### Added
+- `2026-02-28 14:10:05 EST` — Added capacity counter (`Sections: X/20`) to CHANGELOG.md header — shows current version section count vs. rotation limit at a glance
+- `2026-02-28 14:10:05 EST` — Added capacity counter update rule to Pre-Commit #7 — counter updates on every push commit after version section creation and archive rotation
+
+## [v01.07r] — 2026-02-28 — `8b58ebc`
 
 ### Added
 - `2026-02-28 13:59:08 EST` — Added Continuous Improvement section to CLAUDE.md — when Claude encounters struggles or missed steps, flag them to the user and propose CLAUDE.md additions to prevent recurrence
