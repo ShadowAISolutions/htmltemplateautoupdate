@@ -5,7 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pe
 
 ## [Unreleased]
 
-## [v01.04r] — 2026-02-28
+## [v01.05r] — 2026-02-28
+
+### Changed
+- `2026-02-28 13:51:24 EST` — Refined CHANGELOG archive rotation to rotate by date group (all sections sharing the oldest date move together) with current-day exemption
+- `2026-02-28 13:51:24 EST` — Added detailed rotation logic documentation to `CHANGELOG-archive.md` (step-by-step procedure, key rules, examples)
+
+## [v01.04r] — 2026-02-28 — `2f70fd4`
 
 ### Added
 - `2026-02-28 13:48:26 EST` — Added CHANGELOG archive rotation — when CHANGELOG.md exceeds 20 version sections, oldest sections are moved to `CHANGELOG-archive.md`
