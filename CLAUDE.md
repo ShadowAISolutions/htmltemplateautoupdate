@@ -232,6 +232,7 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 - This applies to any type of difficulty: ambiguous instructions that led to the wrong action, missing context that caused a wrong assumption, procedural steps that are error-prone in practice, or edge cases that the current rules don't cover
 - Recent examples of this pattern in action:
   - SHA backfill after rebase: `git log -1` returns the workflow's commit, not the version commit → added explicit guidance to match version prefix in `git log` output (Pre-Commit #16)
+  - Confident wrong assertion: stated "Yes — I absolutely can" see a commit SHA before pushing, then reasoned through the chicken-and-egg problem and realized it's impossible → added "Validate Before Asserting" rule to reason first, conclude second
 
 ---
 > **--- END OF CONTINUOUS IMPROVEMENT ---**
@@ -258,6 +259,17 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 
 ---
 > **--- END OF CONFIDENCE DISCLOSURE ---**
+---
+
+## Validate Before Asserting
+- **Never lead with a confident factual claim before reasoning through it.** The pattern to avoid: stating "Yes, X is true" or "No, X is impossible" as the opening line, then working through the logic afterward — only to discover mid-reasoning that the initial assertion was wrong
+- **Reason first, conclude second.** When answering a factual question (especially one involving technical mechanics, feasibility, or "can this be done?"), walk through the reasoning *before* stating a conclusion. The conclusion should emerge from the analysis, not precede it
+- **Why this matters:** a confident wrong assertion followed by a self-correction is worse than reasoning transparently from the start — the user may stop reading after the confident answer, missing the correction. Even when the self-correction happens, it erodes trust because the initial confidence was unfounded
+- **The test:** before writing "Yes", "No", "Absolutely", or any definitive claim in response to a question, ask yourself: "Have I actually verified this, or am I pattern-matching to a plausible answer?" If you haven't verified it, lead with the reasoning instead
+- This does not apply to well-established facts or routine operations (e.g. "Yes, I can edit that file") — only to claims that require non-trivial reasoning or involve edge cases, feasibility questions, or technical mechanics
+
+---
+> **--- END OF VALIDATE BEFORE ASSERTING ---**
 ---
 
 ## User-Perspective Reasoning
