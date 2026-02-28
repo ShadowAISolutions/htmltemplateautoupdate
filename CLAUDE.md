@@ -798,7 +798,8 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
     - **Label-URL pair format** — every entry (reference URLs and page URLs) uses a two-line format separated by blank lines between pairs: (1) backtick-wrapped label on its own line with no blockquote prefix (renders as red/accent text in the CLI), (2) the URL on the next line inside a single-level blockquote (`>`). A blank line between each pair resets the blockquote context, so every label starts fresh at the top level with its URL visually indented beneath it. The red labels act as natural visual dividers between entries
   - **Unaffected page URLs** (in the `🔗🛡️UNAFFECTED URLS🛡️🔗` section): list every page in `live-site-pages/` that was **not** affected by changes in this response, using the label-URL pair format. When no unaffected pages exist (all pages were affected), output a placeholder after the reference URL divider: `> *No URL pages were unaffected in this response*`. Use `` `Homepage` `` as the label for the root `index.html`, or `` `Project Name | Homepage` `` for subdirectory pages (e.g. `` `My Project | Homepage` ``). Labels have no `>` prefix; URLs use `>`. The `live-site-pages/` directory is deployed as the site root, so this prefix is never part of the URL. Resolve `YOUR_ORG_NAME` and `YOUR_REPO_NAME` from the Template Variables table (using the real values from `git remote -v` on non-template repos, or the actual `ShadowAISolutions`/`htmltemplateautoupdate` values on the template repo). Rules:
     - **When the live site is deployed** (non-template repos): label on its own line (no `>`), then the URL in a blockquote on the next line — e.g. `` `Homepage` `` followed by `> [index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) →` [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/)
-    - **When no live site is deployed** (template repo): label on its own line (no `>`), then a non-clickable note in a blockquote — e.g. `` `Homepage` `` followed by `> [index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)`
+    - **When no live site is deployed** (template repo with `TEMPLATE_DEPLOY` = `Off`): label on its own line (no `>`), then a non-clickable note in a blockquote — e.g. `` `Homepage` `` followed by `> [index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)`
+    - **When template deploy is enabled** (template repo with `TEMPLATE_DEPLOY` = `On`): show the live URL just like a non-template repo, but append a toggle indicator — e.g. `` `Homepage` `` followed by `> [index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/index.html) →` [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/) `(TEMPLATE_DEPLOY: On)`. The `(TEMPLATE_DEPLOY: On)` note is backtick-wrapped for red/accent styling, reminding the user that deployment is active via the toggle. For affected pages, the same pattern applies with `✏️` in the label
     - For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`): `` `My Project | Homepage` `` followed by `> [my-project/index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/my-project/index.html) →` [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/)
   - **Affected page URLs** (in the `🔗✏️AFFECTED URLS✏️🔗` section): list only pages affected by changes in this response — either directly (the HTML file itself was edited) or indirectly (a `.gs`/`.gas` file whose output is embedded in the page was edited, or a resource the page depends on was changed). Prepend `✏️` inside the backtick-wrapped label. Examples: `` `✏️ Homepage` `` on its own line (no `>`), then `> [index.html](...) →` [ORG.github.io/REPO/](https://ORG.github.io/REPO/) on the next line. For subpages: `` `✏️ My Project | Homepage` `` followed by the URL line in `>`. The `✏️` inside the red/accent label is unmissable — it combines the accent color with the emoji for maximum visibility. **Indirect affects**: use the GAS Projects table to determine which embedding page a `.gs` file maps to — if a `.gs` file was edited, its registered embedding page gets the indicator even though the HTML file wasn't touched, because the user-facing experience of that page changed
   - **`.gs` files**: if a `.gs` file was edited, also note its associated embedding HTML page (from the GAS Projects table) next to the page URL in the affected group. If the `.gs` file has no registered embedding page, note it separately
@@ -864,7 +865,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 🔗✏️PLANNED AFFECTED URLS✏️🔗
 
 `✏️ Homepage`
-> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/) `(TEMPLATE_DEPLOY: On)`
 
 ⏳⏳ESTIMATED TIME ≈ 2m⏳⏳ — ~3 file reads + ~4 edits + commit + push cycle
 ⚡⚡CODING START⚡⚡ [01:15:01 AM EST 2026-01-15]
@@ -902,7 +903,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 🔗✏️AFFECTED URLS✏️🔗
 
 `✏️ Homepage`
-> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/) `(TEMPLATE_DEPLOY: On)`
 
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 14s (estimated 4m)⏳⏳
 ✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
@@ -948,7 +949,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ─────────────────────────
 
 `Homepage`
-> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/) `(TEMPLATE_DEPLOY: On)`
 
 🕵🕵AGENTS USED🕵🕵
   1. Agent 0 (Main) — researched, planned, implemented
@@ -993,7 +994,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ─────────────────────────
 
 `Homepage`
-> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/) `(TEMPLATE_DEPLOY: On)`
 
 🕵🕵AGENTS USED🕵🕵
   1. Agent 0 (Main) — applied changes, pushed
@@ -1052,7 +1053,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ─────────────────────────
 
 `Homepage`
-> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → (template repo — no live site deployed)
+> [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/) `(TEMPLATE_DEPLOY: On)`
 
 🕵🕵AGENTS USED🕵🕵
   1. Agent 0 (Main) — researched options, implemented user's choice
