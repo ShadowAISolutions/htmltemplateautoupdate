@@ -36,10 +36,10 @@ graph TB
 
         subgraph "live-site-pages/ — Hosted Content"
             direction LR
-            INDEX["index.html\n(build-version: 01.09w)"]
-            VERTXT["index.version.txt\n(01.09w)"]
-            TEST["test.html\n(build-version: 01.11w)"]
-            TEST_VERTXT["test.version.txt\n(01.11w)"]
+            INDEX["index.html\n(build-version: 01.10w)"]
+            VERTXT["index.version.txt\n(01.10w)"]
+            TEST["test.html\n(build-version: 01.12w)"]
+            TEST_VERTXT["test.version.txt\n(01.12w)"]
             SND1["sounds/Website_Ready_Voice_1.mp3"]
             SND2["sounds/Code_Ready_Voice_1.mp3"]
         end
