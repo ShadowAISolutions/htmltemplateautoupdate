@@ -1,6 +1,6 @@
-# Changelog Archive — Test Page
+# Changelog Archive — Homepage
 
-Older version sections rotated from [test.changelog.md](test.changelog.md). Full granularity preserved — entries are moved here verbatim when the main changelog exceeds 50 version sections.
+Older version sections rotated from [indexhtml.changelog.md](indexhtml.changelog.md). Full granularity preserved — entries are moved here verbatim when the main changelog exceeds 50 version sections.
 
 ## Rotation Logic
 

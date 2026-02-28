@@ -1,6 +1,6 @@
-# Changelog Archive — YOUR_PROJECT_TITLE (Google Apps Script)
+# Changelog Archive — Index (Google Apps Script)
 
-Older version sections rotated from [AutoUpdateOnlyHtmlTemplate.changelog.md](AutoUpdateOnlyHtmlTemplate.changelog.md). Full granularity preserved — entries are moved here verbatim when the main changelog exceeds 50 version sections.
+Older version sections rotated from [indexgs.changelog.md](indexgs.changelog.md). Full granularity preserved — entries are moved here verbatim when the main changelog exceeds 50 version sections.
 
 ## Rotation Logic
 

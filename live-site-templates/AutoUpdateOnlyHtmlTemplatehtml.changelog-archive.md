@@ -1,6 +1,6 @@
 # Changelog Archive — YOUR_PROJECT_TITLE
 
-Older version sections rotated from [AutoUpdateOnlyHtmlTemplate.changelog.md](AutoUpdateOnlyHtmlTemplate.changelog.md). Full granularity preserved — entries are moved here verbatim when the main changelog exceeds 50 version sections.
+Older version sections rotated from [AutoUpdateOnlyHtmlTemplatehtml.changelog.md](AutoUpdateOnlyHtmlTemplatehtml.changelog.md). Full granularity preserved — entries are moved here verbatim when the main changelog exceeds 50 version sections.
 
 ## Rotation Logic
 
