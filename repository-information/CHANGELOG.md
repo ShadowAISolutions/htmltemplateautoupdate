@@ -5,7 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pe
 
 ## [Unreleased]
 
-## [v01.05r] — 2026-02-28
+## [v01.06r] — 2026-02-28
+
+### Changed
+- `2026-02-28 13:56:27 EST` — Fixed SHA backfill instructions in Pre-Commit #16 — after rebase onto `origin/main`, HEAD is the workflow's `[skip ci]` commit, not the version commit; must match version prefix in `git log` output instead of using `git log -1`
+
+## [v01.05r] — 2026-02-28 — `ad76117`
 
 ### Changed
 - `2026-02-28 13:51:24 EST` — Refined CHANGELOG archive rotation to rotate by date group (all sections sharing the oldest date move together) with current-day exemption
