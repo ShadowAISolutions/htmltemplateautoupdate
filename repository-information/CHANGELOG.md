@@ -3,11 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 31/50`
+`Sections: 32/50`
 
 ## [Unreleased]
 
-## [v01.31r] — 2026-02-28 06:17:55 PM EST — SHA: *pending next push*
+## [v01.32r] — 2026-02-28 06:22:07 PM EST — SHA: *pending next push*
+
+### Changed
+- Changed bookend date format from `YYYY-MM-DD` to `MM/DD/YYYY` — applies to all 5 time+date bookends (CODING PLAN, CODING START, RESEARCH START, CODING COMPLETE, RESEARCH COMPLETE) and all flow examples
+- Completed to-do item "Get lettuce" and removed it from TODO.md
+
+## [v01.31r] — 2026-02-28 06:17:55 PM EST — SHA: [`0d58700`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/0d58700ccd450322f5c1ed377fbc5aa1fd836181)
 
 ### Added
 - Added 5 items to to-do list: get bread, get turkey, get lettuce, get tomato, get mayo

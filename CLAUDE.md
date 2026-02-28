@@ -928,7 +928,7 @@ The reminder system provides cross-session continuity by persisting user-request
   - `⏸️⏸️AWAITING USER RESPONSE⏸️⏸️` — the response ends with a question to the user via `AskUserQuestion` (not mid-response, but as the **final action** — no more work follows in this response). When this ending is used, output the `⏱️` duration and `⏳⏳ACTUAL PLANNING TIME⏳⏳` before the `AskUserQuestion` call (per the "Duration before user interaction" rule), then after the user answers, the continuation response opens with `🔄🔄NEXT PHASE🔄🔄` as normal. **Do not write the end-of-response block before AWAITING USER RESPONSE** — it belongs to the continuation response that finishes the work. The `⏸️⏸️AWAITING USER RESPONSE⏸️⏸️` line is written immediately before the `AskUserQuestion` tool call
 - These apply to **every single user message**, not just once per session
 - These bookend lines are standalone — do not combine them with other text on the same line
-- **Timestamps on bookends** — every bookend marker must include a real EST timestamp on the same line, placed after the marker text in square brackets. **Five bookends get time+date** (format: `[HH:MM:SS AM/PM EST YYYY-MM-DD]`): CODING PLAN, CODING START, RESEARCH START, CODING COMPLETE, and RESEARCH COMPLETE. **All other bookends (including REVISED ESTIMATED TIME) get time-only** (format: `[HH:MM:SS AM/PM EST]`). **You must run `date` via the Bash tool and get the result BEFORE writing the bookend line** — you have no internal clock, so any timestamp written without calling `date` first is fabricated. Use `TZ=America/New_York date '+%I:%M:%S %p EST %Y-%m-%d'` for the time+date bookends and `TZ=America/New_York date '+%I:%M:%S %p EST'` for time-only bookends. Do not guess, estimate, or anchor on times mentioned in the user's message. The small delay before text appears is an acceptable tradeoff for accuracy. For the opening pair (CODING PLAN + CODING START, or RESEARCH START alone), a single `date` call is sufficient — run it once before any text output and reuse the same timestamp for both markers. **Exception: post-approval CODING PLAN + CODING START** — after `📋📋PLAN APPROVED📋📋`, run a fresh `date` call for the CODING PLAN/CODING START pair; do not reuse the PLAN APPROVED timestamp (see "Continuation after user interaction" rule). For subsequent bookends mid-response, call `date` inline before writing the marker. End-of-response section headers (AGENTS USED, FILES CHANGED, COMMIT LOG, WORTH NOTING, SUMMARY) do not get timestamps. **The closing marker's `date` call must happen before the END OF RESPONSE BLOCK header** — fetch the timestamp, then write the entire end-of-response block (dividers + END OF RESPONSE BLOCK → UNAFFECTED URLS → AGENTS USED → FILES CHANGED → COMMIT LOG → WORTH NOTING → SUMMARY → TODO → AFFECTED URLS → CODING COMPLETE) as one uninterrupted text output using the pre-fetched timestamp. For RESEARCH COMPLETE responses (no end-of-response block), call `date` before writing ACTUAL TOTAL COMPLETION TIME and RESEARCH COMPLETE
+- **Timestamps on bookends** — every bookend marker must include a real EST timestamp on the same line, placed after the marker text in square brackets. **Five bookends get time+date** (format: `[HH:MM:SS AM/PM EST MM/DD/YYYY]`): CODING PLAN, CODING START, RESEARCH START, CODING COMPLETE, and RESEARCH COMPLETE. **All other bookends (including REVISED ESTIMATED TIME) get time-only** (format: `[HH:MM:SS AM/PM EST]`). **You must run `date` via the Bash tool and get the result BEFORE writing the bookend line** — you have no internal clock, so any timestamp written without calling `date` first is fabricated. Use `TZ=America/New_York date '+%I:%M:%S %p EST %m/%d/%Y'` for the time+date bookends and `TZ=America/New_York date '+%I:%M:%S %p EST'` for time-only bookends. Do not guess, estimate, or anchor on times mentioned in the user's message. The small delay before text appears is an acceptable tradeoff for accuracy. For the opening pair (CODING PLAN + CODING START, or RESEARCH START alone), a single `date` call is sufficient — run it once before any text output and reuse the same timestamp for both markers. **Exception: post-approval CODING PLAN + CODING START** — after `📋📋PLAN APPROVED📋📋`, run a fresh `date` call for the CODING PLAN/CODING START pair; do not reuse the PLAN APPROVED timestamp (see "Continuation after user interaction" rule). For subsequent bookends mid-response, call `date` inline before writing the marker. End-of-response section headers (AGENTS USED, FILES CHANGED, COMMIT LOG, WORTH NOTING, SUMMARY) do not get timestamps. **The closing marker's `date` call must happen before the END OF RESPONSE BLOCK header** — fetch the timestamp, then write the entire end-of-response block (dividers + END OF RESPONSE BLOCK → UNAFFECTED URLS → AGENTS USED → FILES CHANGED → COMMIT LOG → WORTH NOTING → SUMMARY → TODO → AFFECTED URLS → CODING COMPLETE) as one uninterrupted text output using the pre-fetched timestamp. For RESEARCH COMPLETE responses (no end-of-response block), call `date` before writing ACTUAL TOTAL COMPLETION TIME and RESEARCH COMPLETE
 - **Duration annotations** — a `⏱️` annotation appears between **every** consecutive pair of bookends (and before the end-of-response block). No exceptions — if two bookends appear in sequence, there must be a `⏱️` line between them. Format: `⏱️ Xs` (or `Xm Ys` for durations over 60 seconds). The duration is calculated by subtracting the previous bookend's timestamp from the current time. **You must run `date` to get the current time and compute the difference** — never estimate durations mentally. If a phase lasted less than 1 second, write `⏱️ <1s`. **The last working phase always gets a `⏱️`** — its annotation appears immediately before the END OF RESPONSE BLOCK header (as part of the pre-fetched end-of-response block). This includes the gap between the opening marker (CODING START or RESEARCH START) and the next bookend, the gap between AWAITING HOOK and HOOK FEEDBACK, and every other transition
 - **Duration before user interaction** — before calling `ExitPlanMode` or `AskUserQuestion`, output a `⏱️` duration annotation showing how long the preceding phase took (from the last bookend's timestamp to now), followed by `⏳⏳ACTUAL PLANNING TIME: Xm Ys (estimated Xm)⏳⏳` comparing the actual planning duration against the overall estimate. The planning time is computed from the opening marker (CODING START or RESEARCH START) to the current moment (when the user is about to be prompted). This makes the planning/research cost visible before the user decides. Run `date`, compute both durations (phase `⏱️` and total planning time since CODING START), and write both lines immediately before the tool call. After the user responds (plan approved or question answered), the continuation resumes with the next bookend (`📋📋PLAN APPROVED📋📋` or `🔄🔄NEXT PHASE🔄🔄`) as normal
 
@@ -936,10 +936,10 @@ The reminder system provides cross-session continuity by persisting user-request
 
 | Bookend | When | Position | Timestamp | Duration |
 |---------|------|----------|-----------|----------|
-| `🚩🚩CODING PLAN🚩🚩 [HH:MM:SS AM EST YYYY-MM-DD]` | Response will make changes | Very first line of response (skip if purely informational) | Required | — |
+| `🚩🚩CODING PLAN🚩🚩 [HH:MM:SS AM EST MM/DD/YYYY]` | Response will make changes | Very first line of response (skip if purely informational) | Required | — |
 | `🔗✏️PLANNED AFFECTED URLS✏️🔗` | Coding response (skip for research) | After coding plan bullets, before ESTIMATED TIME — predicted affected page URLs | — | — |
-| `⚡⚡CODING START⚡⚡ [HH:MM:SS AM EST YYYY-MM-DD]` | Coding work is beginning | After PLANNED AFFECTED URLS + ESTIMATED TIME | Required | `⏱️` before next bookend |
-| `🔬🔬RESEARCH START🔬🔬 [HH:MM:SS AM EST YYYY-MM-DD]` | Research-only response (no code changes expected) | First line of response (no CODING PLAN needed) | Required | `⏱️` before next bookend |
+| `⚡⚡CODING START⚡⚡ [HH:MM:SS AM EST MM/DD/YYYY]` | Coding work is beginning | After PLANNED AFFECTED URLS + ESTIMATED TIME | Required | `⏱️` before next bookend |
+| `🔬🔬RESEARCH START🔬🔬 [HH:MM:SS AM EST MM/DD/YYYY]` | Research-only response (no code changes expected) | First line of response (no CODING PLAN needed) | Required | `⏱️` before next bookend |
 | `⏳⏳ESTIMATED TIME ≈ Xm⏳⏳` (overall) | Every response | After PLANNED AFFECTED URLS, immediately before CODING START or RESEARCH START (never skipped) | — | — |
 | `⏳⏳ESTIMATED TIME ≈ Xm⏳⏳` (per-phase) | Next phase estimated >2 min | Immediately before the phase's bookend marker | — | — |
 | `⏳⏳REVISED ESTIMATED TIME ≈ Xm⏳⏳ [HH:MM:SS AM EST]` | Estimate changed ≥1m after reads | After initial reads/exploration complete, before next action | Required | — |
@@ -974,14 +974,14 @@ The reminder system provides cross-session continuity by persisting user-request
 | `🔧🔧ESTIMATE CALIBRATED🔧🔧` | Estimate missed by >2 min | After AFFECTED URLS (or SUMMARY), before PLAN EXECUTION TIME / ACTUAL TOTAL COMPLETION TIME (skip if ≤2 min gap) | — | — |
 | `⏳⏳PLAN EXECUTION TIME: Xm Ys (estimated Xm)⏳⏳` | Plan approval flow was used | After AFFECTED URLS (or ESTIMATE CALIBRATED), before ACTUAL TOTAL COMPLETION TIME (skip if no plan approval) | — | Computed from post-approval CODING START → closing marker |
 | `⏳⏳ACTUAL TOTAL COMPLETION TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE or RESEARCH COMPLETE | Immediately before CODING COMPLETE (coding) or RESEARCH COMPLETE (research) | — | Computed from opening marker → closing marker |
-| `✅✅CODING COMPLETE✅✅ [HH:MM:SS AM EST YYYY-MM-DD]` | Response made code changes/commits/pushes | Very last line of coding responses | Required | — |
-| `🔬🔬RESEARCH COMPLETE🔬🔬 [HH:MM:SS AM EST YYYY-MM-DD]` | Response was purely informational (no file changes) | Very last line of research responses (no end-of-response block) | Required | — |
+| `✅✅CODING COMPLETE✅✅ [HH:MM:SS AM EST MM/DD/YYYY]` | Response made code changes/commits/pushes | Very last line of coding responses | Required | — |
+| `🔬🔬RESEARCH COMPLETE🔬🔬 [HH:MM:SS AM EST MM/DD/YYYY]` | Response was purely informational (no file changes) | Very last line of research responses (no end-of-response block) | Required | — |
 
 ### Flow Examples
 
 **Normal flow (with revised estimate):**
 ```
-🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 2026-01-15]
+🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 01/15/2026]
   - brief bullet plan of intended changes
 
 🔗✏️PLANNED AFFECTED URLS✏️🔗
@@ -990,7 +990,7 @@ The reminder system provides cross-session continuity by persisting user-request
 > [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/) `(TEMPLATE_DEPLOY: On)`
 
 ⏳⏳ESTIMATED TIME ≈ 2m⏳⏳ — ~3 file reads + ~4 edits + commit + push cycle
-⚡⚡CODING START⚡⚡ [01:15:01 AM EST 2026-01-15]
+⚡⚡CODING START⚡⚡ [01:15:01 AM EST 01/15/2026]
   ... reading files, searching codebase ...
 ⏳⏳REVISED ESTIMATED TIME ≈ 4m⏳⏳ [01:15:45 AM EST] — found 12 files to edit, not 4
   ... applying changes ...
@@ -1034,12 +1034,12 @@ The reminder system provides cross-session continuity by persisting user-request
 > [index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html) → [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/) `(TEMPLATE_DEPLOY: On)`
 
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 14s (estimated 4m)⏳⏳
-✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 2026-01-15]
+✅✅CODING COMPLETE✅✅ [01:18:15 AM EST 01/15/2026]
 ```
 
 **Plan mode flow (with duration before user input):**
 ```
-🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 2026-01-15]
+🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 01/15/2026]
   - Research the codebase and design an approach
   - Present plan for approval
 
@@ -1047,7 +1047,7 @@ The reminder system provides cross-session continuity by persisting user-request
 > *No URL pages expected to be affected*
 
 ⏳⏳ESTIMATED TIME ≈ 5m⏳⏳ — ~research + plan design + implementation
-⚡⚡CODING START⚡⚡ [01:15:01 AM EST 2026-01-15]
+⚡⚡CODING START⚡⚡ [01:15:01 AM EST 01/15/2026]
 🔍🔍RESEARCHING🔍🔍 [01:15:01 AM EST]
   ... reading files, exploring codebase, designing solution ...
   ⏱️ 2m 30s
@@ -1056,7 +1056,7 @@ The reminder system provides cross-session continuity by persisting user-request
   ⏱️ 45s
 📋📋PLAN APPROVED📋📋 [01:18:16 AM EST]
 
-🚩🚩CODING PLAN🚩🚩 [01:18:16 AM EST 2026-01-15]
+🚩🚩CODING PLAN🚩🚩 [01:18:16 AM EST 01/15/2026]
   - Edit file X
   - Update file Y
   - Commit and push
@@ -1065,7 +1065,7 @@ The reminder system provides cross-session continuity by persisting user-request
 > *No URL pages expected to be affected*
 
 ⏳⏳ESTIMATED TIME ≈ 2m⏳⏳ — ~3 edits + commit + push cycle
-⚡⚡CODING START⚡⚡ [01:18:16 AM EST 2026-01-15]
+⚡⚡CODING START⚡⚡ [01:18:16 AM EST 01/15/2026]
   ... applying changes ...
   ⏱️ 1m 15s
 `─────────────────────────`
@@ -1093,19 +1093,19 @@ The reminder system provides cross-session continuity by persisting user-request
 > *No URL pages were affected in this response*
 ⏳⏳PLAN EXECUTION TIME: 1m 15s (estimated 2m)⏳⏳
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 4m 30s (estimated 5m)⏳⏳
-✅✅CODING COMPLETE✅✅ [01:19:31 AM EST 2026-01-15]
+✅✅CODING COMPLETE✅✅ [01:19:31 AM EST 01/15/2026]
 ```
 
 **Hook anticipated flow:**
 ```
-🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 2026-01-15]
+🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 01/15/2026]
   - brief bullet plan of intended changes
 
 🔗✏️PLANNED AFFECTED URLS✏️🔗
 > *No URL pages expected to be affected*
 
 ⏳⏳ESTIMATED TIME ≈ 3m⏳⏳ — ~4 file edits + commit + push cycle
-⚡⚡CODING START⚡⚡ [01:15:01 AM EST 2026-01-15]
+⚡⚡CODING START⚡⚡ [01:15:01 AM EST 01/15/2026]
   ... work (commit without push) ...
   ⏱️ 1m 44s
 🐟🐟AWAITING HOOK🐟🐟 [01:16:45 AM EST]
@@ -1145,23 +1145,23 @@ The reminder system provides cross-session continuity by persisting user-request
 🔗✏️AFFECTED URLS✏️🔗
 > *No URL pages were affected in this response*
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 2m 9s (estimated 3m)⏳⏳
-✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 2026-01-15]
+✅✅CODING COMPLETE✅✅ [01:17:10 AM EST 01/15/2026]
 ```
 
 **Research-only flow (no code changes):**
 ```
 ⏳⏳ESTIMATED TIME ≈ 1m⏳⏳ — ~5 file reads + codebase search
-🔬🔬RESEARCH START🔬🔬 [01:15:00 AM EST 2026-01-15]
+🔬🔬RESEARCH START🔬🔬 [01:15:00 AM EST 01/15/2026]
 🔍🔍RESEARCHING🔍🔍 [01:15:00 AM EST]
   ... reading files, searching codebase, analyzing code ...
   ⏱️ 1m 30s
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 1m 30s (estimated 1m)⏳⏳
-🔬🔬RESEARCH COMPLETE🔬🔬 [01:16:30 AM EST 2026-01-15]
+🔬🔬RESEARCH COMPLETE🔬🔬 [01:16:30 AM EST 01/15/2026]
 ```
 
 **Awaiting user response flow (ends with question):**
 ```
-🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 2026-01-15]
+🚩🚩CODING PLAN🚩🚩 [01:15:00 AM EST 01/15/2026]
   - Research the two possible approaches
   - Ask user which approach to take
 
@@ -1169,7 +1169,7 @@ The reminder system provides cross-session continuity by persisting user-request
 > *No URL pages expected to be affected*
 
 ⏳⏳ESTIMATED TIME ≈ 3m⏳⏳ — ~research + implementation after user decision
-⚡⚡CODING START⚡⚡ [01:15:01 AM EST 2026-01-15]
+⚡⚡CODING START⚡⚡ [01:15:01 AM EST 01/15/2026]
 🔍🔍RESEARCHING🔍🔍 [01:15:01 AM EST]
   ... reading files, exploring options ...
   ⏱️ 1m 15s
@@ -1205,7 +1205,7 @@ The reminder system provides cross-session continuity by persisting user-request
 🔗✏️AFFECTED URLS✏️🔗
 > *No URL pages were affected in this response*
 ⏳⏳ACTUAL TOTAL COMPLETION TIME: 3m 15s (estimated 3m)⏳⏳
-✅✅CODING COMPLETE✅✅ [01:18:16 AM EST 2026-01-15]
+✅✅CODING COMPLETE✅✅ [01:18:16 AM EST 01/15/2026]
 ```
 
 ### Hook anticipation — bug context
