@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.03w">
+  <meta name="build-version" content="v01.04w">
   <title>CHANGE THIS PROJECT TITLE TEMPLATE</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -312,6 +312,13 @@
       f.id = 'gas-app';
       f.style.cssText = 'width:100%;height:100%;border:none;position:fixed;top:0;left:0;z-index:1;';
       f.src = _url;
+      // Hide URL from Elements panel after real content loads.
+      // Skip 1st load (about:blank), act on 2nd (real content).
+      // Timer fallback covers browsers that skip the about:blank load.
+      var _lc = 0, _hid = false;
+      function _hide() { if (!_hid) { _hid = true; f.removeAttribute('src'); } }
+      f.addEventListener('load', function() { if (++_lc >= 2) _hide(); });
+      setTimeout(_hide, 15000);
       document.body.appendChild(f);
     })();
 
