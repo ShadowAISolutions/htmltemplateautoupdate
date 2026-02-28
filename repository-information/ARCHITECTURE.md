@@ -86,6 +86,7 @@ graph TB
 
         subgraph "Project Config"
             CLAUDE_MD["CLAUDE.md\n(project instructions)"]
+            REPO_VER["repository.version.txt\n(v01.01r)"]
             SETTINGS[".claude/settings.json\n(git * auto-allowed)"]
             SHA_FILE[".github/last-processed-commit.sha\n(inherited branch guard)"]
         end
