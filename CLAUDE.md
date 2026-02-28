@@ -225,6 +225,18 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 > **--- END OF PUSHBACK & REASONING ---**
 ---
 
+## Continuous Improvement
+- When you encounter a struggle, mistake, or missed step during a session — something that took extra effort to debug, a rule you misapplied, a checklist item you forgot, or a pattern that tripped you up — **bring it up to the user** before silently moving on
+- Propose a specific addition or modification to CLAUDE.md that would prevent the same issue in future sessions. Explain what went wrong, why, and how the proposed change fixes it
+- **Wait for user approval** before making the CLAUDE.md change — the user decides whether the fix is worth adding. Some struggles are one-off and don't need a permanent rule; others reveal a systemic gap that should be documented
+- This applies to any type of difficulty: ambiguous instructions that led to the wrong action, missing context that caused a wrong assumption, procedural steps that are error-prone in practice, or edge cases that the current rules don't cover
+- Recent examples of this pattern in action:
+  - SHA backfill after rebase: `git log -1` returns the workflow's commit, not the version commit → added explicit guidance to match version prefix in `git log` output (Pre-Commit #16)
+
+---
+> **--- END OF CONTINUOUS IMPROVEMENT ---**
+---
+
 ## Solution Depth
 - When troubleshooting a problem or designing a solution, **do not stop at the first plausible approach**. The first idea is often surface-level — it addresses symptoms rather than root causes, or it works but with visible tradeoffs (eaten clicks, noticeable overlays, timing hacks). Before proposing solutions to the user, go deeper:
   1. **Research the problem space** — read the relevant code, understand the full lifecycle, and identify the actual root cause. Use subagents and web searches proactively to explore browser APIs, specs, and platform behaviors that might offer a cleaner path

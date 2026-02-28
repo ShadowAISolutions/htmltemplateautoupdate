@@ -5,7 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pe
 
 ## [Unreleased]
 
-## [v01.06r] — 2026-02-28
+## [v01.07r] — 2026-02-28
+
+### Added
+- `2026-02-28 13:59:08 EST` — Added Continuous Improvement section to CLAUDE.md — when Claude encounters struggles or missed steps, flag them to the user and propose CLAUDE.md additions to prevent recurrence
+
+## [v01.06r] — 2026-02-28 — `abfe8e1`
 
 ### Changed
 - `2026-02-28 13:56:27 EST` — Fixed SHA backfill instructions in Pre-Commit #16 — after rebase onto `origin/main`, HEAD is the workflow's `[skip ci]` commit, not the version commit; must match version prefix in `git log` output instead of using `git log -1`
