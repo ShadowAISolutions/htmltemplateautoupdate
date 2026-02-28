@@ -116,7 +116,11 @@
       if (!_audioCtx || _audioCtx.state === 'running') return;
       _audioCtx.resume().then(function() { updateAudioStatus(); }).catch(function() {});
     }
-    document.addEventListener('click', unlockAudio, { once: false });
+    // Use pointerdown instead of click — when a full-screen GAS iframe is present,
+    // click never fires on the parent document (pointerup lands inside the iframe's
+    // content document, breaking the click sequence). pointerdown fires on the parent
+    // document with target=<iframe> and is a valid user activation for AudioContext.resume().
+    document.addEventListener('pointerdown', unlockAudio, { once: false });
     document.addEventListener('touchstart', unlockAudio, { once: false });
 
     function playSoundFromDataUrl(dataUrl) {
