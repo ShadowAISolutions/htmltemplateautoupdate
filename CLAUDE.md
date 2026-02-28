@@ -232,7 +232,7 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 - This applies to any type of difficulty: ambiguous instructions that led to the wrong action, missing context that caused a wrong assumption, procedural steps that are error-prone in practice, or edge cases that the current rules don't cover
 - Recent examples of this pattern in action:
   - SHA backfill after rebase: `git log -1` returns the workflow's commit, not the version commit → added explicit guidance to match version prefix in `git log` output (Pre-Commit #16)
-  - Confident wrong assertion: stated "Yes — I absolutely can" see a commit SHA before pushing, then reasoned through the chicken-and-egg problem and realized it's impossible → added "Validate Before Asserting" rule to reason first, conclude second
+  - Confident wrong assertion (twice): stated "Yes — I absolutely can" see a commit SHA before pushing, then hit "Wait. No." mid-reasoning when the chicken-and-egg problem emerged. Did the same thing again in the follow-up ("Yes — I can insert the SHA after committing") before catching the amend-changes-SHA problem → added "Validate Before Asserting" rule covering both opening assertions and mid-reasoning assertions, with explicit "Wait. No." pattern warning
 
 ---
 > **--- END OF CONTINUOUS IMPROVEMENT ---**
@@ -262,10 +262,11 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 ---
 
 ## Validate Before Asserting
-- **Never lead with a confident factual claim before reasoning through it.** The pattern to avoid: stating "Yes, X is true" or "No, X is impossible" as the opening line, then working through the logic afterward — only to discover mid-reasoning that the initial assertion was wrong
-- **Reason first, conclude second.** When answering a factual question (especially one involving technical mechanics, feasibility, or "can this be done?"), walk through the reasoning *before* stating a conclusion. The conclusion should emerge from the analysis, not precede it
-- **Why this matters:** a confident wrong assertion followed by a self-correction is worse than reasoning transparently from the start — the user may stop reading after the confident answer, missing the correction. Even when the self-correction happens, it erodes trust because the initial confidence was unfounded
-- **The test:** before writing "Yes", "No", "Absolutely", or any definitive claim in response to a question, ask yourself: "Have I actually verified this, or am I pattern-matching to a plausible answer?" If you haven't verified it, lead with the reasoning instead
+- **Never state a confident factual claim before reasoning through it — not at the start, not mid-response, not anywhere.** The pattern to avoid is broader than just opening lines: any time you write "Yes, X works", "I can do Y", or "That's because Z" as a standalone assertion before fully tracing the logic, you risk a "Wait. No." self-correction moments later. This applies equally to the first sentence of a response and to a claim made halfway through an analysis
+- **Reason first, conclude second — every time.** When answering a factual question (especially one involving technical mechanics, feasibility, or "can this be done?"), walk through the reasoning *before* stating a conclusion. The conclusion should emerge from the analysis, not precede it. When exploring a multi-step solution mid-response, trace each step to its consequence *before* asserting it works. If step 3 depends on step 2 not invalidating step 1, verify that before writing "Yes — I can"
+- **Why this matters:** a confident wrong assertion followed by a self-correction is worse than reasoning transparently from the start — the user may stop reading after the confident answer, missing the correction. Even when the self-correction happens, it erodes trust because the initial confidence was unfounded. This is true whether the wrong assertion opens the response or appears mid-analysis
+- **The test:** before writing "Yes", "No", "Absolutely", "I can", or any definitive claim — whether as a response opener or mid-reasoning — ask yourself: "Have I actually traced this to its conclusion, or am I pattern-matching to a plausible answer?" If the full chain of implications hasn't been verified, present the reasoning as exploration ("Let me think through whether...") rather than assertion ("Yes, here's how")
+- **Watch for the "Wait. No." pattern** — if you find yourself writing "Wait", "Actually", "Hmm, but", or any self-correction mid-stream, that's evidence you asserted before validating. The fix is not better self-correction — it's not asserting in the first place until the reasoning is complete
 - This does not apply to well-established facts or routine operations (e.g. "Yes, I can edit that file") — only to claims that require non-trivial reasoning or involve edge cases, feasibility questions, or technical mechanics
 
 ---
