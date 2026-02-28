@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-28 01:29:17 PM EST` · Repo version: `v01.03r`
+Last updated: `2026-02-28 01:48:28 PM EST` · Repo version: `v01.04r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -117,6 +117,7 @@ htmltemplateautoupdate/
 ├── repository-information/
 │   ├── ARCHITECTURE.md         # System diagram (Mermaid)
 │   ├── CHANGELOG.md            # Version history
+│   ├── CHANGELOG-archive.md    # Older changelog sections (rotated from CHANGELOG.md)
 │   ├── CODING-GUIDELINES.md    # Domain-specific coding knowledge
 │   ├── GOVERNANCE.md           # Project governance
 │   ├── IMPROVEMENTS.md         # Potential improvements
@@ -124,7 +125,7 @@ htmltemplateautoupdate/
 │   ├── TODO.md                 # Actionable to-do items
 │   ├── readme-qr-code.png             # QR code linking to this repo
 │   ├── REMINDERS.md            # Cross-session reminders for Claude
-│   ├── repository.version.txt  # Repo version (v01.XXr — bumps every commit)
+│   ├── repository.version.txt  # Repo version (v01.XXr — bumps every push)
 │   ├── TOKEN-BUDGETS.md        # Token cost reference for CLAUDE.md
 │   └── SUPPORT.md              # Getting help
 ├── scripts/
@@ -146,6 +147,7 @@ htmltemplateautoupdate/
 |----------|-------------|
 | [ARCHITECTURE.md](repository-information/ARCHITECTURE.md) | Visual system diagram (Mermaid) |
 | [CHANGELOG.md](repository-information/CHANGELOG.md) | Version history |
+| [CHANGELOG-archive.md](repository-information/CHANGELOG-archive.md) | Older changelog sections |
 | [CLAUDE.md](CLAUDE.md) | Developer instructions and conventions |
 | [IMPROVEMENTS.md](repository-information/IMPROVEMENTS.md) | Potential improvements to explore |
 | [REMINDERS.md](repository-information/REMINDERS.md) | Cross-session reminders for Claude |

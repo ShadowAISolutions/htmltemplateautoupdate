@@ -1,11 +1,21 @@
 # Changelog
 
 All notable changes to this project are documented here.
-Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with per-entry EST timestamps and project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository).
+Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with per-entry EST timestamps and project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 20 version sections.
 
 ## [Unreleased]
 
-## [v01.03r] — 2026-02-28
+## [v01.04r] — 2026-02-28
+
+### Added
+- `2026-02-28 13:48:26 EST` — Added CHANGELOG archive rotation — when CHANGELOG.md exceeds 20 version sections, oldest sections are moved to `CHANGELOG-archive.md`
+- `2026-02-28 13:48:26 EST` — Created `repository-information/CHANGELOG-archive.md` for storing rotated changelog sections
+
+### Changed
+- `2026-02-28 13:48:26 EST` — Updated Phantom Edit and Template Repo Guard CHANGELOG reset rules to also reset the archive file
+- `2026-02-28 13:48:26 EST` — Fixed stale comment in README tree (`repository.version.txt` — "bumps every commit" → "bumps every push")
+
+## [v01.03r] — 2026-02-28 — `17498e8`
 
 ### Changed
 - `2026-02-28 13:29:17 EST` — Changed repo version bump (#16) from per-commit to per-push — version now increments only on the final commit before `git push`
