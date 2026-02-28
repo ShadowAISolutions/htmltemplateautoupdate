@@ -5,8 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version suffixes: `w` = website (HTML pages), `g` = Google Apps Script.
 
-## [Unreleased] — 2026-02-28 11:48:54 EST
+## [Unreleased] — 2026-02-28 11:55:08 EST
 
+- `2026-02-28 11:55:08 EST` — Replaced zero-width joiner obfuscation with 1337 speak (`1fr4m3`) in HTML/JS comments to fully defeat keyword search for "iframe" and "frame"
 - `2026-02-28 11:48:54 EST` — Obfuscated "iframe" in HTML/JS comments across all deployed and template pages using zero-width joiner characters to prevent keyword searching in source view
 
 Developed by: ShadowAISolutions
