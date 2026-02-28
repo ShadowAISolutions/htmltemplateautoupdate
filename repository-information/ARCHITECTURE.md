@@ -36,10 +36,10 @@ graph TB
 
         subgraph "live-site-pages/ — Hosted Content"
             direction LR
-            INDEX["index.html\n(build-version: 01.00w)"]
-            VERTXT["index.version.txt\n(|v01.00w|)"]
-            TEST["test.html\n(build-version: 01.00w)"]
-            TEST_VERTXT["test.version.txt\n(|v01.00w|)"]
+            INDEX["index.html\n(build-version: 01.01w)"]
+            VERTXT["index.htmlversion.txt\n(|v01.01w|)"]
+            TEST["test.html\n(build-version: 01.01w)"]
+            TEST_VERTXT["test.htmlversion.txt\n(|v01.01w|)"]
             SND1["sounds/Website_Ready_Voice_1.mp3"]
             SND2["sounds/Code_Ready_Voice_1.mp3"]
         end
@@ -47,7 +47,7 @@ graph TB
         subgraph "Auto-Refresh Loop (Client-Side)"
             direction TB
             BROWSER["Browser loads index.html"]
-            POLL["Poll index.version.txt\nevery 10s"]
+            POLL["Poll index.htmlversion.txt\nevery 10s"]
             COMPARE{"Remote version\n≠ loaded version?"}
             RELOAD["Set web-pending-sound\nReload page"]
             SPLASH["Show green 'Website Ready'\nsplash + play sound"]
@@ -81,12 +81,12 @@ graph TB
 
         subgraph "Template Files"
             TPL["AutoUpdateOnlyHtmlTemplate.html\n(build-version: 01.00w — never bumped)"]
-            TPL_VER["AutoUpdateOnlyHtmlTemplate.version.txt"]
+            TPL_VER["AutoUpdateOnlyHtmlTemplate.htmlversion.txt"]
         end
 
         subgraph "Project Config"
             CLAUDE_MD["CLAUDE.md\n(project instructions)"]
-            REPO_VER["repository.version.txt\n(v01.19r)"]
+            REPO_VER["repository.version.txt\n(v01.25r)"]
             SETTINGS[".claude/settings.json\n(git * auto-allowed)"]
             SHA_FILE[".github/last-processed-commit.sha\n(inherited branch guard)"]
         end

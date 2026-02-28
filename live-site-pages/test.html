@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.00w">
+  <meta name="build-version" content="v01.01w">
   <title>GAS Self-Update Dashboard</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -186,24 +186,24 @@
       }
     }
 
-    // Auto-refresh: poll version.txt for version changes and maintenance mode
-    // Version is sourced entirely from version.txt (no hardcoded version in HTML)
+    // Auto-refresh: poll htmlversion.txt for version changes and maintenance mode
+    // Version is sourced entirely from htmlversion.txt (no hardcoded version in HTML)
     (function() {
       var POLL_INTERVAL = 10000;
       if (!AUTO_REFRESH) return;
 
-      // Resolve <page-name>.version.txt URL relative to the current page
+      // Resolve <page-name>.htmlversion.txt URL relative to the current page
       var basePath = window.location.href.split('?')[0].split('#')[0];
       var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
       if (!pageName) pageName = 'index';
-      var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + pageName + '.version.txt';
+      var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + pageName + '.htmlversion.txt';
 
       var currentVersion = null;
       var currentTimestamp = null;
       var indicator = null;
       var dot = null;
 
-      // Parse version.txt content: "|v01.00w|" or "maintenance|v01.00w|" or "maintenance|v01.00w|timestamp"
+      // Parse htmlversion.txt content: "|v01.00w|" or "maintenance|v01.00w|" or "maintenance|v01.00w|timestamp"
       function parseVersionTxt(raw) {
         var parts = raw.split('|');
         return {
@@ -232,7 +232,7 @@
             var maintenanceSplash = document.getElementById('splash-maintenance');
 
             if (!currentVersion) {
-              // First fetch — establish baseline version from version.txt
+              // First fetch — establish baseline version from htmlversion.txt
               currentVersion = parsed.version;
               createIndicator(currentVersion);
               // Show maintenance prefix in version pill if already in maintenance mode

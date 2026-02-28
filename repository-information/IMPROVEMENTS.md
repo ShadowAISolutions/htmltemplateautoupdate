@@ -36,7 +36,7 @@ Ideas and optimizations to explore — no commitment, investigated when time all
 
 **When this is overkill:**
 - The solution uses well-documented, commonly-used patterns
-- The deployment model allows instant verification and easy rollback (e.g. this repo's auto-refresh via version.txt — push, verify live, fix if wrong)
+- The deployment model allows instant verification and easy rollback (e.g. this repo's auto-refresh via htmlversion.txt — push, verify live, fix if wrong)
 - The risk of the inference being wrong is negligible
 
 **Current status:** Not codified as a rule in CLAUDE.md. The Confidence Disclosure rule covers *flagging* untested inferences; this would cover *verifying* them before committing. Worth adding if a failure pattern emerges where an untested inference was wrong and caused significant rework.
