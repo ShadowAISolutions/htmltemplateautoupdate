@@ -38,6 +38,8 @@ graph TB
             direction LR
             INDEX["index.html\n(build-version: 01.00w)"]
             VERTXT["index.version.txt\n(01.00w)"]
+            TEST["test.html\n(build-version: 01.00w)"]
+            TEST_VERTXT["test.version.txt\n(01.00w)"]
             SND1["sounds/Website_Ready_Voice_1.mp3"]
             SND2["sounds/Code_Ready_Voice_1.mp3"]
         end
@@ -93,6 +95,7 @@ graph TB
     end
 
     TPL -.->|"copy to create\nnew pages"| INDEX
+    TPL -.->|"copy to create\nnew pages"| TEST
     GAS_TPL -.->|"copy to create\nnew GAS projects"| GAS_INDEX
     GAS_TPL_CFG -.->|"copy to create\nnew configs"| GAS_CFG
     GAS_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_INDEX
