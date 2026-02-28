@@ -58,16 +58,16 @@ graph TB
 
         subgraph "Google Apps Scripts"
             direction LR
-            GAS_INDEX["googleAppsScripts/Index/Code.gs\n(v01.00g)"]
-            GAS_CFG["config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
-            GAS_TPL["googleAppsScripts/AutoUpdateOnlyHtmlTemplate/Code.gs\n(template)"]
-            GAS_TPL_CFG["config.json\n(template placeholders)"]
+            GAS_INDEX["googleAppsScripts/Index/index.gs\n(v01.00g)"]
+            GAS_CFG["index.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
+            GAS_TPL["googleAppsScripts/AutoUpdateOnlyHtmlTemplate/\nAutoUpdateOnlyHtmlTemplate.gs\n(template)"]
+            GAS_TPL_CFG["AutoUpdateOnlyHtmlTemplate.config.json\n(template placeholders)"]
         end
 
         subgraph "GAS Self-Update Loop"
             direction TB
             GAS_APP["GAS Web App\n(Apps Script)"]
-            GAS_PULL["pullAndDeployFromGitHub()\nfetches Code.gs from GitHub"]
+            GAS_PULL["pullAndDeployFromGitHub()\nfetches .gs from GitHub"]
             GAS_DEPLOY_STEP["Overwrites project +\ncreates new version +\nupdates deployment"]
             GAS_POSTMSG["postMessage\n{type: gas-reload}"]
             GAS_APP --> GAS_PULL
@@ -100,7 +100,7 @@ graph TB
     LIVE -.->|"serves"| BROWSER
     INDEX -.->|"iframes"| GAS_APP
     GAS_POSTMSG -.->|"tells embedding\npage to reload"| BROWSER
-    GAS_INDEX -.->|"source of truth\nfor GAS app"| GAS_PULL
+    GAS_INDEX -.->|"source of truth\nfor GAS app\n(index.gs)"| GAS_PULL
     GAS_DEPLOY -.->|"curl POST\naction=deploy"| GAS_APP
     SHA_FILE -.->|"read by"| SHA_CHECK
     UPDATE_SHA -.->|"writes"| SHA_FILE

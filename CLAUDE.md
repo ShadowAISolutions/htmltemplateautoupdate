@@ -131,7 +131,7 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 12. **Internal link integrity** — if any markdown file is added, moved, or renamed, verify that all internal links (`[text](path)`) in the repo still resolve to existing files. Pay special attention to cross-directory links — see the Internal Link Reference section for the correct relative paths
 13. **README section link tips** — every `##` section in `README.md` that contains (or will contain) any clickable links must have this blockquote as the first line after the heading (before any other content): `> **Tip:** Links below navigate away from this page. **Ctrl + click** (or right-click → *Open in new tab*) to keep this ReadMe visible while you work.` — Sections with no links (e.g. a section with only a code block or plain text) do not need the tip
 14. **QR code generation** — if the commit changes the live site URL in `README.md` (i.e. the `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME` link — typically during initialization or org/repo name changes), regenerate `repository-information/readme-qr-code.png` to encode the **live site URL** (the `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME` GitHub Pages URL — NOT the GitHub repo URL). Use the Python `qrcode` library: `python3 -c "import qrcode; qrcode.make('https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME').save('repository-information/readme-qr-code.png')"` (with resolved values). If `qrcode` is not installed, install it first with `pip install qrcode[pil]`. Stage the updated PNG alongside the other changes so it lands in the same commit. **Skip if Template Repo Guard applies** — the template repo uses placeholder URLs, so no QR code should be generated for them
-15. **GAS config sync** — if any `config.json` file under `googleAppsScripts/` was modified, sync its values to the corresponding `Code.gs` and embedding HTML page. `config.json` is the **single source of truth** for project-unique GAS variables (`TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, `SOUND_FILE_ID`). Sync targets: (a) the `Code.gs` in the same directory — update the matching `var` declarations, (b) the embedding HTML page (from the GAS Projects table) — update `<title>` (from `TITLE`) and `var GAS_DEPLOYMENT_URL` (constructed as `https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec` when `DEPLOYMENT_ID` is not a placeholder, or `''` when it is). **Reverse sync**: if `Code.gs` was edited and a config-tracked variable was changed directly in the code, update `config.json` to match — the config file must always reflect the current values. **This item is never skipped** — it applies on every repo including the template repo
+15. **GAS config sync** — if any `<page-name>.config.json` file under `googleAppsScripts/` was modified, sync its values to the corresponding `<page-name>.gs` and embedding HTML page. `<page-name>.config.json` is the **single source of truth** for project-unique GAS variables (`TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, `SOUND_FILE_ID`). Sync targets: (a) the `<page-name>.gs` in the same directory — update the matching `var` declarations, (b) the embedding HTML page (from the GAS Projects table) — update `<title>` (from `TITLE`) and `var GAS_DEPLOYMENT_URL` (constructed as `https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec` when `DEPLOYMENT_ID` is not a placeholder, or `''` when it is). **Reverse sync**: if `<page-name>.gs` was edited and a config-tracked variable was changed directly in the code, update `<page-name>.config.json` to match — the config file must always reflect the current values. **This item is never skipped** — it applies on every repo including the template repo
 
 ### Maintaining these checklists
 - The Session Start, Pre-Commit, and Pre-Push checklists are the **single source of truth** for all actionable rules. Detailed sections below provide reference context only
@@ -267,7 +267,7 @@ Each GAS project has a code file and a corresponding embedding page. Register th
 
 | Project | Code File | Config File | Embedding Page |
 |---------|-----------|-------------|----------------|
-| Index | `googleAppsScripts/Index/Code.gs` | `googleAppsScripts/Index/config.json` | `live-site-pages/index.html` |
+| Index | `googleAppsScripts/Index/index.gs` | `googleAppsScripts/Index/index.config.json` | `live-site-pages/index.html` |
 
 ---
 > **--- END OF VERSION BUMPING ---**
@@ -316,7 +316,7 @@ When creating a **new** HTML embedding page, follow every step below:
 6. **Set the initial version** — set `<page-name>.version.txt` to `|v01.00w|`
 7. **Update the page title** — replace `YOUR_PROJECT_TITLE` in `<title>` with the actual project name
 8. **Register in GAS Projects table** — if this page embeds a GAS iframe, add a row to the GAS Projects table in the Version Bumping section above
-9. **Create GAS config file** — if this page embeds a GAS iframe, copy `googleAppsScripts/AutoUpdateOnlyHtmlTemplate/config.json` into the new GAS project directory (e.g. `googleAppsScripts/MyProject/config.json`) and fill in the project-specific values. This is the single source of truth for `TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, and `SOUND_FILE_ID` — Pre-Commit item #15 syncs these values to Code.gs and the embedding HTML
+9. **Create GAS config file** — if this page embeds a GAS iframe, copy `googleAppsScripts/AutoUpdateOnlyHtmlTemplate/AutoUpdateOnlyHtmlTemplate.config.json` into the new GAS project directory, renaming it to `<page-name>.config.json` (e.g. `googleAppsScripts/MyProject/my-project.config.json`). Fill in the project-specific values. This is the single source of truth for `TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, and `SOUND_FILE_ID` — Pre-Commit item #15 syncs these values to `<page-name>.gs` and the embedding HTML
 10. **Add developer branding** — ensure `<!-- Developed by: DEVELOPER_NAME -->` is the last line of the HTML file
 
 ### Directory Structure (per embedding page)
@@ -374,20 +374,29 @@ When a new embedding page is created (see New Embedding Page Setup Checklist), a
 ## GAS Project Config (config.json)
 *Rule: see Pre-Commit Checklist item #15. Reference details below.*
 
-Each GAS project directory contains a `config.json` file that is the **single source of truth** for project-unique variables. This mirrors the `version.txt` pattern — one small file to edit, with sync rules that propagate values to Code.gs and the embedding HTML page.
+Each GAS project directory contains a `<page-name>.config.json` file that is the **single source of truth** for project-unique variables. This mirrors the `version.txt` pattern — one small file to edit, with sync rules that propagate values to `<page-name>.gs` and the embedding HTML page.
+
+### Naming convention
+All GAS files are named after the HTML page they serve — mirroring the `index.version.txt` pattern:
+- `index.gs` — GAS code for `index.html`
+- `index.config.json` — config for `index.html`
+- `dashboard.gs` — GAS code for `dashboard.html`
+- `dashboard.config.json` — config for `dashboard.html`
+
+The `.config.json` double extension ensures the config file sorts **after** the `.gs` file alphabetically (same reasoning as `.version.txt` sorting after `.html`).
 
 ### Config file contents
 
 | Key | Description | Syncs to |
 |-----|-------------|----------|
-| `TITLE` | Project title shown in browser tabs and GAS UI | Code.gs `var TITLE`, HTML `<title>` tag |
-| `DEPLOYMENT_ID` | GAS deployment ID (`AKfycb...` string) | Code.gs `var DEPLOYMENT_ID`, HTML `var GAS_DEPLOYMENT_URL` (derived) |
-| `SPREADSHEET_ID` | Google Sheets ID for version tracking | Code.gs `var SPREADSHEET_ID` |
-| `SHEET_NAME` | Sheet tab name | Code.gs `var SHEET_NAME` |
-| `SOUND_FILE_ID` | Google Drive file ID for deploy notification sound | Code.gs `var SOUND_FILE_ID` |
+| `TITLE` | Project title shown in browser tabs and GAS UI | `<page-name>.gs` `var TITLE`, HTML `<title>` tag |
+| `DEPLOYMENT_ID` | GAS deployment ID (`AKfycb...` string) | `<page-name>.gs` `var DEPLOYMENT_ID`, HTML `var GAS_DEPLOYMENT_URL` (derived) |
+| `SPREADSHEET_ID` | Google Sheets ID for version tracking | `<page-name>.gs` `var SPREADSHEET_ID` |
+| `SHEET_NAME` | Sheet tab name | `<page-name>.gs` `var SHEET_NAME` |
+| `SOUND_FILE_ID` | Google Drive file ID for deploy notification sound | `<page-name>.gs` `var SOUND_FILE_ID` |
 
 ### What is NOT in config.json
-- `VERSION` — auto-bumped by Pre-Commit item #1, lives only in Code.gs
+- `VERSION` — auto-bumped by Pre-Commit item #1, lives only in `<page-name>.gs`
 - `GITHUB_OWNER`, `GITHUB_REPO`, `FILE_PATH` — derived from repo structure, managed by init script
 - `EMBED_PAGE_URL`, `SPLASH_LOGO_URL` — repo-wide settings, managed by init script
 - `GITHUB_BRANCH` — always `main`
@@ -398,7 +407,7 @@ The HTML page's `var GAS_DEPLOYMENT_URL` is derived from `DEPLOYMENT_ID`:
 - If `DEPLOYMENT_ID` is a placeholder (`YOUR_DEPLOYMENT_ID`) → `''` (empty, iframe stays hidden)
 
 ### Template config
-`googleAppsScripts/AutoUpdateOnlyHtmlTemplate/config.json` contains placeholder values. When creating a new GAS project, copy it to the new project directory and fill in the real values.
+`googleAppsScripts/AutoUpdateOnlyHtmlTemplate/AutoUpdateOnlyHtmlTemplate.config.json` contains placeholder values. When creating a new GAS project, copy it to the new project directory and fill in the real values.
 
 ---
 > **--- END OF GAS PROJECT CONFIG ---**
@@ -792,7 +801,7 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
     - For pages in subdirectories (e.g. `live-site-pages/my-project/index.html`): `` `My Project | Homepage` `` followed by `> [my-project/index.html](https://github.com/ORG/REPO/blob/main/live-site-pages/my-project/index.html) →` [YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/](https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME/my-project/)
   - **Affected page URLs** (in the `🔗✏️AFFECTED URLS✏️🔗` section): list only pages affected by changes in this response — either directly (the HTML file itself was edited) or indirectly (a `.gs`/`.gas` file whose output is embedded in the page was edited, or a resource the page depends on was changed). Prepend `✏️` inside the backtick-wrapped label. Examples: `` `✏️ Homepage` `` on its own line (no `>`), then `> [index.html](...) →` [ORG.github.io/REPO/](https://ORG.github.io/REPO/) on the next line. For subpages: `` `✏️ My Project | Homepage` `` followed by the URL line in `>`. The `✏️` inside the red/accent label is unmissable — it combines the accent color with the emoji for maximum visibility. **Indirect affects**: use the GAS Projects table to determine which embedding page a `.gs` file maps to — if a `.gs` file was edited, its registered embedding page gets the indicator even though the HTML file wasn't touched, because the user-facing experience of that page changed
   - **`.gs` files**: if a `.gs` file was edited, also note its associated embedding HTML page (from the GAS Projects table) next to the page URL in the affected group. If the `.gs` file has no registered embedding page, note it separately
-  - **File path links**: every file path shown in either section must be a clickable markdown link to the file's blob-view on GitHub. The URL uses the full path: `https://github.com/ORG/REPO/blob/main/FULL_PATH`. The **link text** depends on the file's location within `live-site-pages/`: for files directly in `live-site-pages/` (no subdirectory), show just the filename (e.g. `index.html`); for files in a subdirectory, show the **containing folder + filename** (e.g. `my-project/index.html`). This gives the user enough context to identify which page the link refers to without showing the full repo path. Resolve `ORG` and `REPO` from `git remote -v` (using the actual values, e.g. `ShadowAISolutions/htmltemplateautoupdate` on the template repo). Examples: `[index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html)`, `[my-project/index.html](https://github.com/MyOrg/my-repo/blob/main/live-site-pages/my-project/index.html)`, `[Code.gs](https://github.com/MyOrg/my-repo/blob/main/googleAppsScripts/MyProject/Code.gs)`
+  - **File path links**: every file path shown in either section must be a clickable markdown link to the file's blob-view on GitHub. The URL uses the full path: `https://github.com/ORG/REPO/blob/main/FULL_PATH`. The **link text** depends on the file's location within `live-site-pages/`: for files directly in `live-site-pages/` (no subdirectory), show just the filename (e.g. `index.html`); for files in a subdirectory, show the **containing folder + filename** (e.g. `my-project/index.html`). This gives the user enough context to identify which page the link refers to without showing the full repo path. Resolve `ORG` and `REPO` from `git remote -v` (using the actual values, e.g. `ShadowAISolutions/htmltemplateautoupdate` on the template repo). Examples: `[index.html](https://github.com/ShadowAISolutions/htmltemplateautoupdate/blob/main/live-site-pages/index.html)`, `[my-project/index.html](https://github.com/MyOrg/my-repo/blob/main/live-site-pages/my-project/index.html)`, `[index.gs](https://github.com/MyOrg/my-repo/blob/main/googleAppsScripts/MyProject/index.gs)`
   - **Blockquote formatting**: URL lines use a single-level blockquote (`>` prefix). Labels do NOT use a blockquote prefix — they sit at the top level so the URL appears visually indented beneath them. A blank line separates each label/URL pair to reset the blockquote context. Both `🔗🛡️UNAFFECTED URLS🛡️🔗` and `🔗✏️AFFECTED URLS✏️🔗` headings are NOT blockquoted
   - **CLI red/accent text technique**: backtick-wrapped text renders with red/accent styling in the Claude Code CLI. Labels use this at the top level (no `>`) — they still get the red treatment. *Full reference: see CLI Accent Styling Reference section for what works, what doesn't, and patterns for other uses*
   - **Format**: each entry is a two-line pair separated by blank lines. Line 1: backtick-wrapped label at top level (no `>`, red/accent in CLI). Line 2: the URL in a blockquote (`>`). In the affected group: `` `✏️ Homepage` `` then `> [index.html](https://github.com/.../blob/main/live-site-pages/index.html) →` [ShadowAISolutions.github.io/htmltemplateautoupdate/](https://ShadowAISolutions.github.io/htmltemplateautoupdate/). In the unaffected group: `` `Homepage` `` then `> [index.html](https://github.com/.../blob/main/live-site-pages/index.html) → ...`. For subpages in the affected group: `` `✏️ My Project | Homepage` `` then `> [my-project/index.html](https://github.com/.../blob/main/live-site-pages/my-project/index.html) →` [ORG.github.io/REPO/my-project/](https://ORG.github.io/REPO/my-project/)

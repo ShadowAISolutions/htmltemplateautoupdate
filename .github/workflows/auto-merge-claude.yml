@@ -17,7 +17,7 @@
 #       and already-merged check — delete and skip
 #   2. Merge into main (once)
 #   3. Check what changed (git diff)
-#   4. Deploy GAS projects — only if their Code.gs was modified
+#   4. Deploy GAS projects — only if their <page-name>.gs was modified
 #   5. Delete the claude branch
 #   6. Deploy GitHub Pages — only if live-site-pages/ files were modified
 #   7. After merging, sweep and delete any other stale claude/* branches
@@ -56,35 +56,38 @@
 #
 #   Steps:
 #     1. Create a folder in googleAppsScripts/ (e.g. "My New Project")
-#     2. Copy Code.gs from an existing project as a template
-#     3. Update the PROJECT CONFIG section at the top of Code.gs:
+#     2. Copy <page-name>.gs from an existing project as a template, renaming
+#        it to match the HTML page (e.g. dashboard.gs for dashboard.html)
+#     3. Copy <page-name>.config.json and rename to match (e.g. dashboard.config.json).
+#        Fill in project-unique values (TITLE, DEPLOYMENT_ID, SPREADSHEET_ID, etc.)
+#     4. Update the PROJECT CONFIG section at the top of <page-name>.gs:
 #          var VERSION        = "01.00g";
-#          var TITLE          = "My New Project";
-#          var SPREADSHEET_ID = "your-spreadsheet-id";
-#          var SHEET_NAME     = "Live_Sheet";
+#          var TITLE          = "My New Project";           // ← from config.json
+#          var SPREADSHEET_ID = "your-spreadsheet-id";      // ← from config.json
+#          var SHEET_NAME     = "Live_Sheet";               // ← from config.json
 #          var GITHUB_OWNER   = "<your-github-org>";
 #          var GITHUB_REPO    = "<your-repo-name>";
 #          var GITHUB_BRANCH  = "main";
-#          var FILE_PATH      = "googleAppsScripts/My New Project/Code.gs";
-#          var DEPLOYMENT_ID  = "your-deployment-id";
-#          var SOUND_FILE_ID  = "your-drive-file-id";
+#          var FILE_PATH      = "googleAppsScripts/My New Project/my-new-project.gs";
+#          var DEPLOYMENT_ID  = "your-deployment-id";       // ← from config.json
+#          var SOUND_FILE_ID  = "your-drive-file-id";       // ← from config.json
 #          var EMBED_PAGE_URL = "https://<your-org>.github.io/<your-repo>/your-page.html";
 #          var SPLASH_LOGO_URL = "https://your-logo-url";
-#     4. Bootstrap: manually copy-paste Code.gs into the Apps Script editor and save
+#     5. Bootstrap: manually copy-paste <page-name>.gs into the Apps Script editor and save
 #        (first deploy must be manual — doPost can't deploy itself before it exists)
-#     5. Add a new step in this workflow BEFORE "Delete branch", using this template:
+#     6. Add a new step in this workflow BEFORE "Delete branch", using this template:
 #
 #        - name: Deploy My New Project
 #          run: |
 #            PRE=${{ steps.merge.outputs.pre_merge_sha }}
-#            git diff --name-only "$PRE" HEAD | grep -q "googleAppsScripts/My New Project/Code.gs" && \
+#            git diff --name-only "$PRE" HEAD | grep -q "googleAppsScripts/My New Project/my-new-project.gs" && \
 #            curl -L -X POST \
 #              "https://script.google.com/macros/s/DEPLOYMENT_ID_HERE/exec" \
 #              -d "action=deploy" \
 #              --max-time 120 || true
 #
-#     6. Replace DEPLOYMENT_ID_HERE with the project's deployment ID
-#     7. That's it — the step only runs when that project's Code.gs changes
+#     7. Replace DEPLOYMENT_ID_HERE with the project's deployment ID
+#     8. That's it — the step only runs when that project's <page-name>.gs changes
 name: Auto-merge Claude branches
 
 on:

@@ -6,7 +6,7 @@
 // ------------
 // A Google Apps Script web app that pulls its own source code from
 // a GitHub repository and redeploys itself. GitHub is the source of
-// truth — this file (Code.gs) is the ONLY file you need to edit.
+// truth — this file (<page-name>.gs) is the ONLY file you need to edit.
 //
 // There are TWO ways updates reach the live web app:
 //   1. AUTOMATIC: Push to a claude/* branch → GitHub Action merges to
@@ -77,7 +77,7 @@
 // =============================================
 
 // ── PROJECT CONFIG ────────────────────────────────────────────────
-// config.json (same directory) is the SINGLE SOURCE OF TRUTH for
+// <page-name>.config.json (same directory) is the SINGLE SOURCE OF TRUTH for
 // project-unique values: TITLE, DEPLOYMENT_ID, SPREADSHEET_ID,
 // SHEET_NAME, SOUND_FILE_ID. Edit config.json; the Pre-Commit
 // Checklist syncs the values here and to the embedding HTML page.
@@ -87,23 +87,23 @@
 // in this file — they are NOT in config.json.
 
 var VERSION = "01.00g";
-var TITLE = "YOUR_PROJECT_TITLE";                                // ← config.json
+var TITLE = "YOUR_PROJECT_TITLE";                                // ← <page-name>.config.json
 
 // GitHub config — where to pull code from
 var GITHUB_OWNER  = "YOUR_ORG_NAME";
 var GITHUB_REPO   = "YOUR_REPO_NAME";
 var GITHUB_BRANCH = "main";
-var FILE_PATH     = "googleAppsScripts/YOUR_PROJECT_FOLDER/Code.gs";
+var FILE_PATH     = "googleAppsScripts/YOUR_PROJECT_FOLDER/YOUR_PAGE_NAME.gs";
 
 // Apps Script deployment ID (from Deploy → Manage deployments)
-var DEPLOYMENT_ID = "YOUR_DEPLOYMENT_ID";                        // ← config.json
+var DEPLOYMENT_ID = "YOUR_DEPLOYMENT_ID";                        // ← <page-name>.config.json
 
 // Google Sheets config (optional — for version tracking)
-var SPREADSHEET_ID = "YOUR_SPREADSHEET_ID";                      // ← config.json
-var SHEET_NAME     = "Live_Sheet";                               // ← config.json
+var SPREADSHEET_ID = "YOUR_SPREADSHEET_ID";                      // ← <page-name>.config.json
+var SHEET_NAME     = "Live_Sheet";                               // ← <page-name>.config.json
 
 // Sound config (optional — Google Drive file ID for notification sound)
-var SOUND_FILE_ID = "";                                          // ← config.json
+var SOUND_FILE_ID = "";                                          // ← <page-name>.config.json
 
 // Embedding page URL — the GitHub Pages page that iframes this GAS app
 var EMBED_PAGE_URL = "YOUR_EMBED_PAGE_URL";
