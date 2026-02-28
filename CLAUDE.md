@@ -220,6 +220,18 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 > **--- END OF PUSHBACK & REASONING ---**
 ---
 
+## Solution Depth
+- When troubleshooting a problem or designing a solution, **do not stop at the first plausible approach**. The first idea is often surface-level — it addresses symptoms rather than root causes, or it works but with visible tradeoffs (eaten clicks, noticeable overlays, timing hacks). Before proposing solutions to the user, go deeper:
+  1. **Research the problem space** — read the relevant code, understand the full lifecycle, and identify the actual root cause. Use subagents and web searches proactively to explore browser APIs, specs, and platform behaviors that might offer a cleaner path
+  2. **Exhaust creative angles** — consider approaches from different layers of the stack (CSS, JS, browser APIs, spec-level behaviors, server-side). The best solutions often come from discovering that the platform already solves the problem at a lower level (e.g. User Activation v2 propagating activation across frames) rather than building workarounds at a higher level
+  3. **Optimize for user experience and security** — rank solutions by how invisible they are to the user and how few side effects they introduce. A solution that requires zero user awareness and zero wasted interactions always beats one that "works but you'll notice a flash" or "works but eats the first click"
+  4. **Present the strongest option first** — when presenting choices, lead with the most elegant solution. Include alternatives for completeness, but make it clear which one you'd ship
+- **The default depth is maximum depth.** Do not wait for the user to say "think harder" or "be more creative" — that level of rigor should be the baseline for every troubleshooting and design task. Quick tasks (version bumps, timestamp updates, straightforward edits) do not need this treatment — apply it when the problem has genuine design space to explore
+
+---
+> **--- END OF SOLUTION DEPTH ---**
+---
+
 ## User-Perspective Reasoning
 - When organizing, ordering, or explaining anything in this repo, **always reason from the user's perspective** — how they experience the flow, read the output, or understand the structure. Never reason from internal implementation details (response-turn boundaries, tool-call mechanics, API round-trips) when the user-facing view tells a different story
 - The trap: internal mechanics can suggest one ordering/grouping, while the user's actual experience suggests another. When these conflict, the user's experience wins every time
