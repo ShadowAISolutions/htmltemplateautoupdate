@@ -118,6 +118,18 @@
     }
     document.addEventListener('click', unlockAudio, { once: false });
     document.addEventListener('touchstart', unlockAudio, { once: false });
+    // UAv2 poll: when a GAS iframe covers the page, click/touch events never
+    // reach this document. But Chrome's User Activation v2 propagates the sticky
+    // activation bit upward from cross-origin iframes to all ancestors. Poll for
+    // it and unlock audio — the user's click passes straight to the iframe.
+    if (navigator.userActivation) {
+      var _uaPoll = setInterval(function() {
+        if (navigator.userActivation.hasBeenActive) {
+          clearInterval(_uaPoll);
+          unlockAudio();
+        }
+      }, 200);
+    }
 
     function playSoundFromDataUrl(dataUrl) {
       try {
