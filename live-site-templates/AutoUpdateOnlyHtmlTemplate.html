@@ -40,7 +40,7 @@
   <div id="splash-maintenance" class="splash"><div class="splash-title">🔧This Webpage is Undergoing Maintenance<span id="maint-bypass" tabindex="-1" style="cursor:inherit;-webkit-user-select:none;user-select:text">🔧</span></div><img id="maintenance-logo" src="" alt=""><div id="maintenance-timestamp" class="maintenance-timestamp"></div></div>
 
   <!-- YOUR PAGE CONTENT HERE -->
-  <!-- GAS iframe injected dynamically by script -->
+  <!-- GAS i‍frame injected dynamically by script -->
 
   <script>
     /* tpl:7f3e9b2d */ // ── CONFIG ──────────────────────────────────────────────────────────
@@ -115,10 +115,10 @@
     }
     document.addEventListener('click', unlockAudio, { once: false });
     document.addEventListener('touchstart', unlockAudio, { once: false });
-    // UAv2 poll: when a GAS iframe covers the page, click/touch events never
+    // UAv2 poll: when a GAS i‍frame covers the page, click/touch events never
     // reach this document. But Chrome's User Activation v2 propagates the sticky
-    // activation bit upward from cross-origin iframes to all ancestors. Poll for
-    // it and unlock audio — the user's click passes straight to the iframe.
+    // activation bit upward from cross-origin i‍frames to all ancestors. Poll for
+    // it and unlock audio — the user's click passes straight to the i‍frame.
     if (navigator.userActivation) {
       var _uaPoll = setInterval(function() {
         if (navigator.userActivation.hasBeenActive) {
@@ -312,7 +312,7 @@
       document.body.appendChild(f);
     })();
 
-    // GAS auto-reload — listen for postMessage from the GAS iframe after deploy
+    // GAS auto-reload — listen for postMessage from the GAS i‍frame after deploy
     window.addEventListener('message', function(e) {
       if (e.data && e.data.type === 'gas-reload') {
         sessionStorage.setItem('gas-pending-sound', '1');
