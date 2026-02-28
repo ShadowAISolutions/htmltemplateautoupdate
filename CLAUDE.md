@@ -138,7 +138,7 @@ These checks catch template drift that accumulates when the repo is cloned/forke
 12. **Internal link integrity** — if any markdown file is added, moved, or renamed, verify that all internal links (`[text](path)`) in the repo still resolve to existing files. Pay special attention to cross-directory links — see the Internal Link Reference section for the correct relative paths
 13. **README section link tips** — every `##` section in `README.md` that contains (or will contain) any clickable links must have this blockquote as the first line after the heading (before any other content): `> **Tip:** Links below navigate away from this page. **Ctrl + click** (or right-click → *Open in new tab*) to keep this ReadMe visible while you work.` — Sections with no links (e.g. a section with only a code block or plain text) do not need the tip
 14. **QR code generation** — if the commit changes the live site URL in `README.md` (i.e. the `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME` link — typically during initialization or org/repo name changes), regenerate `repository-information/readme-qr-code.png` to encode the **live site URL** (the `https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME` GitHub Pages URL — NOT the GitHub repo URL). Use the Python `qrcode` library: `python3 -c "import qrcode; qrcode.make('https://YOUR_ORG_NAME.github.io/YOUR_REPO_NAME').save('repository-information/readme-qr-code.png')"` (with resolved values). If `qrcode` is not installed, install it first with `pip install qrcode[pil]`. Stage the updated PNG alongside the other changes so it lands in the same commit. **Skip if Template Repo Guard applies** — the template repo uses placeholder URLs, so no QR code should be generated for them
-15. **GAS config sync** — if any `<page-name>.config.json` file under `googleAppsScripts/` was modified, sync its values to the corresponding `<page-name>.gs` and embedding HTML page. `<page-name>.config.json` is the **single source of truth** for project-unique GAS variables (`TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, `SOUND_FILE_ID`). Sync targets: (a) the `<page-name>.gs` in the same directory — update the matching `var` declarations, (b) the embedding HTML page (from the GAS Projects table) — update `<title>` (from `TITLE`) and `var _GAS_ENC` (the obfuscated deployment URL — when `DEPLOYMENT_ID` is not a placeholder, construct the full URL `https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec`, reverse the string, then base64-encode the result; when `DEPLOYMENT_ID` is a placeholder, set `_GAS_ENC` to `''`). To generate the encoded value: `echo -n 'https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec' | rev | base64 -w0`. **Reverse sync**: if `<page-name>.gs` was edited and a config-tracked variable was changed directly in the code, update `<page-name>.config.json` to match — the config file must always reflect the current values. **This item is never skipped** — it applies on every repo including the template repo
+15. **GAS config sync** — if any `<page-name>.config.json` file under `googleAppsScripts/` was modified, sync its values to the corresponding `<page-name>.gs` and embedding HTML page. `<page-name>.config.json` is the **single source of truth** for project-unique GAS variables (`TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, `SOUND_FILE_ID`). Sync targets: (a) the `<page-name>.gs` in the same directory — update the matching `var` declarations, (b) the embedding HTML page (from the GAS Projects table) — update `<title>` (from `TITLE`) and `var _e` inside the GAS iframe IIFE (the obfuscated deployment URL — when `DEPLOYMENT_ID` is not a placeholder, construct the full URL `https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec`, reverse the string, then base64-encode the result; when `DEPLOYMENT_ID` is a placeholder, set `_e` to `''`). To generate the encoded value: `echo -n 'https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec' | rev | base64 -w0`. **Reverse sync**: if `<page-name>.gs` was edited and a config-tracked variable was changed directly in the code, update `<page-name>.config.json` to match — the config file must always reflect the current values. **This item is never skipped** — it applies on every repo including the template repo
 
 ### Maintaining these checklists
 - The Session Start, Pre-Commit, and Pre-Push checklists are the **single source of truth** for all actionable rules. Detailed sections below provide reference context only
@@ -421,7 +421,7 @@ The `.config.json` double extension ensures the config file sorts **after** the 
 | Key | Description | Syncs to |
 |-----|-------------|----------|
 | `TITLE` | Project title shown in browser tabs and GAS UI | `<page-name>.gs` `var TITLE`, HTML `<title>` tag |
-| `DEPLOYMENT_ID` | GAS deployment ID (`AKfycb...` string) | `<page-name>.gs` `var DEPLOYMENT_ID`, HTML `var _GAS_ENC` (reverse+base64 encoded) |
+| `DEPLOYMENT_ID` | GAS deployment ID (`AKfycb...` string) | `<page-name>.gs` `var DEPLOYMENT_ID`, HTML `var _e` inside GAS IIFE (reverse+base64 encoded) |
 | `SPREADSHEET_ID` | Google Sheets ID for version tracking | `<page-name>.gs` `var SPREADSHEET_ID` |
 | `SHEET_NAME` | Sheet tab name | `<page-name>.gs` `var SHEET_NAME` |
 | `SOUND_FILE_ID` | Google Drive file ID for deploy notification sound | `<page-name>.gs` `var SOUND_FILE_ID` |
@@ -432,18 +432,18 @@ The `.config.json` double extension ensures the config file sorts **after** the 
 - `EMBED_PAGE_URL`, `SPLASH_LOGO_URL` — repo-wide settings, managed by init script
 - `GITHUB_BRANCH` — always `main`
 
-### _GAS_ENC derivation (obfuscated deployment URL)
-The HTML page's `var _GAS_ENC` is derived from `DEPLOYMENT_ID` using reverse + base64 encoding to prevent the deployment URL from being trivially discoverable in page source:
+### Obfuscated deployment URL (var _e inside GAS IIFE)
+The encoded deployment URL lives in `var _e` inside the GAS iframe IIFE — not as a global variable. This keeps it out of the browser console and DevTools Sources panel. The decode logic is inline (no named function). Derivation from `DEPLOYMENT_ID`:
 - If `DEPLOYMENT_ID` is not a placeholder:
   1. Construct the full URL: `https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec`
   2. Reverse the URL string
   3. Base64-encode the reversed string
-  4. Store as `var _GAS_ENC = 'encoded_value';`
-- If `DEPLOYMENT_ID` is a placeholder (`YOUR_DEPLOYMENT_ID`) → `''` (empty, iframe stays hidden)
+  4. Store as `var _e = 'encoded_value';` inside the GAS IIFE
+- If `DEPLOYMENT_ID` is a placeholder (`YOUR_DEPLOYMENT_ID`) → `var _e = '';` (empty, IIFE exits early)
 
 To generate via command line: `echo -n 'https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec' | rev | base64 -w0`
 
-The HTML decode function (`_decGas`) reverses this: `atob()` then string-reverse. The iframe is created dynamically (no `<iframe>` in HTML source). The `src` attribute remains on the iframe after load (removing it causes the `about:blank` load event to cancel the real navigation). This is obfuscation, not security — the Network tab and Elements panel still show the URL
+The inline decode reverses this: `atob()` then string-reverse. The iframe is created dynamically via srcdoc trampoline (no `src` attribute set). This is obfuscation, not security — the Network tab still shows the URL
 
 ### Template config
 `googleAppsScripts/AutoUpdateOnlyHtmlTemplate/AutoUpdateOnlyHtmlTemplate.config.json` contains placeholder values. When creating a new GAS project, copy it to the new project directory and fill in the real values.
