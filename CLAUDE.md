@@ -884,7 +884,7 @@ The reminder system provides cross-session continuity by persisting user-request
   - **Unaffected URLs**: output `🔗🛡️UNAFFECTED URLS🛡️🔗` followed by reference URLs and **unaffected** page URLs (pages without `✏️`). **Always present** in every response that ends with CODING COMPLETE — never skipped. This is the first section after the divider, giving the user immediate one-click access to the live site. See the Unaffected/Affected URLs bullet below for full rules on content and formatting
   - **Agents used**: output `🕵🕵AGENTS USED🕵🕵` followed by a **numbered list** of all agents that contributed to this response — including Agent 0 (Main). Format: `1. Agent N (Type) — brief description of contribution`. Number each agent sequentially starting from 1. This appears in every response that ends with CODING COMPLETE
   - **Files changed**: output `📁📁FILES CHANGED📁📁` followed by a list of every file modified in the response, each tagged with the type of change: `(edited)`, `(created)`, or `(deleted)`. This gives a clean at-a-glance file manifest. Skip if no files were changed in the response
-  - **Commit log**: output `📜📜COMMIT LOG📜📜` followed by a list of every commit made in the response. Each entry uses a linked SHA: `` [`SHORT_SHA`](https://github.com/ORG/REPO/commit/FULL_SHA) — commit message ``. Get the full SHA via `git rev-parse SHORT_SHA` and resolve `ORG/REPO` from `git remote -v`. Skip if no commits were made in the response
+  - **Commit log**: output `📜📜COMMIT LOG📜📜` followed by a list of every commit made in the response. Each entry uses a linked SHA: `[SHORT_SHA](https://github.com/ORG/REPO/commit/FULL_SHA) — commit message`. Do NOT backtick-wrap the SHA text — use a plain markdown link so it renders as a clickable link (not red/accent). Get the full SHA via `git rev-parse SHORT_SHA` and resolve `ORG/REPO` from `git remote -v`. Skip if no commits were made in the response
   - **Worth noting**: output `🔖🔖WORTH NOTING🔖🔖` followed by a list of anything that deserves attention but isn't a blocker (e.g. "Push-once already used — did not push again", "Template repo guard skipped version bumps", "Pre-commit hook modified files — re-staged"). Skip if there are nothing worth noting
   - **Summary of changes**: output `📝📝SUMMARY📝📝` on its own line followed by a concise bullet-point summary of all changes applied in the current response. Each bullet must indicate which file(s) were edited (e.g. "Updated build-version in `live-site-pages/index.html`"). If a bullet describes a non-file action (e.g. "Pushed to remote"), no file path is needed
   - **Affected URLs**: output `🔗✏️AFFECTED URLS✏️🔗` followed by only the page URLs that were affected by changes in this response (the ones that would have the `✏️` indicator). **Always present** — when no pages were affected, output the header followed by a placeholder: `> *No URL pages were affected in this response*`. See the Unaffected/Affected URLs bullet below for full rules on the affected/unaffected split
@@ -999,7 +999,7 @@ The reminder system provides cross-session continuity by persisting user-request
   `file.md` (edited)
   `new-file.js` (created)
 📜📜COMMIT LOG📜📜
-  [`abc1234`](https://github.com/ORG/REPO/commit/abc1234...) — Add feature X
+  [abc1234](https://github.com/ORG/REPO/commit/abc1234...) — Add feature X
 📝📝SUMMARY📝📝
   - Updated X in `file.md` (edited)
   - Created `new-file.js` (created)
@@ -1104,7 +1104,7 @@ The reminder system provides cross-session continuity by persisting user-request
 📁📁FILES CHANGED📁📁
   `file.md` (edited)
 📜📜COMMIT LOG📜📜
-  [`abc1234`](https://github.com/ORG/REPO/commit/abc1234...) — Add feature X
+  [abc1234](https://github.com/ORG/REPO/commit/abc1234...) — Add feature X
 📝📝SUMMARY📝📝
   - Updated X in `file.md`
   - Pushed to remote
