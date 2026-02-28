@@ -41,4 +41,31 @@ Ideas and optimizations to explore — no commitment, investigated when time all
 
 **Current status:** Not codified as a rule in CLAUDE.md. The Confidence Disclosure rule covers *flagging* untested inferences; this would cover *verifying* them before committing. Worth adding if a failure pattern emerges where an untested inference was wrong and caused significant rework.
 
+## HTML Page Config Files (html.config.json)
+
+**Context:** GAS projects have a `<page-name>.config.json` that serves as the single source of truth for project-unique variables (`TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, `SOUND_FILE_ID`). Pre-Commit item #15 syncs these values to the `.gs` code file and the embedding HTML page. The config exists because the same value must appear in multiple files and needs a coordination point.
+
+**Current state of HTML config variables:** Each embedding HTML page has a `// ── CONFIG ──` block with page-local variables:
+- `DEVELOPER_LOGO_URL` — logo shown on splash screens
+- `YOUR_ORG_LOGO_URL` — org logo URL
+- `LOGO_URL` — which logo to actually use (points to one of the above)
+- `AUTO_REFRESH` — enable/disable build-version polling
+- `SHOW_WEB_VERSION` — show/hide the version indicator pill
+
+**Why a config file is NOT needed today:** None of these variables sync to another file. They live exclusively in the HTML's `<script>` block. The cross-file sync needs (title → `<title>` tag, deployment ID → `var _e`) are already handled by the GAS `config.json`. Adding an `html.config.json` would introduce an extra file, an extra sync rule in CLAUDE.md, and extra Pre-Commit overhead — all to centralize values that already live in exactly one place.
+
+**When to introduce html.config.json:** Consider adding `<page-name>.html.config.json` files (or extending the existing `<page-name>.config.json` with an `html` section) if any of these scenarios emerge:
+1. **Cross-page shared config** — an HTML variable (like `LOGO_URL` or `AUTO_REFRESH`) needs to be consistent across multiple pages and manually keeping them in sync becomes error-prone
+2. **External consumer** — a workflow, build script, or other file needs to read an HTML config value (e.g. a CI step that validates logo URLs, or a script that toggles `AUTO_REFRESH` across all pages)
+3. **Non-developer configuration** — a user who shouldn't edit HTML needs to configure page behavior via a simple JSON file
+4. **New page-specific variables** — a feature adds new per-page settings (e.g. custom theme colors, feature flags, API endpoints) that would clutter the HTML `CONFIG` block and benefit from external configuration
+
+**Design considerations if implemented:**
+- **Naming**: `<page-name>html.config.json` (following the existing `html.version.txt` naming pattern) or extend `<page-name>.config.json` with an `"html"` key to keep one config per page
+- **Sync rule**: would need a new Pre-Commit item (or extension of #15) to sync JSON values → HTML `<script>` CONFIG block
+- **Template**: the template file (`AutoUpdateOnlyHtmlTemplate.html`) would need a corresponding template config with placeholder values
+- **Init script**: `scripts/init-repo.sh` would need to handle HTML config files during initialization (logo URLs, etc.)
+
+**Current status:** Not needed. Revisit when adding features that introduce new per-page configuration or cross-page shared settings.
+
 Developed by: ShadowAISolutions
