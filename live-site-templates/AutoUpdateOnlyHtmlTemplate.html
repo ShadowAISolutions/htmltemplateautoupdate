@@ -311,14 +311,11 @@
       var f = document.createElement('iframe');
       f.id = 'gas-app';
       f.style.cssText = 'width:100%;height:100%;border:none;position:fixed;top:0;left:0;z-index:1;';
-      f.src = _url;
-      // Hide URL from Elements panel after real content loads.
-      // Skip 1st load (about:blank), act on 2nd (real content).
-      // Timer fallback covers browsers that skip the about:blank load.
-      var _lc = 0, _hid = false;
-      function _hide() { if (!_hid) { _hid = true; f.removeAttribute('src'); } }
-      f.addEventListener('load', function() { if (++_lc >= 2) _hide(); });
-      setTimeout(_hide, 15000);
+      // Navigate via srcdoc — URL is read from a temp parent variable, then deleted.
+      // No src attribute is ever set, so the URL never appears in the Elements panel.
+      // srcdoc documents inherit parent origin, so cross-origin navigation works.
+      window._r = _url;
+      f.srcdoc = '<script>var d=parent._r;delete parent._r;if(d)location.replace(d)<\/script>';
       document.body.appendChild(f);
     })();
 
