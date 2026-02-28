@@ -3,11 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 21/50`
+`Sections: 22/50`
 
 ## [Unreleased]
 
-## [v01.21r] — 2026-02-28 03:57:32 PM EST — SHA: *pending next push*
+## [v01.22r] — 2026-02-28 04:02:49 PM EST — SHA: *pending next push*
+
+### Changed
+- Updated page changelog version section header format to include the corresponding repo version for developer cross-reference — format: `## [vXX.XXw] (vXX.XXr) — YYYY-MM-DD HH:MM:SS AM/PM EST`
+
+## [v01.21r] — 2026-02-28 03:57:32 PM EST — SHA: [`1410eef`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/1410eefb776afbc007b91042691a35652e61d87f)
 
 ### Added
 - Added user-facing per-page changelogs (`<page-name>.changelog.md` and `<page-name>.changelog-archive.md`) for each HTML page in `live-site-pages/` — describes changes from the visitor's perspective without exposing backend details
