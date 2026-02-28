@@ -777,7 +777,7 @@ These don't trigger color styling, but provide distinct visual structure in the 
 - **General rule**: whenever you need text to visually "pop" inside a blockquote, wrap it in backticks. For structural separation, use nested blockquotes or tables
 
 ### Where this is currently used
-- **End-of-response divider** — `` `─────────────────────────` `` uses backtick-wrapping to render the divider line in red/accent, visually separating work phases from the summary block
+- **End-of-response block header** — `` `─────────────────────────` `` + `` `END OF RESPONSE BLOCK` `` + `` `─────────────────────────` `` uses backtick-wrapping to render the dividers and header in red/accent, visually separating work phases from the end-of-response block
 - **Unaffected/Affected URLs sections** — all labels (`Template Repo`, `Repository`, `Homepage`, `✏️ Homepage`, etc.) use backtick-wrapped text on their own line to create red "headers" above each URL entry
 
 ### Known limitations
@@ -863,7 +863,7 @@ The reminder system provides cross-session continuity by persisting user-request
 
 > **Feature toggle gate** — before emitting any bookend, check the Template Variables table:
 > - If `CHAT_BOOKENDS` = `Off`: **skip all mid-response bookends** — CODING PLAN, CODING START, RESEARCH START, RESEARCHING, NEXT PHASE, CHECKLIST, BLOCKED, VERIFYING, CHANGES PUSHED, AWAITING HOOK, HOOK FEEDBACK, ESTIMATED TIME, REVISED ESTIMATED TIME, ACTUAL PLANNING TIME, PLAN APPROVED, and all `⏱️` duration annotations. Proceed directly to the work. The hook anticipation logic (running the three git commands) still executes — only its bookend output is suppressed
-> - If `END_OF_RESPONSE_BLOCK` = `Off`: **skip the entire end-of-response block** — no `━━━` divider, no UNAFFECTED URLS, AGENTS USED, FILES CHANGED, COMMIT LOG, WORTH NOTING, SUMMARY, AFFECTED URLS, ESTIMATE CALIBRATED, PLAN EXECUTION TIME, ACTUAL TOTAL COMPLETION TIME, or closing marker (CODING COMPLETE / RESEARCH COMPLETE)
+> - If `END_OF_RESPONSE_BLOCK` = `Off`: **skip the entire end-of-response block** — no `─────` dividers, no END OF RESPONSE BLOCK header, no UNAFFECTED URLS, AGENTS USED, FILES CHANGED, COMMIT LOG, WORTH NOTING, SUMMARY, AFFECTED URLS, ESTIMATE CALIBRATED, PLAN EXECUTION TIME, ACTUAL TOTAL COMPLETION TIME, or closing marker (CODING COMPLETE / RESEARCH COMPLETE)
 > - Both variables are independent — setting one to `Off` does not affect the other. When both are `Off`, the response contains only work output with no bookends at all
 > - When both are `On` (the default), all rules below apply as written
 
@@ -890,7 +890,7 @@ The reminder system provides cross-session continuity by persisting user-request
   **Skip calibration entirely if the difference is ≤2 minutes** — small variances are normal and not worth correcting
 - **Hook anticipation**: before writing the closing marker (`✅✅CODING COMPLETE✅✅` or `🔬🔬RESEARCH COMPLETE🔬🔬`), check whether the stop hook (`~/.claude/stop-hook-git-check.sh`) will fire. **This check must happen after all actions in the current response are complete** (including any `git push`) — do not predict the pre-action state; check the actual post-action state. **Actually run** the three git commands (do not evaluate mentally): (a) uncommitted changes — `git diff --quiet && git diff --cached --quiet`, (b) untracked files — `git ls-files --others --exclude-standard`, (c) unpushed commits — `git rev-list origin/<branch>..HEAD --count`. If any condition is true, **omit** the closing marker and instead write `🐟🐟AWAITING HOOK🐟🐟` as the last line of the current response — the hook will fire, and the appropriate closing marker (CODING COMPLETE or RESEARCH COMPLETE) should close the hook feedback response instead. **Do not forget the `⏱️` duration annotation** — AWAITING HOOK is a bookend like any other, so the previous phase's `⏱️` must appear immediately before it. After the hook anticipation git commands complete, call `date`, compute the duration since the previous bookend's timestamp, write the `⏱️` line, then write AWAITING HOOK
 - **Hook feedback override**: if the triggering message is hook feedback (starts with "Stop hook feedback:", "hook feedback:", or contains `<user-prompt-submit-hook>`), use `⚓⚓HOOK FEEDBACK⚓⚓` as the first line instead of `🚩🚩CODING PLAN🚩🚩`, `⚡⚡CODING START⚡⚡`, or `🔬🔬RESEARCH START🔬🔬`. The coding plan (if applicable) follows immediately after `⚓⚓HOOK FEEDBACK⚓⚓`, then `⚡⚡CODING START⚡⚡`
-- **End-of-response sections**: after all work is done, output the following sections in this exact order. **Skip the entire block when the response ends with RESEARCH COMPLETE or AWAITING USER RESPONSE** — those endings have no end-of-response block. **The entire block — from the divider through CODING COMPLETE — must be written as one continuous text output with no tool calls in between.** To achieve this, run the `date` command for CODING COMPLETE's timestamp **before** starting the block, then output: the last phase's `⏱️` duration, a backtick-wrapped divider line `` `─────────────────────────` `` on its own line (backtick-wrapping triggers red/accent styling in the CLI, visually separating work phases from the end-of-response block), then UNAFFECTED URLS through CODING COMPLETE using the pre-fetched timestamp:
+- **End-of-response sections**: after all work is done, output the following sections in this exact order. **Skip the entire block when the response ends with RESEARCH COMPLETE or AWAITING USER RESPONSE** — those endings have no end-of-response block. **The entire block — from the divider through CODING COMPLETE — must be written as one continuous text output with no tool calls in between.** To achieve this, run the `date` command for CODING COMPLETE's timestamp **before** starting the block, then output: the last phase's `⏱️` duration, a backtick-wrapped divider line `` `─────────────────────────` `` on its own line, then `` `END OF RESPONSE BLOCK` `` on the next line (backtick-wrapped for red/accent styling), then another backtick-wrapped divider `` `─────────────────────────` `` on the next line. This three-line header visually separates work phases from the end-of-response block. Then output UNAFFECTED URLS through CODING COMPLETE using the pre-fetched timestamp:
   - **Unaffected URLs**: output `🔗🛡️UNAFFECTED URLS🛡️🔗` followed by reference URLs and **unaffected** page URLs (pages without `✏️`). **Always present** in every response that ends with CODING COMPLETE — never skipped. This is the first section after the divider, giving the user immediate one-click access to the live site. See the Unaffected/Affected URLs bullet below for full rules on content and formatting
   - **Agents used**: output `🕵🕵AGENTS USED🕵🕵` followed by a **numbered list** of all agents that contributed to this response — including Agent 0 (Main). Format: `1. Agent N (Type) — brief description of contribution`. Number each agent sequentially starting from 1. This appears in every response that ends with CODING COMPLETE
   - **Files changed**: output `📁📁FILES CHANGED📁📁` followed by a list of every file modified in the response, each tagged with the type of change: `(edited)`, `(created)`, or `(deleted)`. This gives a clean at-a-glance file manifest. Skip if no files were changed in the response
@@ -927,11 +927,11 @@ The reminder system provides cross-session continuity by persisting user-request
   - `⏸️⏸️AWAITING USER RESPONSE⏸️⏸️` — the response ends with a question to the user via `AskUserQuestion` (not mid-response, but as the **final action** — no more work follows in this response). When this ending is used, output the `⏱️` duration and `⏳⏳ACTUAL PLANNING TIME⏳⏳` before the `AskUserQuestion` call (per the "Duration before user interaction" rule), then after the user answers, the continuation response opens with `🔄🔄NEXT PHASE🔄🔄` as normal. **Do not write the end-of-response block before AWAITING USER RESPONSE** — it belongs to the continuation response that finishes the work. The `⏸️⏸️AWAITING USER RESPONSE⏸️⏸️` line is written immediately before the `AskUserQuestion` tool call
 - These apply to **every single user message**, not just once per session
 - These bookend lines are standalone — do not combine them with other text on the same line
-- **Timestamps on bookends** — every bookend marker must include a real EST timestamp on the same line, placed after the marker text in square brackets. **Five bookends get time+date** (format: `[HH:MM:SS AM/PM EST YYYY-MM-DD]`): CODING PLAN, CODING START, RESEARCH START, CODING COMPLETE, and RESEARCH COMPLETE. **All other bookends (including REVISED ESTIMATED TIME) get time-only** (format: `[HH:MM:SS AM/PM EST]`). **You must run `date` via the Bash tool and get the result BEFORE writing the bookend line** — you have no internal clock, so any timestamp written without calling `date` first is fabricated. Use `TZ=America/New_York date '+%I:%M:%S %p EST %Y-%m-%d'` for the time+date bookends and `TZ=America/New_York date '+%I:%M:%S %p EST'` for time-only bookends. Do not guess, estimate, or anchor on times mentioned in the user's message. The small delay before text appears is an acceptable tradeoff for accuracy. For the opening pair (CODING PLAN + CODING START, or RESEARCH START alone), a single `date` call is sufficient — run it once before any text output and reuse the same timestamp for both markers. **Exception: post-approval CODING PLAN + CODING START** — after `📋📋PLAN APPROVED📋📋`, run a fresh `date` call for the CODING PLAN/CODING START pair; do not reuse the PLAN APPROVED timestamp (see "Continuation after user interaction" rule). For subsequent bookends mid-response, call `date` inline before writing the marker. End-of-response section headers (AGENTS USED, FILES CHANGED, COMMIT LOG, WORTH NOTING, SUMMARY) do not get timestamps. **The closing marker's `date` call must happen before UNAFFECTED URLS** — fetch the timestamp, then write the entire end-of-response block (UNAFFECTED URLS → AGENTS USED → FILES CHANGED → COMMIT LOG → WORTH NOTING → SUMMARY → AFFECTED URLS → CODING COMPLETE) as one uninterrupted text output using the pre-fetched timestamp. For RESEARCH COMPLETE responses (no end-of-response block), call `date` before writing ACTUAL TOTAL COMPLETION TIME and RESEARCH COMPLETE
-- **Duration annotations** — a `⏱️` annotation appears between **every** consecutive pair of bookends (and before the end-of-response block). No exceptions — if two bookends appear in sequence, there must be a `⏱️` line between them. Format: `⏱️ Xs` (or `Xm Ys` for durations over 60 seconds). The duration is calculated by subtracting the previous bookend's timestamp from the current time. **You must run `date` to get the current time and compute the difference** — never estimate durations mentally. If a phase lasted less than 1 second, write `⏱️ <1s`. **The last working phase always gets a `⏱️`** — its annotation appears immediately before UNAFFECTED URLS (as part of the pre-fetched end-of-response block). This includes the gap between the opening marker (CODING START or RESEARCH START) and the next bookend, the gap between AWAITING HOOK and HOOK FEEDBACK, and every other transition
+- **Timestamps on bookends** — every bookend marker must include a real EST timestamp on the same line, placed after the marker text in square brackets. **Five bookends get time+date** (format: `[HH:MM:SS AM/PM EST YYYY-MM-DD]`): CODING PLAN, CODING START, RESEARCH START, CODING COMPLETE, and RESEARCH COMPLETE. **All other bookends (including REVISED ESTIMATED TIME) get time-only** (format: `[HH:MM:SS AM/PM EST]`). **You must run `date` via the Bash tool and get the result BEFORE writing the bookend line** — you have no internal clock, so any timestamp written without calling `date` first is fabricated. Use `TZ=America/New_York date '+%I:%M:%S %p EST %Y-%m-%d'` for the time+date bookends and `TZ=America/New_York date '+%I:%M:%S %p EST'` for time-only bookends. Do not guess, estimate, or anchor on times mentioned in the user's message. The small delay before text appears is an acceptable tradeoff for accuracy. For the opening pair (CODING PLAN + CODING START, or RESEARCH START alone), a single `date` call is sufficient — run it once before any text output and reuse the same timestamp for both markers. **Exception: post-approval CODING PLAN + CODING START** — after `📋📋PLAN APPROVED📋📋`, run a fresh `date` call for the CODING PLAN/CODING START pair; do not reuse the PLAN APPROVED timestamp (see "Continuation after user interaction" rule). For subsequent bookends mid-response, call `date` inline before writing the marker. End-of-response section headers (AGENTS USED, FILES CHANGED, COMMIT LOG, WORTH NOTING, SUMMARY) do not get timestamps. **The closing marker's `date` call must happen before the END OF RESPONSE BLOCK header** — fetch the timestamp, then write the entire end-of-response block (dividers + END OF RESPONSE BLOCK → UNAFFECTED URLS → AGENTS USED → FILES CHANGED → COMMIT LOG → WORTH NOTING → SUMMARY → AFFECTED URLS → CODING COMPLETE) as one uninterrupted text output using the pre-fetched timestamp. For RESEARCH COMPLETE responses (no end-of-response block), call `date` before writing ACTUAL TOTAL COMPLETION TIME and RESEARCH COMPLETE
+- **Duration annotations** — a `⏱️` annotation appears between **every** consecutive pair of bookends (and before the end-of-response block). No exceptions — if two bookends appear in sequence, there must be a `⏱️` line between them. Format: `⏱️ Xs` (or `Xm Ys` for durations over 60 seconds). The duration is calculated by subtracting the previous bookend's timestamp from the current time. **You must run `date` to get the current time and compute the difference** — never estimate durations mentally. If a phase lasted less than 1 second, write `⏱️ <1s`. **The last working phase always gets a `⏱️`** — its annotation appears immediately before the END OF RESPONSE BLOCK header (as part of the pre-fetched end-of-response block). This includes the gap between the opening marker (CODING START or RESEARCH START) and the next bookend, the gap between AWAITING HOOK and HOOK FEEDBACK, and every other transition
 - **Duration before user interaction** — before calling `ExitPlanMode` or `AskUserQuestion`, output a `⏱️` duration annotation showing how long the preceding phase took (from the last bookend's timestamp to now), followed by `⏳⏳ACTUAL PLANNING TIME: Xm Ys (estimated Xm)⏳⏳` comparing the actual planning duration against the overall estimate. The planning time is computed from the opening marker (CODING START or RESEARCH START) to the current moment (when the user is about to be prompted). This makes the planning/research cost visible before the user decides. Run `date`, compute both durations (phase `⏱️` and total planning time since CODING START), and write both lines immediately before the tool call. After the user responds (plan approved or question answered), the continuation resumes with the next bookend (`📋📋PLAN APPROVED📋📋` or `🔄🔄NEXT PHASE🔄🔄`) as normal
 
-### Bookend Summary
+### Bookend Summary — Mid-Response
 
 | Bookend | When | Position | Timestamp | Duration |
 |---------|------|----------|-----------|----------|
@@ -953,8 +953,16 @@ The reminder system provides cross-session continuity by persisting user-request
 | `⚓⚓HOOK FEEDBACK⚓⚓ [HH:MM:SS AM EST]` | Hook feedback triggers a follow-up | First line of hook response (replaces CODING PLAN as opener) | Required | `⏱️` before end-of-response block |
 | `⏱️ Xs` | Phase just ended | Immediately before the next bookend marker, and before `ExitPlanMode`/`AskUserQuestion` calls | — | Computed |
 | `⏳⏳ACTUAL PLANNING TIME: Xm Ys (estimated Xm)⏳⏳` | About to prompt user via ExitPlanMode/AskUserQuestion | After `⏱️`, immediately before the tool call | — | Computed from opening marker → now |
-| `─────────────────────────` | End-of-response block begins | After last `⏱️`, before UNAFFECTED URLS | — | — |
-| `🔗🛡️UNAFFECTED URLS🛡️🔗` | Every response with CODING COMPLETE | After divider, before AGENTS USED — reference URLs + unaffected pages (never skipped for coding responses) | — | — |
+| `⏸️⏸️AWAITING USER RESPONSE⏸️⏸️ [HH:MM:SS AM EST]` | Response ends with a question to the user | Immediately before `AskUserQuestion` (no end-of-response block) | Required | — |
+
+### Bookend Summary — End-of-Response Block
+
+| Bookend | When | Position | Timestamp | Duration |
+|---------|------|----------|-----------|----------|
+| `─────────────────────────` | End-of-response block begins | After last `⏱️` | — | — |
+| `END OF RESPONSE BLOCK` | Block header | After first divider, before second divider | — | — |
+| `─────────────────────────` | Block header completed | After END OF RESPONSE BLOCK, before UNAFFECTED URLS | — | — |
+| `🔗🛡️UNAFFECTED URLS🛡️🔗` | Every response with CODING COMPLETE | After dividers, before AGENTS USED — reference URLs + unaffected pages (never skipped for coding responses) | — | — |
 | `🕵🕵AGENTS USED🕵🕵` | Response performed work | After UNAFFECTED URLS | — | — |
 | `📁📁FILES CHANGED📁📁` | Files were modified/created/deleted | After AGENTS USED (skip if no files changed) | — | — |
 | `📜📜COMMIT LOG📜📜` | Commits were made | After FILES CHANGED (skip if no commits made) | — | — |
@@ -966,7 +974,6 @@ The reminder system provides cross-session continuity by persisting user-request
 | `⏳⏳ACTUAL TOTAL COMPLETION TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE or RESEARCH COMPLETE | Immediately before CODING COMPLETE (coding) or RESEARCH COMPLETE (research) | — | Computed from opening marker → closing marker |
 | `✅✅CODING COMPLETE✅✅ [HH:MM:SS AM EST YYYY-MM-DD]` | Response made code changes/commits/pushes | Very last line of coding responses | Required | — |
 | `🔬🔬RESEARCH COMPLETE🔬🔬 [HH:MM:SS AM EST YYYY-MM-DD]` | Response was purely informational (no file changes) | Very last line of research responses (no end-of-response block) | Required | — |
-| `⏸️⏸️AWAITING USER RESPONSE⏸️⏸️ [HH:MM:SS AM EST]` | Response ends with a question to the user | Immediately before `AskUserQuestion` (no end-of-response block) | Required | — |
 
 ### Flow Examples
 
@@ -993,6 +1000,8 @@ The reminder system provides cross-session continuity by persisting user-request
 🧪🧪VERIFYING🧪🧪 [01:18:00 AM EST]
   ... validating edits, running hook checks ...
   ⏱️ 15s
+`─────────────────────────`
+`END OF RESPONSE BLOCK`
 `─────────────────────────`
 🔗🛡️UNAFFECTED URLS🛡️🔗
 
@@ -1054,6 +1063,8 @@ The reminder system provides cross-session continuity by persisting user-request
   ... applying changes ...
   ⏱️ 1m 15s
 `─────────────────────────`
+`END OF RESPONSE BLOCK`
+`─────────────────────────`
 🔗🛡️UNAFFECTED URLS🛡️🔗
 
 `Template & Repository`
@@ -1098,6 +1109,8 @@ The reminder system provides cross-session continuity by persisting user-request
 ➡️➡️CHANGES PUSHED➡️➡️ [01:17:05 AM EST]
   Pushed to `claude/feature-xyz` — workflow will auto-merge to main
   ⏱️ 5s
+`─────────────────────────`
+`END OF RESPONSE BLOCK`
 `─────────────────────────`
 🔗🛡️UNAFFECTED URLS🛡️🔗
 
@@ -1157,6 +1170,8 @@ The reminder system provides cross-session continuity by persisting user-request
   User chose option B — proceeding with implementation
   ... applying changes, committing, pushing ...
   ⏱️ 1m 30s
+`─────────────────────────`
+`END OF RESPONSE BLOCK`
 `─────────────────────────`
 🔗🛡️UNAFFECTED URLS🛡️🔗
 
