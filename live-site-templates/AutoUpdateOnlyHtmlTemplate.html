@@ -102,9 +102,6 @@
         el.textContent = '\u{1F50A}';
         el.title = 'Sound ready';
         sessionStorage.setItem('audio-unlocked', '1');
-        // Remove click-catcher overlay if present (audio is now unlocked)
-        var cc = document.getElementById('audio-click-catcher');
-        if (cc) cc.parentNode.removeChild(cc);
       } else if (sessionStorage.getItem('audio-unlocked')) {
         // Audio was unlocked before — a click will restore it instantly
         el.textContent = '\u{1F50A}';
@@ -119,11 +116,7 @@
       if (!_audioCtx || _audioCtx.state === 'running') return;
       _audioCtx.resume().then(function() { updateAudioStatus(); }).catch(function() {});
     }
-    // Use pointerdown instead of click — when a full-screen GAS iframe is present,
-    // click never fires on the parent document (pointerup lands inside the iframe's
-    // content document, breaking the click sequence). pointerdown fires on the parent
-    // document with target=<iframe> and is a valid user activation for AudioContext.resume().
-    document.addEventListener('pointerdown', unlockAudio, { once: false });
+    document.addEventListener('click', unlockAudio, { once: false });
     document.addEventListener('touchstart', unlockAudio, { once: false });
 
     function playSoundFromDataUrl(dataUrl) {
@@ -304,28 +297,6 @@
         gasFrame.src = GAS_DEPLOYMENT_URL;
         gasFrame.style.display = 'block';
       }
-    }
-
-    // Click-catcher overlay — when a full-screen GAS iframe covers the page, no
-    // pointer/click events reach the parent document, so AudioContext can't be
-    // unlocked via normal event listeners. This transparent overlay sits above the
-    // iframe (z-index 2) to catch the first user interaction, unlock audio, then
-    // remove itself so subsequent interactions reach the iframe normally.
-    if (GAS_DEPLOYMENT_URL && _audioCtx && _audioCtx.state !== 'running') {
-      var _cc = document.createElement('div');
-      _cc.id = 'audio-click-catcher';
-      _cc.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;background:transparent;';
-      _cc.addEventListener('pointerdown', function() {
-        unlockAudio();
-        var el = document.getElementById('audio-click-catcher');
-        if (el) el.parentNode.removeChild(el);
-      }, { once: true });
-      _cc.addEventListener('touchstart', function() {
-        unlockAudio();
-        var el = document.getElementById('audio-click-catcher');
-        if (el) el.parentNode.removeChild(el);
-      }, { once: true });
-      document.body.appendChild(_cc);
     }
 
     // GAS auto-reload — listen for postMessage from the GAS iframe after deploy
