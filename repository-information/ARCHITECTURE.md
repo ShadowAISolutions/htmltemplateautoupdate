@@ -21,7 +21,7 @@ graph TB
             MERGE --> UPDATE_SHA["Update\nlast-processed-commit.sha"]
             UPDATE_SHA --> DIFF["Check git diff"]
             DIFF -->|"live-site-pages/ changed"| PAGES_FLAG["pages-changed = true"]
-            DIFF -->|".gs changed"| GAS_DEPLOY["Deploy GAS via curl POST\n(no GAS projects yet)"]
+            DIFF -->|".gs changed"| GAS_DEPLOY["Deploy GAS via curl POST\nto doPost(action=deploy)"]
             GAS_DEPLOY --> DELETE_BR
             MERGE --> DELETE_BR["Delete claude/* branch"]
             PAGES_FLAG --> DEPLOY_PAGES
@@ -56,6 +56,23 @@ graph TB
             COMPARE -->|No| POLL
         end
 
+        subgraph "Google Apps Scripts"
+            direction LR
+            GAS_INDEX["googleAppsScripts/Index/Code.gs\n(v01.00g)"]
+            GAS_TPL["googleAppsScripts/AutoUpdateOnlyHtmlTemplate/Code.gs\n(template)"]
+        end
+
+        subgraph "GAS Self-Update Loop"
+            direction TB
+            GAS_APP["GAS Web App\n(Apps Script)"]
+            GAS_PULL["pullAndDeployFromGitHub()\nfetches Code.gs from GitHub"]
+            GAS_DEPLOY_STEP["Overwrites project +\ncreates new version +\nupdates deployment"]
+            GAS_POSTMSG["postMessage\n{type: gas-reload}"]
+            GAS_APP --> GAS_PULL
+            GAS_PULL --> GAS_DEPLOY_STEP
+            GAS_DEPLOY_STEP --> GAS_POSTMSG
+        end
+
         subgraph "Template Files"
             TPL["AutoUpdateOnlyHtmlTemplate.html\n(build-version: 01.00w — never bumped)"]
             TPL_VER["AutoUpdateOnlyHtmlTemplate.version.txt"]
@@ -74,7 +91,12 @@ graph TB
     end
 
     TPL -.->|"copy to create\nnew pages"| INDEX
+    GAS_TPL -.->|"copy to create\nnew GAS projects"| GAS_INDEX
     LIVE -.->|"serves"| BROWSER
+    INDEX -.->|"iframes"| GAS_APP
+    GAS_POSTMSG -.->|"tells embedding\npage to reload"| BROWSER
+    GAS_INDEX -.->|"source of truth\nfor GAS app"| GAS_PULL
+    GAS_DEPLOY -.->|"curl POST\naction=deploy"| GAS_APP
     SHA_FILE -.->|"read by"| SHA_CHECK
     UPDATE_SHA -.->|"writes"| SHA_FILE
 
@@ -84,6 +106,9 @@ graph TB
     style DELETE_STALE fill:#ef9a9a,color:#000
     style SPLASH fill:#1b5e20,color:#fff
     style TPL fill:#ffa726,color:#000
+    style GAS_INDEX fill:#ff7043,color:#fff
+    style GAS_TPL fill:#ffa726,color:#000
+    style GAS_APP fill:#42a5f5,color:#fff
     style CLAUDE_MD fill:#ce93d8,color:#000
     style INIT_SCRIPT fill:#78909c,color:#fff
 ```

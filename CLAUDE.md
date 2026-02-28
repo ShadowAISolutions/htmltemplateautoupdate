@@ -266,7 +266,7 @@ Each GAS project has a code file and a corresponding embedding page. Register th
 
 | Project | Code File | Embedding Page |
 |---------|-----------|----------------|
-| *(Project name)* | `googleAppsScripts/<Project Name>/<CodeFile>.gs` | `live-site-pages/<page-name>.html` |
+| Index | `googleAppsScripts/Index/Code.gs` | `live-site-pages/index.html` |
 
 ---
 > **--- END OF VERSION BUMPING ---**
