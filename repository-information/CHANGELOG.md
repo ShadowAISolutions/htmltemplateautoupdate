@@ -3,11 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 22/50`
+`Sections: 23/50`
 
 ## [Unreleased]
 
-## [v01.22r] — 2026-02-28 04:02:49 PM EST — SHA: *pending next push*
+## [v01.23r] — 2026-02-28 04:09:55 PM EST — SHA: *pending next push*
+
+### Added
+- Added per-GAS-project `<page-name>.version.txt` files that mirror the `VERSION` variable in each `.gs` file — provides external version reference without reading the code
+- Added per-GAS-project user-facing changelogs (`<page-name>.changelog.md` and `<page-name>.changelog-archive.md`) in each `googleAppsScripts/` subdirectory
+- Added template GAS version file and changelogs in `googleAppsScripts/AutoUpdateOnlyHtmlTemplate/`
+
+### Changed
+- Updated Pre-Commit #1 to bump GAS `<page-name>.version.txt` alongside the `.gs` VERSION variable
+- Expanded Pre-Commit #17 from "Page changelog" to "Page & GAS changelogs" — now covers both HTML page and GAS script changelogs with appropriate version formats (`w` for pages, `g` for GAS)
+- Updated New Embedding Page Setup Checklist with step #10 (create GAS version file and changelog)
+- Updated Template Repo Guard and Phantom Edit reset rules to include GAS changelogs and version.txt files
+
+## [v01.22r] — 2026-02-28 04:02:49 PM EST — SHA: [`196a4ed`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/196a4ede2548770e483f1a0da7cfd08cb3e5bb17)
 
 ### Changed
 - Updated page changelog version section header format to include the corresponding repo version for developer cross-reference — format: `## [vXX.XXw] (vXX.XXr) — YYYY-MM-DD HH:MM:SS AM/PM EST`

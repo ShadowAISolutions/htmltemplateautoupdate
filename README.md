@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-02-28 04:03:05 PM EST` · Repo version: `v01.22r`
+Last updated: `2026-02-28 04:10:13 PM EST` · Repo version: `v01.23r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -105,13 +105,22 @@ htmltemplateautoupdate/
 ├── googleAppsScripts/          # Google Apps Script projects
 │   ├── Index/                 # GAS for live-site-pages/index.html
 │   │   ├── index.gs           # Self-updating GAS web app
-│   │   └── index.config.json  # Project config (source of truth)
+│   │   ├── index.config.json  # Project config (source of truth)
+│   │   ├── index.version.txt  # GAS version file (mirrors VERSION var)
+│   │   ├── index.changelog.md # User-facing changelog for GAS
+│   │   └── index.changelog-archive.md # Older changelog sections (rotated)
 │   ├── Test/                  # GAS for live-site-pages/test.html
 │   │   ├── test.gs            # Self-updating GAS web app
-│   │   └── test.config.json   # Project config (source of truth)
+│   │   ├── test.config.json   # Project config (source of truth)
+│   │   ├── test.version.txt   # GAS version file (mirrors VERSION var)
+│   │   ├── test.changelog.md  # User-facing changelog for GAS
+│   │   └── test.changelog-archive.md  # Older changelog sections (rotated)
 │   └── AutoUpdateOnlyHtmlTemplate/  # GAS template for new projects
 │       ├── AutoUpdateOnlyHtmlTemplate.gs           # Template GAS web app
-│       └── AutoUpdateOnlyHtmlTemplate.config.json  # Template config (placeholders)
+│       ├── AutoUpdateOnlyHtmlTemplate.config.json  # Template config (placeholders)
+│       ├── AutoUpdateOnlyHtmlTemplate.version.txt  # Template GAS version file
+│       ├── AutoUpdateOnlyHtmlTemplate.changelog.md # Template GAS changelog
+│       └── AutoUpdateOnlyHtmlTemplate.changelog-archive.md # Template GAS changelog archive
 ├── .github/
 │   ├── workflows/              # CI/CD pipeline
 │   ├── ISSUE_TEMPLATE/         # Bug report & feature request forms
