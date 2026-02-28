@@ -443,7 +443,7 @@ The HTML page's `var _GAS_ENC` is derived from `DEPLOYMENT_ID` using reverse + b
 
 To generate via command line: `echo -n 'https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec' | rev | base64 -w0`
 
-The HTML decode function (`_decGas`) reverses this: `atob()` then string-reverse. The iframe is created dynamically (no `<iframe>` in HTML source) and its `src` attribute is removed after load to hide the URL from the Elements panel. This is obfuscation, not security — the Network tab always shows the request
+The HTML decode function (`_decGas`) reverses this: `atob()` then string-reverse. The iframe is created dynamically (no `<iframe>` in HTML source). The `src` attribute remains on the iframe after load (removing it causes the `about:blank` load event to cancel the real navigation). This is obfuscation, not security — the Network tab and Elements panel still show the URL
 
 ### Template config
 `googleAppsScripts/AutoUpdateOnlyHtmlTemplate/AutoUpdateOnlyHtmlTemplate.config.json` contains placeholder values. When creating a new GAS project, copy it to the new project directory and fill in the real values.
