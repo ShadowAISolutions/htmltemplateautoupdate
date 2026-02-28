@@ -396,19 +396,22 @@ jobs:
   #   - is-template + template-deploy: skip deploy on the template repo UNLESS
   #     TEMPLATE_DEPLOY is "On" in CLAUDE.md (allows seeing the live site on
   #     the template). When TEMPLATE_DEPLOY is "On", the template repo deploys
-  #     like any other repo
+  #     on every auto-merge success (bypasses pages-changed gate)
   #   - auto-merge skipped + is-initialized: handles workflow_dispatch on
   #     initialized forks (manual re-deploy). Since main is not in the push
   #     trigger, this path only fires via workflow_dispatch
-  #   - auto-merge success: deploy if pages changed (includes initialization
-  #     commit which sets IS_TEMPLATE_REPO = No)
+  #   - auto-merge success + pages-changed: deploy if live-site-pages/ files
+  #     changed (includes initialization commit which sets IS_TEMPLATE_REPO = No)
+  #   - auto-merge success + template-deploy On: always deploy on template repo
+  #     when toggle is enabled (bypasses pages-changed requirement)
   deploy:
     if: >-
       (needs.check-template.outputs.is-template != 'true' ||
        needs.check-template.outputs.template-deploy == 'On') &&
       always() &&
       ((needs.auto-merge.result == 'skipped' && needs.check-template.outputs.is-initialized == 'true') ||
-       (needs.auto-merge.result == 'success' && needs.auto-merge.outputs.pages-changed == 'true'))
+       (needs.auto-merge.result == 'success' && needs.auto-merge.outputs.pages-changed == 'true') ||
+       (needs.auto-merge.result == 'success' && needs.check-template.outputs.template-deploy == 'On'))
     needs: [auto-merge, check-template]
     environment:
       name: github-pages
