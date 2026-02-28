@@ -62,6 +62,8 @@ graph TB
             direction LR
             GAS_INDEX["googleAppsScripts/Index/index.gs\n(v01.00g)"]
             GAS_CFG["index.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
+            GAS_TEST["googleAppsScripts/Test/test.gs\n(v01.00g)"]
+            GAS_TEST_CFG["test.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
             GAS_TPL["googleAppsScripts/AutoUpdateOnlyHtmlTemplate/\nAutoUpdateOnlyHtmlTemplate.gs\n(template)"]
             GAS_TPL_CFG["AutoUpdateOnlyHtmlTemplate.config.json\n(template placeholders)"]
         end
@@ -97,13 +99,19 @@ graph TB
     TPL -.->|"copy to create\nnew pages"| INDEX
     TPL -.->|"copy to create\nnew pages"| TEST
     GAS_TPL -.->|"copy to create\nnew GAS projects"| GAS_INDEX
+    GAS_TPL -.->|"copy to create\nnew GAS projects"| GAS_TEST
     GAS_TPL_CFG -.->|"copy to create\nnew configs"| GAS_CFG
+    GAS_TPL_CFG -.->|"copy to create\nnew configs"| GAS_TEST_CFG
     GAS_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_INDEX
     GAS_CFG -.->|"syncs to\n(Pre-Commit #15)"| INDEX
+    GAS_TEST_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_TEST
+    GAS_TEST_CFG -.->|"syncs to\n(Pre-Commit #15)"| TEST
     LIVE -.->|"serves"| BROWSER
     INDEX -.->|"iframes"| GAS_APP
+    TEST -.->|"iframes"| GAS_APP
     GAS_POSTMSG -.->|"tells embedding\npage to reload"| BROWSER
     GAS_INDEX -.->|"source of truth\nfor GAS app\n(index.gs)"| GAS_PULL
+    GAS_TEST -.->|"source of truth\nfor GAS app\n(test.gs)"| GAS_PULL
     GAS_DEPLOY -.->|"curl POST\naction=deploy"| GAS_APP
     SHA_FILE -.->|"read by"| SHA_CHECK
     UPDATE_SHA -.->|"writes"| SHA_FILE
@@ -115,8 +123,10 @@ graph TB
     style SPLASH fill:#1b5e20,color:#fff
     style TPL fill:#ffa726,color:#000
     style GAS_INDEX fill:#ff7043,color:#fff
+    style GAS_TEST fill:#ff7043,color:#fff
     style GAS_TPL fill:#ffa726,color:#000
     style GAS_CFG fill:#ffe082,color:#000
+    style GAS_TEST_CFG fill:#ffe082,color:#000
     style GAS_TPL_CFG fill:#ffe082,color:#000
     style GAS_APP fill:#42a5f5,color:#fff
     style CLAUDE_MD fill:#ce93d8,color:#000
