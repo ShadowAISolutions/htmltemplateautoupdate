@@ -3,11 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 35/50`
+`Sections: 36/50`
 
 ## [Unreleased]
 
-## [v01.35r] — 2026-02-28 06:38:00 PM EST — SHA: *pending next push*
+## [v01.36r v01.03w] — 2026-02-28 06:44:28 PM EST — SHA: *pending next push*
+
+### Added
+- Added poll countdown timer to the version indicator pill on all HTML pages — shows seconds remaining until the next version check (e.g. "10s", "9s", ... "1s"), then clears during the fetch
+
+## [v01.35r] — 2026-02-28 06:38:00 PM EST — SHA: [`36b1e51`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/36b1e51a4efb5f14dcc6f407c661936e11e2b3bb)
 
 ### Changed
 - Consolidated two specific self-improvement rules (URL format gate, Reminders compacted-context guard) into a single general "Context compaction recovery" rule in the Session Start Checklist — on compacted/continued contexts, re-read the actual CLAUDE.md rules and re-execute the full Session Start Checklist instead of relying on patterns from the session summary; covers all future cases without needing to enumerate each one

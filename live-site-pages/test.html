@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.02w">
+  <meta name="build-version" content="v01.03w">
   <title>GAS Self-Update Dashboard</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -202,6 +202,9 @@
       var currentTimestamp = null;
       var indicator = null;
       var dot = null;
+      var countdownEl = null;
+      var countdownSeconds = 0;
+      var countdownTimer = null;
 
       // Parse <pagename>html.version.txt content: "|v01.00w|" or "maintenance|v01.00w|" or "maintenance|v01.00w|timestamp"
       function parseVersionTxt(raw) {
@@ -216,14 +219,37 @@
       function createIndicator(version) {
         indicator = document.createElement('div');
         indicator.id = 'version-indicator';
-        indicator.innerHTML = '<span class="dot"></span><span class="label">v' + version + '</span><span id="audio-status"></span>';
+        indicator.innerHTML = '<span class="dot"></span><span class="label">v' + version + '</span><span class="countdown"></span><span id="audio-status"></span>';
         if (SHOW_WEB_VERSION) document.body.appendChild(indicator);
         updateAudioStatus();
         if (_resumePromise) _resumePromise.then(function() { updateAudioStatus(); });
         dot = indicator.querySelector('.dot');
+        countdownEl = indicator.querySelector('.countdown');
+      }
+
+      function startCountdown() {
+        countdownSeconds = POLL_INTERVAL / 1000;
+        if (countdownEl) countdownEl.textContent = countdownSeconds + 's';
+        if (countdownTimer) clearInterval(countdownTimer);
+        countdownTimer = setInterval(function() {
+          countdownSeconds--;
+          if (countdownSeconds <= 0) {
+            clearInterval(countdownTimer);
+            if (countdownEl) countdownEl.textContent = '';
+          } else {
+            if (countdownEl) countdownEl.textContent = countdownSeconds + 's';
+          }
+        }, 1000);
+      }
+
+      function schedulePoll() {
+        startCountdown();
+        setTimeout(checkForUpdate, POLL_INTERVAL);
       }
 
       function checkForUpdate() {
+        if (countdownTimer) clearInterval(countdownTimer);
+        if (countdownEl) countdownEl.textContent = '';
         if (dot) dot.className = 'dot checking';
         fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
           .then(function(res) { return res.text(); })
@@ -264,7 +290,7 @@
               // Keep version pill showing maintenance prefix
               if (indicator) indicator.querySelector('.label').textContent = '\uD83D\uDD27 v' + currentVersion;
               if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
-              setTimeout(checkForUpdate, POLL_INTERVAL);
+              schedulePoll();
             } else if (parsed.version && parsed.version !== currentVersion) {
               // Version changed — hide maintenance if showing, trigger reload
               sessionStorage.removeItem('maint-bypassed');
@@ -283,7 +309,7 @@
               // Reset version pill to normal (remove maintenance prefix)
               if (indicator) indicator.querySelector('.label').textContent = 'v' + currentVersion;
               if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
-              setTimeout(checkForUpdate, POLL_INTERVAL);
+              schedulePoll();
             }
           })
           .catch(function() {
@@ -291,7 +317,7 @@
               dot.className = 'dot error';
               setTimeout(function() { dot.className = 'dot'; }, 2000);
             }
-            setTimeout(checkForUpdate, POLL_INTERVAL);
+            schedulePoll();
           });
       }
 
