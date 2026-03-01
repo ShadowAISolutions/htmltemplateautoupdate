@@ -7,12 +7,79 @@ paths:
 
 # Google Apps Script Rules
 
-*Placeholder — candidate sections from CLAUDE.md to extract here:*
+*Actionable rules: see Pre-Commit Checklist items #1, #15 in CLAUDE.md.*
 
-- *Version Bumping — .gs VERSION variable format, gs.version.txt mirroring*
-- *GAS Project Config (config.json) — single source of truth, sync targets, obfuscated deployment URL*
-- *Pre-Commit #1 (version bump .gs)*
-- *Pre-Commit #15 (GAS config sync)*
-- *Coding Guidelines Reference — GAS Code Constraints, Race Conditions, API Call Optimization*
+## Version Bumping
+
+- The `VERSION` variable is near the top of each `.gs` file (look for `var VERSION = "..."`)
+- Format includes a `g` suffix: e.g. `"01.13g"` → `"01.14g"`
+- Each GAS project also has a `<page-name>gs.version.txt` that mirrors the `VERSION` variable value (e.g. `01.00g`). This file is bumped alongside `VERSION` by Pre-Commit #1
+- Do NOT bump VERSION if the commit doesn't touch the `.gs` file
+
+### GAS Projects
+Each GAS project has a code file and a corresponding embedding page. Register them in the table below as you add them. *For step-by-step instructions on adding a new GAS deploy step to the workflow, see the "HOW TO ADD A NEW GAS PROJECT" comment block at the top of `.github/workflows/auto-merge-claude.yml`.*
+
+| Project | Code File | Config File | Embedding Page |
+|---------|-----------|-------------|----------------|
+| Index | `googleAppsScripts/Index/index.gs` | `googleAppsScripts/Index/index.config.json` | `live-site-pages/index.html` |
+| Test | `googleAppsScripts/Test/test.gs` | `googleAppsScripts/Test/test.config.json` | `live-site-pages/test.html` |
+
+## GAS Project Config (config.json)
+
+Each GAS project directory contains a `<page-name>.config.json` file that is the **single source of truth** for project-unique variables. This mirrors the `version.txt` pattern — one small file to edit, with sync rules that propagate values to `<page-name>.gs` and the embedding HTML page.
+
+### Naming convention
+All GAS files are named after the HTML page they serve — mirroring the `indexhtml.version.txt` pattern:
+- `index.gs` — GAS code for `index.html`
+- `index.config.json` — config for `index.html`
+- `dashboard.gs` — GAS code for `dashboard.html`
+- `dashboard.config.json` — config for `dashboard.html`
+
+The `.config.json` double extension ensures the config file sorts **after** the `.gs` file alphabetically (same reasoning as `html.version.txt` sorting after `.html`).
+
+### Config file contents
+
+| Key | Description | Syncs to |
+|-----|-------------|----------|
+| `TITLE` | Project title shown in browser tabs and GAS UI | `<page-name>.gs` `var TITLE`, HTML `<title>` tag |
+| `DEPLOYMENT_ID` | GAS deployment ID (`AKfycb...` string) | `<page-name>.gs` `var DEPLOYMENT_ID`, HTML `var _e` inside GAS IIFE (reverse+base64 encoded) |
+| `SPREADSHEET_ID` | Google Sheets ID for version tracking | `<page-name>.gs` `var SPREADSHEET_ID` |
+| `SHEET_NAME` | Sheet tab name | `<page-name>.gs` `var SHEET_NAME` |
+| `SOUND_FILE_ID` | Google Drive file ID for deploy notification sound | `<page-name>.gs` `var SOUND_FILE_ID` |
+
+### What is NOT in config.json
+- `VERSION` — auto-bumped by Pre-Commit item #1, lives only in `<page-name>.gs`
+- `GITHUB_OWNER`, `GITHUB_REPO`, `FILE_PATH` — derived from repo structure, managed by init script
+- `EMBED_PAGE_URL`, `SPLASH_LOGO_URL` — repo-wide settings, managed by init script
+- `GITHUB_BRANCH` — always `main`
+
+### Obfuscated deployment URL (var _e inside GAS IIFE)
+The encoded deployment URL lives in `var _e` inside the GAS iframe IIFE — not as a global variable. This keeps it out of the browser console and DevTools Sources panel. The decode logic is inline (no named function). Derivation from `DEPLOYMENT_ID`:
+- If `DEPLOYMENT_ID` is not a placeholder:
+  1. Construct the full URL: `https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec`
+  2. Reverse the URL string
+  3. Base64-encode the reversed string
+  4. Store as `var _e = 'encoded_value';` inside the GAS IIFE
+- If `DEPLOYMENT_ID` is a placeholder (`YOUR_DEPLOYMENT_ID`) → `var _e = '';` (empty, IIFE exits early)
+
+To generate via command line: `echo -n 'https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec' | rev | base64 -w0`
+
+The inline decode reverses this: `atob()` then string-reverse. The iframe is created dynamically via srcdoc trampoline (no `src` attribute set). This is obfuscation, not security — the Network tab still shows the URL
+
+### Template config
+`googleAppsScripts/AutoUpdateOnlyHtmlTemplate/AutoUpdateOnlyHtmlTemplate.config.json` contains placeholder values. When creating a new GAS project, copy it to the new project directory and fill in the real values.
+
+## Coding Guidelines Reference
+
+Domain-specific coding constraints are maintained in a dedicated reference file. Consult these when working on the relevant feature area:
+
+| Topic | Reference |
+|-------|-----------|
+| GAS Code Constraints | *See `repository-information/CODING-GUIDELINES.md` — section "GAS Code Constraints"* |
+| Race Conditions — Config vs. Data Fetch | *See `repository-information/CODING-GUIDELINES.md` — section "Race Conditions — Config vs. Data Fetch"* |
+| API Call Optimization (Scaling Goal) | *See `repository-information/CODING-GUIDELINES.md` — section "API Call Optimization (Scaling Goal)"* |
+| UI Dialogs — No Browser Defaults | *See `repository-information/CODING-GUIDELINES.md` — section "UI Dialogs — No Browser Defaults"* |
+| AudioContext & Browser Autoplay Policy | *See `repository-information/CODING-GUIDELINES.md` — section "AudioContext & Browser Autoplay Policy"* |
+| Google Sign-In (GIS) for GAS Embedded Apps | *See `repository-information/CODING-GUIDELINES.md` — section "Google Sign-In (GIS) for GAS Embedded Apps"* |
 
 Developed by: ShadowAISolutions

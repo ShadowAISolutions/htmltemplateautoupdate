@@ -7,13 +7,67 @@ paths:
 
 # HTML Pages Rules
 
-*Placeholder — candidate sections from CLAUDE.md to extract here:*
+*Actionable rules: see Pre-Commit Checklist items #2, #3, #4 in CLAUDE.md.*
 
-- *Build Version (Auto-Refresh for embedding pages) — version file polling, html.version.txt format, cache-busting*
-- *Maintenance Mode via html.version.txt — activation/deactivation format, overlay behavior*
-- *New Embedding Page Setup Checklist — step-by-step for creating new pages*
-- *Pre-Commit #2 (version bump html.version.txt + meta tag)*
-- *Pre-Commit #3 (html.version.txt is single source)*
-- *Pre-Commit #4 (template version freeze)*
+## Build Version (Auto-Refresh for embedding pages)
+
+- The version lives **solely** in `<page-name>html.version.txt` — the HTML contains no hardcoded version
+- Format uses pipe delimiters with the version in the middle field: e.g. `|v01.11w|` → `|v01.12w|`
+- Each embedding page fetches `html.version.txt` on load to establish its baseline version, then polls every 10 seconds — when the deployed version differs from the loaded version, it auto-reloads
+
+### Auto-Refresh via html.version.txt Polling
+- **All embedding pages must use the `html.version.txt` polling method** — do NOT poll the page's own HTML
+- **Version file naming**: the version file must be named `<page-name>html.version.txt`, matching the HTML file it tracks (e.g. `index.html` → `indexhtml.version.txt`, `dashboard.html` → `dashboardhtml.version.txt`). The `html.version.txt` extension distinguishes HTML page version files from GAS version files (`<page-name>gs.version.txt`) and the repo version file (`repository.version.txt`)
+- Each version file uses pipe delimiters: `|v01.08w|`. The version is always the middle field (between the pipes). The polling logic splits on `|` and reads `parts[1]`, stripping the `v` prefix for internal comparison. The pipes stay in place at all times — switching to maintenance mode only changes the first field
+- **html.version.txt is the single source of truth** — the HTML pages contain a `<meta name="build-version">` tag for informational purposes, but the polling logic does **not** read it. On page load, the polling logic immediately fetches html.version.txt, stores the version as the baseline, creates the version indicator pill, and begins the 10-second polling loop. This means bumping the version in html.version.txt alone (without editing the HTML meta tag) will trigger a reload correctly — after the reload, the page establishes the new version as its baseline, preventing an infinite loop. The meta tag is kept in sync with html.version.txt during commits for visibility, but it is never involved in the reload mechanism
+- The polling logic fetches the version file (~7 bytes) instead of the full HTML page, reducing bandwidth per poll from kilobytes to bytes
+- URL resolution: derive the version file URL relative to the current page's directory, using the page's own filename. See the template file (`live-site-templates/AutoUpdateOnlyHtmlTemplate.html`) for the implementation
+- **The `if (!pageName)` fallback is critical** — when a page is accessed via a directory URL (e.g. `https://example.github.io/myapp/`), `pageName` resolves to an empty string. Without the fallback to `'index'`, the poll fetches `html.version.txt` (wrong file) and triggers an infinite reload loop
+- Cache-bust with a query param: `fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })`
+- The template in `live-site-templates/AutoUpdateOnlyHtmlTemplate.html` already implements this pattern — use it as a starting point for new projects
+
+### Maintenance Mode via html.version.txt
+The html.version.txt polling system supports a **maintenance mode** that displays a full-screen orange overlay when the first field is `maintenance`. The format always uses pipe (`|`) delimiters — you never need to add or remove pipes, just edit the fields:
+- **Activate**: change the first field from empty to `maintenance` **and** fill the third field with the **exact display string** — the JS renders it verbatim with no reformatting. Use `As of:` prefix and pre-formatted date (e.g. `|v01.02w|` → `maintenance|v01.02w|As of: 10:00:00 PM EST 02/26/2026`). To get the value, run `TZ=America/New_York date '+As of: %I:%M:%S %p EST %m/%d/%Y'`. Custom messages also work (e.g. `maintenance|v01.02w|Back online soon!` → displays "Back online soon!")
+- **Deactivate**: clear the first field back to empty (e.g. `maintenance|v01.02w|` → `|v01.02w|`)
+- When the polling logic detects the `maintenance` prefix, it displays an orange full-screen overlay with the developer logo centered and a "🔧This Webpage is Undergoing Maintenance🔧" title — similar to the green "Website Ready" splash but persistent
+- The overlay stays visible as long as the html.version.txt content starts with `maintenance` — it does not auto-dismiss
+- The version indicator pill remains visible on top of the maintenance overlay (the maintenance overlay uses `z-index: 9998`, below the version indicator's `z-index: 9999`)
+- When the `maintenance` prefix is removed: if the underlying version also changed, the page auto-reloads; if the version is unchanged, the overlay fades out gracefully
+- **No version bump for standalone maintenance activation** — if the user's request is solely to activate (or deactivate) maintenance mode and nothing else, do NOT bump the version in html.version.txt or the HTML meta tag. Only edit the first and third fields of html.version.txt (the `maintenance` prefix and the timestamp/message). The version field (middle) stays unchanged. If the user requests maintenance mode **combined** with other changes that would normally trigger a version bump (e.g. editing the HTML page, updating a `.gs` file), then bump the version as usual per Pre-Commit Checklist item #2
+
+### New Embedding Page Setup Checklist
+When creating a **new** HTML embedding page, follow every step below:
+
+1. **Copy the template** — start from `live-site-templates/AutoUpdateOnlyHtmlTemplate.html`, which already includes:
+   - Version file polling logic (fetches html.version.txt on load, then polls every 10 seconds)
+   - Version indicator pill (bottom-right corner)
+   - Green "Website Ready" splash overlay + sound playback
+   - Orange "Under Maintenance" splash overlay (triggered by `maintenance|` prefix in html.version.txt)
+   - AudioContext handling and screen wake lock
+2. **Choose the directory** — create a new subdirectory under `live-site-pages/` named after the project (e.g. `live-site-pages/my-project/`)
+3. **Create the version file** — place a `<page-name>html.version.txt` file in the **same directory** as the HTML page (e.g. `indexhtml.version.txt` for `index.html`), containing the initial version string in pipe-delimited format (e.g. `|v01.00w|`). This is the **single source of truth** for the page version — the HTML contains no hardcoded version
+4. **Update the polling URL in the template** — ensure the JS version-file URL derivation matches the HTML filename (the template defaults to deriving it from the page's own filename)
+5. **Create `sounds/` directory** — copy the `sounds/` folder (containing `Website_Ready_Voice_1.mp3`) into the new page's directory so the splash sound works
+6. **Set the initial version** — set `<page-name>html.version.txt` to `|v01.00w|`
+7. **Update the page title** — replace `YOUR_PROJECT_TITLE` in `<title>` with the actual project name
+8. **Register in GAS Projects table** — if this page embeds a GAS iframe, add a row to the GAS Projects table in `.claude/rules/gas-scripts.md`
+9. **Create GAS config file** — if this page embeds a GAS iframe, copy `googleAppsScripts/AutoUpdateOnlyHtmlTemplate/AutoUpdateOnlyHtmlTemplate.config.json` into the new GAS project directory, renaming it to `<page-name>.config.json` (e.g. `googleAppsScripts/MyProject/my-project.config.json`). Fill in the project-specific values. This is the single source of truth for `TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, and `SOUND_FILE_ID` — Pre-Commit item #15 syncs these values to `<page-name>.gs` and the embedding HTML
+10. **Create GAS version file and changelog** — if this page has a GAS project, copy `AutoUpdateOnlyHtmlTemplategs.version.txt` into the GAS project directory as `<page-name>gs.version.txt` (initial value `01.00g`). Also copy `repository-information/changelogs/AutoUpdateOnlyHtmlTemplategs.changelog.md` and `repository-information/changelogs/AutoUpdateOnlyHtmlTemplategs.changelog-archive.md` into `repository-information/changelogs/` as `<page-name>gs.changelog.md` and `<page-name>gs.changelog-archive.md`, replacing `YOUR_PROJECT_TITLE` with the project name
+11. **Add developer branding** — ensure `<!-- Developed by: DEVELOPER_NAME -->` is the last line of the HTML file
+12. **Create page changelog** — copy `repository-information/changelogs/AutoUpdateOnlyHtmlTemplatehtml.changelog.md` into `repository-information/changelogs/` as `<page-name>html.changelog.md`. Replace `YOUR_PROJECT_TITLE` with the page's human-readable title and update the archive link filename. Also copy `repository-information/changelogs/AutoUpdateOnlyHtmlTemplatehtml.changelog-archive.md` as `<page-name>html.changelog-archive.md` and update its title and changelog link filename
+
+### Directory Structure (per embedding page)
+```
+live-site-pages/
+├── <page-name>/
+│   ├── index.html               # The embedding page (from template)
+│   ├── indexhtml.version.txt     # Tracks index.html version (e.g. "|v01.00w|")
+│   └── sounds/
+│       └── Website_Ready_Voice_1.mp3
+```
+For pages that live directly in `live-site-pages/` (not in a subdirectory), the version file and `sounds/` folder sit alongside the HTML file (e.g. `live-site-pages/index.html` + `live-site-pages/indexhtml.version.txt`).
+
+Per-page and per-GAS changelogs are centralized in `repository-information/changelogs/` (e.g. `indexhtml.changelog.md`, `indexgs.changelog.md`) — see Pre-Commit item #17.
 
 Developed by: ShadowAISolutions
