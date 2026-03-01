@@ -296,7 +296,7 @@ If the user says **"reconcile"** (or similar: "reconcile multi-session", "end mu
 ---
 
 ## Behavioral Rules
-*Full rules in `.claude/rules/behavioral-rules.md` (always-loaded, no path scope). Covers: Execution Style, Page-Scope Commands, Pushback & Reasoning, Continuous Improvement, Backups Before Major Changes, Solution Depth, Confidence Disclosure, Validate Before Asserting, User-Perspective Reasoning, Section Placement Guide, Web Search Confidence, Provenance Markers.*
+*Full rules in `.claude/rules/behavioral-rules.md` (always-loaded, no path scope). Covers: Execution Style, Plan Mode Visibility, AskUserQuestion Visibility, Page-Scope Commands, Pushback & Reasoning, Continuous Improvement, Backups Before Major Changes, Solution Depth, Confidence Disclosure, Validate Before Asserting, User-Perspective Reasoning, Section Placement Guide, Web Search Confidence, Provenance Markers.*
 
 ---
 > **--- END OF BEHAVIORAL RULES ---**

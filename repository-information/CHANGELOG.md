@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 28/100`
+`Sections: 29/100`
 
 ## [Unreleased]
+
+## [v01.86r] — 2026-03-01 01:09:09 PM EST
+
+### Added
+- Added "AskUserQuestion Visibility" rule — question text and all options are now shown in the chat before the popup appears, so the question context is preserved in conversation history (same pattern as Plan Mode Visibility for ExitPlanMode)
 
 ## [v01.85r] — 2026-03-01 12:53:32 PM EST
 

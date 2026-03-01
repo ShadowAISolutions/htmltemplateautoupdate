@@ -14,6 +14,13 @@
   - The plan should be output as-is (the same content written to the plan file) — do not abbreviate or summarize it for the chat output
   - This way the plan exists in two places: the approval window (temporary) and the chat history (permanent)
 
+## AskUserQuestion Visibility
+- When using `AskUserQuestion`, the question and options appear in a popup that **disappears after the user responds** — the user cannot scroll back to see what was asked or what options were available. To ensure the question remains visible:
+  - **Before calling `AskUserQuestion`**, output the full question text and all options as regular chat text. This embeds the question in the conversation so both the question and the user's answer are visible when scrolling back
+  - Include: the question text, each option's label and description, and any header/context. Format it clearly (e.g. as a numbered list of options) so it reads naturally in the chat flow
+  - This way the question exists in two places: the popup (temporary) and the chat history (permanent)
+  - **Why this matters**: if context compaction occurs or the conversation gets stuck after the user answers, the question context is preserved — a future session (or compaction recovery) can see exactly what was asked and what the user chose
+
 ## Page-Scope Commands
 Commands that can target individual pages (maintenance mode, deactivate maintenance, and any future per-page commands) require the user to specify **which pages** to act on. Rules:
 
