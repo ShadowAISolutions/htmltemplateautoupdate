@@ -4,6 +4,36 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-03-01 01:33:22 PM EST
+**Branch:** `claude/preview-popup-in-chat-fwKEK`
+**Repo version:** v01.88r
+
+### What we worked on
+- Improved AskUserQuestion Visibility rule to cover multi-question popups — all questions shown together in chat before the popup, and user's selections echoed back into chat after responding (v01.86r → v01.87r)
+- Tested multi-question AskUserQuestion (3 questions in a single popup: bread type, condiments multi-select, serving style) and plan approval flow in one response — verified all three visibility features work correctly
+- Researched whether turning off CHAT_BOOKENDS loses functionality — confirmed it's purely cosmetic, all checklists/hooks/logic still execute
+- Toggled `CHAT_BOOKENDS` and `END_OF_RESPONSE_BLOCK` to `Off` for streamlined output (v01.88r)
+
+### Where we left off
+- Bookends and end-of-response block are now Off — user wanted to try it out
+- Session wrapping cleanly after the toggle change
+
+### Key decisions made
+- **Bookends are purely cosmetic** — turning them off skips all mid-response markers (CODING PLAN, CODING START, RESEARCHING, CHECKLIST, etc.) and duration annotations, but all underlying functionality (hook anticipation, checklists, verification) still executes identically
+- **END_OF_RESPONSE_BLOCK is independent** — can be toggled separately from CHAT_BOOKENDS. With both Off, responses are just plain work output with no ceremony
+- **SESSION SAVED still outputs** — even with both toggles Off, the post-closing `💡💡SESSION SAVED💡💡` marker is still shown since it's a session-ending action that needs to be visible
+
+### Active context
+- Active reminders in REMINDERS.md (developer-owned, do not touch without approval):
+  - "Consider creating a session recap file"
+  - "Check test.html issues in Chrome DevTools"
+- TODO items: Get mayo, Get lettuce, Get sliced turkey, Get mustard, Get pickles
+- `TEMPLATE_DEPLOY` = `On` — deployment active on template repo
+- `CHAT_BOOKENDS` = `Off`, `END_OF_RESPONSE_BLOCK` = `Off` — both toggled off this session
+- `MULTI_SESSION_MODE` = `Off`
+
+## Previous Sessions
+
 **Date:** 2026-03-01 12:57:41 PM EST
 **Branch:** `claude/add-multi-session-mode-M78T1`
 **Repo version:** v01.85r
@@ -36,7 +66,7 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - `CHAT_BOOKENDS` = `On`, `END_OF_RESPONSE_BLOCK` = `On`
 - `MULTI_SESSION_MODE` = `Off` — newly added, not yet activated
 
-## Previous Sessions
+---
 
 **Date:** 2026-03-01 12:28:58 PM EST
 **Branch:** `claude/add-sandwich-ingredients-HSC6A`
