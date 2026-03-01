@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 50/50`
+`Sections: 51/50`
 
 ## [Unreleased]
+
+## [v01.51r] — 2026-02-28 11:05:02 PM EST
+
+### Changed
+- Context compaction recovery rule now requires resuming interrupted work after the session start checklist, preventing mid-response task abandonment
 
 ## [v01.50r] — 2026-02-28 10:55:29 PM EST
 
