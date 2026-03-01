@@ -7,7 +7,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 
 ## [Unreleased]
 
-## [v01.49r] — 2026-02-28 10:33:20 PM EST — SHA: *pending next push*
+### Changed
+- Removed SHA from CHANGELOG version headers — eliminates cross-push backfill dependency (~40-50s savings per push)
+- Removed version numbers from all ARCHITECTURE.md Mermaid nodes — diagram shows structure only, STATUS.md is the version dashboard (~20-30s savings per push)
+- Pre-Commit #6 now triggers only on structural changes, not version bumps
+
+### Added
+- Rebase-before-push-commit rule — commit intermediate work first, rebase, then do push commit cycle (eliminates stash/pop)
+- Push commit efficiency rules — single timestamp call + parallel edits for independent files
+
+## [v01.49r] — 2026-02-28 10:33:20 PM EST
 
 ### Added
 - Page-scope command rule — commands that target individual pages (maintenance mode, etc.) now require specifying which pages unless "all" is explicitly stated

@@ -36,10 +36,10 @@ graph TB
 
         subgraph "live-site-pages/ — Hosted Content"
             direction LR
-            INDEX["index.html\n(build-version: 01.13w)"]
-            VERTXT["indexhtml.version.txt\n(|v01.13w|)"]
-            TEST["test.html\n(build-version: 01.13w)"]
-            TEST_VERTXT["testhtml.version.txt\n(|v01.13w|)"]
+            INDEX["index.html"]
+            VERTXT["indexhtml.version.txt"]
+            TEST["test.html"]
+            TEST_VERTXT["testhtml.version.txt"]
             SND1["sounds/Website_Ready_Voice_1.mp3"]
             SND2["sounds/Code_Ready_Voice_1.mp3"]
         end
@@ -60,9 +60,9 @@ graph TB
 
         subgraph "Google Apps Scripts"
             direction LR
-            GAS_INDEX["googleAppsScripts/Index/index.gs\n(v01.00g)"]
+            GAS_INDEX["googleAppsScripts/Index/index.gs"]
             GAS_CFG["index.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
-            GAS_TEST["googleAppsScripts/Test/test.gs\n(v01.00g)"]
+            GAS_TEST["googleAppsScripts/Test/test.gs"]
             GAS_TEST_CFG["test.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
             GAS_TPL["googleAppsScripts/AutoUpdateOnlyHtmlTemplate/\nAutoUpdateOnlyHtmlTemplate.gs\n(template)"]
             GAS_TPL_CFG["AutoUpdateOnlyHtmlTemplate.config.json\n(template placeholders)"]
@@ -80,13 +80,13 @@ graph TB
         end
 
         subgraph "Template Files"
-            TPL["AutoUpdateOnlyHtmlTemplate.html\n(build-version: 01.00w — never bumped)"]
+            TPL["AutoUpdateOnlyHtmlTemplate.html\n(template — never bumped)"]
             TPL_VER["AutoUpdateOnlyHtmlTemplatehtml.version.txt"]
         end
 
         subgraph "Project Config"
             CLAUDE_MD["CLAUDE.md\n(project instructions)"]
-            REPO_VER["repository.version.txt\n(v01.49r)"]
+            REPO_VER["repository.version.txt"]
             SETTINGS[".claude/settings.json\n(git * auto-allowed)"]
             SHA_FILE[".github/last-processed-commit.sha\n(inherited branch guard)"]
         end
