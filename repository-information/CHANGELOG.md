@@ -7,7 +7,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 
 ## [Unreleased]
 
-## [v01.56r] — 2026-02-28 11:54:00 PM EST
+## [v01.56r] — 2026-02-28 11:54:00 PM EST — [df73376](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/df7337643b379a7347cff43598e73b46689f233a)
 
 ### Added
 - SHA commit links in CHANGELOG version section headers — each version section now links to its push commit for one-click navigation to the exact changes
