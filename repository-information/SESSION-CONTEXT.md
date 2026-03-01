@@ -4,6 +4,38 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-03-01 12:28:58 PM EST
+**Branch:** `claude/add-sandwich-ingredients-HSC6A`
+**Repo version:** v01.84r
+
+### What we worked on
+- Added 4 sandwich ingredients to TODO.md: lettuce, sliced turkey, mustard, pickles (v01.80r)
+- Moved `💡💡SESSION SAVED💡💡` to appear after `✅✅CODING COMPLETE✅✅` instead of inside the end-of-response block — maximum visibility as a post-closing marker (v01.81r)
+- Added session context staleness detection and auto-reconstruction to Session Start Checklist — when SESSION-CONTEXT.md is stale (repo version doesn't match), auto-recovers from CHANGELOG entries, commits, and pushes (v01.82r)
+- Added "Plan Mode Visibility" rule — plan content must be output as chat text before calling ExitPlanMode so user can reference it after the approval window disappears (v01.83r)
+- Added timestamp and duration estimate to large file write status messages (v01.84r)
+
+### Where we left off
+- All 5 tasks completed and pushed (v01.80r through v01.84r)
+- No open work threads — session wrapping cleanly
+
+### Key decisions made
+- **SESSION SAVED after CODING COMPLETE** — placed as a "post-closing marker" (new concept) so it's the absolute last thing the user sees, impossible to miss
+- **Session context staleness recovery uses CHANGELOG** — when "remember session" wasn't called, CHANGELOG entries are the best reconstruction source (has human-readable summaries). Recovery commits and pushes immediately so it persists even if the next session also ends unexpectedly
+- **Keep both SESSION-CONTEXT.md and CHANGELOG** — SESSION-CONTEXT.md captures the "why" and "what's next" (reasoning, decisions, open threads) that CHANGELOG can't. CHANGELOG reconstruction is a safety net, not a replacement
+- **Plan content in chat** — the plan approval window disappears after approval, so the full plan must also be output as chat text before ExitPlanMode so the user can scroll back to it
+- **Archiving is the nuclear option** — user learned that Esc is the first tool to stop Claude, archiving is the hard stop if Esc doesn't work. Sessions stop immediately on archive (no background processing)
+
+### Active context
+- Active reminders in REMINDERS.md (developer-owned, do not touch without approval):
+  - "Consider creating a session recap file"
+  - "Check test.html issues in Chrome DevTools"
+- TODO items: Get mayo, Get lettuce, Get sliced turkey, Get mustard, Get pickles
+- `TEMPLATE_DEPLOY` = `On` — deployment active on template repo
+- `CHAT_BOOKENDS` = `On`, `END_OF_RESPONSE_BLOCK` = `On`
+
+## Previous Sessions
+
 **Date:** 2026-03-01 11:47:50 AM EST
 **Branch:** `claude/complete-bread-todo-RFIsr`
 **Repo version:** v01.79r
@@ -25,15 +57,7 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - **Remember session recommends new session** — after saving context, the end-of-response block advises starting fresh to avoid context compaction overwriting the saved state
 - **Three-part session start output**: (1) 📌 Reminders For Developer, (2) 📎 Previous Session Context, (3) 💡 remember session tip
 
-### Active context
-- Active reminders in REMINDERS.md (developer-owned, do not touch without approval):
-  - "Consider creating a session recap file"
-  - "Check test.html issues in Chrome DevTools"
-- TODO items: Get mayo
-- `TEMPLATE_DEPLOY` = `On` — deployment active on template repo
-- `CHAT_BOOKENDS` = `On`, `END_OF_RESPONSE_BLOCK` = `On`
-
-## Previous Sessions
+---
 
 **Date:** 2026-03-01 11:32:53 AM EST
 **Branch:** `claude/show-new-folder-links-DOtHS`
