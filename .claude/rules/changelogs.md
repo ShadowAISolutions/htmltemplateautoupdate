@@ -15,8 +15,7 @@ paths:
 - Entries go under `## [Unreleased]` during intermediate commits
 - On the **push commit**, entries move from `[Unreleased]` into a new version section
 - Version section header format: `## [vXX.XXr] — YYYY-MM-DD HH:MM:SS AM/PM EST`
-  - Add `vXX.XXg` and/or `vXX.XXw` if GAS or page versions were bumped
-  - Order: `r` first, then `g`, then `w`
+  - Header always shows only the repo version — `w`/`g` versions are carried by per-file subheadings in the body
   - No commit SHA in the header — SHAs are added during archive rotation (see CHANGELOG-archive.md "SHA enrichment")
 - Categories follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `### Added`, `### Changed`, `### Fixed`, `### Deprecated`, `### Removed`, `### Security`
 - Only include categories that have entries — no empty headings

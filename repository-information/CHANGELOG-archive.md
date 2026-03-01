@@ -138,59 +138,59 @@ When Claude runs Pre-Commit #7 on the push commit, after creating the new versio
 - Planned Affected URLs now shows the current (pre-change) version for comparison
 - Unaffected URLs now shows the current version for each page
 
-## [v01.46r v01.13w] — 2026-02-28 09:31:11 PM EST — SHA: [`6df5df7`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/6df5df7a19e035b1d3dc1cdb130c28c14c3a30ee)
+## [v01.46r] — 2026-02-28 09:31:11 PM EST — SHA: [`6df5df7`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/6df5df7a19e035b1d3dc1cdb130c28c14c3a30ee)
 
 ### Changed
 - Countdown numbers now start appearing at 5 instead of 8
 
-## [v01.45r v01.12w] — 2026-02-28 09:13:16 PM EST — SHA: [`c6cf8a6`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/c6cf8a66fcbfc1ca9c43f139c1d34091c48454d2)
+## [v01.45r] — 2026-02-28 09:13:16 PM EST — SHA: [`c6cf8a6`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/c6cf8a66fcbfc1ca9c43f139c1d34091c48454d2)
 
 ### Changed
 - Countdown numbers now start appearing at 8 instead of 9, restoring the original yellow blink rhythm
 
-## [v01.44r v01.11w] — 2026-02-28 07:35:31 PM EST — SHA: [`b9b59cf`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b9b59cfadb5e3285a7e235d0ac9794cd2b60ebb5)
+## [v01.44r] — 2026-02-28 07:35:31 PM EST — SHA: [`b9b59cf`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b9b59cfadb5e3285a7e235d0ac9794cd2b60ebb5)
 
 ### Changed
 - Increased countdown font from 5px to 6px for better readability while staying centered in the 8px dot
 
-## [v01.43r v01.10w] — 2026-02-28 07:29:42 PM EST — SHA: [`3ee4420`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3ee44208627fccd450213a22d014a4ea43995846)
+## [v01.43r] — 2026-02-28 07:29:42 PM EST — SHA: [`3ee4420`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3ee44208627fccd450213a22d014a4ea43995846)
 
 ### Changed
 - Shrunk countdown font to 5px to center numbers within the original 8px dot instead of expanding the dot
 
-## [v01.42r v01.09w] — 2026-02-28 07:26:37 PM EST — SHA: [`34d3689`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/34d3689c1050945ba6577969983ca1a7e2a0cc9a)
+## [v01.42r] — 2026-02-28 07:26:37 PM EST — SHA: [`34d3689`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/34d3689c1050945ba6577969983ca1a7e2a0cc9a)
 
 ### Fixed
 - Fixed countdown numbers not centering in the dot at 100% zoom — dot now expands to 12px when counting for reliable centering at all zoom levels
 
-## [v01.41r v01.08w] — 2026-02-28 07:19:05 PM EST — SHA: [`d5659eb`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d5659eb5a91cf82f6c15dc09799ee464fd4639e3)
+## [v01.41r] — 2026-02-28 07:19:05 PM EST — SHA: [`d5659eb`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d5659eb5a91cf82f6c15dc09799ee464fd4639e3)
 
 ### Fixed
 - Centered countdown numbers inside the version indicator dot
 
-## [v01.40r v01.07w] — 2026-02-28 07:15:10 PM EST — SHA: [`4672c2c`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4672c2c0ff8720402afd069ffc4bec3478344087)
+## [v01.40r] — 2026-02-28 07:15:10 PM EST — SHA: [`4672c2c`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4672c2c0ff8720402afd069ffc4bec3478344087)
 
 ### Changed
 - Restored original dot size (8×8px) for the version indicator countdown circle
 
-## [v01.39r v01.06w] — 2026-02-28 07:08:21 PM EST — SHA: [`bb27684`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/bb27684b5411c1233e9bd6fbd27f9400c77f0f70)
+## [v01.39r] — 2026-02-28 07:08:21 PM EST — SHA: [`bb27684`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/bb27684b5411c1233e9bd6fbd27f9400c77f0f70)
 
 ### Fixed
 - Restored orange pulse during version check — `startCountdown()` was immediately overwriting the checking class, preventing the orange flash from showing
 - Countdown dot is now static gray with numbers (no pulse) — orange pulse reserved for the active fetch
 
-## [v01.38r v01.05w] — 2026-02-28 07:02:59 PM EST — SHA: [`b5cc752`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b5cc752635b74ec4eb3a89e113c927df118cd48f)
+## [v01.38r] — 2026-02-28 07:02:59 PM EST — SHA: [`b5cc752`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b5cc752635b74ec4eb3a89e113c927df118cd48f)
 
 ### Fixed
 - Restored pulse animation on the countdown dot — `.counting` class now includes the blink animation that was missing after the dot refactor
 
-## [v01.37r v01.04w] — 2026-02-28 06:58:44 PM EST — SHA: [`98581d4`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/98581d48583c9c3dc37dd30821cf137051cf374b)
+## [v01.37r] — 2026-02-28 06:58:44 PM EST — SHA: [`98581d4`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/98581d48583c9c3dc37dd30821cf137051cf374b)
 
 ### Changed
 - Moved poll countdown into the status dot circle — digit counts down 9, 8, ... 1 inside the dot instead of as separate text next to it
 - Countdown starts visibly at 9 (first second after poll is hidden) for a cleaner appearance
 
-## [v01.36r v01.03w] — 2026-02-28 06:44:28 PM EST — SHA: [`53296d5`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/53296d5426d43e7016c2b43cbd31f50d0752eef7)
+## [v01.36r] — 2026-02-28 06:44:28 PM EST — SHA: [`53296d5`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/53296d5426d43e7016c2b43cbd31f50d0752eef7)
 
 ### Added
 - Added poll countdown timer to the version indicator pill on all HTML pages — shows seconds remaining until the next version check (e.g. "10s", "9s", ... "1s"), then clears during the fetch
@@ -242,13 +242,13 @@ When Claude runs Pre-Commit #7 on the push commit, after creating the new versio
 ### Changed
 - `2026-02-28 05:06:41 PM EST` — Centralized all 12 per-page and per-GAS changelog files into `repository-information/changelogs/` — declutters `live-site-pages/`, `googleAppsScripts/`, and `live-site-templates/` directories, and eliminates false GitHub Pages deployment triggers from changelog-only edits
 
-## [v01.26r v01.02w] — 2026-02-28 04:44:00 PM EST — SHA: [`d64e6d9`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d64e6d9845a5645409cc13fdd0876ae1b4edecc3)
+## [v01.26r] — 2026-02-28 04:44:00 PM EST — SHA: [`d64e6d9`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d64e6d9845a5645409cc13fdd0876ae1b4edecc3)
 
 ### Changed
 - Standardized HTML version file naming from dot-separated (`index.htmlversion.txt`) to concatenated (`indexhtml.version.txt`) — now uniform with changelog naming pattern (`indexhtml.changelog.md`) and GAS naming pattern (`indexgs.version.txt`)
 - Updated JavaScript auto-refresh polling URL construction from `pageName + '.htmlversion.txt'` to `pageName + 'html.version.txt'`
 
-## [v01.25r v01.01w] — 2026-02-28 04:32:51 PM EST — SHA: [`2cf6582`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2cf658251efcf92cd00c629098c85c75edf599fa)
+## [v01.25r] — 2026-02-28 04:32:51 PM EST — SHA: [`2cf6582`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2cf658251efcf92cd00c629098c85c75edf599fa)
 
 ### Changed
 - Renamed HTML page version files to include `html` in filename — `index.version.txt` → `index.htmlversion.txt`, `test.version.txt` → `test.htmlversion.txt`, `AutoUpdateOnlyHtmlTemplate.version.txt` → `AutoUpdateOnlyHtmlTemplate.htmlversion.txt` — completing the disambiguation between HTML and GAS version files

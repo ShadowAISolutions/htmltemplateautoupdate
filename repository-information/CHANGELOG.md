@@ -3,9 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 47/100`
+`Sections: 48/100`
 
 ## [Unreleased]
+
+## [v02.05r] — 2026-03-01 04:02:15 PM EST
+
+### Changed
+- CHANGELOG.md version section headers now show only the repo version — page/GAS versions removed from headers since per-file subheadings carry that detail
+- Cleaned up 13 archived CHANGELOG entries and 3 active entries to remove `w`/`g` versions from headers
 
 ## [v02.04r] — 2026-03-01 03:57:39 PM EST
 
@@ -36,7 +42,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 ### Changed
 - Strengthened duration annotation rules to prevent skipping `⏱️` markers between consecutive bookends
 
-## [v02.00r v01.16w] — 2026-03-01 03:35:27 PM EST
+## [v02.00r] — 2026-03-01 03:35:27 PM EST
 
 ### Changed
 - Changelog popup now requires the X button to close — clicking outside the popup no longer dismisses it
@@ -60,7 +66,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 ### Added
 - Private repo compatibility enforced as Pre-Commit checklist item #19 — verifies no client-side browser code references authenticated GitHub endpoints
 
-## [v01.97r v01.15w] — 2026-03-01 03:14:52 PM EST
+## [v01.97r] — 2026-03-01 03:14:52 PM EST
 
 ### Changed
 - Changelog popup now fetches from same-origin deployment copy instead of raw.githubusercontent.com — works with private repos
@@ -74,7 +80,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 ##### Changed
 - Changelog popup now loads reliably when the repository is private
 
-## [v01.96r v01.14w] — 2026-03-01 03:04:05 PM EST
+## [v01.96r] — 2026-03-01 03:04:05 PM EST
 
 ### Added
 - Clicking the version number overlay now opens a changelog popup showing the page's recent changes
