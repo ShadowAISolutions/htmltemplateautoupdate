@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-01 11:06:35 AM EST` · Repo version: `v01.74r`
+Last updated: `2026-03-01 11:12:55 AM EST` · Repo version: `v01.75r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -158,6 +158,7 @@ htmltemplateautoupdate/
 │   ├── TODO.md                 # Actionable to-do items
 │   ├── readme-qr-code.png             # QR code linking to this repo
 │   ├── REMINDERS.md            # Cross-session reminders for Claude
+│   ├── SESSION-CONTEXT.md      # Session context log for continuity across sessions
 │   ├── repository.version.txt  # Repo version (v01.XXr — bumps every push)
 │   ├── TOKEN-BUDGETS.md        # Token cost reference for CLAUDE.md
 │   └── SUPPORT.md              # Getting help
@@ -184,6 +185,7 @@ htmltemplateautoupdate/
 | [CLAUDE.md](CLAUDE.md) | Developer instructions and conventions |
 | [IMPROVEMENTS.md](repository-information/IMPROVEMENTS.md) | Potential improvements to explore |
 | [REMINDERS.md](repository-information/REMINDERS.md) | Cross-session reminders for Claude |
+| [SESSION-CONTEXT.md](repository-information/SESSION-CONTEXT.md) | Session context log for continuity |
 | [STATUS.md](repository-information/STATUS.md) | Current project status and versions |
 | [TODO.md](repository-information/TODO.md) | Actionable planned items |
 

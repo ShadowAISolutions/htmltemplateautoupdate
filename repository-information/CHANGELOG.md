@@ -3,9 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 17/100`
+`Sections: 18/100`
 
 ## [Unreleased]
+
+## [v01.75r] — 2026-03-01 11:12:55 AM EST
+
+### Added
+- Created `repository-information/SESSION-CONTEXT.md` — session context log for cross-session continuity
+- Added "Remember Session" command to CLAUDE.md — writes session context to SESSION-CONTEXT.md when the user says "Remember Session", enabling a future session to pick up where the previous one left off
 
 ## [v01.74r] — 2026-03-01 11:06:35 AM EST
 

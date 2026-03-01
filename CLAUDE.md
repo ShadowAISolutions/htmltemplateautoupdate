@@ -214,6 +214,27 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 > **--- END OF INITIALIZE COMMAND ---**
 ---
 
+## Remember Session Command
+If the user says **"Remember Session"** (or similar: "remember this session", "save session context"):
+1. **Write session context** to `repository-information/SESSION-CONTEXT.md`:
+   - Move any existing `## Latest Session` content to `## Previous Sessions` (prepend it, most recent first)
+   - Write a new `## Latest Session` with:
+     - **Timestamp**: current date/time
+     - **What we worked on**: brief list of tasks completed or in progress
+     - **Where we left off**: the current state — what was just done, what's next, any open threads
+     - **Key decisions made**: any design choices, rule changes, or user preferences expressed
+     - **Active context**: branch name, repo version, any relevant file states
+   - Keep each session entry concise but complete enough that a fresh Claude session can read it and continue naturally
+2. **Commit** with message `Remember session context` (no version bump — this is a housekeeping action like reminders)
+3. **Push** to the `claude/*` branch (Pre-Push Checklist applies)
+4. This is a **session-ending action** — after pushing, close out with CODING COMPLETE as normal. The user will start a new session and can say "read session context" to pick up where they left off
+
+**Reading session context**: at the start of a new session, if the user says "read session context" (or "pick up where we left off", "continue last session"), read `repository-information/SESSION-CONTEXT.md` and summarize the latest session entry before proceeding with the user's request.
+
+---
+> **--- END OF REMEMBER SESSION COMMAND ---**
+---
+
 ## Behavioral Rules
 *Full rules in `.claude/rules/behavioral-rules.md` (always-loaded, no path scope). Covers: Execution Style, Page-Scope Commands, Pushback & Reasoning, Continuous Improvement, Backups Before Major Changes, Solution Depth, Confidence Disclosure, Validate Before Asserting, User-Perspective Reasoning, Section Placement Guide, Web Search Confidence, Provenance Markers.*
 
