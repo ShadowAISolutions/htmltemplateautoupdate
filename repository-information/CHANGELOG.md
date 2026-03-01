@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 7/100`
+`Sections: 8/100`
 
 ## [Unreleased]
+
+## [v01.65r] — 2026-03-01 01:13:43 AM EST
+
+### Added
+- Created `.claude/rules/` directory with 6 path-scoped placeholder rule files for future CLAUDE.md content extraction (html-pages, gas-scripts, workflows, repo-docs, changelogs, init-scripts)
 
 ## [v01.64r] — 2026-03-01 01:03:17 AM EST
 
