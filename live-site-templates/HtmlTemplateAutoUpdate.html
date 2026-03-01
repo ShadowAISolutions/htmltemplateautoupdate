@@ -422,15 +422,10 @@
       });
 
       function getChangelogUrl() {
-        var host = window.location.hostname;
-        var path = window.location.pathname;
-        var org = host.split('.')[0];
-        var repo = path.split('/')[1] || '';
         var basePath = window.location.href.split('?')[0].split('#')[0];
         var pn = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
         if (!pn) pn = 'index';
-        return 'https://raw.githubusercontent.com/' + org + '/' + repo
-          + '/main/repository-information/changelogs/' + pn + 'html.changelog.md';
+        return basePath.substring(0, basePath.lastIndexOf('/') + 1) + pn + 'html.changelog.txt';
       }
 
       function parseChangelog(md) {

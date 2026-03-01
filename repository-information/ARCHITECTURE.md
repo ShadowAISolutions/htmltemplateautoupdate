@@ -38,8 +38,10 @@ graph TB
             direction LR
             INDEX["index.html"]
             VERTXT["indexhtml.version.txt"]
+            INDEX_CL["indexhtml.changelog.txt"]
             TEST["test.html"]
             TEST_VERTXT["testhtml.version.txt"]
+            TEST_CL["testhtml.changelog.txt"]
             SND1["sounds/Website_Ready_Voice_1.mp3"]
             SND2["sounds/Code_Ready_Voice_1.mp3"]
         end

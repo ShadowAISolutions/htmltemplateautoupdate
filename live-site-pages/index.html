@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.14w">
+  <meta name="build-version" content="v01.15w">
   <title>CHANGE THIS PROJECT TITLE TEMPLATE</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -422,15 +422,10 @@
       });
 
       function getChangelogUrl() {
-        var host = window.location.hostname;
-        var path = window.location.pathname;
-        var org = host.split('.')[0];
-        var repo = path.split('/')[1] || '';
         var basePath = window.location.href.split('?')[0].split('#')[0];
         var pn = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
         if (!pn) pn = 'index';
-        return 'https://raw.githubusercontent.com/' + org + '/' + repo
-          + '/main/repository-information/changelogs/' + pn + 'html.changelog.md';
+        return basePath.substring(0, basePath.lastIndexOf('/') + 1) + pn + 'html.changelog.txt';
       }
 
       function parseChangelog(md) {
