@@ -1,6 +1,6 @@
-# Reminders
+# Reminders for Developer
 
-Items the user asked to be reminded about at the start of the next session. Claude reads this file during the Session Start Checklist and surfaces any active reminders before proceeding.
+Notes and reminders the developer wants surfaced at the start of the next session. These are the developer's own notes — Claude surfaces them but does not modify, complete, or remove them without explicit developer approval.
 
 ## Active Reminders
 

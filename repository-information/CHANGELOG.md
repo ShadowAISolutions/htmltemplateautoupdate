@@ -3,9 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 19/100`
+`Sections: 20/100`
 
 ## [Unreleased]
+
+## [v01.77r] — 2026-03-01 11:25:23 AM EST
+
+### Changed
+- Renamed REMINDERS.md heading to "Reminders for Developer" — clarifies these are the developer's own notes, not a system Claude manages autonomously
+- Renamed SESSION-CONTEXT.md heading to "Previous Session Context" — clearly distinct from developer reminders
+- Broadened "User-Owned Content" rule to cover repurposing/restructuring — never fold a new feature into an existing user-created system or assume one replaces the other without explicit approval
+- Updated all references across CLAUDE.md, output-formatting.md, and README.md to use the new names
 
 ## [v01.76r] — 2026-03-01 11:20:19 AM EST
 

@@ -104,10 +104,10 @@ When subagents (Explore, Plan, Bash, etc.) are spawned via the Task tool, their 
 ### Token Budget Reference
 *See `repository-information/TOKEN-BUDGETS.md` — section "Agent Attribution"*
 
-## Reminder System
-*Rule: see Session Start Checklist — "Reminders" in the Always Run section. File location and format below.*
+## Reminders for Developer
+*Rule: see Session Start Checklist — "Reminders for Developer" in the Always Run section. File location and format below.*
 
-The reminder system provides cross-session continuity by persisting user-requested reminders in a structured file that Claude reads at the start of every session.
+The developer's own notes and reminders, surfaced at the start of every session. **These are the developer's property** — Claude surfaces them but does not modify, complete, or remove them without explicit developer approval (see "User-Owned Content" rule in behavioral-rules.md).
 
 ### File location
 `repository-information/REMINDERS.md`
@@ -115,7 +115,7 @@ The reminder system provides cross-session continuity by persisting user-request
 ### How it works
 - **Adding reminders**: when the user says "remind me next time" (or similar — "next session remember", "don't let me forget", "bring this up next time"), add an entry to `## Active Reminders` with a timestamp and description
 - **Surfacing reminders**: during the Session Start Checklist, read the file and output any active reminders before proceeding to the user's request
-- **Completing reminders**: when a reminder has been addressed or the user explicitly dismisses it, move it from `## Active Reminders` to `## Completed Reminders` with a completion timestamp
+- **Completing reminders**: only when the developer **explicitly** says a reminder is done or dismisses it, move it from `## Active Reminders` to `## Completed Reminders` with a completion timestamp. Never complete a reminder autonomously based on task similarity
 - **Trigger phrases**: the user does not need to use exact phrasing — any intent to be reminded in a future session should be captured. Examples: "remind me next time", "next session bring up", "don't forget to mention", "remember to tell me"
 
 ### Entry format

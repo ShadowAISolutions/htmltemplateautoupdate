@@ -70,7 +70,7 @@ These rules apply universally — they are **NOT** skipped by the template repo 
 
 **Initialized repo short-circuit** — check if `README.md` contains the placeholder text `You are currently using the **`. If it does NOT, the repo has already been initialized — skip the Template Drift Checks below and proceed directly to the user's request. If it DOES, the repo is a fresh fork that needs initialization — continue to the Template Drift Checks.
 
-**Reminders** — read `repository-information/REMINDERS.md`. If the `## Active Reminders` section contains any entries, surface them to the user before proceeding to their request. Format: output `📌 Reminders from last session:` followed by each reminder as a bullet point. After surfacing, proceed normally — do not wait for acknowledgment. If the user says "remind me next time" (or similar phrasing like "next session remember", "don't let me forget") about anything during a session, add it to the `## Active Reminders` section with a timestamp. When a reminder has been addressed or the user dismisses it, move it to `## Completed Reminders` with a completion timestamp.
+**Reminders for Developer** — read `repository-information/REMINDERS.md`. If the `## Active Reminders` section contains any entries, surface them to the user before proceeding to their request. Format: output `📌 Reminders from last session:` followed by each reminder as a bullet point. After surfacing, proceed normally — do not wait for acknowledgment. If the user says "remind me next time" (or similar phrasing like "next session remember", "don't let me forget") about anything during a session, add it to the `## Active Reminders` section with a timestamp. **These are the developer's own notes** — do not mark them as completed, remove them, or modify their meaning without explicit developer approval (see "User-Owned Content" rule in behavioral-rules.md). When the developer explicitly says a reminder is done or dismisses it, move it to `## Completed Reminders` with a completion timestamp.
 
 ### Template Drift Checks (forks/clones only)
 These checks catch template drift that accumulates when the repo is cloned/forked into a new name. They do **not** apply to the template repo itself.
@@ -269,7 +269,7 @@ Path-scoped rules files — loaded automatically when working on matching files.
 > **--- END OF REFERENCE FILES ---**
 ---
 ## Output Formatting & Styling
-*Full rules in `.claude/rules/output-formatting.md` (always-loaded, no path scope). Covers: CLI Accent Styling Reference, Agent Attribution, Reminder System format.*
+*Full rules in `.claude/rules/output-formatting.md` (always-loaded, no path scope). Covers: CLI Accent Styling Reference, Agent Attribution, Reminders for Developer format.*
 
 ---
 > **--- END OF OUTPUT FORMATTING & STYLING ---**

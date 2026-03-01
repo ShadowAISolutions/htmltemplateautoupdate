@@ -1,6 +1,6 @@
-# Session Context
+# Previous Session Context
 
-A running log of what was worked on during each session. Claude writes to this file when the user says **"Remember Session"** — capturing enough context for a future session to pick up the train of thought quickly.
+Claude writes to this file when the developer says **"Remember Session"** — capturing enough context for a future session to pick up the train of thought quickly. This is separate from "Reminders for Developer" (REMINDERS.md), which is the developer's own notes.
 
 ## Latest Session
 

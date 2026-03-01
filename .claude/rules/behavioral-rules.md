@@ -123,7 +123,8 @@ When adding, moving, or reorganizing `##` sections in CLAUDE.md, follow the atte
 - **Reminders, to-do items, and other user-created notes are the user's property** — never mark them as completed, remove them, or modify their meaning without explicit user approval, even if the current task appears to fulfill them
 - The fact that a task *relates to* a reminder does not mean it *satisfies* the reminder. The user may have had a broader or different intent than what was implemented. Only the user decides when their own notes are resolved
 - This applies to: `REMINDERS.md` active reminders, `TODO.md` items, any user-written notes or comments in any file
-- **The general principle**: when something belongs to the user (they wrote it, they requested it be tracked), do not unilaterally close, complete, or alter it. Ask first. This extends beyond reminders — if the user created a file, section, or entry for their own tracking purposes, treat it as read-only unless the user explicitly says to change it
+- **Never repurpose or restructure an existing user-created system** — if the user created a file, section, or workflow for a specific purpose, do not assume a new feature replaces it just because they seem related. A new feature that overlaps with an existing user concept must be built as a **separate, additional** system — not merged into or substituted for the original. The user's original system retains its identity and purpose until the user explicitly says otherwise. Example: if the user has a "Reminders for Developer" system and asks for a "session context" feature, these are two distinct things — do not fold one into the other
+- **The general principle**: when something belongs to the user (they wrote it, they requested it be tracked), do not unilaterally close, complete, alter, rename, or repurpose it. Ask first
 
 ## Provenance Markers
 - This repo contains hidden provenance markers that identify ShadowAISolutions as the original author
