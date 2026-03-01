@@ -4,6 +4,37 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-03-01 11:47:50 AM EST
+**Branch:** `claude/complete-bread-todo-RFIsr`
+**Repo version:** v01.79r
+
+### What we worked on
+- Completed "Get bread" to-do item — removed from TODO.md (v01.78r)
+- Improved session start experience (v01.79r):
+  - Changed reminders label from "📌 Reminders from last session:" to "📌 Reminders For Developer:"
+  - Added automatic surfacing of previous session context (`📎 Previous Session Context:`) at session start — reads SESSION-CONTEXT.md without needing "read session context" command
+  - Added `💡 *Type **"remember session"**...` tip at session start reminding the developer about the feature
+  - Added `💡💡SESSION SAVED💡💡` section to "Remember Session" end-of-response block recommending starting a new session to preserve saved context
+
+### Where we left off
+- Both tasks completed and pushed (v01.78r and v01.79r)
+- No open work threads — session wrapped cleanly
+
+### Key decisions made
+- **Session context is now automatic** — no longer requires "read session context" at start; it surfaces alongside reminders every session
+- **Remember session recommends new session** — after saving context, the end-of-response block advises starting fresh to avoid context compaction overwriting the saved state
+- **Three-part session start output**: (1) 📌 Reminders For Developer, (2) 📎 Previous Session Context, (3) 💡 remember session tip
+
+### Active context
+- Active reminders in REMINDERS.md (developer-owned, do not touch without approval):
+  - "Consider creating a session recap file"
+  - "Check test.html issues in Chrome DevTools"
+- TODO items: Get mayo
+- `TEMPLATE_DEPLOY` = `On` — deployment active on template repo
+- `CHAT_BOOKENDS` = `On`, `END_OF_RESPONSE_BLOCK` = `On`
+
+## Previous Sessions
+
 **Date:** 2026-03-01 11:32:53 AM EST
 **Branch:** `claude/show-new-folder-links-DOtHS`
 **Repo version:** v01.77r
@@ -25,17 +56,5 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - **Reminders vs Session Context** — two distinct systems: REMINDERS.md is developer-owned notes Claude surfaces but never modifies; SESSION-CONTEXT.md is Claude-written context for cross-session continuity
 - **NEW FOLDERS** — no placeholder when no folders are created (unlike other end-of-response sections that show "none" placeholders)
 - **Section separation** in end-of-response block — blank lines between every section pair are mandatory to prevent markdown list context cascading
-
-### Active context
-- Active reminders in REMINDERS.md (developer-owned, do not touch without approval):
-  - "Consider creating a session recap file"
-  - "Check test.html issues in Chrome DevTools"
-- TODO items: Get bread, Get mayo
-- `TEMPLATE_DEPLOY` = `On` — deployment active on template repo
-- `CHAT_BOOKENDS` = `On`, `END_OF_RESPONSE_BLOCK` = `On`
-
-## Previous Sessions
-
-*(No previous sessions yet)*
 
 Developed by: ShadowAISolutions
