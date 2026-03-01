@@ -3,9 +3,18 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 51/50`
+`Sections: 52/50`
 
 ## [Unreleased]
+
+## [v01.52r] — 2026-02-28 11:23:24 PM EST
+
+### Added
+- `🔃🔃CONTEXT COMPACTION RECOVERY🔃🔃` bookend — visible marker when context compaction triggers mid-session recovery
+- Compaction recovery override rule in Chat Bookends — replaces all other openers when compaction is detected
+
+### Changed
+- Context compaction recovery now skips reminders (already surfaced earlier in session) and focuses on resuming the interrupted task using previously gathered context
 
 ## [v01.51r] — 2026-02-28 11:05:02 PM EST
 
