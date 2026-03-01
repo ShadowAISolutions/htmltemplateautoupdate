@@ -237,7 +237,7 @@
           if (countdownSeconds <= 0) {
             clearInterval(countdownTimer);
             if (dot) { dot.textContent = ''; dot.className = 'dot'; }
-          } else if (countdownSeconds <= 8) {
+          } else if (countdownSeconds <= 5) {
             if (dot) { dot.textContent = countdownSeconds; dot.className = 'dot counting'; }
           }
         }, 1000);
