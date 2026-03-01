@@ -3,9 +3,11 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 49/50`
+`Sections: 50/50`
 
 ## [Unreleased]
+
+## [v01.50r] — 2026-02-28 10:55:29 PM EST
 
 ### Changed
 - Removed SHA from CHANGELOG version headers — eliminates cross-push backfill dependency (~40-50s savings per push)
