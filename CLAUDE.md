@@ -72,7 +72,26 @@ These rules apply universally — they are **NOT** skipped by the template repo 
 
 **Reminders for Developer** — read `repository-information/REMINDERS.md`. If the `## Active Reminders` section contains any entries, surface them to the user before proceeding to their request. Format: output `📌 Reminders For Developer:` followed by each reminder as a bullet point. After surfacing, proceed normally — do not wait for acknowledgment. If the user says "remind me next time" (or similar phrasing like "next session remember", "don't let me forget") about anything during a session, add it to the `## Active Reminders` section with a timestamp. **These are the developer's own notes** — do not mark them as completed, remove them, or modify their meaning without explicit developer approval (see "User-Owned Content" rule in behavioral-rules.md). When the developer explicitly says a reminder is done or dismisses it, move it to `## Completed Reminders` with a completion timestamp.
 
-**Session context** — immediately after surfacing reminders (or in place of reminders if there are none), read `repository-information/SESSION-CONTEXT.md`. If the `## Latest Session` section contains session context (not just a placeholder), output `📎 Previous Session Context:` followed by a brief summary of the latest session entry (what was worked on, where it left off, key decisions). This gives Claude continuity from the prior session without the user needing to say "read session context". After the session context summary, output: `💡 *Type **"remember session"** before ending this session to save context for next time.*` — this reminds the developer that the feature exists. **Skip session context entirely** if `SESSION-CONTEXT.md` has no `## Latest Session` content or the section is empty/placeholder.
+**Session context** — immediately after surfacing reminders (or in place of reminders if there are none), read `repository-information/SESSION-CONTEXT.md`. If the `## Latest Session` section contains session context (not just a placeholder):
+
+1. **Staleness check** — extract the `**Repo version:**` value from the Latest Session entry and compare it against `repository-information/repository.version.txt`. If they match, the context is fresh — skip to step 3. If they differ, the context is stale — proceed to step 2
+2. **Auto-reconstruct** — the session context is stale (one or more sessions ended without "remember session"). Reconstruct the missing context:
+   - Read CHANGELOG.md and collect all version sections between the recorded version (exclusive) and the current version (inclusive) — these entries describe what was done in the missed session(s)
+   - Read current `TODO.md` and `REMINDERS.md` for active context state
+   - Move the current `## Latest Session` to `## Previous Sessions` (prepend, most recent first)
+   - Write a new `## Latest Session` with:
+     - **Date:** current timestamp
+     - **Reconstructed:** `Auto-recovered from CHANGELOG (original session did not save context)`
+     - **Repo version:** current version from `repository.version.txt`
+     - **What was done:** bullet list derived from CHANGELOG entries for each missing version (format: `- Description (vXX.XXr)`)
+     - **Where we left off:** `All changes committed and merged to main` (safe default — pushed changes merge via the auto-merge workflow)
+     - **Active context:** current TODO items, active reminders, and key template variable states (`TEMPLATE_DEPLOY`, `CHAT_BOOKENDS`, `END_OF_RESPONSE_BLOCK`)
+   - Commit with message `Session start: reconstruct stale session context` (no version bump — housekeeping)
+   - Push to the `claude/*` branch so the recovery persists even if the session ends unexpectedly
+   - Output `⚠️ Session context was stale (vOLD → vNEW) — auto-recovered from CHANGELOG.` before the normal session context summary
+3. **Display** — output `📎 Previous Session Context:` followed by a brief summary of the Latest Session entry (whether fresh or just reconstructed), then output: `💡 *Type **"remember session"** before ending this session to save context for next time.*`
+
+**Skip session context entirely** if `SESSION-CONTEXT.md` has no `## Latest Session` content or the section is empty/placeholder.
 
 ### Template Drift Checks (forks/clones only)
 These checks catch template drift that accumulates when the repo is cloned/forked into a new name. They do **not** apply to the template repo itself.
