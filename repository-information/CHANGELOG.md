@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 5/100`
+`Sections: 6/100`
 
 ## [Unreleased]
+
+## [v01.63r] — 2026-03-01 12:42:35 AM EST
+
+### Changed
+- Disabled maintenance mode on all pages (index.html and test.html) — maintenance overlay removed, pages now accessible normally
 
 ## [v01.62r] — 2026-03-01 12:37:10 AM EST — [eef6939](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/eef693974db315b1f88ac1a8db7443d092d51c9a)
 
