@@ -3,11 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 47/50`
+`Sections: 48/50`
 
 ## [Unreleased]
 
-## [v01.47r] — 2026-02-28 10:18:53 PM EST — SHA: *pending next push*
+## [v01.48r] — 2026-02-28 10:28:23 PM EST — SHA: *pending next push*
+
+### Changed
+- All live site pages placed into maintenance mode
+
+## [v01.47r] — 2026-02-28 10:18:53 PM EST — SHA: [`9c75328`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/9c75328a1ef736537f6e32e58222144791dd3a62)
 
 ### Changed
 - Affected URLs section now shows the version each page becomes after changes
