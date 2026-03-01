@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 22/100`
+`Sections: 23/100`
 
 ## [Unreleased]
+
+## [v01.80r] — 2026-03-01 11:53:27 AM EST
+
+### Added
+- Added 4 sandwich ingredients to the to-do list: lettuce, sliced turkey, mustard, pickles
 
 ## [v01.79r] — 2026-03-01 11:44:57 AM EST
 
