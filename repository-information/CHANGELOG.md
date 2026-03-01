@@ -3,9 +3,18 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 50/100`
+`Sections: 51/100`
 
 ## [Unreleased]
+
+## [v02.08r] — 2026-03-01 05:37:23 PM EST
+
+### Changed
+- Test page placed into maintenance mode — displays maintenance overlay with timestamp
+
+#### `test.html` — v01.17w (no change)
+##### Changed
+- Page placed into maintenance mode — visitors see a maintenance overlay until mode is deactivated
 
 ## [v02.07r] — 2026-03-01 04:15:28 PM EST
 
