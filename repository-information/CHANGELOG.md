@@ -3,9 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 9/100`
+`Sections: 10/100`
 
 ## [Unreleased]
+
+## [v01.67r] — 2026-03-01 01:46:08 AM EST
+
+### Changed
+- Extracted 10 reference sections from CLAUDE.md into 6 path-scoped `.claude/rules/` files, reducing CLAUDE.md from ~1255 to ~993 lines while preserving all functionality via one-line pointers
+- Populated `.claude/rules/html-pages.md` with Build Version reference (polling, maintenance mode, new page setup, directory structure)
+- Populated `.claude/rules/gas-scripts.md` with Version Bumping, GAS Project Config, and Coding Guidelines Reference
+- Populated `.claude/rules/workflows.md` with Merge Conflict Prevention and Commit SHA Tracking
+- Populated `.claude/rules/repo-docs.md` with ARCHITECTURE.md updates, Docs Sync, Internal Link Reference, Relative Path Resolution, and Markdown Formatting
+- Populated `.claude/rules/changelogs.md` with quick-reference guide for changelog formats and archive rotation
+- Populated `.claude/rules/init-scripts.md` with init script details, Phantom Edit, and Line Ending Safety
 
 ## [v01.66r] — 2026-03-01 01:22:38 AM EST
 
