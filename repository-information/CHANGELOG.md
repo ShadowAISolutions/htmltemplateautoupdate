@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 57/50`
+`Sections: 58/50`
 
 ## [Unreleased]
+
+## [v01.58r] — 2026-03-01 12:03:06 AM EST
+
+### Changed
+- Completed "Get tomato" to-do item
 
 ## [v01.57r] — 2026-02-28 11:59:43 PM EST — [d886812](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d8868126f2debb2b9bffe3e027a1a7d9578768ff)
 
