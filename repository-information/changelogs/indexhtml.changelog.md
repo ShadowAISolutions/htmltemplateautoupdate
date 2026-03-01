@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [indexhtml.changelog-archive.md](indexhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 4/50`
+`Sections: 5/50`
 
 ## [Unreleased]
+
+## [v01.07w] (v01.40r) — 2026-02-28 07:15:10 PM EST
+
+### Changed
+- Restored original smaller size for the version indicator dot
 
 ## [v01.06w] (v01.39r) — 2026-02-28 07:08:21 PM EST
 

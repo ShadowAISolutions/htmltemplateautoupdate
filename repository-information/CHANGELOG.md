@@ -3,11 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 39/50`
+`Sections: 40/50`
 
 ## [Unreleased]
 
-## [v01.39r v01.06w] — 2026-02-28 07:08:21 PM EST — SHA: *pending next push*
+## [v01.40r v01.07w] — 2026-02-28 07:15:10 PM EST — SHA: *pending next push*
+
+### Changed
+- Restored original dot size (8×8px) for the version indicator countdown circle
+
+## [v01.39r v01.06w] — 2026-02-28 07:08:21 PM EST — SHA: [`bb27684`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/bb27684b5411c1233e9bd6fbd27f9400c77f0f70)
 
 ### Fixed
 - Restored orange pulse during version check — `startCountdown()` was immediately overwriting the checking class, preventing the orange flash from showing
