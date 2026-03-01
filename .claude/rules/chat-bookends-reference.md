@@ -46,8 +46,9 @@
 | `🔧🔧ESTIMATE CALIBRATED🔧🔧` | Estimate missed by >2 min | After AFFECTED URLS (or SUMMARY), before PLAN EXECUTION TIME / ACTUAL TOTAL COMPLETION TIME (skip if ≤2 min gap) | — | — |
 | `⏳⏳PLAN EXECUTION TIME: Xm Ys (estimated Xm)⏳⏳` | Plan approval flow was used | After AFFECTED URLS (or ESTIMATE CALIBRATED), before ACTUAL TOTAL COMPLETION TIME (skip if no plan approval) | — | Computed from post-approval CODING START → closing marker |
 | `⏳⏳ACTUAL TOTAL COMPLETION TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE or RESEARCH COMPLETE | Immediately before CODING COMPLETE (coding) or RESEARCH COMPLETE (research) | — | Computed from opening marker → closing marker |
-| `✅✅CODING COMPLETE✅✅ [HH:MM:SS AM EST MM/DD/YYYY]` | Response made code changes/commits/pushes | Very last line of coding responses | Required | — |
+| `✅✅CODING COMPLETE✅✅ [HH:MM:SS AM EST MM/DD/YYYY]` | Response made code changes/commits/pushes | Very last line of coding responses (unless a post-closing marker follows) | Required | — |
 | `🔬🔬RESEARCH COMPLETE🔬🔬 [HH:MM:SS AM EST MM/DD/YYYY]` | Response was purely informational (no file changes) | Very last line of research responses (no end-of-response block) | Required | — |
+| `💡💡SESSION SAVED💡💡` | "Remember Session" was performed | After CODING COMPLETE — the absolute last line (post-closing marker) | — | — |
 
 ## Flow Examples
 
