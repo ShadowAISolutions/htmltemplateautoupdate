@@ -42,6 +42,9 @@ graph TB
             TEST["test.html"]
             TEST_VERTXT["testhtml.version.txt"]
             TEST_CL["testhtml.changelog.txt"]
+            SOCCER["soccer-ball.html"]
+            SOCCER_VERTXT["soccer-ballhtml.version.txt"]
+            SOCCER_CL["soccer-ballhtml.changelog.txt"]
             SND1["sounds/Website_Ready_Voice_1.mp3"]
             SND2["sounds/Code_Ready_Voice_1.mp3"]
         end
@@ -102,6 +105,7 @@ graph TB
 
     TPL -.->|"copy to create\nnew pages"| INDEX
     TPL -.->|"copy to create\nnew pages"| TEST
+    TPL -.->|"copy to create\nnew pages"| SOCCER
     GAS_TPL -.->|"copy to create\nnew GAS projects"| GAS_INDEX
     GAS_TPL -.->|"copy to create\nnew GAS projects"| GAS_TEST
     GAS_TPL_CFG -.->|"copy to create\nnew configs"| GAS_CFG

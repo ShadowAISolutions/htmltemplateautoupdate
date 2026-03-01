@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-01 05:37:23 PM EST` · Repo version: `v02.08r`
+Last updated: `2026-03-01 06:17:49 PM EST` · Repo version: `v02.09r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -98,6 +98,9 @@ htmltemplateautoupdate/
 │   ├── test.html               # GAS Self-Update Dashboard test page
 │   ├── testhtml.version.txt    # Version file for test page auto-refresh
 │   ├── testhtml.changelog.txt  # Deployed changelog for popup
+│   ├── soccer-ball.html        # Soccer ball animation page
+│   ├── soccer-ballhtml.version.txt   # Version file for soccer ball page auto-refresh
+│   ├── soccer-ballhtml.changelog.txt # Deployed changelog for popup
 │   └── sounds/                 # Audio feedback files
 ├── live-site-templates/        # Template for new pages
 │   ├── HtmlTemplateAutoUpdate.html           # Template HTML page
@@ -140,6 +143,8 @@ htmltemplateautoupdate/
 │   │   ├── indexhtml.changelog-archive.md   # Older changelog sections (rotated)
 │   │   ├── testhtml.changelog.md            # User-facing changelog for test page
 │   │   ├── testhtml.changelog-archive.md    # Older changelog sections (rotated)
+│   │   ├── soccer-ballhtml.changelog.md          # User-facing changelog for soccer ball page
+│   │   ├── soccer-ballhtml.changelog-archive.md  # Older changelog sections (rotated)
 │   │   ├── indexgs.changelog.md             # User-facing changelog for Index GAS
 │   │   ├── indexgs.changelog-archive.md     # Older changelog sections (rotated)
 │   │   ├── testgs.changelog.md              # User-facing changelog for Test GAS

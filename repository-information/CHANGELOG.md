@@ -3,9 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 51/100`
+`Sections: 52/100`
 
 ## [Unreleased]
+
+## [v02.09r] — 2026-03-01 06:17:49 PM EST
+
+### Added
+- New Soccer Ball page — animated scene with two kids kicking a soccer ball back and forth, complete with SVG stick-figure players, rolling ball, sky, clouds, sun, goal posts, and grass
+
+#### `soccer-ball.html` — v01.01w
+##### Added
+- Animated soccer scene with two kids in jerseys (#7 red, #10 blue) kicking a ball between them
+- Rolling soccer ball with spin animation and bouncing arc
+- Scenic background with sky gradient, animated clouds, sun, goal posts, and grass tufts
 
 ## [v02.08r] — 2026-03-01 05:37:23 PM EST
 

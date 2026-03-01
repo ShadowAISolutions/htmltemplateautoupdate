@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="template-id" content="sais-aut-7f3e9b2d">
+  <meta name="build-version" content="v01.01w">
+  <title>Soccer Ball Animation</title>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; }
+    .splash {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 10000; display: none; align-items: center; justify-content: center;
+      flex-direction: column; transition: opacity 0.3s ease;
+    }
+    .splash .splash-title { color: #fff; font: bold 36px/1 sans-serif; margin-bottom: 20px; }
+    .splash img { max-width: 500px; max-height: 500px; }
+    #splash-green { background: #1b5e20; }
+    #splash-maintenance { background: #b04000; z-index: 9998; }
+    .maintenance-timestamp { color: rgba(255,255,255,0.85); font: 16px/1.4 monospace; margin-top: 20px; }
+    #version-indicator {
+      position: fixed; bottom: 8px; right: 8px; z-index: 9999;
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(0,0,0,0.55); color: #ccc; padding: 4px 10px;
+      border-radius: 12px; font: 11px/1 monospace; user-select: none;
+      pointer-events: auto; cursor: pointer; transition: all 0.3s ease;
+    }
+    #version-indicator:hover { background: rgba(0,0,0,0.75); }
+    #changelog-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: 10001; display: none;
+      align-items: center; justify-content: center;
+    }
+    #changelog-popup {
+      background: #1a1a2e; color: #e0e0e0; border-radius: 12px;
+      max-width: 480px; width: 90%; max-height: 70vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    #changelog-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    #changelog-title { font: bold 16px/1 sans-serif; color: #fff; }
+    #changelog-close {
+      background: none; border: none; color: #888; font-size: 24px;
+      cursor: pointer; padding: 4px 8px; line-height: 1;
+    }
+    #changelog-close:hover { color: #fff; }
+    #changelog-body {
+      padding: 16px 20px; overflow-y: auto; font: 13px/1.5 sans-serif;
+    }
+    #changelog-body h3 {
+      font-size: 14px; color: #7c8bff; margin: 16px 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;
+    }
+    #changelog-body h3:first-child { margin-top: 0; }
+    #changelog-body h4 {
+      font-size: 12px; color: #a0a0a0; margin: 10px 0 4px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    #changelog-body ul { margin: 0 0 8px; padding-left: 20px; }
+    #changelog-body li { margin-bottom: 4px; }
+    #version-indicator .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #888; transition: background 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6px; line-height: 1; color: #fff;
+    }
+    #version-indicator .dot.checking { background: #ffa726; animation: pulse 0.6s infinite alternate; }
+    #version-indicator .dot.counting { background: #888; }
+    #version-indicator .dot.found    { background: #66bb6a; }
+    #version-indicator .dot.error    { background: #ef5350; }
+    @keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }
+
+    /* ── Soccer Animation Styles ────────────────────────────── */
+    body {
+      background: linear-gradient(180deg, #87ceeb 0%, #b0e0ff 60%, #4caf50 60%, #388e3c 100%);
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    .scene {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60%;
+    }
+    .ground {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 40%;
+      background: linear-gradient(180deg, #4caf50 0%, #388e3c 100%);
+    }
+    .ground::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 2px;
+      background: #2e7d32;
+    }
+    .title-text {
+      position: absolute;
+      top: 5%;
+      width: 100%;
+      text-align: center;
+      font-size: clamp(24px, 5vw, 48px);
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+      z-index: 5;
+      pointer-events: none;
+    }
+    /* Sun */
+    .sun {
+      position: absolute;
+      top: 8%;
+      right: 12%;
+      width: clamp(60px, 10vw, 100px);
+      height: clamp(60px, 10vw, 100px);
+      background: #ffeb3b;
+      border-radius: 50%;
+      box-shadow: 0 0 40px rgba(255,235,59,0.6), 0 0 80px rgba(255,235,59,0.3);
+    }
+    /* Clouds */
+    .cloud {
+      position: absolute;
+      background: #fff;
+      border-radius: 50px;
+      opacity: 0.85;
+    }
+    .cloud::before, .cloud::after {
+      content: '';
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+    }
+    .cloud-1 {
+      width: 120px; height: 40px; top: 10%; left: 10%;
+      animation: cloud-drift 30s linear infinite;
+    }
+    .cloud-1::before { width: 50px; height: 50px; top: -25px; left: 20px; }
+    .cloud-1::after { width: 70px; height: 60px; top: -30px; left: 50px; }
+    .cloud-2 {
+      width: 100px; height: 35px; top: 18%; left: 50%;
+      animation: cloud-drift 40s linear infinite reverse;
+    }
+    .cloud-2::before { width: 45px; height: 45px; top: -22px; left: 15px; }
+    .cloud-2::after { width: 60px; height: 50px; top: -25px; left: 40px; }
+    .cloud-3 {
+      width: 80px; height: 30px; top: 6%; left: 35%;
+      animation: cloud-drift 35s linear infinite;
+    }
+    .cloud-3::before { width: 40px; height: 40px; top: -20px; left: 10px; }
+    .cloud-3::after { width: 50px; height: 45px; top: -22px; left: 35px; }
+    @keyframes cloud-drift {
+      0% { transform: translateX(-20px); }
+      50% { transform: translateX(20px); }
+      100% { transform: translateX(-20px); }
+    }
+
+    /* Kid figures — SVG-based stick figures */
+    .kid {
+      position: absolute;
+      bottom: 40%;
+      width: clamp(60px, 10vw, 100px);
+      height: clamp(120px, 20vw, 200px);
+      z-index: 3;
+    }
+    .kid-left {
+      left: 10%;
+    }
+    .kid-right {
+      right: 10%;
+      transform: scaleX(-1);
+    }
+    .kid svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Soccer ball */
+    .soccer-ball-container {
+      position: absolute;
+      bottom: 40%;
+      z-index: 4;
+      animation: ball-roll 3s ease-in-out infinite alternate;
+    }
+    .soccer-ball {
+      width: clamp(30px, 5vw, 55px);
+      height: clamp(30px, 5vw, 55px);
+      animation: ball-spin 1.5s linear infinite;
+    }
+    .soccer-ball svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+    }
+    @keyframes ball-roll {
+      0% {
+        left: calc(10% + clamp(60px, 10vw, 100px));
+        transform: translateY(0);
+      }
+      25% {
+        transform: translateY(clamp(-30px, -4vw, -15px));
+      }
+      50% {
+        transform: translateY(0);
+      }
+      75% {
+        transform: translateY(clamp(-30px, -4vw, -15px));
+      }
+      100% {
+        left: calc(90% - clamp(60px, 10vw, 100px) - clamp(30px, 5vw, 55px));
+        transform: translateY(0);
+      }
+    }
+    @keyframes ball-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Kid kicking animations */
+    .kid-left .leg-right {
+      animation: kick-right 3s ease-in-out infinite alternate;
+      transform-origin: 50px 120px;
+    }
+    .kid-right .leg-right {
+      animation: kick-left 3s ease-in-out infinite alternate;
+      transform-origin: 50px 120px;
+    }
+    @keyframes kick-right {
+      0%, 5% { transform: rotate(-20deg); }
+      10%, 100% { transform: rotate(0deg); }
+    }
+    @keyframes kick-left {
+      90%, 95% { transform: rotate(-20deg); }
+      100%, 0% { transform: rotate(0deg); }
+    }
+
+    /* Grass tufts */
+    .grass-tuft {
+      position: absolute;
+      bottom: 40%;
+      width: 20px;
+      height: 15px;
+      z-index: 2;
+    }
+    .grass-tuft::before, .grass-tuft::after, .grass-tuft span {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 3px;
+      height: 12px;
+      background: #2e7d32;
+      border-radius: 3px 3px 0 0;
+    }
+    .grass-tuft::before { left: 3px; transform: rotate(-15deg); }
+    .grass-tuft::after { right: 3px; transform: rotate(15deg); }
+    .grass-tuft span { left: 50%; transform: translateX(-50%); height: 15px; }
+
+    /* Goal posts */
+    .goal {
+      position: absolute;
+      bottom: 40%;
+      width: clamp(40px, 6vw, 70px);
+      height: clamp(60px, 10vw, 100px);
+      border: 3px solid #fff;
+      border-bottom: none;
+      z-index: 1;
+      opacity: 0.6;
+    }
+    .goal-left { left: 2%; }
+    .goal-right { right: 2%; }
+    .goal .net {
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        90deg, transparent, transparent 8px, rgba(255,255,255,0.2) 8px, rgba(255,255,255,0.2) 9px
+      ),
+      repeating-linear-gradient(
+        0deg, transparent, transparent 8px, rgba(255,255,255,0.2) 8px, rgba(255,255,255,0.2) 9px
+      );
+    }
+
+    /* Shadow under the ball */
+    .ball-shadow {
+      position: absolute;
+      bottom: calc(40% - 5px);
+      width: clamp(25px, 4vw, 45px);
+      height: 8px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 50%;
+      z-index: 2;
+      animation: shadow-roll 3s ease-in-out infinite alternate;
+    }
+    @keyframes shadow-roll {
+      0% {
+        left: calc(10% + clamp(60px, 10vw, 100px) + 3px);
+        transform: scaleX(1);
+      }
+      25% { transform: scaleX(0.7); }
+      50% { transform: scaleX(1); }
+      75% { transform: scaleX(0.7); }
+      100% {
+        left: calc(90% - clamp(60px, 10vw, 100px) - clamp(30px, 5vw, 55px) + 3px);
+        transform: scaleX(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="splash-green" class="splash"><div class="splash-title">Website Ready</div><img id="splash-logo" src="" alt=""></div>
+  <div id="splash-maintenance" class="splash"><div class="splash-title">🔧This Webpage is Undergoing Maintenance<span id="maint-bypass" tabindex="-1" style="cursor:inherit;-webkit-user-select:none;user-select:text">🔧</span></div><img id="maintenance-logo" src="" alt=""><div id="maintenance-timestamp" class="maintenance-timestamp"></div></div>
+
+  <!-- Soccer Animation Scene -->
+  <div class="title-text">Soccer Time!</div>
+  <div class="sun"></div>
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+
+  <!-- Goal posts -->
+  <div class="goal goal-left"><div class="net"></div></div>
+  <div class="goal goal-right"><div class="net"></div></div>
+
+  <!-- Left Kid -->
+  <div class="kid kid-left">
+    <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Head -->
+      <circle cx="50" cy="30" r="20" fill="#ffcc80" stroke="#e6a54a" stroke-width="1.5"/>
+      <!-- Hair -->
+      <path d="M30 25 Q35 8 50 10 Q65 8 70 25" fill="#5d4037" stroke="none"/>
+      <!-- Eyes -->
+      <circle cx="43" cy="28" r="2.5" fill="#333"/>
+      <circle cx="57" cy="28" r="2.5" fill="#333"/>
+      <!-- Smile -->
+      <path d="M42 37 Q50 44 58 37" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- Body / Jersey -->
+      <rect x="35" y="50" width="30" height="40" rx="5" fill="#f44336"/>
+      <!-- Jersey number -->
+      <text x="50" y="76" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold" font-family="sans-serif">7</text>
+      <!-- Arms -->
+      <line x1="35" y1="55" x2="15" y2="80" stroke="#ffcc80" stroke-width="5" stroke-linecap="round"/>
+      <line x1="65" y1="55" x2="85" y2="80" stroke="#ffcc80" stroke-width="5" stroke-linecap="round"/>
+      <!-- Shorts -->
+      <rect x="35" y="88" width="30" height="18" rx="3" fill="#1565c0"/>
+      <!-- Left leg -->
+      <line x1="42" y1="106" x2="38" y2="150" stroke="#ffcc80" stroke-width="5" stroke-linecap="round"/>
+      <!-- Right leg (kicking) -->
+      <g class="leg-right">
+        <line x1="58" y1="106" x2="62" y2="150" stroke="#ffcc80" stroke-width="5" stroke-linecap="round"/>
+        <!-- Right shoe -->
+        <ellipse cx="65" cy="153" rx="8" ry="5" fill="#333"/>
+      </g>
+      <!-- Left shoe -->
+      <ellipse cx="35" cy="153" rx="8" ry="5" fill="#333"/>
+      <!-- Socks -->
+      <rect x="33" y="138" width="12" height="14" rx="3" fill="#fff"/>
+      <rect x="55" y="138" width="12" height="14" rx="3" fill="#fff"/>
+    </svg>
+  </div>
+
+  <!-- Right Kid -->
+  <div class="kid kid-right">
+    <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Head -->
+      <circle cx="50" cy="30" r="20" fill="#a1887f" stroke="#8d6e63" stroke-width="1.5"/>
+      <!-- Hair -->
+      <path d="M30 28 Q30 5 50 8 Q70 5 70 28" fill="#212121" stroke="none"/>
+      <!-- Eyes -->
+      <circle cx="43" cy="28" r="2.5" fill="#333"/>
+      <circle cx="57" cy="28" r="2.5" fill="#333"/>
+      <!-- Smile -->
+      <path d="M42 37 Q50 44 58 37" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- Body / Jersey -->
+      <rect x="35" y="50" width="30" height="40" rx="5" fill="#2196f3"/>
+      <!-- Jersey number -->
+      <text x="50" y="76" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold" font-family="sans-serif">10</text>
+      <!-- Arms -->
+      <line x1="35" y1="55" x2="15" y2="80" stroke="#a1887f" stroke-width="5" stroke-linecap="round"/>
+      <line x1="65" y1="55" x2="85" y2="80" stroke="#a1887f" stroke-width="5" stroke-linecap="round"/>
+      <!-- Shorts -->
+      <rect x="35" y="88" width="30" height="18" rx="3" fill="#fff"/>
+      <!-- Left leg -->
+      <line x1="42" y1="106" x2="38" y2="150" stroke="#a1887f" stroke-width="5" stroke-linecap="round"/>
+      <!-- Right leg (kicking) -->
+      <g class="leg-right">
+        <line x1="58" y1="106" x2="62" y2="150" stroke="#a1887f" stroke-width="5" stroke-linecap="round"/>
+        <!-- Right shoe -->
+        <ellipse cx="65" cy="153" rx="8" ry="5" fill="#333"/>
+      </g>
+      <!-- Left shoe -->
+      <ellipse cx="35" cy="153" rx="8" ry="5" fill="#333"/>
+      <!-- Socks -->
+      <rect x="33" y="138" width="12" height="14" rx="3" fill="#2196f3"/>
+      <rect x="55" y="138" width="12" height="14" rx="3" fill="#2196f3"/>
+    </svg>
+  </div>
+
+  <!-- Soccer Ball -->
+  <div class="ball-shadow"></div>
+  <div class="soccer-ball-container">
+    <div class="soccer-ball">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="48" fill="#fff" stroke="#333" stroke-width="2"/>
+        <!-- Pentagon patches -->
+        <polygon points="50,15 61,25 57,38 43,38 39,25" fill="#333"/>
+        <polygon points="78,40 85,55 78,68 67,62 67,47" fill="#333"/>
+        <polygon points="22,40 33,47 33,62 22,68 15,55" fill="#333"/>
+        <polygon points="35,75 43,67 57,67 65,75 58,88" fill="#333"/>
+        <polygon points="42,88 50,95 58,88 55,82 45,82" fill="#333"/>
+        <!-- Seam lines -->
+        <line x1="50" y1="15" x2="50" y2="2" stroke="#555" stroke-width="0.8"/>
+        <line x1="39" y1="25" x2="27" y2="15" stroke="#555" stroke-width="0.8"/>
+        <line x1="61" y1="25" x2="73" y2="15" stroke="#555" stroke-width="0.8"/>
+        <line x1="43" y1="38" x2="33" y2="47" stroke="#555" stroke-width="0.8"/>
+        <line x1="57" y1="38" x2="67" y2="47" stroke="#555" stroke-width="0.8"/>
+        <line x1="22" y1="40" x2="12" y2="30" stroke="#555" stroke-width="0.8"/>
+        <line x1="78" y1="40" x2="88" y2="30" stroke="#555" stroke-width="0.8"/>
+        <line x1="15" y1="55" x2="3" y2="55" stroke="#555" stroke-width="0.8"/>
+        <line x1="85" y1="55" x2="97" y2="55" stroke="#555" stroke-width="0.8"/>
+        <line x1="22" y1="68" x2="15" y2="80" stroke="#555" stroke-width="0.8"/>
+        <line x1="78" y1="68" x2="85" y2="80" stroke="#555" stroke-width="0.8"/>
+        <line x1="33" y1="62" x2="35" y2="75" stroke="#555" stroke-width="0.8"/>
+        <line x1="67" y1="62" x2="65" y2="75" stroke="#555" stroke-width="0.8"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Grass tufts -->
+  <div class="grass-tuft" style="left: 5%;"><span></span></div>
+  <div class="grass-tuft" style="left: 20%;"><span></span></div>
+  <div class="grass-tuft" style="left: 35%;"><span></span></div>
+  <div class="grass-tuft" style="left: 50%;"><span></span></div>
+  <div class="grass-tuft" style="left: 65%;"><span></span></div>
+  <div class="grass-tuft" style="left: 80%;"><span></span></div>
+  <div class="grass-tuft" style="left: 95%;"><span></span></div>
+
+  <div class="ground"></div>
+
+  <script>
+    /* tpl:7f3e9b2d */ // ── CONFIG ──────────────────────────────────────────────────────────
+    // Logo shown on the green "Website Ready" splash screen
+    var DEVELOPER_LOGO_URL = 'https://www.shadowaisolutions.com/SAIS%20Logo.png';
+    var YOUR_ORG_LOGO_URL = 'https://logoipsum.com/logoipsum-avatar.png';
+    var LOGO_URL = DEVELOPER_LOGO_URL;
+
+    // Auto-refresh: set to false to disable build-version polling
+    var AUTO_REFRESH = true;
+
+    // Show/hide: set to false to hide the website version indicator
+    var SHOW_WEB_VERSION = true;
+
+    // ────────────────────────────────────────────────────────────────────
+
+    // Set splash logo from config variable
+    document.getElementById('splash-logo').src = LOGO_URL;
+    document.getElementById('maintenance-logo').src = LOGO_URL;
+
+    // Hidden maintenance bypass — triple-click the second wrench to dismiss
+    (function() {
+      var bp = document.getElementById('maint-bypass');
+      if (!bp) return;
+      bp.addEventListener('click', function(e) {
+        if (e.detail !== 3) return;
+        e.stopPropagation();
+        var overlay = document.getElementById('splash-maintenance');
+        if (overlay && overlay.style.display === 'flex') {
+          sessionStorage.setItem('maint-bypassed', '1');
+          overlay.style.opacity = '0';
+          setTimeout(function() { overlay.style.display = 'none'; }, 300);
+        }
+      });
+    })();
+
+    // Clear stale audio-unlocked flag on non-reload navigations (e.g. Chrome "Duplicate Tab")
+    var _navEntries = performance.getEntriesByType('navigation');
+    var _navType = _navEntries.length ? _navEntries[0].type : 'navigate';
+    if (_navType !== 'reload') {
+      sessionStorage.removeItem('audio-unlocked');
+    }
+
+    // AudioContext for sound playback — created at load to probe browser audio policy
+    var _audioCtx = null;
+    try { _audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+    if (_audioCtx) _audioCtx.onstatechange = function() { updateAudioStatus(); };
+    // Attempt auto-resume — browsers allow it if a prior gesture exists for this origin
+    var _resumePromise = null;
+    if (_audioCtx && _audioCtx.state === 'suspended') _resumePromise = _audioCtx.resume().catch(function() {});
+
+    function updateAudioStatus() {
+      var el = document.getElementById('audio-status');
+      if (!el) return;
+      if (_audioCtx && _audioCtx.state === 'running') {
+        el.textContent = '\u{1F50A}';
+        el.title = 'Sound ready';
+        sessionStorage.setItem('audio-unlocked', '1');
+      } else if (sessionStorage.getItem('audio-unlocked')) {
+        el.textContent = '\u{1F50A}';
+        el.title = 'Sound ready';
+      } else {
+        el.textContent = '\u{1F507}';
+        el.title = 'Sound muted - click page to enable';
+      }
+    }
+
+    function unlockAudio() {
+      if (!_audioCtx || _audioCtx.state === 'running') return;
+      _audioCtx.resume().then(function() { updateAudioStatus(); }).catch(function() {});
+    }
+    document.addEventListener('click', unlockAudio, { once: false });
+    document.addEventListener('touchstart', unlockAudio, { once: false });
+    if (navigator.userActivation) {
+      var _uaPoll = setInterval(function() {
+        if (navigator.userActivation.hasBeenActive) {
+          clearInterval(_uaPoll);
+          unlockAudio();
+        }
+      }, 200);
+    }
+
+    function playSoundFromDataUrl(dataUrl) {
+      try {
+        var ctx = _audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx.state !== 'running') return;
+        var base64 = dataUrl.split(',')[1];
+        var binary = atob(base64);
+        var bytes = new Uint8Array(binary.length);
+        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        ctx.decodeAudioData(bytes.buffer, function(audioBuffer) {
+          var source = ctx.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(ctx.destination);
+          source.start(0);
+        });
+      } catch(e) {}
+    }
+
+    // Pre-load sound file from same-origin into localStorage
+    function cacheSound(url, key) {
+      if (localStorage.getItem(key)) return;
+      fetch(url).then(function(res) { return res.blob(); }).then(function(blob) {
+        var reader = new FileReader();
+        reader.onloadend = function() { localStorage.setItem(key, reader.result); };
+        reader.readAsDataURL(blob);
+      }).catch(function() {});
+    }
+    cacheSound('sounds/Website_Ready_Voice_1.mp3', 'web-sound-data');
+
+    // Show splash + play sound on update-triggered reloads
+    var _soundPlayed = false;
+    if (sessionStorage.getItem('web-pending-sound')) {
+      sessionStorage.removeItem('web-pending-sound');
+      if (navigator.vibrate) navigator.vibrate(200);
+      var splash = document.getElementById('splash-green');
+      if (_audioCtx && !_soundPlayed) {
+        _soundPlayed = true;
+        var _playNow = function() {
+          var soundData = localStorage.getItem('web-sound-data');
+          if (soundData) { playSoundFromDataUrl(soundData); }
+          else { var a = new Audio('sounds/Website_Ready_Voice_1.mp3'); a.play().catch(function() {}); }
+        };
+        if (_audioCtx.state === 'running') {
+          _playNow();
+        } else if (_resumePromise) {
+          _resumePromise.then(function() { if (_audioCtx.state === 'running') _playNow(); });
+        }
+      }
+      if (splash) {
+        splash.style.display = 'flex';
+        setTimeout(function() {
+          splash.style.opacity = '0';
+          setTimeout(function() { splash.style.display = 'none'; }, 300);
+        }, 1000);
+      }
+    }
+
+    // Auto-refresh: poll <pagename>html.version.txt for version changes and maintenance mode
+    (function() {
+      var POLL_INTERVAL = 10000;
+      if (!AUTO_REFRESH) return;
+
+      var basePath = window.location.href.split('?')[0].split('#')[0];
+      var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+      if (!pageName) pageName = 'index';
+      var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + pageName + 'html.version.txt';
+
+      var currentVersion = null;
+      var currentTimestamp = null;
+      var indicator = null;
+      var dot = null;
+      var countdownSeconds = 0;
+      var countdownTimer = null;
+
+      function parseVersionTxt(raw) {
+        var parts = raw.split('|');
+        return {
+          maintenance: parts[0].toLowerCase() === 'maintenance',
+          version: (parts[1] || '').replace(/^v/, ''),
+          timestamp: parts[2] || ''
+        };
+      }
+
+      function createIndicator(version) {
+        indicator = document.createElement('div');
+        indicator.id = 'version-indicator';
+        indicator.innerHTML = '<span class="dot"></span><span class="label">v' + version + '</span><span id="audio-status"></span>';
+        if (SHOW_WEB_VERSION) document.body.appendChild(indicator);
+        updateAudioStatus();
+        if (_resumePromise) _resumePromise.then(function() { updateAudioStatus(); });
+        dot = indicator.querySelector('.dot');
+      }
+
+      function startCountdown() {
+        countdownSeconds = POLL_INTERVAL / 1000;
+        if (countdownTimer) clearInterval(countdownTimer);
+        countdownTimer = setInterval(function() {
+          countdownSeconds--;
+          if (countdownSeconds <= 0) {
+            clearInterval(countdownTimer);
+            if (dot) { dot.textContent = ''; dot.className = 'dot'; }
+          } else if (countdownSeconds <= 5) {
+            if (dot) { dot.textContent = countdownSeconds; dot.className = 'dot counting'; }
+          }
+        }, 1000);
+      }
+
+      function schedulePoll() {
+        startCountdown();
+        setTimeout(checkForUpdate, POLL_INTERVAL);
+      }
+
+      function checkForUpdate() {
+        if (countdownTimer) clearInterval(countdownTimer);
+        if (dot) dot.textContent = '';
+        if (dot) dot.className = 'dot checking';
+        fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
+          .then(function(res) { return res.text(); })
+          .then(function(v) {
+            var parsed = parseVersionTxt(v.trim());
+            var maintenanceSplash = document.getElementById('splash-maintenance');
+
+            if (!currentVersion) {
+              currentVersion = parsed.version;
+              createIndicator(currentVersion);
+              if (parsed.maintenance && indicator) indicator.querySelector('.label').textContent = '\uD83D\uDD27 v' + currentVersion;
+            }
+
+            if (parsed.maintenance) {
+              if (maintenanceSplash && !sessionStorage.getItem('maint-bypassed')) {
+                maintenanceSplash.style.display = 'flex'; maintenanceSplash.style.opacity = '1';
+                if (parsed.timestamp !== currentTimestamp) {
+                  currentTimestamp = parsed.timestamp;
+                  var tsEl = document.getElementById('maintenance-timestamp');
+                  if (tsEl) {
+                    tsEl.textContent = parsed.timestamp || '';
+                  }
+                }
+              }
+              if (parsed.version && parsed.version !== currentVersion) {
+                if (dot) dot.className = 'dot found';
+                if (indicator) indicator.querySelector('.label').textContent = 'Updating...';
+                if (sessionStorage.getItem('maint-bypassed')) sessionStorage.setItem('web-pending-sound', '1');
+                setTimeout(function() { window.location.reload(); }, 2000);
+                return;
+              }
+              if (indicator) indicator.querySelector('.label').textContent = '\uD83D\uDD27 v' + currentVersion;
+              if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
+              schedulePoll();
+            } else if (parsed.version && parsed.version !== currentVersion) {
+              sessionStorage.removeItem('maint-bypassed');
+              if (maintenanceSplash) maintenanceSplash.style.display = 'none';
+              if (dot) dot.className = 'dot found';
+              if (indicator) indicator.querySelector('.label').textContent = 'Updating...';
+              sessionStorage.setItem('web-pending-sound', '1');
+              setTimeout(function() { window.location.reload(); }, 2000);
+            } else {
+              sessionStorage.removeItem('maint-bypassed');
+              if (maintenanceSplash && maintenanceSplash.style.display === 'flex') {
+                maintenanceSplash.style.opacity = '0';
+                setTimeout(function() { maintenanceSplash.style.display = 'none'; }, 300);
+              }
+              if (indicator) indicator.querySelector('.label').textContent = 'v' + currentVersion;
+              if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
+              schedulePoll();
+            }
+          })
+          .catch(function() {
+            if (dot) {
+              dot.className = 'dot error';
+              setTimeout(function() { dot.className = 'dot'; }, 2000);
+            }
+            schedulePoll();
+          });
+      }
+
+      checkForUpdate();
+    })();
+
+    (function() {
+      var _e = '';
+      if (!_e) return;
+      var _u; try { _u = atob(_e).split('').reverse().join(''); } catch(x) { return; }
+      if (!_u) return;
+      var f = document.createElement(atob('aWZyYW1l'));
+      f.id = 'gas-app';
+      f.style.cssText = 'width:100%;height:100%;border:none;position:fixed;top:0;left:0;z-index:1;';
+      window._r = _u;
+      f.srcdoc = '<script>var d=parent._r;delete parent._r;if(d)location.replace(d)<\/script>';
+      document.body.appendChild(f);
+    })();
+
+    // GAS auto-reload
+    window.addEventListener('message', function(e) {
+      if (e.data && e.data.type === 'gas-reload') {
+        sessionStorage.setItem('gas-pending-sound', '1');
+        if (e.data.soundDataUrl) {
+          sessionStorage.setItem('gas-sound-data', e.data.soundDataUrl);
+        }
+        window.location.reload();
+      }
+    });
+
+    if (sessionStorage.getItem('gas-pending-sound')) {
+      sessionStorage.removeItem('gas-pending-sound');
+      if (navigator.vibrate) navigator.vibrate(200);
+      var gasSoundData = sessionStorage.getItem('gas-sound-data');
+      if (gasSoundData && _audioCtx && _audioCtx.state === 'running') {
+        sessionStorage.removeItem('gas-sound-data');
+        playSoundFromDataUrl(gasSoundData);
+      }
+    }
+
+    // Changelog popup
+    (function() {
+      var overlay = document.createElement('div');
+      overlay.id = 'changelog-overlay';
+      overlay.innerHTML = '<div id="changelog-popup"><div id="changelog-header">'
+        + '<span id="changelog-title">Changelog</span>'
+        + '<button id="changelog-close">&times;</button></div>'
+        + '<div id="changelog-body"></div></div>';
+      document.body.appendChild(overlay);
+
+      var closeBtn = document.getElementById('changelog-close');
+      var body = document.getElementById('changelog-body');
+      var changelogCache = null;
+
+      function show() { overlay.style.display = 'flex'; if (!changelogCache) fetchChangelog(); }
+      function hide() { overlay.style.display = 'none'; }
+
+      closeBtn.addEventListener('click', hide);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.style.display === 'flex') hide();
+      });
+
+      function getChangelogUrl() {
+        var basePath = window.location.href.split('?')[0].split('#')[0];
+        var pn = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+        if (!pn) pn = 'index';
+        return basePath.substring(0, basePath.lastIndexOf('/') + 1) + pn + 'html.changelog.txt';
+      }
+
+      function parseChangelog(md) {
+        var lines = md.split('\n');
+        var html = '';
+        var inList = false;
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          if (line.match(/^# /) || line.match(/^`Sections:/) || line.match(/^All notable/)
+              || line.match(/^Format follows/) || line.match(/^Developed by:/)) continue;
+          if (line.match(/^## \[Unreleased\]/)) continue;
+          if (line.match(/^## \[v/)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            var m = line.match(/^## \[(v[\d.]+w)\].*?— (.+)/);
+            if (m) html += '<h3>' + m[1] + ' &mdash; ' + m[2] + '</h3>';
+            continue;
+          }
+          if (line.match(/^### /)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            html += '<h4>' + line.substring(4) + '</h4>';
+            continue;
+          }
+          if (line.match(/^- /)) {
+            if (!inList) { html += '<ul>'; inList = true; }
+            html += '<li>' + line.substring(2) + '</li>';
+            continue;
+          }
+        }
+        if (inList) html += '</ul>';
+        return html || '<p style="color:#888">No changelog entries yet.</p>';
+      }
+
+      function fetchChangelog() {
+        body.innerHTML = '<p style="color:#888">Loading changelog\u2026</p>';
+        fetch(getChangelogUrl())
+          .then(function(res) { if (!res.ok) throw new Error(); return res.text(); })
+          .then(function(md) {
+            changelogCache = parseChangelog(md);
+            body.innerHTML = changelogCache;
+            var titleEl = document.getElementById('changelog-title');
+            var ind = document.getElementById('version-indicator');
+            if (ind && titleEl) {
+              var lbl = ind.querySelector('.label');
+              if (lbl) titleEl.textContent = 'Changelog \u2014 ' + lbl.textContent;
+            }
+          })
+          .catch(function() {
+            body.innerHTML = '<p style="color:#888">Could not load changelog.</p>';
+          });
+      }
+
+      var obs = new MutationObserver(function() {
+        var ind = document.getElementById('version-indicator');
+        if (ind && !ind._clBound) {
+          ind._clBound = true;
+          ind.addEventListener('click', function(e) { e.stopPropagation(); show(); });
+          obs.disconnect();
+        }
+      });
+      obs.observe(document.body, { childList: true, subtree: true });
+    })();
+
+    // Screen Wake Lock
+    var _wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if (navigator.wakeLock) {
+          _wakeLock = await navigator.wakeLock.request('screen');
+          _wakeLock.addEventListener('release', function() { _wakeLock = null; });
+        }
+      } catch(e) {}
+    }
+    requestWakeLock();
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') requestWakeLock();
+    });
+  </script>
+</body>
+</html>
+<!-- Developed by: ShadowAISolutions -->
