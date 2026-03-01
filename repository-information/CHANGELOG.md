@@ -3,9 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 52/50`
+`Sections: 53/50`
 
 ## [Unreleased]
+
+## [v01.53r] — 2026-02-28 11:27:12 PM EST
+
+### Changed
+- Push-once enforcement retry loop reduced from ~15s x 3 retries (45s max idle) to ~5s x 4 checks (20s max idle)
+- Deployment Flow push-once bullet now cross-references Pre-Push #5 instead of duplicating exception text
+- Pre-Push #5 now cross-references "Rebase before push commit" sequence instead of vague "after rebasing" instruction
+- Rebase-before-push-commit rule now explicitly requires clean working tree and documents committing uncommitted changes before rebase
 
 ## [v01.52r] — 2026-02-28 11:23:24 PM EST
 
