@@ -8,6 +8,12 @@
 - Do not use formal plan-mode approval workflows for routine tasks (version bumps, file moves, feature additions, bug fixes, etc.)
 - **Large file writes** — when creating a new file >500 lines, a single Write tool call can take 30-60+ seconds of wall-clock time during which no visible progress appears to the user, creating the impression of a stall. To mitigate this: (1) **always** output a brief status message before the Write call (e.g. "Writing ~1200-line file, this will take a moment...") so the user knows work is in progress, and (2) when practical, Write a smaller skeleton first then use Edit calls to fill in sections — but do not force this if a single Write is simpler and less error-prone. For existing files this is a non-issue — Edit calls are already incremental by nature
 
+## Plan Mode Visibility
+- When using plan mode (`ExitPlanMode`), the plan file is shown in a separate window that **disappears after approval** — the user cannot scroll back to see it in the chat history. To ensure the plan remains visible:
+  - **Before calling `ExitPlanMode`**, output the full plan content as regular chat text (not just a summary). This embeds the plan in the conversation so the user can scroll up to reference it at any time
+  - The plan should be output as-is (the same content written to the plan file) — do not abbreviate or summarize it for the chat output
+  - This way the plan exists in two places: the approval window (temporary) and the chat history (permanent)
+
 ## Page-Scope Commands
 Commands that can target individual pages (maintenance mode, deactivate maintenance, and any future per-page commands) require the user to specify **which pages** to act on. Rules:
 
