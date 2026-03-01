@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 32/100`
+`Sections: 33/100`
 
 ## [Unreleased]
+
+## [v01.90r] — 2026-03-01 01:52:37 PM EST
+
+### Changed
+- Turned on `END_OF_RESPONSE_BLOCK` toggle — end-of-response block (UNAFFECTED URLS through CODING COMPLETE) is now emitted after each response
 
 ## [v01.89r] — 2026-03-01 01:44:43 PM EST
 
