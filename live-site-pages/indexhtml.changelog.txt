@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [indexhtml.changelog-archive.md](indexhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 13/50`
+`Sections: 14/50`
 
 ## [Unreleased]
+
+## [v01.16w] (v02.00r) — 2026-03-01 03:35:27 PM EST
+
+### Changed
+- Changelog popup now requires the X button to close — clicking outside no longer dismisses it
 
 ## [v01.15w] (v01.97r) — 2026-03-01 03:14:52 PM EST
 

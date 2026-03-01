@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.15w">
+  <meta name="build-version" content="v01.16w">
   <title>CHANGE THIS PROJECT TITLE TEMPLATE</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -416,7 +416,6 @@
       function hide() { overlay.style.display = 'none'; }
 
       closeBtn.addEventListener('click', hide);
-      overlay.addEventListener('click', function(e) { if (e.target === overlay) hide(); });
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && overlay.style.display === 'flex') hide();
       });

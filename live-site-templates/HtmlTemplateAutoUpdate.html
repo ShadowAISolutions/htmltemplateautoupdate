@@ -416,7 +416,6 @@
       function hide() { overlay.style.display = 'none'; }
 
       closeBtn.addEventListener('click', hide);
-      overlay.addEventListener('click', function(e) { if (e.target === overlay) hide(); });
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && overlay.style.display === 'flex') hide();
       });
