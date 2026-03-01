@@ -83,11 +83,11 @@ When adding, moving, or reorganizing `##` sections in CLAUDE.md, follow the atte
 | **Recency zone** | Sections N-2 to N | High-volume formatting rules that are needed on every response and benefit from recency bias (Chat Bookends, Developer Branding) | High — last ~15% of content gets a recall boost |
 
 ### Placement rules for new content
-1. **Mandatory per-session actions** (checklists, gates, safety checks) → primacy zone
-2. **Behavioral constraints** (how to reason, when to push back, execution approach) → upper body
-3. **Meta-rules about CLAUDE.md itself** (this section, "Maintaining these checklists") → upper body
-4. **Feature-specific reference material** (version formats, directory layouts, link patterns, architectural details) → lower body
-5. **High-frequency per-response formatting** (bookend markers, timestamps, end-of-response blocks) → recency zone
+1. **Mandatory per-session actions** (checklists, gates, safety checks) → primacy zone. These must execute reliably every session regardless of context length
+2. **Behavioral constraints** (how to reason, when to push back, execution approach) → upper body. These shape decision-making and must be internalized early in processing
+3. **Meta-rules about CLAUDE.md itself** (this section, "Maintaining these checklists") → upper body. Structural rules must be loaded before any content modification begins
+4. **Feature-specific reference material** (version formats, directory layouts, link patterns, architectural details) → lower body. These are consulted on-demand when the relevant feature is being worked on — they don't need high baseline recall
+5. **High-frequency per-response formatting** (bookend markers, timestamps, end-of-response blocks) → recency zone. Chat Bookends is ~220 lines and applies to every single response — placing it last leverages recency bias to ensure formatting compliance
 6. **Developer Branding always stays last** — this is a fixed constraint (the section itself says so)
 
 ### When to re-evaluate positioning
