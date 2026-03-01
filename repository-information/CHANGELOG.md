@@ -3,9 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 56/50`
+`Sections: 57/50`
 
 ## [Unreleased]
+
+## [v01.57r] — 2026-02-28 11:59:43 PM EST
+
+### Added
+- Self-improvement rule: rebase-need check now runs at the START of the push commit cycle (not deferred to Pre-Push), preventing SHA backfill invalidation from post-commit rebases
+
+### Changed
+- "Rebase before push commit" rule strengthened with explicit check-before-push-commit enforcement and SHA backfill rebase interaction warning
 
 ## [v01.56r] — 2026-02-28 11:54:00 PM EST — [df73376](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/df7337643b379a7347cff43598e73b46689f233a)
 
