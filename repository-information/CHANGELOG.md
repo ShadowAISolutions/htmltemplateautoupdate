@@ -3,9 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 46/100`
+`Sections: 47/100`
 
 ## [Unreleased]
+
+## [v02.04r] — 2026-03-01 03:57:39 PM EST
+
+### Changed
+- Page and GAS changelog version headers now show repo version after the timestamp instead of in parentheses before it — format: `[vXX.XXw] — timestamp — vXX.XXr`
+
+#### `index.html`
+##### Changed
+- Changelog version headers now show the repo version after the timestamp for easier reading
+
+#### `test.html`
+##### Changed
+- Changelog version headers now show the repo version after the timestamp for easier reading
 
 ## [v02.03r] — 2026-03-01 03:52:24 PM EST
 

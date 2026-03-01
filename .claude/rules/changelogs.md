@@ -29,8 +29,8 @@ paths:
 - **User-facing** — describe what a visitor/user would notice, not internal details
 - Writing style: "Faster page loading" not "Optimized database queries"
 - Never mention file names, function names, commit SHAs, deployment IDs, or internal architecture
-- Version section format for pages: `## [vXX.XXw] (vXX.XXr) — YYYY-MM-DD HH:MM:SS AM/PM EST`
-- Version section format for GAS: `## [XX.XXg] (vXX.XXr) — YYYY-MM-DD HH:MM:SS AM/PM EST`
+- Version section format for pages: `## [vXX.XXw] — YYYY-MM-DD HH:MM:SS AM/PM EST — vXX.XXr`
+- Version section format for GAS: `## [XX.XXg] — YYYY-MM-DD HH:MM:SS AM/PM EST — vXX.XXr`
 - Skip changelog entry if the change is purely internal with no user-visible effect
 - Same 100-section archive rotation as the repo CHANGELOG
 
