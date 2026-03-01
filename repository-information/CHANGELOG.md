@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 53/50`
+`Sections: 54/50`
 
 ## [Unreleased]
+
+## [v01.54r] — 2026-02-28 11:31:10 PM EST
+
+### Changed
+- Completed "Get turkey" to-do item
 
 ## [v01.53r] — 2026-02-28 11:27:12 PM EST
 
