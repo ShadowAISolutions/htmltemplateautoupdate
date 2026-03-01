@@ -3,11 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 43/50`
+`Sections: 44/50`
 
 ## [Unreleased]
 
-## [v01.43r v01.10w] — 2026-02-28 07:29:42 PM EST — SHA: *pending next push*
+## [v01.44r v01.11w] — 2026-02-28 07:35:31 PM EST — SHA: *pending next push*
+
+### Changed
+- Increased countdown font from 5px to 6px for better readability while staying centered in the 8px dot
+
+## [v01.43r v01.10w] — 2026-02-28 07:29:42 PM EST — SHA: [`3ee4420`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3ee44208627fccd450213a22d014a4ea43995846)
 
 ### Changed
 - Shrunk countdown font to 5px to center numbers within the original 8px dot instead of expanding the dot
