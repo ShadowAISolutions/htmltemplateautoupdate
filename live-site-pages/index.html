@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.05w">
+  <meta name="build-version" content="v01.06w">
   <title>CHANGE THIS PROJECT TITLE TEMPLATE</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -32,7 +32,7 @@
       font-size: 9px; color: #fff;
     }
     #version-indicator .dot.checking { background: #ffa726; animation: pulse 0.6s infinite alternate; }
-    #version-indicator .dot.counting { background: #888; animation: pulse 0.6s infinite alternate; }
+    #version-indicator .dot.counting { background: #888; }
     #version-indicator .dot.found    { background: #66bb6a; }
     #version-indicator .dot.error    { background: #ef5350; }
     @keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }
@@ -230,8 +230,7 @@
 
       function startCountdown() {
         countdownSeconds = POLL_INTERVAL / 1000;
-        // Don't show the first tick (10) — wait 1s then start visible at 9
-        if (dot) { dot.textContent = ''; dot.className = 'dot'; }
+        // Don't reset dot immediately — let the 800ms orange checking flash finish first
         if (countdownTimer) clearInterval(countdownTimer);
         countdownTimer = setInterval(function() {
           countdownSeconds--;

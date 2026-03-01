@@ -3,11 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 38/50`
+`Sections: 39/50`
 
 ## [Unreleased]
 
-## [v01.38r v01.05w] — 2026-02-28 07:02:59 PM EST — SHA: *pending next push*
+## [v01.39r v01.06w] — 2026-02-28 07:08:21 PM EST — SHA: *pending next push*
+
+### Fixed
+- Restored orange pulse during version check — `startCountdown()` was immediately overwriting the checking class, preventing the orange flash from showing
+- Countdown dot is now static gray with numbers (no pulse) — orange pulse reserved for the active fetch
+
+## [v01.38r v01.05w] — 2026-02-28 07:02:59 PM EST — SHA: [`b5cc752`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b5cc752635b74ec4eb3a89e113c927df118cd48f)
 
 ### Fixed
 - Restored pulse animation on the countdown dot — `.counting` class now includes the blink animation that was missing after the dot refactor
