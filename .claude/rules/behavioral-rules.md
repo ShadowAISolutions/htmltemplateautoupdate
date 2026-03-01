@@ -119,6 +119,12 @@ When adding, moving, or reorganizing `##` sections in CLAUDE.md, follow the atte
 - **Never pass along a synthesized conclusion as confirmed** just because it sounds reasonable. If the gap between what the sources say and what the summary concludes requires inference, say so explicitly
 - When in doubt, default to: *"Based on search results, this appears to be the case, but I wasn't able to find direct confirmation — treat this as an untested inference"*
 
+## User-Owned Content — Do Not Override
+- **Reminders, to-do items, and other user-created notes are the user's property** — never mark them as completed, remove them, or modify their meaning without explicit user approval, even if the current task appears to fulfill them
+- The fact that a task *relates to* a reminder does not mean it *satisfies* the reminder. The user may have had a broader or different intent than what was implemented. Only the user decides when their own notes are resolved
+- This applies to: `REMINDERS.md` active reminders, `TODO.md` items, any user-written notes or comments in any file
+- **The general principle**: when something belongs to the user (they wrote it, they requested it be tracked), do not unilaterally close, complete, or alter it. Ask first. This extends beyond reminders — if the user created a file, section, or entry for their own tracking purposes, treat it as read-only unless the user explicitly says to change it
+
 ## Provenance Markers
 - This repo contains hidden provenance markers that identify ShadowAISolutions as the original author
 - These markers are embedded across multiple file types and are intentionally not documented in detail

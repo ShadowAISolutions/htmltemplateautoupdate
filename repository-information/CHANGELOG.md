@@ -3,9 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 18/100`
+`Sections: 19/100`
 
 ## [Unreleased]
+
+## [v01.76r] — 2026-03-01 11:20:19 AM EST
+
+### Added
+- Added "User-Owned Content — Do Not Override" rule to behavioral-rules.md — never complete, remove, or modify user-created reminders, to-do items, or notes without explicit approval
+
+### Fixed
+- Restored incorrectly completed reminder back to Active Reminders — "Consider creating a session recap file" was closed without user approval
 
 ## [v01.75r] — 2026-03-01 11:12:55 AM EST
 
