@@ -23,8 +23,44 @@
       display: flex; align-items: center; gap: 6px;
       background: rgba(0,0,0,0.55); color: #ccc; padding: 4px 10px;
       border-radius: 12px; font: 11px/1 monospace; user-select: none;
-      pointer-events: none; transition: all 0.3s ease;
+      pointer-events: auto; cursor: pointer; transition: all 0.3s ease;
     }
+    #version-indicator:hover { background: rgba(0,0,0,0.75); }
+    #changelog-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: 10001; display: none;
+      align-items: center; justify-content: center;
+    }
+    #changelog-popup {
+      background: #1a1a2e; color: #e0e0e0; border-radius: 12px;
+      max-width: 480px; width: 90%; max-height: 70vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    #changelog-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    #changelog-title { font: bold 16px/1 sans-serif; color: #fff; }
+    #changelog-close {
+      background: none; border: none; color: #888; font-size: 24px;
+      cursor: pointer; padding: 4px 8px; line-height: 1;
+    }
+    #changelog-close:hover { color: #fff; }
+    #changelog-body {
+      padding: 16px 20px; overflow-y: auto; font: 13px/1.5 sans-serif;
+    }
+    #changelog-body h3 {
+      font-size: 14px; color: #7c8bff; margin: 16px 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;
+    }
+    #changelog-body h3:first-child { margin-top: 0; }
+    #changelog-body h4 {
+      font-size: 12px; color: #a0a0a0; margin: 10px 0 4px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    #changelog-body ul { margin: 0 0 8px; padding-left: 20px; }
+    #changelog-body li { margin-bottom: 4px; }
     #version-indicator .dot {
       width: 8px; height: 8px; border-radius: 50%;
       background: #888; transition: background 0.3s ease;
@@ -361,6 +397,102 @@
         playSoundFromDataUrl(gasSoundData);
       }
     }
+
+    // Changelog popup — click version indicator to view page changelog
+    (function() {
+      var overlay = document.createElement('div');
+      overlay.id = 'changelog-overlay';
+      overlay.innerHTML = '<div id="changelog-popup"><div id="changelog-header">'
+        + '<span id="changelog-title">Changelog</span>'
+        + '<button id="changelog-close">&times;</button></div>'
+        + '<div id="changelog-body"></div></div>';
+      document.body.appendChild(overlay);
+
+      var closeBtn = document.getElementById('changelog-close');
+      var body = document.getElementById('changelog-body');
+      var changelogCache = null;
+
+      function show() { overlay.style.display = 'flex'; if (!changelogCache) fetchChangelog(); }
+      function hide() { overlay.style.display = 'none'; }
+
+      closeBtn.addEventListener('click', hide);
+      overlay.addEventListener('click', function(e) { if (e.target === overlay) hide(); });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.style.display === 'flex') hide();
+      });
+
+      function getChangelogUrl() {
+        var host = window.location.hostname;
+        var path = window.location.pathname;
+        var org = host.split('.')[0];
+        var repo = path.split('/')[1] || '';
+        var basePath = window.location.href.split('?')[0].split('#')[0];
+        var pn = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+        if (!pn) pn = 'index';
+        return 'https://raw.githubusercontent.com/' + org + '/' + repo
+          + '/main/repository-information/changelogs/' + pn + 'html.changelog.md';
+      }
+
+      function parseChangelog(md) {
+        var lines = md.split('\n');
+        var html = '';
+        var inList = false;
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          if (line.match(/^# /) || line.match(/^`Sections:/) || line.match(/^All notable/)
+              || line.match(/^Format follows/) || line.match(/^Developed by:/)) continue;
+          if (line.match(/^## \[Unreleased\]/)) continue;
+          if (line.match(/^## \[v/)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            var m = line.match(/^## \[(v[\d.]+w)\].*?— (.+)/);
+            if (m) html += '<h3>' + m[1] + ' &mdash; ' + m[2] + '</h3>';
+            continue;
+          }
+          if (line.match(/^### /)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            html += '<h4>' + line.substring(4) + '</h4>';
+            continue;
+          }
+          if (line.match(/^- /)) {
+            if (!inList) { html += '<ul>'; inList = true; }
+            html += '<li>' + line.substring(2) + '</li>';
+            continue;
+          }
+        }
+        if (inList) html += '</ul>';
+        return html || '<p style="color:#888">No changelog entries yet.</p>';
+      }
+
+      function fetchChangelog() {
+        body.innerHTML = '<p style="color:#888">Loading changelog\u2026</p>';
+        fetch(getChangelogUrl())
+          .then(function(res) { if (!res.ok) throw new Error(); return res.text(); })
+          .then(function(md) {
+            changelogCache = parseChangelog(md);
+            body.innerHTML = changelogCache;
+            var titleEl = document.getElementById('changelog-title');
+            var ind = document.getElementById('version-indicator');
+            if (ind && titleEl) {
+              var lbl = ind.querySelector('.label');
+              if (lbl) titleEl.textContent = 'Changelog \u2014 ' + lbl.textContent;
+            }
+          })
+          .catch(function() {
+            body.innerHTML = '<p style="color:#888">Could not load changelog.</p>';
+          });
+      }
+
+      // Attach click handler when version indicator appears
+      var obs = new MutationObserver(function() {
+        var ind = document.getElementById('version-indicator');
+        if (ind && !ind._clBound) {
+          ind._clBound = true;
+          ind.addEventListener('click', function(e) { e.stopPropagation(); show(); });
+          obs.disconnect();
+        }
+      });
+      obs.observe(document.body, { childList: true, subtree: true });
+    })();
 
     // Screen Wake Lock — keep screen on while page is visible
     var _wakeLock = null;
