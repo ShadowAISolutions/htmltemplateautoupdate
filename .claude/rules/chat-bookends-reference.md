@@ -24,7 +24,7 @@
 | `⚓⚓HOOK FEEDBACK⚓⚓ [HH:MM:SS AM EST]` | Hook feedback triggers a follow-up | First line of hook response (replaces CODING PLAN as opener) | Required | `⏱️` before end-of-response block |
 | `🔃🔃CONTEXT COMPACTION RECOVERY🔃🔃 [HH:MM:SS AM EST MM/DD/YYYY]` | Context was compacted mid-session | First line after compaction (replaces all other openers) | Required | `⏱️` before next bookend |
 | `⏱️ Xs` | Phase just ended | Immediately before the next bookend marker, and before `ExitPlanMode`/`AskUserQuestion` calls | — | Computed |
-| `⏳⏳ACTUAL PLANNING TIME: Xm Ys (estimated Xm)⏳⏳` | About to prompt user via ExitPlanMode/AskUserQuestion | After `⏱️`, immediately before the tool call | — | Computed from opening marker → now |
+| `⏳⏳ACTUAL PLANNING TIME: Xm Ys (estimated Xm)⏳⏳` | About to prompt user via ExitPlanMode/AskUserQuestion | After `⏱️`, immediately before the tool call | — | Computed from response start timestamp → now |
 | `⏸️⏸️AWAITING USER RESPONSE⏸️⏸️ [HH:MM:SS AM EST]` | Response ends with a question to the user | Immediately before `AskUserQuestion` (no end-of-response block) | Required | — |
 
 ## Bookend Summary — End-of-Response Block
@@ -44,8 +44,8 @@
 | `📂📂NEW FOLDERS📂📂` | New directories were created | After TODO (skip entirely if no new folders created — no header, no placeholder) | — | — |
 | `🔗✏️AFFECTED URLS✏️🔗` | Every response with CODING COMPLETE | After NEW FOLDERS (or TODO if no new folders) — affected pages with post-bump versions, or placeholder if none (never skipped) | — | — |
 | `🔧🔧ESTIMATE CALIBRATED🔧🔧` | Estimate missed by >2 min | After AFFECTED URLS (or SUMMARY), before PLAN EXECUTION TIME / ACTUAL TOTAL COMPLETION TIME (skip if ≤2 min gap) | — | — |
-| `⏳⏳PLAN EXECUTION TIME: Xm Ys (estimated Xm)⏳⏳` | Plan approval flow was used | After AFFECTED URLS (or ESTIMATE CALIBRATED), before ACTUAL TOTAL COMPLETION TIME (skip if no plan approval) | — | Computed from post-approval CODING START → closing marker |
-| `⏳⏳ACTUAL TOTAL COMPLETION TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE or RESEARCH COMPLETE | Immediately before CODING COMPLETE (coding) or RESEARCH COMPLETE (research) | — | Computed from opening marker → closing marker |
+| `⏳⏳PLAN EXECUTION TIME: Xm Ys (estimated Xm)⏳⏳` | Plan approval flow was used | After AFFECTED URLS (or ESTIMATE CALIBRATED), before ACTUAL TOTAL COMPLETION TIME (skip if no plan approval) | — | Computed from post-approval start timestamp → closing marker |
+| `⏳⏳ACTUAL TOTAL COMPLETION TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE or RESEARCH COMPLETE | Immediately before CODING COMPLETE (coding) or RESEARCH COMPLETE (research) | — | Computed from response start timestamp → closing marker |
 | `✅✅CODING COMPLETE✅✅ [HH:MM:SS AM EST MM/DD/YYYY]` | Response made code changes/commits/pushes | Very last line of coding responses (unless a post-closing marker follows) | Required | — |
 | `🔬🔬RESEARCH COMPLETE🔬🔬 [HH:MM:SS AM EST MM/DD/YYYY]` | Response was purely informational (no file changes) | Very last line of research responses (no end-of-response block) | Required | — |
 | `💡💡SESSION SAVED💡💡` | "Remember Session" was performed | After CODING COMPLETE — the absolute last line (post-closing marker) | — | — |
