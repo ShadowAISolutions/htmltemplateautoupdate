@@ -3,11 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 40/50`
+`Sections: 41/50`
 
 ## [Unreleased]
 
-## [v01.40r v01.07w] — 2026-02-28 07:15:10 PM EST — SHA: *pending next push*
+## [v01.41r v01.08w] — 2026-02-28 07:19:05 PM EST — SHA: *pending next push*
+
+### Fixed
+- Centered countdown numbers inside the version indicator dot
+
+## [v01.40r v01.07w] — 2026-02-28 07:15:10 PM EST — SHA: [`4672c2c`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4672c2c0ff8720402afd069ffc4bec3478344087)
 
 ### Changed
 - Restored original dot size (8×8px) for the version indicator countdown circle
