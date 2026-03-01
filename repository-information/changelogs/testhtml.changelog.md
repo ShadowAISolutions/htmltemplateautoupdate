@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testhtml.changelog-archive.md](testhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 6/50`
+`Sections: 7/50`
 
 ## [Unreleased]
+
+## [v01.09w] (v01.42r) — 2026-02-28 07:26:37 PM EST
+
+### Fixed
+- Countdown numbers now center properly at all zoom levels — dot grows slightly when counting
 
 ## [v01.08w] (v01.41r) — 2026-02-28 07:19:05 PM EST
 
