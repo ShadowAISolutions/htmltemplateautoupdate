@@ -3,16 +3,18 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 46/50`
+`Sections: 47/50`
 
 ## [Unreleased]
+
+## [v01.47r] — 2026-02-28 10:18:53 PM EST — SHA: *pending next push*
 
 ### Changed
 - Affected URLs section now shows the version each page becomes after changes
 - Planned Affected URLs now shows the current (pre-change) version for comparison
 - Unaffected URLs now shows the current version for each page
 
-## [v01.46r v01.13w] — 2026-02-28 09:31:11 PM EST — SHA: *pending next push*
+## [v01.46r v01.13w] — 2026-02-28 09:31:11 PM EST — SHA: [`6df5df7`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/6df5df7a19e035b1d3dc1cdb130c28c14c3a30ee)
 
 ### Changed
 - Countdown numbers now start appearing at 5 instead of 8
