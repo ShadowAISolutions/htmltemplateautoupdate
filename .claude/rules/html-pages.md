@@ -21,10 +21,10 @@ paths:
 - Each version file uses pipe delimiters: `|v01.08w|`. The version is always the middle field (between the pipes). The polling logic splits on `|` and reads `parts[1]`, stripping the `v` prefix for internal comparison. The pipes stay in place at all times — switching to maintenance mode only changes the first field
 - **html.version.txt is the single source of truth** — the HTML pages contain a `<meta name="build-version">` tag for informational purposes, but the polling logic does **not** read it. On page load, the polling logic immediately fetches html.version.txt, stores the version as the baseline, creates the version indicator pill, and begins the 10-second polling loop. This means bumping the version in html.version.txt alone (without editing the HTML meta tag) will trigger a reload correctly — after the reload, the page establishes the new version as its baseline, preventing an infinite loop. The meta tag is kept in sync with html.version.txt during commits for visibility, but it is never involved in the reload mechanism
 - The polling logic fetches the version file (~7 bytes) instead of the full HTML page, reducing bandwidth per poll from kilobytes to bytes
-- URL resolution: derive the version file URL relative to the current page's directory, using the page's own filename. See the template file (`live-site-templates/AutoUpdateOnlyHtmlTemplate.html`) for the implementation
+- URL resolution: derive the version file URL relative to the current page's directory, using the page's own filename. See the template file (`live-site-templates/HtmlTemplateAutoUpdate.html`) for the implementation
 - **The `if (!pageName)` fallback is critical** — when a page is accessed via a directory URL (e.g. `https://example.github.io/myapp/`), `pageName` resolves to an empty string. Without the fallback to `'index'`, the poll fetches `html.version.txt` (wrong file) and triggers an infinite reload loop
 - Cache-bust with a query param: `fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })`
-- The template in `live-site-templates/AutoUpdateOnlyHtmlTemplate.html` already implements this pattern — use it as a starting point for new projects
+- The template in `live-site-templates/HtmlTemplateAutoUpdate.html` already implements this pattern — use it as a starting point for new projects
 
 ### Maintenance Mode via html.version.txt
 The html.version.txt polling system supports a **maintenance mode** that displays a full-screen orange overlay when the first field is `maintenance`. The format always uses pipe (`|`) delimiters — you never need to add or remove pipes, just edit the fields:
@@ -39,7 +39,7 @@ The html.version.txt polling system supports a **maintenance mode** that display
 ### New Embedding Page Setup Checklist
 When creating a **new** HTML embedding page, follow every step below:
 
-1. **Copy the template** — start from `live-site-templates/AutoUpdateOnlyHtmlTemplate.html`, which already includes:
+1. **Copy the template** — start from `live-site-templates/HtmlTemplateAutoUpdate.html`, which already includes:
    - Version file polling logic (fetches html.version.txt on load, then polls every 10 seconds)
    - Version indicator pill (bottom-right corner)
    - Green "Website Ready" splash overlay + sound playback
@@ -52,10 +52,10 @@ When creating a **new** HTML embedding page, follow every step below:
 6. **Set the initial version** — set `<page-name>html.version.txt` to `|v01.00w|`
 7. **Update the page title** — replace `YOUR_PROJECT_TITLE` in `<title>` with the actual project name
 8. **Register in GAS Projects table** — if this page embeds a GAS iframe, add a row to the GAS Projects table in `.claude/rules/gas-scripts.md`
-9. **Create GAS config file** — if this page embeds a GAS iframe, copy `googleAppsScripts/AutoUpdateOnlyHtmlTemplate/AutoUpdateOnlyHtmlTemplate.config.json` into the new GAS project directory, renaming it to `<page-name>.config.json` (e.g. `googleAppsScripts/MyProject/my-project.config.json`). Fill in the project-specific values. This is the single source of truth for `TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, and `SOUND_FILE_ID` — Pre-Commit item #15 syncs these values to `<page-name>.gs` and the embedding HTML
-10. **Create GAS version file and changelog** — if this page has a GAS project, copy `AutoUpdateOnlyHtmlTemplategs.version.txt` into the GAS project directory as `<page-name>gs.version.txt` (initial value `01.00g`). Also copy `repository-information/changelogs/AutoUpdateOnlyHtmlTemplategs.changelog.md` and `repository-information/changelogs/AutoUpdateOnlyHtmlTemplategs.changelog-archive.md` into `repository-information/changelogs/` as `<page-name>gs.changelog.md` and `<page-name>gs.changelog-archive.md`, replacing `YOUR_PROJECT_TITLE` with the project name
+9. **Create GAS config file** — if this page embeds a GAS iframe, copy `googleAppsScripts/HtmlTemplateAutoUpdate/HtmlTemplateAutoUpdate.config.json` into the new GAS project directory, renaming it to `<page-name>.config.json` (e.g. `googleAppsScripts/MyProject/my-project.config.json`). Fill in the project-specific values. This is the single source of truth for `TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, and `SOUND_FILE_ID` — Pre-Commit item #15 syncs these values to `<page-name>.gs` and the embedding HTML
+10. **Create GAS version file and changelog** — if this page has a GAS project, copy `HtmlTemplateAutoUpdategs.version.txt` into the GAS project directory as `<page-name>gs.version.txt` (initial value `01.00g`). Also copy `repository-information/changelogs/HtmlTemplateAutoUpdategs.changelog.md` and `repository-information/changelogs/HtmlTemplateAutoUpdategs.changelog-archive.md` into `repository-information/changelogs/` as `<page-name>gs.changelog.md` and `<page-name>gs.changelog-archive.md`, replacing `YOUR_PROJECT_TITLE` with the project name
 11. **Add developer branding** — ensure `<!-- Developed by: DEVELOPER_NAME -->` is the last line of the HTML file
-12. **Create page changelog** — copy `repository-information/changelogs/AutoUpdateOnlyHtmlTemplatehtml.changelog.md` into `repository-information/changelogs/` as `<page-name>html.changelog.md`. Replace `YOUR_PROJECT_TITLE` with the page's human-readable title and update the archive link filename. Also copy `repository-information/changelogs/AutoUpdateOnlyHtmlTemplatehtml.changelog-archive.md` as `<page-name>html.changelog-archive.md` and update its title and changelog link filename
+12. **Create page changelog** — copy `repository-information/changelogs/HtmlTemplateAutoUpdatehtml.changelog.md` into `repository-information/changelogs/` as `<page-name>html.changelog.md`. Replace `YOUR_PROJECT_TITLE` with the page's human-readable title and update the archive link filename. Also copy `repository-information/changelogs/HtmlTemplateAutoUpdatehtml.changelog-archive.md` as `<page-name>html.changelog-archive.md` and update its title and changelog link filename
 
 ### Directory Structure (per embedding page)
 ```

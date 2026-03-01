@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-01 01:28:40 PM EST` · Repo version: `v01.88r`
+Last updated: `2026-03-01 01:44:43 PM EST` · Repo version: `v01.89r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -98,8 +98,8 @@ htmltemplateautoupdate/
 │   ├── testhtml.version.txt    # Version file for test page auto-refresh
 │   └── sounds/                 # Audio feedback files
 ├── live-site-templates/        # Template for new pages
-│   ├── AutoUpdateOnlyHtmlTemplate.html           # Template HTML page
-│   └── AutoUpdateOnlyHtmlTemplatehtml.version.txt # Template version file (frozen at v01.00w)
+│   ├── HtmlTemplateAutoUpdate.html           # Template HTML page
+│   └── HtmlTemplateAutoUpdatehtml.version.txt # Template version file (frozen at v01.00w)
 ├── googleAppsScripts/          # Google Apps Script projects
 │   ├── Index/                 # GAS for live-site-pages/index.html
 │   │   ├── index.gs           # Self-updating GAS web app
@@ -109,10 +109,10 @@ htmltemplateautoupdate/
 │   │   ├── test.gs            # Self-updating GAS web app
 │   │   ├── test.config.json   # Project config (source of truth)
 │   │   └── testgs.version.txt  # GAS version file (mirrors VERSION var)
-│   └── AutoUpdateOnlyHtmlTemplate/  # GAS template for new projects
-│       ├── AutoUpdateOnlyHtmlTemplate.gs           # Template GAS web app
-│       ├── AutoUpdateOnlyHtmlTemplate.config.json  # Template config (placeholders)
-│       └── AutoUpdateOnlyHtmlTemplategs.version.txt  # Template GAS version file
+│   └── HtmlTemplateAutoUpdate/  # GAS template for new projects
+│       ├── HtmlTemplateAutoUpdate.gs           # Template GAS web app
+│       ├── HtmlTemplateAutoUpdate.config.json  # Template config (placeholders)
+│       └── HtmlTemplateAutoUpdategs.version.txt  # Template GAS version file
 ├── .claude/
 │   ├── rules/                  # Always-loaded + path-scoped rules
 │   │   ├── behavioral-rules.md        # Always loaded — execution style, pushback, etc.
@@ -142,10 +142,10 @@ htmltemplateautoupdate/
 │   │   ├── indexgs.changelog-archive.md     # Older changelog sections (rotated)
 │   │   ├── testgs.changelog.md              # User-facing changelog for Test GAS
 │   │   ├── testgs.changelog-archive.md      # Older changelog sections (rotated)
-│   │   ├── AutoUpdateOnlyHtmlTemplatehtml.changelog.md          # Template page changelog
-│   │   ├── AutoUpdateOnlyHtmlTemplatehtml.changelog-archive.md  # Template page changelog archive
-│   │   ├── AutoUpdateOnlyHtmlTemplategs.changelog.md            # Template GAS changelog
-│   │   └── AutoUpdateOnlyHtmlTemplategs.changelog-archive.md    # Template GAS changelog archive
+│   │   ├── HtmlTemplateAutoUpdatehtml.changelog.md          # Template page changelog
+│   │   ├── HtmlTemplateAutoUpdatehtml.changelog-archive.md  # Template page changelog archive
+│   │   ├── HtmlTemplateAutoUpdategs.changelog.md            # Template GAS changelog
+│   │   └── HtmlTemplateAutoUpdategs.changelog-archive.md    # Template GAS changelog archive
 │   ├── backups/                # Temporary safety-net backups of critical files
 │   │   └── CLAUDE.md.bak      # Latest CLAUDE.md backup
 │   ├── ARCHITECTURE.md         # System diagram (Mermaid)

@@ -113,7 +113,7 @@ REPLACE_FILES=(
   "repository-information/TODO.md"
   "repository-information/TOKEN-BUDGETS.md"
   "live-site-pages/index.html"
-  "live-site-templates/AutoUpdateOnlyHtmlTemplate.html"
+  "live-site-templates/HtmlTemplateAutoUpdate.html"
 )
 
 echo "[Phase 1] Global find-and-replace across ${#REPLACE_FILES[@]} files..."

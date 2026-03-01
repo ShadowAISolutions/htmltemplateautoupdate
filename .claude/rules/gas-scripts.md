@@ -67,7 +67,7 @@ To generate via command line: `echo -n 'https://script.google.com/macros/s/{DEPL
 The inline decode reverses this: `atob()` then string-reverse. The iframe is created dynamically via srcdoc trampoline (no `src` attribute set). This is obfuscation, not security — the Network tab still shows the URL
 
 ### Template config
-`googleAppsScripts/AutoUpdateOnlyHtmlTemplate/AutoUpdateOnlyHtmlTemplate.config.json` contains placeholder values. When creating a new GAS project, copy it to the new project directory and fill in the real values.
+`googleAppsScripts/HtmlTemplateAutoUpdate/HtmlTemplateAutoUpdate.config.json` contains placeholder values. When creating a new GAS project, copy it to the new project directory and fill in the real values.
 
 ## Commit Message Naming
 *Rule: see Pre-Commit Checklist item #9 in CLAUDE.md.*

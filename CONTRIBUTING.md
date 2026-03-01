@@ -40,7 +40,7 @@ For external contributions, open a standard pull request against `main`.
 
 ### Template Rules
 
-- The template file (`live-site-templates/AutoUpdateOnlyHtmlTemplate.html`) must always remain at build-version `01.00w` — never bump the template
+- The template file (`live-site-templates/HtmlTemplateAutoUpdate.html`) must always remain at build-version `01.00w` — never bump the template
 
 See [CLAUDE.md](CLAUDE.md) for the full list of project conventions.
 

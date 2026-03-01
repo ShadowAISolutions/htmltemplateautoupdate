@@ -64,8 +64,8 @@ graph TB
             GAS_CFG["index.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
             GAS_TEST["googleAppsScripts/Test/test.gs"]
             GAS_TEST_CFG["test.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
-            GAS_TPL["googleAppsScripts/AutoUpdateOnlyHtmlTemplate/\nAutoUpdateOnlyHtmlTemplate.gs\n(template)"]
-            GAS_TPL_CFG["AutoUpdateOnlyHtmlTemplate.config.json\n(template placeholders)"]
+            GAS_TPL["googleAppsScripts/HtmlTemplateAutoUpdate/\nHtmlTemplateAutoUpdate.gs\n(template)"]
+            GAS_TPL_CFG["HtmlTemplateAutoUpdate.config.json\n(template placeholders)"]
         end
 
         subgraph "GAS Self-Update Loop"
@@ -80,8 +80,8 @@ graph TB
         end
 
         subgraph "Template Files"
-            TPL["AutoUpdateOnlyHtmlTemplate.html\n(template — never bumped)"]
-            TPL_VER["AutoUpdateOnlyHtmlTemplatehtml.version.txt"]
+            TPL["HtmlTemplateAutoUpdate.html\n(template — never bumped)"]
+            TPL_VER["HtmlTemplateAutoUpdatehtml.version.txt"]
         end
 
         subgraph "Project Config"

@@ -17,6 +17,6 @@
 
 | Template | File | Version (frozen) |
 |----------|------|------------------|
-| Auto-Update HTML | `live-site-templates/AutoUpdateOnlyHtmlTemplate.html` | v01.00w |
+| Auto-Update HTML | `live-site-templates/HtmlTemplateAutoUpdate.html` | v01.00w |
 
 Developed by: ShadowAISolutions
