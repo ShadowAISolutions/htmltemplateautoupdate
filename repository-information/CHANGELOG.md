@@ -3,9 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 10/100`
+`Sections: 11/100`
 
 ## [Unreleased]
+
+## [v01.68r] — 2026-03-01 02:24:37 AM EST
+
+### Changed
+- Deep compacted CLAUDE.md from 993 → 272 lines (73% reduction) by extracting content to 4 new always-loaded `.claude/rules/` files: `chat-bookends.md`, `chat-bookends-reference.md`, `behavioral-rules.md`, `output-formatting.md`
+- Consolidated 13 individual pointer sections into a single Reference Files table
+- Moved Commit Message Naming content to `.claude/rules/gas-scripts.md`
+- Updated CLAUDE.md pointers and "Maintaining these checklists" section to document always-loaded vs path-scoped rules file types
 
 ## [v01.67r] — 2026-03-01 01:46:08 AM EST
 
