@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 26/100`
+`Sections: 27/100`
 
 ## [Unreleased]
+
+## [v01.84r] — 2026-03-01 12:27:00 PM EST
+
+### Changed
+- Large file write status messages now include a timestamp and duration estimate so the user knows when the operation started and roughly how long to wait
 
 ## [v01.83r] — 2026-03-01 12:22:35 PM EST
 
