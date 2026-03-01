@@ -113,6 +113,15 @@ htmltemplateautoupdate/
 │       ├── AutoUpdateOnlyHtmlTemplate.gs           # Template GAS web app
 │       ├── AutoUpdateOnlyHtmlTemplate.config.json  # Template config (placeholders)
 │       └── AutoUpdateOnlyHtmlTemplategs.version.txt  # Template GAS version file
+├── .claude/
+│   ├── rules/                  # Path-scoped rules (loaded on demand)
+│   │   ├── changelogs.md       # CHANGELOG rules (repository-information/CHANGELOG*.md)
+│   │   ├── gas-scripts.md      # GAS rules (googleAppsScripts/**)
+│   │   ├── html-pages.md       # HTML page rules (live-site-pages/**)
+│   │   ├── init-scripts.md     # Init script rules (scripts/**)
+│   │   ├── repo-docs.md        # Documentation rules (repository-information/**)
+│   │   └── workflows.md        # Workflow rules (.github/workflows/**)
+│   └── settings.json           # Claude Code project settings
 ├── .github/
 │   ├── workflows/              # CI/CD pipeline
 │   ├── ISSUE_TEMPLATE/         # Bug report & feature request forms
