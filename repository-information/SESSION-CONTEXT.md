@@ -4,6 +4,29 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-03-01 02:57:54 PM EST
+**Reconstructed:** Auto-recovered from CHANGELOG (original session did not save context)
+**Repo version:** v01.95r
+
+### What we worked on
+- Completed "Consider creating a session recap file" reminder (v01.93r)
+- Added `REMINDERS_DISPLAY` and `SESSION_CONTEXT_DISPLAY` toggle variables for controlling session start output (v01.94r)
+- Added "Read the full message first" clause to single-commit-per-interaction rule (v01.95r)
+
+### Where we left off
+- All changes committed and merged to main
+
+### Active context
+- Active reminders in REMINDERS.md (developer-owned, do not touch without approval):
+  - "Check test.html issues in Chrome DevTools"
+- TODO items: Get mayo, Get lettuce, Get sliced turkey, Get mustard, Get pickles
+- `TEMPLATE_DEPLOY` = `On` — deployment active on template repo
+- `CHAT_BOOKENDS` = `On`, `END_OF_RESPONSE_BLOCK` = `On`
+- `MULTI_SESSION_MODE` = `Off`
+- `REMINDERS_DISPLAY` = `On`, `SESSION_CONTEXT_DISPLAY` = `On`
+
+## Previous Sessions
+
 **Date:** 2026-03-01 02:13:39 PM EST
 **Branch:** `claude/rename-html-template-03X9T`
 **Repo version:** v01.92r
