@@ -7,6 +7,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 
 ## [Unreleased]
 
+### Changed
+- Affected URLs section now shows the version each page becomes after changes
+- Planned Affected URLs now shows the current (pre-change) version for comparison
+- Unaffected URLs now shows the current version for each page
+
 ## [v01.46r v01.13w] — 2026-02-28 09:31:11 PM EST — SHA: *pending next push*
 
 ### Changed
