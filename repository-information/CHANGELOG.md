@@ -3,9 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 48/100`
+`Sections: 49/100`
 
 ## [Unreleased]
+
+## [v02.06r] — 2026-03-01 04:09:11 PM EST
+
+### Changed
+- Per-file subheadings in CHANGELOG.md now show the version each page/GAS file became — format: `#### \`filename\` — vXX.XXw`
+- Backfilled version numbers on existing per-file subheadings for v02.00r, v01.97r, and v01.96r
 
 ## [v02.05r] — 2026-03-01 04:02:15 PM EST
 
@@ -47,11 +53,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 ### Changed
 - Changelog popup now requires the X button to close — clicking outside the popup no longer dismisses it
 
-#### `index.html`
+#### `index.html` — v01.16w
 ##### Changed
 - Changelog popup now requires the X button to close — clicking outside no longer dismisses it
 
-#### `test.html`
+#### `test.html` — v01.16w
 ##### Changed
 - Changelog popup now requires the X button to close — clicking outside no longer dismisses it
 
@@ -72,11 +78,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 - Changelog popup now fetches from same-origin deployment copy instead of raw.githubusercontent.com — works with private repos
 - Added private repo compatibility rule and changelog deployment sync rule
 
-#### `index.html`
+#### `index.html` — v01.15w
 ##### Changed
 - Changelog popup now loads reliably when the repository is private
 
-#### `test.html`
+#### `test.html` — v01.15w
 ##### Changed
 - Changelog popup now loads reliably when the repository is private
 
@@ -86,11 +92,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 - Clicking the version number overlay now opens a changelog popup showing the page's recent changes
 - Changelog popup can be closed with the X button, clicking outside, or pressing Escape
 
-#### `index.html`
+#### `index.html` — v01.14w
 ##### Added
 - Clicking the version number now opens a changelog popup showing recent page updates
 
-#### `test.html`
+#### `test.html` — v01.14w
 ##### Added
 - Clicking the version number now opens a changelog popup showing recent page updates
 
