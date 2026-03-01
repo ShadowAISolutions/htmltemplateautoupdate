@@ -218,6 +218,20 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 > **--- END OF EXECUTION STYLE ---**
 ---
 
+## Page-Scope Commands
+Commands that can target individual pages (maintenance mode, deactivate maintenance, and any future per-page commands) require the user to specify **which pages** to act on. Rules:
+
+- **"all pages"** — if the user explicitly says "all pages" (or equivalent: "every page", "all of them"), apply to all pages in `live-site-pages/`. No need to ask
+- **Specific pages named** — if the user names specific pages (e.g. "maintenance mode on index" or "put test in maintenance"), apply only to those pages
+- **No specification** — if the user gives a page-scope command without specifying which pages or saying "all" (e.g. just "maintenance mode"), **ask which pages** using `AskUserQuestion`. List all available pages as options, plus an "All pages" option
+- **Repo-wide commands are exempt** — commands that inherently apply to the entire repo (e.g. "phantom update", "initialize") are not page-scope commands and do not require page specification. These always apply to all files by definition
+
+This rule applies to any future commands that could target a subset of pages — when adding a new per-page command, it automatically inherits this scope-checking behavior.
+
+---
+> **--- END OF PAGE-SCOPE COMMANDS ---**
+---
+
 ## Pushback & Reasoning
 - When you have a well-founded technical or design opinion, **make your case and defend it** — do not fold at the first sign of disagreement. Explain the reasoning clearly, cite concrete consequences, and hold your position until one of two things happens: (a) the user presents a counterargument that genuinely changes the calculus, or (b) the user explicitly overrides the decision (e.g. "do it anyway", "I understand, but I want X")
 - A user questioning your recommendation is not the same as overriding it — questions are an invitation to explain further, not to capitulate

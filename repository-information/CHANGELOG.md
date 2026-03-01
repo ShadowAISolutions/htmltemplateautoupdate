@@ -3,11 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 48/50`
+`Sections: 49/50`
 
 ## [Unreleased]
 
-## [v01.48r] — 2026-02-28 10:28:23 PM EST — SHA: *pending next push*
+## [v01.49r] — 2026-02-28 10:33:20 PM EST — SHA: *pending next push*
+
+### Added
+- Page-scope command rule — commands that target individual pages (maintenance mode, etc.) now require specifying which pages unless "all" is explicitly stated
+
+## [v01.48r] — 2026-02-28 10:28:23 PM EST — SHA: [`4ced202`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4ced20283b11207f8309b4f9d6289f2283fd6ccb)
 
 ### Changed
 - All live site pages placed into maintenance mode
