@@ -3,9 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 27/100`
+`Sections: 28/100`
 
 ## [Unreleased]
+
+## [v01.85r] — 2026-03-01 12:53:32 PM EST
+
+### Added
+- Added multi-session mode (`MULTI_SESSION_MODE` variable) — when enabled, parallel Claude Code sessions can safely push to the same repo without merge conflicts on shared state files (repo version, README timestamp, CHANGELOG version sections, STATUS.md)
+- Added "Reconcile Multi-Session" command to catch up on deferred versioning and changelog work when multi-session mode is turned off
 
 ## [v01.84r] — 2026-03-01 12:27:00 PM EST
 
