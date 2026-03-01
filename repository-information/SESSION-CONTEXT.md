@@ -4,6 +4,40 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-03-01 12:57:41 PM EST
+**Branch:** `claude/add-multi-session-mode-M78T1`
+**Repo version:** v01.85r
+
+### What we worked on
+- Added `MULTI_SESSION_MODE` template variable (default `Off`) to enable safe parallel Claude Code sessions (v01.85r)
+  - New variable in Template Variables table with full description
+  - MULTI-SESSION GATE blockquote in Pre-Commit Checklist — skips/modifies items #5, #7, #9, #11, #16, #17 when `On`
+  - Per-item skip annotations on all 6 affected checklist items
+  - "Reconcile Multi-Session Command" section — 10-step procedure to catch up on deferred versioning/changelog work when mode is turned off
+  - Updated session context auto-reconstruction to include `MULTI_SESSION_MODE` in active context
+
+### Where we left off
+- Feature complete and pushed (v01.85r)
+- No open work threads — session wrapping cleanly
+
+### Key decisions made
+- **Per-page versions still bump in multi-session mode** — items #1 and #2 are safe because they're scoped to specific files; different sessions working on different pages won't conflict. Only globally-shared state files are deferred
+- **CHANGELOG entries still accumulate under [Unreleased]** — the versioned-section creation is what's skipped, not the entries themselves. This means reconciliation has all the entries ready to bundle into one version section
+- **Single reconciliation version** — when multi-session mode is turned off, all work from all parallel sessions gets bundled into one repo version bump (not one per missed session). This keeps the version history clean
+- **Reconciliation is a named command** — user says "reconcile" (or similar), OR it's triggered when switching the toggle from On → Off. The command reviews what happened, shows accumulated entries, then performs a normal push commit cycle
+- **Gate independence** — MULTI-SESSION GATE is independent of TEMPLATE REPO GATE. Both are evaluated; most restrictive wins. If TEMPLATE_DEPLOY = Off already skips an item, multi-session gate is a no-op for it
+
+### Active context
+- Active reminders in REMINDERS.md (developer-owned, do not touch without approval):
+  - "Consider creating a session recap file"
+  - "Check test.html issues in Chrome DevTools"
+- TODO items: Get mayo, Get lettuce, Get sliced turkey, Get mustard, Get pickles
+- `TEMPLATE_DEPLOY` = `On` — deployment active on template repo
+- `CHAT_BOOKENDS` = `On`, `END_OF_RESPONSE_BLOCK` = `On`
+- `MULTI_SESSION_MODE` = `Off` — newly added, not yet activated
+
+## Previous Sessions
+
 **Date:** 2026-03-01 12:28:58 PM EST
 **Branch:** `claude/add-sandwich-ingredients-HSC6A`
 **Repo version:** v01.84r
