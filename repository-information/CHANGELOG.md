@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 54/50`
+`Sections: 55/50`
 
 ## [Unreleased]
+
+## [v01.55r] — 2026-02-28 11:36:34 PM EST
+
+### Fixed
+- TODO display in end-of-response block now preserves original list position for crossed-out completed items
 
 ## [v01.54r] — 2026-02-28 11:31:10 PM EST
 
