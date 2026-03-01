@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 40/100`
+`Sections: 41/100`
 
 ## [Unreleased]
+
+## [v01.98r] — 2026-03-01 03:22:00 PM EST
+
+### Added
+- Private repo compatibility enforced as Pre-Commit checklist item #19 — verifies no client-side browser code references authenticated GitHub endpoints
 
 ## [v01.97r v01.15w] — 2026-03-01 03:14:52 PM EST
 
