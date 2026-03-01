@@ -3,9 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 34/100`
+`Sections: 35/100`
 
 ## [Unreleased]
+
+## [v01.92r] — 2026-03-01 02:10:10 PM EST
+
+### Changed
+- Turned on `CHAT_BOOKENDS` toggle — mid-response bookend markers now emitted
+- Updated output formatting pointer in CLAUDE.md to reflect toggle independence — removed hardcoded bookend flow description, replaced with toggle-aware summary
+- Fixed remaining toggle-dependent reference in "Duration before user interaction" rule — now uses "response start timestamp" instead of "opening marker (CODING START)"
 
 ## [v01.91r] — 2026-03-01 02:05:07 PM EST
 
