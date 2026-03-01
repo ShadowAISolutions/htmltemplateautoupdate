@@ -15,11 +15,11 @@
   - This way the plan exists in two places: the approval window (temporary) and the chat history (permanent)
 
 ## AskUserQuestion Visibility
-- When using `AskUserQuestion`, the question and options appear in a popup that **disappears after the user responds** — the user cannot scroll back to see what was asked or what options were available. To ensure the question remains visible:
-  - **Before calling `AskUserQuestion`**, output the full question text and all options as regular chat text. This embeds the question in the conversation so both the question and the user's answer are visible when scrolling back
-  - Include: the question text, each option's label and description, and any header/context. Format it clearly (e.g. as a numbered list of options) so it reads naturally in the chat flow
-  - This way the question exists in two places: the popup (temporary) and the chat history (permanent)
-  - **Why this matters**: if context compaction occurs or the conversation gets stuck after the user answers, the question context is preserved — a future session (or compaction recovery) can see exactly what was asked and what the user chose
+- When using `AskUserQuestion`, the question and options appear in a popup that **disappears after the user responds** — the user cannot scroll back to see what was asked or what options were available. To ensure the full context remains visible:
+  - **Before calling `AskUserQuestion`**, output **all** questions and their options as regular chat text. When the call includes multiple questions (1–4), show every question with its header, options (label + description), and whether it's multi-select. Format clearly (e.g. numbered list of options per question) so it reads naturally in the chat flow
+  - **After the user responds**, echo their selections back into chat as plain text — e.g. "You chose: **Ciabatta** (bread), **Mayo, Mustard** (condiments)". This ensures the answers are visible in the conversation history, not just captured in the tool result
+  - This way the question exists in two places: the popup (temporary) and the chat history (permanent) — and the user's answers are also permanently visible
+  - **Why this matters**: if context compaction occurs or the conversation gets stuck after the user answers, the question context and the user's choices are both preserved — a future session (or compaction recovery) can see exactly what was asked and what the user chose
 
 ## Page-Scope Commands
 Commands that can target individual pages (maintenance mode, deactivate maintenance, and any future per-page commands) require the user to specify **which pages** to act on. Rules:
