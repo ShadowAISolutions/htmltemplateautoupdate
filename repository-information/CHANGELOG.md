@@ -3,11 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 44/50`
+`Sections: 45/50`
 
 ## [Unreleased]
 
-## [v01.44r v01.11w] — 2026-02-28 07:35:31 PM EST — SHA: *pending next push*
+## [v01.45r v01.12w] — 2026-02-28 09:13:16 PM EST — SHA: *pending next push*
+
+### Changed
+- Countdown numbers now start appearing at 8 instead of 9, restoring the original yellow blink rhythm
+
+## [v01.44r v01.11w] — 2026-02-28 07:35:31 PM EST — SHA: [`b9b59cf`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b9b59cfadb5e3285a7e235d0ac9794cd2b60ebb5)
 
 ### Changed
 - Increased countdown font from 5px to 6px for better readability while staying centered in the 8px dot

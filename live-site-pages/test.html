@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.11w">
+  <meta name="build-version" content="v01.12w">
   <title>GAS Self-Update Dashboard</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -237,7 +237,7 @@
           if (countdownSeconds <= 0) {
             clearInterval(countdownTimer);
             if (dot) { dot.textContent = ''; dot.className = 'dot'; }
-          } else {
+          } else if (countdownSeconds <= 8) {
             if (dot) { dot.textContent = countdownSeconds; dot.className = 'dot counting'; }
           }
         }, 1000);
