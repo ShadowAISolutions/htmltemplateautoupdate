@@ -86,7 +86,7 @@ graph TB
 
         subgraph "Project Config"
             CLAUDE_MD["CLAUDE.md\n(project instructions)"]
-            RULES[".claude/rules/\n(path-scoped rules)"]
+            RULES[".claude/rules/\n(always-loaded + path-scoped rules)"]
             REPO_VER["repository.version.txt"]
             SETTINGS[".claude/settings.json\n(git * auto-allowed)"]
             SHA_FILE[".github/last-processed-commit.sha\n(inherited branch guard)"]

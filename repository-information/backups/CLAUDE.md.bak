@@ -349,84 +349,14 @@ When adding, moving, or reorganizing `##` sections in this file, follow the atte
 ---
 
 ## Version Bumping
-*Rule: see Pre-Commit Checklist item #1. Reference details below.*
-- The `VERSION` variable is near the top of each `.gs` file (look for `var VERSION = "..."`)
-- Format includes a `g` suffix: e.g. `"01.13g"` → `"01.14g"`
-- Each GAS project also has a `<page-name>gs.version.txt` that mirrors the `VERSION` variable value (e.g. `01.00g`). This file is bumped alongside `VERSION` by Pre-Commit #1
-- Do NOT bump VERSION if the commit doesn't touch the `.gs` file
-
-### GAS Projects
-Each GAS project has a code file and a corresponding embedding page. Register them in the table below as you add them. *For step-by-step instructions on adding a new GAS deploy step to the workflow, see the "HOW TO ADD A NEW GAS PROJECT" comment block at the top of `.github/workflows/auto-merge-claude.yml`.*
-
-| Project | Code File | Config File | Embedding Page |
-|---------|-----------|-------------|----------------|
-| Index | `googleAppsScripts/Index/index.gs` | `googleAppsScripts/Index/index.config.json` | `live-site-pages/index.html` |
-| Test | `googleAppsScripts/Test/test.gs` | `googleAppsScripts/Test/test.config.json` | `live-site-pages/test.html` |
+*Rule: see Pre-Commit Checklist item #1. GAS Projects table and reference details in `.claude/rules/gas-scripts.md`.*
 
 ---
 > **--- END OF VERSION BUMPING ---**
 ---
 
 ## Build Version (Auto-Refresh for embedding pages)
-*Rules: see Pre-Commit Checklist items #2, #3, #4. Reference details below.*
-- The version lives **solely** in `<page-name>html.version.txt` — the HTML contains no hardcoded version
-- Format uses pipe delimiters with the version in the middle field: e.g. `|v01.11w|` → `|v01.12w|`
-- Each embedding page fetches `html.version.txt` on load to establish its baseline version, then polls every 10 seconds — when the deployed version differs from the loaded version, it auto-reloads
-
-### Auto-Refresh via html.version.txt Polling
-- **All embedding pages must use the `html.version.txt` polling method** — do NOT poll the page's own HTML
-- **Version file naming**: the version file must be named `<page-name>html.version.txt`, matching the HTML file it tracks (e.g. `index.html` → `indexhtml.version.txt`, `dashboard.html` → `dashboardhtml.version.txt`). The `html.version.txt` extension distinguishes HTML page version files from GAS version files (`<page-name>gs.version.txt`) and the repo version file (`repository.version.txt`)
-- Each version file uses pipe delimiters: `|v01.08w|`. The version is always the middle field (between the pipes). The polling logic splits on `|` and reads `parts[1]`, stripping the `v` prefix for internal comparison. The pipes stay in place at all times — switching to maintenance mode only changes the first field
-- **html.version.txt is the single source of truth** — the HTML pages contain a `<meta name="build-version">` tag for informational purposes, but the polling logic does **not** read it. On page load, the polling logic immediately fetches html.version.txt, stores the version as the baseline, creates the version indicator pill, and begins the 10-second polling loop. This means bumping the version in html.version.txt alone (without editing the HTML meta tag) will trigger a reload correctly — after the reload, the page establishes the new version as its baseline, preventing an infinite loop. The meta tag is kept in sync with html.version.txt during commits for visibility, but it is never involved in the reload mechanism
-- The polling logic fetches the version file (~7 bytes) instead of the full HTML page, reducing bandwidth per poll from kilobytes to bytes
-- URL resolution: derive the version file URL relative to the current page's directory, using the page's own filename. See the template file (`live-site-templates/AutoUpdateOnlyHtmlTemplate.html`) for the implementation
-- **The `if (!pageName)` fallback is critical** — when a page is accessed via a directory URL (e.g. `https://example.github.io/myapp/`), `pageName` resolves to an empty string. Without the fallback to `'index'`, the poll fetches `html.version.txt` (wrong file) and triggers an infinite reload loop
-- Cache-bust with a query param: `fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })`
-- The template in `live-site-templates/AutoUpdateOnlyHtmlTemplate.html` already implements this pattern — use it as a starting point for new projects
-
-### Maintenance Mode via html.version.txt
-The html.version.txt polling system supports a **maintenance mode** that displays a full-screen orange overlay when the first field is `maintenance`. The format always uses pipe (`|`) delimiters — you never need to add or remove pipes, just edit the fields:
-- **Activate**: change the first field from empty to `maintenance` **and** fill the third field with the **exact display string** — the JS renders it verbatim with no reformatting. Use `As of:` prefix and pre-formatted date (e.g. `|v01.02w|` → `maintenance|v01.02w|As of: 10:00:00 PM EST 02/26/2026`). To get the value, run `TZ=America/New_York date '+As of: %I:%M:%S %p EST %m/%d/%Y'`. Custom messages also work (e.g. `maintenance|v01.02w|Back online soon!` → displays "Back online soon!")
-- **Deactivate**: clear the first field back to empty (e.g. `maintenance|v01.02w|` → `|v01.02w|`)
-- When the polling logic detects the `maintenance` prefix, it displays an orange full-screen overlay with the developer logo centered and a "🔧This Webpage is Undergoing Maintenance🔧" title — similar to the green "Website Ready" splash but persistent
-- The overlay stays visible as long as the html.version.txt content starts with `maintenance` — it does not auto-dismiss
-- The version indicator pill remains visible on top of the maintenance overlay (the maintenance overlay uses `z-index: 9998`, below the version indicator's `z-index: 9999`)
-- When the `maintenance` prefix is removed: if the underlying version also changed, the page auto-reloads; if the version is unchanged, the overlay fades out gracefully
-- **No version bump for standalone maintenance activation** — if the user's request is solely to activate (or deactivate) maintenance mode and nothing else, do NOT bump the version in html.version.txt or the HTML meta tag. Only edit the first and third fields of html.version.txt (the `maintenance` prefix and the timestamp/message). The version field (middle) stays unchanged. If the user requests maintenance mode **combined** with other changes that would normally trigger a version bump (e.g. editing the HTML page, updating a `.gs` file), then bump the version as usual per Pre-Commit Checklist item #2
-
-### New Embedding Page Setup Checklist
-When creating a **new** HTML embedding page, follow every step below:
-
-1. **Copy the template** — start from `live-site-templates/AutoUpdateOnlyHtmlTemplate.html`, which already includes:
-   - Version file polling logic (fetches html.version.txt on load, then polls every 10 seconds)
-   - Version indicator pill (bottom-right corner)
-   - Green "Website Ready" splash overlay + sound playback
-   - Orange "Under Maintenance" splash overlay (triggered by `maintenance|` prefix in html.version.txt)
-   - AudioContext handling and screen wake lock
-2. **Choose the directory** — create a new subdirectory under `live-site-pages/` named after the project (e.g. `live-site-pages/my-project/`)
-3. **Create the version file** — place a `<page-name>html.version.txt` file in the **same directory** as the HTML page (e.g. `indexhtml.version.txt` for `index.html`), containing the initial version string in pipe-delimited format (e.g. `|v01.00w|`). This is the **single source of truth** for the page version — the HTML contains no hardcoded version
-4. **Update the polling URL in the template** — ensure the JS version-file URL derivation matches the HTML filename (the template defaults to deriving it from the page's own filename)
-5. **Create `sounds/` directory** — copy the `sounds/` folder (containing `Website_Ready_Voice_1.mp3`) into the new page's directory so the splash sound works
-6. **Set the initial version** — set `<page-name>html.version.txt` to `|v01.00w|`
-7. **Update the page title** — replace `YOUR_PROJECT_TITLE` in `<title>` with the actual project name
-8. **Register in GAS Projects table** — if this page embeds a GAS iframe, add a row to the GAS Projects table in the Version Bumping section above
-9. **Create GAS config file** — if this page embeds a GAS iframe, copy `googleAppsScripts/AutoUpdateOnlyHtmlTemplate/AutoUpdateOnlyHtmlTemplate.config.json` into the new GAS project directory, renaming it to `<page-name>.config.json` (e.g. `googleAppsScripts/MyProject/my-project.config.json`). Fill in the project-specific values. This is the single source of truth for `TITLE`, `DEPLOYMENT_ID`, `SPREADSHEET_ID`, `SHEET_NAME`, and `SOUND_FILE_ID` — Pre-Commit item #15 syncs these values to `<page-name>.gs` and the embedding HTML
-10. **Create GAS version file and changelog** — if this page has a GAS project, copy `AutoUpdateOnlyHtmlTemplategs.version.txt` into the GAS project directory as `<page-name>gs.version.txt` (initial value `01.00g`). Also copy `repository-information/changelogs/AutoUpdateOnlyHtmlTemplategs.changelog.md` and `repository-information/changelogs/AutoUpdateOnlyHtmlTemplategs.changelog-archive.md` into `repository-information/changelogs/` as `<page-name>gs.changelog.md` and `<page-name>gs.changelog-archive.md`, replacing `YOUR_PROJECT_TITLE` with the project name
-11. **Add developer branding** — ensure `<!-- Developed by: DEVELOPER_NAME -->` is the last line of the HTML file
-12. **Create page changelog** — copy `repository-information/changelogs/AutoUpdateOnlyHtmlTemplatehtml.changelog.md` into `repository-information/changelogs/` as `<page-name>html.changelog.md`. Replace `YOUR_PROJECT_TITLE` with the page's human-readable title and update the archive link filename. Also copy `repository-information/changelogs/AutoUpdateOnlyHtmlTemplatehtml.changelog-archive.md` as `<page-name>html.changelog-archive.md` and update its title and changelog link filename
-
-### Directory Structure (per embedding page)
-```
-live-site-pages/
-├── <page-name>/
-│   ├── index.html               # The embedding page (from template)
-│   ├── indexhtml.version.txt     # Tracks index.html version (e.g. "|v01.00w|")
-│   └── sounds/
-│       └── Website_Ready_Voice_1.mp3
-```
-For pages that live directly in `live-site-pages/` (not in a subdirectory), the version file and `sounds/` folder sit alongside the HTML file (e.g. `live-site-pages/index.html` + `live-site-pages/indexhtml.version.txt`).
-
-Per-page and per-GAS changelogs are centralized in `repository-information/changelogs/` (e.g. `indexhtml.changelog.md`, `indexgs.changelog.md`) — see Pre-Commit item #17.
+*Rules: see Pre-Commit Checklist items #2, #3, #4. Full reference (polling, maintenance mode, new page setup) in `.claude/rules/html-pages.md`.*
 
 ---
 > **--- END OF BUILD VERSION ---**
@@ -452,269 +382,77 @@ Per-page and per-GAS changelogs are centralized in `repository-information/chang
 ---
 
 ## ARCHITECTURE.md Structural Updates
-*Rule: see Pre-Commit Checklist item #6. Reference details below.*
-
-The Mermaid diagram in `repository-information/ARCHITECTURE.md` shows the project's file structure and relationships. It is updated only when the project structure changes (files added, moved, or deleted) — **not** on version bumps. Version numbers are not displayed in diagram nodes; STATUS.md serves as the version dashboard.
-
-### Adding new pages
-When a new embedding page is created (see New Embedding Page Setup Checklist), add corresponding nodes to the diagram:
-- A page node: `NEWPAGE["page-name.html"]`
-- A version file node: `NEWVER["page-namehtml.version.txt"]`
+*Rule: see Pre-Commit Checklist item #6. Reference details in `.claude/rules/repo-docs.md`.*
 
 ---
 > **--- END OF ARCHITECTURE.MD STRUCTURAL UPDATES ---**
 ---
 
 ## GAS Project Config (config.json)
-*Rule: see Pre-Commit Checklist item #15. Reference details below.*
-
-Each GAS project directory contains a `<page-name>.config.json` file that is the **single source of truth** for project-unique variables. This mirrors the `version.txt` pattern — one small file to edit, with sync rules that propagate values to `<page-name>.gs` and the embedding HTML page.
-
-### Naming convention
-All GAS files are named after the HTML page they serve — mirroring the `indexhtml.version.txt` pattern:
-- `index.gs` — GAS code for `index.html`
-- `index.config.json` — config for `index.html`
-- `dashboard.gs` — GAS code for `dashboard.html`
-- `dashboard.config.json` — config for `dashboard.html`
-
-The `.config.json` double extension ensures the config file sorts **after** the `.gs` file alphabetically (same reasoning as `html.version.txt` sorting after `.html`).
-
-### Config file contents
-
-| Key | Description | Syncs to |
-|-----|-------------|----------|
-| `TITLE` | Project title shown in browser tabs and GAS UI | `<page-name>.gs` `var TITLE`, HTML `<title>` tag |
-| `DEPLOYMENT_ID` | GAS deployment ID (`AKfycb...` string) | `<page-name>.gs` `var DEPLOYMENT_ID`, HTML `var _e` inside GAS IIFE (reverse+base64 encoded) |
-| `SPREADSHEET_ID` | Google Sheets ID for version tracking | `<page-name>.gs` `var SPREADSHEET_ID` |
-| `SHEET_NAME` | Sheet tab name | `<page-name>.gs` `var SHEET_NAME` |
-| `SOUND_FILE_ID` | Google Drive file ID for deploy notification sound | `<page-name>.gs` `var SOUND_FILE_ID` |
-
-### What is NOT in config.json
-- `VERSION` — auto-bumped by Pre-Commit item #1, lives only in `<page-name>.gs`
-- `GITHUB_OWNER`, `GITHUB_REPO`, `FILE_PATH` — derived from repo structure, managed by init script
-- `EMBED_PAGE_URL`, `SPLASH_LOGO_URL` — repo-wide settings, managed by init script
-- `GITHUB_BRANCH` — always `main`
-
-### Obfuscated deployment URL (var _e inside GAS IIFE)
-The encoded deployment URL lives in `var _e` inside the GAS iframe IIFE — not as a global variable. This keeps it out of the browser console and DevTools Sources panel. The decode logic is inline (no named function). Derivation from `DEPLOYMENT_ID`:
-- If `DEPLOYMENT_ID` is not a placeholder:
-  1. Construct the full URL: `https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec`
-  2. Reverse the URL string
-  3. Base64-encode the reversed string
-  4. Store as `var _e = 'encoded_value';` inside the GAS IIFE
-- If `DEPLOYMENT_ID` is a placeholder (`YOUR_DEPLOYMENT_ID`) → `var _e = '';` (empty, IIFE exits early)
-
-To generate via command line: `echo -n 'https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec' | rev | base64 -w0`
-
-The inline decode reverses this: `atob()` then string-reverse. The iframe is created dynamically via srcdoc trampoline (no `src` attribute set). This is obfuscation, not security — the Network tab still shows the URL
-
-### Template config
-`googleAppsScripts/AutoUpdateOnlyHtmlTemplate/AutoUpdateOnlyHtmlTemplate.config.json` contains placeholder values. When creating a new GAS project, copy it to the new project directory and fill in the real values.
+*Rule: see Pre-Commit Checklist item #15. Reference details in `.claude/rules/gas-scripts.md`.*
 
 ---
 > **--- END OF GAS PROJECT CONFIG ---**
 ---
 
 ## Keeping Documentation Files in Sync
-*Mandatory rules: see Pre-Commit Checklist items #5, #6, #7, #8. Reference table below for additional files to consider.*
-
-| File | Update when... |
-|------|---------------|
-| `.gitignore` | New file types or tooling is introduced that generates artifacts (e.g. adding Node tooling, Python venvs, build outputs) |
-| `.editorconfig` | New file types are introduced that need specific formatting rules |
-| `CONTRIBUTING.md` | Development workflow changes, new conventions are added to CLAUDE.md that contributors need to know |
-| `SECURITY.md` | New attack surfaces are added (e.g. new API endpoints, new OAuth flows, new deployment targets) |
-| `CITATION.cff` | Project name, description, authors, or URLs change |
-| `.github/ISSUE_TEMPLATE/*.yml` | New project areas are added (update the "Affected Area" / "Area" dropdown options) |
-| `.github/PULL_REQUEST_TEMPLATE.md` | New checklist items become relevant (e.g. new conventions, new mandatory checks) |
-
-Update these only when the change is genuinely relevant — don't force unnecessary edits.
+*See `.claude/rules/repo-docs.md` — section "Keeping Documentation Files in Sync".*
 
 ---
 > **--- END OF KEEPING DOCUMENTATION FILES IN SYNC ---**
 ---
 
 ## Internal Link Reference
-*Rule: see Pre-Commit Checklist item #12. Correct relative paths below.*
-
-Files live in three locations: repo root, `.github/`, and `repository-information/`. Cross-directory links must use `../` to traverse up before descending into the target directory.
-
-### Why community health files live at root (not `.github/`)
-Community health files (`CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`) live at root so relative links resolve correctly in both GitHub blob-view and sidebar-tab contexts — files inside `.github/` break in the sidebar tab because `../` traverses GitHub's URL structure differently there.
-
-### File locations
-| File | Actual path |
-|------|-------------|
-| README.md | `./README.md` (root) |
-| CLAUDE.md | `./CLAUDE.md` (root) |
-| LICENSE | `./LICENSE` (root) |
-| CODE_OF_CONDUCT.md | `./CODE_OF_CONDUCT.md` (root) |
-| CONTRIBUTING.md | `./CONTRIBUTING.md` (root) |
-| SECURITY.md | `./SECURITY.md` (root) |
-| PULL_REQUEST_TEMPLATE.md | `.github/PULL_REQUEST_TEMPLATE.md` |
-| ARCHITECTURE.md | `repository-information/ARCHITECTURE.md` |
-| CHANGELOG.md | `repository-information/CHANGELOG.md` |
-| CHANGELOG-archive.md | `repository-information/CHANGELOG-archive.md` |
-| GOVERNANCE.md | `repository-information/GOVERNANCE.md` |
-| IMPROVEMENTS.md | `repository-information/IMPROVEMENTS.md` |
-| STATUS.md | `repository-information/STATUS.md` |
-| SUPPORT.md | `repository-information/SUPPORT.md` |
-| TODO.md | `repository-information/TODO.md` |
-| Per-page changelogs | `repository-information/changelogs/<name>.changelog.md` |
-| Per-page changelog archives | `repository-information/changelogs/<name>.changelog-archive.md` |
-
-### Common cross-directory link patterns
-| From directory | To file in `repository-information/` | Correct relative path |
-|----------------|--------------------------------------|----------------------|
-| `.github/` | `repository-information/SUPPORT.md` | `../repository-information/SUPPORT.md` |
-| `.github/` | `repository-information/CHANGELOG.md` | `../repository-information/CHANGELOG.md` |
-
-| From directory | To root files | Correct relative path |
-|----------------|--------------|----------------------|
-| `repository-information/` | `README.md` | `../README.md` |
-| `repository-information/` | `CLAUDE.md` | `../CLAUDE.md` |
-| `repository-information/` | `CONTRIBUTING.md` | `../CONTRIBUTING.md` |
-| `repository-information/` | `SECURITY.md` | `../SECURITY.md` |
-| `repository-information/` | `CODE_OF_CONDUCT.md` | `../CODE_OF_CONDUCT.md` |
-| `.github/` | `README.md` | `../README.md` |
-| `.github/` | `CLAUDE.md` | `../CLAUDE.md` |
+*See `.claude/rules/repo-docs.md` — section "Internal Link Reference".*
 
 ---
 > **--- END OF INTERNAL LINK REFERENCE ---**
 ---
 
 ## Merge Conflict Prevention (Auto-Merge Workflow)
-The auto-merge workflow merges `claude/*` branches into `main` using `git merge --ff-only` with a `-X theirs` fallback. The `-X theirs` strategy auto-resolves content conflicts by preferring the incoming branch.
-
-**Why this matters:** Every `claude/*` push triggers the workflow. If a prior workflow already merged a different claude branch into `main` (advancing `main` beyond this branch's fork point), a fast-forward is no longer possible. The fallback merge can hit content conflicts — especially in `CHANGELOG.md`, which is modified on every commit by the Pre-Commit Checklist. Without `-X theirs`, the merge fails with exit code 1, the auto-merge job fails, and the deploy job is skipped (its condition requires auto-merge success).
-
-**Why `-X theirs` is safe:** The claude branch is always branched from `main` and contains strictly newer changes. When both sides modify the same lines (e.g. `CHANGELOG.md`'s `[Unreleased]` header timestamp), the claude branch's version is always the one we want. The `-X theirs` strategy resolves exactly this class of conflict — same-line edits where the incoming branch has the latest content.
-
-**What this does NOT cover:** If the conflict is structural (e.g. a file was deleted on `main` but modified on the branch), `-X theirs` may not produce the desired result. These cases are rare in the `claude/*` workflow and would need manual intervention.
+*See `.claude/rules/workflows.md` — section "Merge Conflict Prevention (Auto-Merge Workflow)".*
 
 ---
 > **--- END OF MERGE CONFLICT PREVENTION ---**
 ---
 
 ## Commit SHA Tracking (Inherited Branch Guard)
-The file `.github/last-processed-commit.sha` stores the SHA of the last commit that was successfully merged into `main` by the auto-merge workflow. This provides a deterministic guard against inherited branches on forks and imports.
-
-**How it works:**
-1. When a `claude/*` branch is pushed, the workflow reads `.github/last-processed-commit.sha` from **two sources**: the checked-out branch AND `origin/main` (after fetching)
-2. If the incoming commit SHA (`github.sha`) matches the stored SHA from **either source**, the branch is inherited — it carries the exact same commit from the template repo. The workflow deletes the branch and skips
-3. After a successful merge, the workflow updates the file with the new `HEAD` SHA on `main` **in the same push as the merge** — this is critical to eliminate the race window
-
-**Why atomic merge+SHA update?** Previously, the merge and SHA update were two separate pushes. If a fork/import copied the repo between push 1 (merge) and push 2 (SHA update), the copy got the branch but the `.sha` file was stale — the guards couldn't detect it. Now the merge and SHA update land in a single `git push`, so there's no window for an inconsistent copy.
-
-**Why two sources in the check?** The branch's copy of `.sha` has the value from when the branch was created. `origin/main`'s copy has the latest post-merge value. On a fork/copy, which copy the inherited branch carries depends on timing — checking both catches either scenario.
-
-**Why this is bulletproof:**
-- Git SHAs are deterministic — a fork/import inherits the exact same SHAs from the source repo
-- A new legitimate commit always produces a different SHA (different author, timestamp, parent, etc.)
-- The file travels with the repo on copy, carrying the "already processed" marker with it
-- The atomic merge+SHA update eliminates the timing race between updates and copies
-- The dual-source check (branch + origin/main) eliminates timing races between the SHA file value and the branch copy
-- No API calls needed — the check is a file read and string compare, making it the fastest guard in the chain
-
-**Relationship to other guards:** This is **Check 0a** in the guard chain. The branch-source check runs before the origin/main fetch (fast path — catches exact matches immediately). The origin/main-source check runs after the fetch (catches cases where the branch's copy is stale but main's copy is current). Both run before the already-merged check, the timestamp check, and the IS_TEMPLATE_REPO mismatch check.
-
-**File management:** The `.sha` file is managed exclusively by the workflow — Claude Code does not modify it. The only exception is during initial repository creation, where the file is seeded with the current HEAD SHA.
+*See `.claude/rules/workflows.md` — section "Commit SHA Tracking (Inherited Branch Guard)".*
 
 ---
 > **--- END OF COMMIT SHA TRACKING ---**
 ---
 
 ## Phantom Edit (Timestamp Alignment)
-- When the user asks for a **phantom edit** or **phantom update**, touch every file in the repo with a no-op change so all files share the same commit timestamp on GitHub
-- **Skip all version bumps** — do NOT increment versions in `html.version.txt` files, `gs.version.txt` files, or `VERSION` in `.gs` files
-- For text files: add a trailing newline. Also normalize any CRLF (`\r\n`) line endings to LF (`\n`) — run `sed -i 's/\r$//' <file>` on each text file before the no-op touch
-- For binary files (e.g. `.mp3`): append a null byte
-- **Reset `repository-information/CHANGELOG.md`** — remove all versioned release sections and all entries/category headings under `[Unreleased]`, leaving a fresh template (header, version suffix note, and an empty `## [Unreleased]` section with `*(No changes yet)*`). Also reset `repository-information/CHANGELOG-archive.md` — remove all archived sections and restore the `*(No archived sections yet)*` placeholder. **Also reset all page and GAS changelogs** — reset every `<page-name>html.changelog.md` and `<page-name>gs.changelog.md` in `repository-information/changelogs/` and their corresponding archive files the same way. Also reset GAS `<page-name>gs.version.txt` files to `01.00g`. This gives the repo a clean history starting point
-- **Update `Last updated:` in `README.md`** — set the timestamp to the real current time (run `TZ=America/New_York date '+%Y-%m-%d %I:%M:%S %p EST'`). This is the only substantive edit besides the no-op touches
-- Commit message: `Auto Update HTML Template Created` (no version prefix)
+*See `.claude/rules/init-scripts.md` — section "Phantom Edit (Timestamp Alignment)".*
 
 ---
 > **--- END OF PHANTOM EDIT ---**
 ---
 
 ## Line Ending Safety
-`.gitattributes` enforces `* text=auto eol=lf` repo-wide. This normalizes CRLF (`\r\n`) to LF (`\n`) for all text files on commit. The following audit confirms this is safe for every file type in the repo — **do not re-audit on future phantom updates or `.gitattributes` changes** unless a new file type is introduced.
-
-### What was verified
-| File type | Finding | Safe? |
-|-----------|---------|-------|
-| **`.md` files** | Pure line-ending CRLF only. Provenance markers are zero-width Unicode (`U+200B`, `U+200C`, etc.) — multi-byte UTF-8 sequences unrelated to `\r`. Line ending normalization does not touch them | Yes |
-| **`.html` files** | Pure line-ending CRLF (e.g. 240 lines, all `\r\n`, no lone `\r`). Non-ASCII content is box-drawing chars (`─`) in comments — standard UTF-8, unaffected by CRLF stripping | Yes |
-| **`.yml`, `.cff`, `.sh` files** | Already LF. No `\r` present | Yes |
-| **`.png`, `.mp3` files** | Explicitly marked `binary` in `.gitattributes`. Additionally, `text=auto` auto-detects binary (null bytes) — belt and suspenders | Yes |
-| **Provenance markers** | Zero-width Unicode chars (`U+200B`–`U+200F`, `U+FEFF`, `U+2060`). These are multi-byte UTF-8 (e.g. `\xe2\x80\x8b`) — completely unrelated to `\r` (`\x0d`). CRLF normalization cannot affect them | Yes |
-
-### When to re-audit
-Only if a **new file type** is added to the repo that might use `\r` intentionally (e.g. Windows batch files `.bat`, or binary formats with `.txt` extension). Standard web files (HTML, CSS, JS, YAML, Markdown) are always safe to normalize.
+*See `.claude/rules/init-scripts.md` — section "Line Ending Safety".*
 
 ---
 > **--- END OF LINE ENDING SAFETY ---**
 ---
 
 ## Relative Path Resolution on GitHub
-*Rule: see Template Drift Checks item #3. Reference details below.*
-
-Relative links in markdown files resolve from the blob-view URL directory (`/org/repo/blob/main/...`). Each `../` climbs one URL segment. Root files need 2 `../` to reach `/org/repo/`, subdirectory files need 3. This works on any fork because the org/repo name is part of the URL itself.
-
-### When relative paths work vs. don't
-
-| Context | Works? | Reason |
-|---------|--------|--------|
-| Markdown files (`.md`) rendered on GitHub | Yes | GitHub renders links as `<a href="...">`, browser resolves relative paths from blob-view URL |
-| YAML config files (`config.yml`, `CITATION.cff`) | No | GitHub processes these as structured data, not rendered markdown — relative URLs may not be resolved |
-| Mermaid diagram text labels | No | Text content inside code blocks, not rendered as clickable links |
-| GitHub Pages URLs (`org.github.io/repo`) | No | Different domain entirely — can't be reached via relative path from `github.com`. Use a placeholder (e.g. `*(deploy to activate)*`) and replace via drift check step #4 |
-
-### Adding new relative links
-
-When creating a new markdown file with links to GitHub web app routes (issues, security advisories, settings, etc.):
-
-1. Determine the file's directory depth relative to the repo root
-2. Add 2 for `blob/main/` (or `blob/{branch}/`) to get the total `../` count needed to reach `/org/repo/`
-3. Append the GitHub route (e.g. `security/advisories/new`, `issues/new`)
-4. **Never** hardcode the org or repo name in markdown links that can use this pattern
-5. **For GitHub Pages links** — `github.io` URLs can't be made dynamic via relative paths. Use placeholder text (e.g. `*(deploy to activate)*`) and document the replacement in drift check step #4
+*See `.claude/rules/repo-docs.md` — section "Relative Path Resolution on GitHub".*
 
 ---
 > **--- END OF RELATIVE PATH RESOLUTION ON GITHUB ---**
 ---
 
 ## Markdown Formatting
-When editing `.md` files and you need multiple lines to render as **separate rows** (not collapsed into a single paragraph), use HTML inline elements:
-- **Line breaks:** end each line (except the last) with `<br>` to force a newline
-- **Indentation:** start each line with `&emsp;` (em space) to add a visual indent
-
-Example source:
-```markdown
-The framework handles:
-
-&emsp;First item<br>
-&emsp;Second item<br>
-&emsp;Third item
-```
-
-Plain markdown collapses consecutive indented lines into one paragraph — `<br>` and `&emsp;` are the reliable way to get separate indented rows on GitHub.
+*See `.claude/rules/repo-docs.md` — section "Markdown Formatting".*
 
 ---
 > **--- END OF MARKDOWN FORMATTING ---**
 ---
 
 ## Coding Guidelines Reference
-Domain-specific coding constraints are maintained in a dedicated reference file. Consult these when working on the relevant feature area:
-
-| Topic | Reference |
-|-------|-----------|
-| GAS Code Constraints | *See `repository-information/CODING-GUIDELINES.md` — section "GAS Code Constraints"* |
-| Race Conditions — Config vs. Data Fetch | *See `repository-information/CODING-GUIDELINES.md` — section "Race Conditions — Config vs. Data Fetch"* |
-| API Call Optimization (Scaling Goal) | *See `repository-information/CODING-GUIDELINES.md` — section "API Call Optimization (Scaling Goal)"* |
-| UI Dialogs — No Browser Defaults | *See `repository-information/CODING-GUIDELINES.md` — section "UI Dialogs — No Browser Defaults"* |
-| AudioContext & Browser Autoplay Policy | *See `repository-information/CODING-GUIDELINES.md` — section "AudioContext & Browser Autoplay Policy"* |
-| Google Sign-In (GIS) for GAS Embedded Apps | *See `repository-information/CODING-GUIDELINES.md` — section "Google Sign-In (GIS) for GAS Embedded Apps"* |
+*See `.claude/rules/gas-scripts.md` — section "Coding Guidelines Reference".*
 
 ---
 > **--- END OF CODING GUIDELINES REFERENCE ---**

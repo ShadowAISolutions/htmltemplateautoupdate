@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-01 01:46:08 AM EST` · Repo version: `v01.67r`
+Last updated: `2026-03-01 02:23:48 AM EST` · Repo version: `v01.67r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -114,13 +114,17 @@ htmltemplateautoupdate/
 │       ├── AutoUpdateOnlyHtmlTemplate.config.json  # Template config (placeholders)
 │       └── AutoUpdateOnlyHtmlTemplategs.version.txt  # Template GAS version file
 ├── .claude/
-│   ├── rules/                  # Path-scoped rules (loaded on demand)
-│   │   ├── changelogs.md       # CHANGELOG rules (repository-information/CHANGELOG*.md)
-│   │   ├── gas-scripts.md      # GAS rules (googleAppsScripts/**)
-│   │   ├── html-pages.md       # HTML page rules (live-site-pages/**)
-│   │   ├── init-scripts.md     # Init script rules (scripts/**)
-│   │   ├── repo-docs.md        # Documentation rules (repository-information/**)
-│   │   └── workflows.md        # Workflow rules (.github/workflows/**)
+│   ├── rules/                  # Always-loaded + path-scoped rules
+│   │   ├── behavioral-rules.md        # Always loaded — execution style, pushback, etc.
+│   │   ├── changelogs.md              # Path-scoped — CHANGELOG rules
+│   │   ├── chat-bookends.md           # Always loaded — response formatting rules
+│   │   ├── chat-bookends-reference.md # Always loaded — bookend examples & tables
+│   │   ├── gas-scripts.md             # Path-scoped — GAS rules
+│   │   ├── html-pages.md             # Path-scoped — HTML page rules
+│   │   ├── init-scripts.md           # Path-scoped — init script rules
+│   │   ├── output-formatting.md      # Always loaded — CLI styling, attribution
+│   │   ├── repo-docs.md              # Path-scoped — documentation rules
+│   │   └── workflows.md              # Path-scoped — workflow rules
 │   └── settings.json           # Claude Code project settings
 ├── .github/
 │   ├── workflows/              # CI/CD pipeline

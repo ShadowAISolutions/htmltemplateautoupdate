@@ -69,6 +69,22 @@ The inline decode reverses this: `atob()` then string-reverse. The iframe is cre
 ### Template config
 `googleAppsScripts/AutoUpdateOnlyHtmlTemplate/AutoUpdateOnlyHtmlTemplate.config.json` contains placeholder values. When creating a new GAS project, copy it to the new project directory and fill in the real values.
 
+## Commit Message Naming
+*Rule: see Pre-Commit Checklist item #9 in CLAUDE.md.*
+- All version types use the `v` prefix — suffix indicates type: `r` = repository, `g` = Google Apps Script, `w` = website
+- The **push commit** (final commit before `git push`) starts with the repo version prefix (`v01.XXr`) since repo version bumps on the push commit
+- When `.gs` or HTML versions are also bumped on the push commit, append them in order: `r`, `g`, `w`
+- **Intermediate commits** (earlier commits in the same session) use `g`/`w` prefixes only if those versions were bumped on that commit; otherwise, use a plain descriptive message
+- Push commit examples:
+  - `v01.05r Fix typo in CLAUDE.md` (repo-only change)
+  - `v01.06r v01.19g Fix sign-in popup to auto-close after authentication`
+  - `v01.07r v01.19g v01.12w Add auth wall with build version bump`
+- Intermediate commit examples:
+  - `v01.14g Fix sign-in popup timing` (GAS change, no repo version)
+  - `v01.02w Update page layout` (HTML change, no repo version)
+  - `Fix typo in CLAUDE.md` (no version bumps at all)
+- SHA backfill commit: always uses `Backfill CHANGELOG SHA` — no version prefix, exempt from all push commit rules (see Pre-Commit #7)
+
 ## Coding Guidelines Reference
 
 Domain-specific coding constraints are maintained in a dedicated reference file. Consult these when working on the relevant feature area:
