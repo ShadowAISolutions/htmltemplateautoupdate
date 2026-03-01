@@ -82,6 +82,7 @@ These rules apply universally — they are **NOT** skipped by the template repo 
    - Read CHANGELOG.md and collect all version sections between the recorded version (exclusive) and the current version (inclusive) — these entries describe what was done in the missed session(s)
    - Read current `TODO.md` and `REMINDERS.md` for active context state
    - Move the current `## Latest Session` to `## Previous Sessions` (prepend, most recent first)
+   - **2-session cap** — after moving, if `## Previous Sessions` now contains more than 1 entry, delete everything beyond the first (most recent) entry. The file should only ever hold the Latest Session + 1 Previous Session
    - Write a new `## Latest Session` with:
      - **Date:** current timestamp
      - **Reconstructed:** `Auto-recovered from CHANGELOG (original session did not save context)`
@@ -257,6 +258,7 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 If the user says **"Remember Session"** (or similar: "remember this session", "save session context"):
 1. **Write session context** to `repository-information/SESSION-CONTEXT.md`:
    - Move any existing `## Latest Session` content to `## Previous Sessions` (prepend it, most recent first)
+   - **2-session cap** — after moving, if `## Previous Sessions` now contains more than 1 entry, delete everything beyond the first (most recent) entry. The file should only ever hold the Latest Session + 1 Previous Session. Older history is already preserved in CHANGELOG.md
    - Write a new `## Latest Session` with:
      - **Timestamp**: current date/time
      - **What we worked on**: brief list of tasks completed or in progress
