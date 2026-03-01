@@ -3,9 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 55/50`
+`Sections: 56/50`
 
 ## [Unreleased]
+
+## [v01.56r] — 2026-02-28 11:54:00 PM EST
+
+### Added
+- SHA commit links in CHANGELOG version section headers — each version section now links to its push commit for one-click navigation to the exact changes
+
+### Changed
+- Push commit cycle now includes a SHA backfill step: a mechanical follow-up commit inserts the SHA after the push commit is created
 
 ## [v01.55r] — 2026-02-28 11:36:34 PM EST
 

@@ -68,4 +68,19 @@ Ideas and optimizations to explore — no commitment, investigated when time all
 
 **Current status:** Not needed. Revisit when adding features that introduce new per-page configuration or cross-page shared settings.
 
+## CHANGELOG SHA Backfill — Potential Elimination
+
+**Current approach:** Each CHANGELOG version section header includes a commit SHA link (e.g. `## [v01.05r] — 2026-02-28 ... — [abc1234](https://github.com/.../commit/...)`). Because the SHA cannot be known until after the push commit is created, a separate "SHA backfill commit" is made after the push commit to insert the link. Both commits are pushed together; the SHA link points to the push commit, which exists on the remote.
+
+**Tradeoff:** This adds a mechanical extra commit to every push cycle (~20% of push commit overhead). The SHA link provides one-click navigation from the CHANGELOG to the exact commit, but the same information is available via `git log` and the COMMIT LOG section in chat output.
+
+**When to consider removing:**
+1. **Push cycle overhead becomes problematic** — if the extra commit adds noticeable latency or complexity (e.g. rebase conflicts, workflow complications)
+2. **Two-commit pattern causes workflow issues** — the auto-merge workflow processes both commits together, but edge cases could emerge (e.g. concurrency with other pushes)
+3. **Low usage** — if the SHA links in CHANGELOG are rarely clicked (the COMMIT LOG in chat output is the primary reference)
+
+**How to remove:** Delete the SHA backfill procedure from Pre-Commit #7, remove the SHA backfill exception from #9, remove the SHA backfill mention from the "Push commit vs. intermediate commits" definition, and remove the `Backfill CHANGELOG SHA` reference from the Commit Message Naming section. Version section headers revert to: `## [vXX.XXr] — YYYY-MM-DD HH:MM:SS AM/PM EST` (no SHA).
+
+**Current status:** Active. Monitor for issues; remove if overhead outweighs the convenience of inline SHA links.
+
 Developed by: ShadowAISolutions
