@@ -114,7 +114,7 @@ The developer's own notes and reminders, surfaced at the start of every session.
 
 ### How it works
 - **Adding reminders**: when the user says "remind me next time" (or similar — "next session remember", "don't let me forget", "bring this up next time"), add an entry to `## Active Reminders` with a timestamp and description
-- **Surfacing reminders**: during the Session Start Checklist, read the file and output any active reminders before proceeding to the user's request
+- **Surfacing reminders**: during the Session Start Checklist, read the file and output any active reminders before proceeding to the user's request. Format: `📌 Reminders For Developer:` followed by bullet points. Session context from SESSION-CONTEXT.md is surfaced immediately after (see CLAUDE.md Session Start Checklist)
 - **Completing reminders**: only when the developer **explicitly** says a reminder is done or dismisses it, move it from `## Active Reminders` to `## Completed Reminders` with a completion timestamp. Never complete a reminder autonomously based on task similarity
 - **Trigger phrases**: the user does not need to use exact phrasing — any intent to be reminded in a future session should be captured. Examples: "remind me next time", "next session bring up", "don't forget to mention", "remember to tell me"
 
