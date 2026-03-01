@@ -142,6 +142,8 @@ htmltemplateautoupdate/
 │   │   ├── AutoUpdateOnlyHtmlTemplatehtml.changelog-archive.md  # Template page changelog archive
 │   │   ├── AutoUpdateOnlyHtmlTemplategs.changelog.md            # Template GAS changelog
 │   │   └── AutoUpdateOnlyHtmlTemplategs.changelog-archive.md    # Template GAS changelog archive
+│   ├── backups/                # Temporary safety-net backups of critical files
+│   │   └── CLAUDE.md.bak      # Latest CLAUDE.md backup
 │   ├── ARCHITECTURE.md         # System diagram (Mermaid)
 │   ├── CHANGELOG.md            # Version history
 │   ├── CHANGELOG-archive.md    # Older changelog sections (rotated from CHANGELOG.md)
