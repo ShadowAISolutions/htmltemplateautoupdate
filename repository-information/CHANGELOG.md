@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 37/100`
+`Sections: 38/100`
 
 ## [Unreleased]
+
+## [v01.95r] — 2026-03-01 02:35:56 PM EST
+
+### Changed
+- Added "Read the full message first" clause to single-commit-per-interaction rule — prevents premature commits when a user message contains multiple requests
 
 ## [v01.94r] — 2026-03-01 02:25:56 PM EST
 
