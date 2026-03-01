@@ -1,6 +1,6 @@
 # Changelog Archive
 
-Older version sections rotated from [CHANGELOG.md](CHANGELOG.md). Full granularity preserved — entries are moved here verbatim when the main changelog exceeds 50 version sections.
+Older version sections rotated from [CHANGELOG.md](CHANGELOG.md). Full granularity preserved — entries are moved here verbatim when the main changelog exceeds 100 version sections.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with per-entry EST timestamps and project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository).
 
@@ -10,54 +10,54 @@ When Claude runs Pre-Commit #7 on the push commit, after creating the new versio
 
 ### Quick rule (memorize this)
 
-> **50 triggers, date groups move.** When sections exceed 50, rotate the oldest date group. A date group is ALL sections sharing the same date — could be 1 section or 500. Never move part of a date group. Today's sections (EST) are always exempt. Repeat until ≤50 non-exempt sections remain.
+> **100 triggers, date groups move.** When sections exceed 100, rotate the oldest date group. A date group is ALL sections sharing the same date — could be 1 section or 500. Never move part of a date group. Today's sections (EST) are always exempt. Repeat until ≤100 non-exempt sections remain.
 
 ### Step-by-step
 
 1. **Count** — count all `## [vXX.XX*]` version sections in CHANGELOG.md (exclude `## [Unreleased]`)
-2. **Threshold check** — if the count is **50 or fewer**, stop — no rotation needed
-3. **Current-day exemption** — get today's date (EST via `TZ=America/New_York date '+%Y-%m-%d'`). Any version section whose date (`YYYY-MM-DD` in the header) matches today is **exempt from rotation**, even if the total exceeds 50. This means the main changelog can temporarily exceed the 50-section limit on busy days — it self-corrects on the next push after midnight
+2. **Threshold check** — if the count is **100 or fewer**, stop — no rotation needed
+3. **Current-day exemption** — get today's date (EST via `TZ=America/New_York date '+%Y-%m-%d'`). Any version section whose date (`YYYY-MM-DD` in the header) matches today is **exempt from rotation**, even if the total exceeds 100. This means the main changelog can temporarily exceed the 100-section limit on busy days — it self-corrects on the next push after midnight
 4. **Identify the oldest date group** — among the non-exempt sections (dates before today), find the **oldest date** that appears in any section header. **ALL sections sharing that date form a single date group** — this could be 1 section or 100+ sections. The entire group moves together, no matter how many sections it contains
 5. **Rotate the group** — move the entire date group from CHANGELOG.md to CHANGELOG-archive.md:
    - Remove them from CHANGELOG.md
    - Insert them into CHANGELOG-archive.md **above** any previously archived sections but below the archive header, in their original order (reverse-chronological, same as in CHANGELOG.md)
    - On the first rotation, remove the `*(No archived sections yet)*` placeholder
-6. **Re-check** — after moving one date group, re-count the non-exempt sections remaining. If still above 50, repeat steps 4–5 with the next oldest date group. Continue until ≤50 non-exempt sections remain (or only today's sections are left)
+6. **Re-check** — after moving one date group, re-count the non-exempt sections remaining. If still above 100, repeat steps 4–5 with the next oldest date group. Continue until ≤100 non-exempt sections remain (or only today's sections are left)
 
 ### Key rules
 
 - **Group by date, not individually** — never split a date group across the two files. All sections from the same day move together. A date group can contain any number of sections — the count of sections in the group is irrelevant; the group always moves as a unit
 - **Never rotate today** — today's sections (EST) always stay in CHANGELOG.md regardless of count. The limit is enforced against older dates only
-- **Common scenario: all non-exempt sections share one date** — this happens after a busy day followed by a new day. Example: 53 sections total, 3 from today, 50 from yesterday. All 50 from yesterday form one date group → rotate all 50 at once, leaving only today's 3. Do NOT move just enough to reach 50 — the date group is indivisible
+- **Common scenario: all non-exempt sections share one date** — this happens after a busy day followed by a new day. Example: 103 sections total, 3 from today, 100 from yesterday. All 100 from yesterday form one date group → rotate all 100 at once, leaving only today's 3. Do NOT move just enough to reach 100 — the date group is indivisible
 - **Preserve content verbatim** — sections are moved exactly as-is (headers, categories, entries, timestamps, SHA links). No reformatting
 - **Order in archive** — newest archived sections appear at the top of the archive (just like CHANGELOG.md uses reverse-chronological order). When appending a newly rotated date group, insert it **above** any previously archived sections but below the archive header
-- **Threshold is configurable** — the limit of 50 sections is defined in Pre-Commit #7 in CLAUDE.md. To change it, update the number there
+- **Threshold is configurable** — the limit of 100 sections is defined in Pre-Commit #7 in CLAUDE.md. To change it, update the number there
 
 ### Examples
 
-**Scenario A: 53 sections, 3 from today, 50 from yesterday (single previous date)**
-- 3 sections from today (exempt), 50 from yesterday (non-exempt)
-- 50 ≤ 50 → no rotation needed (the threshold counts non-exempt only)
+**Scenario A: 103 sections, 3 from today, 100 from yesterday (single previous date)**
+- 3 sections from today (exempt), 100 from yesterday (non-exempt)
+- 100 ≤ 100 → no rotation needed (the threshold counts non-exempt only)
 
-**Scenario B: 54 sections, 3 from today, 51 from yesterday (single previous date)**
-- 3 exempt, 51 non-exempt — all 51 share one date
-- Rotate ALL 51 at once → 3 sections remain → done
+**Scenario B: 104 sections, 3 from today, 101 from yesterday (single previous date)**
+- 3 exempt, 101 non-exempt — all 101 share one date
+- Rotate ALL 101 at once → 3 sections remain → done
 - Result: CHANGELOG has only today's 3 sections
 
-**Scenario C: 52 sections, all from different dates**
+**Scenario C: 102 sections, all from different dates**
 - Sections span dates 2026-01-01 through 2026-02-21, today is 2026-02-21
-- Today's section (2026-02-21) is exempt → 51 non-exempt sections
-- Oldest date group: 2026-01-01 (1 section) → rotate it → 50 non-exempt remain → done
+- Today's section (2026-02-21) is exempt → 101 non-exempt sections
+- Oldest date group: 2026-01-01 (1 section) → rotate it → 100 non-exempt remain → done
 
-**Scenario D: 52 sections, 5 from today**
-- 5 sections from today (exempt), 47 from older dates
-- 47 ≤ 50 → no rotation needed despite 52 total
+**Scenario D: 102 sections, 5 from today**
+- 5 sections from today (exempt), 97 from older dates
+- 97 ≤ 100 → no rotation needed despite 102 total
 
-**Scenario E: 55 sections, 3 from today, oldest date has 4 sections**
-- 52 non-exempt sections, oldest date has 4 → rotate those 4 → 48 non-exempt remain → done
+**Scenario E: 105 sections, 3 from today, oldest date has 4 sections**
+- 102 non-exempt sections, oldest date has 4 → rotate those 4 → 98 non-exempt remain → done
 
-**Scenario F: 55 sections, 3 from today, oldest two dates have 2 each**
-- 52 non-exempt → rotate oldest date (2 sections) → 50 non-exempt → done
+**Scenario F: 105 sections, 3 from today, oldest two dates have 2 each**
+- 102 non-exempt → rotate oldest date (2 sections) → 100 non-exempt → done
 
 ---
 
