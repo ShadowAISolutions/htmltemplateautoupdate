@@ -7,7 +7,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 
 ## [Unreleased]
 
-## [v01.63r] — 2026-03-01 12:42:35 AM EST
+## [v01.63r] — 2026-03-01 12:42:35 AM EST — [97b1022](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/97b102240a16332188623c42eb127771894c17fb)
 
 ### Changed
 - Disabled maintenance mode on all pages (index.html and test.html) — maintenance overlay removed, pages now accessible normally
