@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 15/100`
+`Sections: 16/100`
 
 ## [Unreleased]
+
+## [v01.73r] — 2026-03-01 10:59:10 AM EST
+
+### Added
+- Added NEW FOLDERS section to end-of-response block — shows clickable links to any new directories created during a response, positioned between TODO and AFFECTED URLS (skipped entirely when no folders were created)
 
 ## [v01.72r] — 2026-03-01 03:07:05 AM EST
 

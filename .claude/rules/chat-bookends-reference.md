@@ -41,7 +41,8 @@
 | `🔖🔖WORTH NOTING🔖🔖` | Something deserves attention | After COMMIT LOG (skip if nothing worth noting) | — | — |
 | `📝📝SUMMARY📝📝` | Changes were made in the response | After WORTH NOTING | — | — |
 | `📋📋TODO📋📋` | Every response with CODING COMPLETE | After SUMMARY — current to-do items from TODO.md, with completed items crossed off (never skipped) | — | — |
-| `🔗✏️AFFECTED URLS✏️🔗` | Every response with CODING COMPLETE | After TODO — affected pages with post-bump versions, or placeholder if none (never skipped) | — | — |
+| `📂📂NEW FOLDERS📂📂` | New directories were created | After TODO (skip entirely if no new folders created — no header, no placeholder) | — | — |
+| `🔗✏️AFFECTED URLS✏️🔗` | Every response with CODING COMPLETE | After NEW FOLDERS (or TODO if no new folders) — affected pages with post-bump versions, or placeholder if none (never skipped) | — | — |
 | `🔧🔧ESTIMATE CALIBRATED🔧🔧` | Estimate missed by >2 min | After AFFECTED URLS (or SUMMARY), before PLAN EXECUTION TIME / ACTUAL TOTAL COMPLETION TIME (skip if ≤2 min gap) | — | — |
 | `⏳⏳PLAN EXECUTION TIME: Xm Ys (estimated Xm)⏳⏳` | Plan approval flow was used | After AFFECTED URLS (or ESTIMATE CALIBRATED), before ACTUAL TOTAL COMPLETION TIME (skip if no plan approval) | — | Computed from post-approval CODING START → closing marker |
 | `⏳⏳ACTUAL TOTAL COMPLETION TIME: Xm Ys (estimated Xm)⏳⏳` | Every response with CODING COMPLETE or RESEARCH COMPLETE | Immediately before CODING COMPLETE (coding) or RESEARCH COMPLETE (research) | — | Computed from opening marker → closing marker |
@@ -99,6 +100,8 @@
   - [x] ~~Add feature X~~
   - [ ] Write tests for feature X
   - [ ] Update user documentation
+📂📂NEW FOLDERS📂📂
+  [utils/](https://github.com/ORG/REPO/tree/main/utils)
 🔗✏️AFFECTED URLS✏️🔗
 
 `✏️ Homepage (v01.14w)`
