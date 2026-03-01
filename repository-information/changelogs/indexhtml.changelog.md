@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [indexhtml.changelog-archive.md](indexhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 2/50`
+`Sections: 3/50`
 
 ## [Unreleased]
+
+## [v01.05w] (v01.38r) — 2026-02-28 07:02:59 PM EST
+
+### Fixed
+- Restored blinking pulse animation during countdown — dot now pulses while showing the number
 
 ## [v01.04w] (v01.37r) — 2026-02-28 06:58:44 PM EST
 

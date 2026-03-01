@@ -3,11 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 37/50`
+`Sections: 38/50`
 
 ## [Unreleased]
 
-## [v01.37r v01.04w] — 2026-02-28 06:58:44 PM EST — SHA: *pending next push*
+## [v01.38r v01.05w] — 2026-02-28 07:02:59 PM EST — SHA: *pending next push*
+
+### Fixed
+- Restored pulse animation on the countdown dot — `.counting` class now includes the blink animation that was missing after the dot refactor
+
+## [v01.37r v01.04w] — 2026-02-28 06:58:44 PM EST — SHA: [`98581d4`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/98581d48583c9c3dc37dd30821cf137051cf374b)
 
 ### Changed
 - Moved poll countdown into the status dot circle — digit counts down 9, 8, ... 1 inside the dot instead of as separate text next to it
