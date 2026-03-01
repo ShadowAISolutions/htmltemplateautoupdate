@@ -21,7 +21,7 @@ paths:
 - Categories follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `### Added`, `### Changed`, `### Fixed`, `### Deprecated`, `### Removed`, `### Security`
 - Only include categories that have entries — no empty headings
 - Entry format: `- Description` (no per-entry timestamps)
-- **File attribution**: when an entry describes changes to HTML pages or GAS scripts, append affected filenames in bold parentheses: `- Description (**index.html**, **test.html**)` or `- Description (**index.gs**)`. Repo-only entries (no `w`/`g` version bump) do not need attribution
+- **Per-file subheadings**: when a version section includes changes to HTML pages or GAS scripts that have their own changelogs, add `#### \`filename\`` subheadings after the main category entries. Each file subheading lists that file's user-facing changes with `#####` category headings. Repo-only entries do not get subheadings
 - Capacity counter (`Sections: X/100`) must be updated on every push commit
 - **Archive rotation** triggers when counter exceeds 100 — see `repository-information/CHANGELOG-archive.md` for the full rotation logic
 
