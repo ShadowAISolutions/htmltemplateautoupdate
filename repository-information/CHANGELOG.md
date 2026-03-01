@@ -3,9 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 49/100`
+`Sections: 50/100`
 
 ## [Unreleased]
+
+## [v02.07r] — 2026-03-01 04:15:28 PM EST
+
+### Changed
+- Bumped all HTML page versions to v01.17w
+- Per-file subheadings now show "(no change)" when a file is affected but its version was not bumped
+- Updated v02.04r subheadings in CHANGELOG.md to use the new "(no change)" format
+
+#### `index.html` — v01.17w
+##### Changed
+- Version number updated
+
+#### `test.html` — v01.17w
+##### Changed
+- Version number updated
 
 ## [v02.06r] — 2026-03-01 04:09:11 PM EST
 
@@ -24,11 +39,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 ### Changed
 - Page and GAS changelog version headers now show repo version after the timestamp instead of in parentheses before it — format: `[vXX.XXw] — timestamp — vXX.XXr`
 
-#### `index.html`
+#### `index.html` — v01.16w (no change)
 ##### Changed
 - Changelog version headers now show the repo version after the timestamp for easier reading
 
-#### `test.html`
+#### `test.html` — v01.16w (no change)
 ##### Changed
 - Changelog version headers now show the repo version after the timestamp for easier reading
 
