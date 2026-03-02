@@ -92,6 +92,7 @@ graph TB
         subgraph "Project Config"
             CLAUDE_MD["CLAUDE.md\n(project instructions)"]
             RULES[".claude/rules/\n(always-loaded + path-scoped rules)"]
+            SKILLS[".claude/skills/\n(invokable workflow skills)"]
             REPO_VER["repository.version.txt"]
             SETTINGS[".claude/settings.json\n(git * auto-allowed)"]
             SHA_FILE[".github/last-processed-commit.sha\n(inherited branch guard)"]
@@ -139,6 +140,7 @@ graph TB
     style GAS_APP fill:#42a5f5,color:#fff
     style CLAUDE_MD fill:#ce93d8,color:#000
     style RULES fill:#ce93d8,color:#000
+    style SKILLS fill:#ce93d8,color:#000
     style INIT_SCRIPT fill:#78909c,color:#fff
 ```
 

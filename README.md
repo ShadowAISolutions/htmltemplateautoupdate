@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-01 06:17:49 PM EST` · Repo version: `v02.09r`
+Last updated: `2026-03-02 11:48:51 AM EST` · Repo version: `v02.10r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -130,6 +130,19 @@ htmltemplateautoupdate/
 │   │   ├── output-formatting.md      # Always loaded — CLI styling, attribution
 │   │   ├── repo-docs.md              # Path-scoped — documentation rules
 │   │   └── workflows.md              # Path-scoped — workflow rules
+│   ├── skills/                  # Invokable workflow skills
+│   │   ├── initialize/          # /initialize — first deployment setup
+│   │   │   └── SKILL.md
+│   │   ├── maintenance-mode/    # /maintenance-mode — toggle maintenance overlay
+│   │   │   └── SKILL.md
+│   │   ├── new-page/            # /new-page — create new HTML page with boilerplate
+│   │   │   └── SKILL.md
+│   │   ├── phantom-update/      # /phantom-update — timestamp alignment
+│   │   │   └── SKILL.md
+│   │   ├── reconcile/           # /reconcile — end multi-session mode
+│   │   │   └── SKILL.md
+│   │   └── remember-session/    # /remember-session — save session context
+│   │       └── SKILL.md
 │   └── settings.json           # Claude Code project settings
 ├── .github/
 │   ├── workflows/              # CI/CD pipeline
