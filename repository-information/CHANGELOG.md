@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 54/100`
+`Sections: 55/100`
 
 ## [Unreleased]
+
+## [v02.12r] — 2026-03-02 12:18:12 PM EST
+
+### Added
+- `SKILLS-REFERENCE.md` — complete inventory of all Claude Code skills (custom, imported, and bundled/plugin) with visibility status and guidance on when to add local vs. rely on bundled
 
 ## [v02.11r] — 2026-03-02 11:58:44 AM EST
 
