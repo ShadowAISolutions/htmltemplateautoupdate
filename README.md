@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-02 11:48:51 AM EST` · Repo version: `v02.10r`
+Last updated: `2026-03-02 11:58:44 AM EST` · Repo version: `v02.11r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -131,6 +131,18 @@ htmltemplateautoupdate/
 │   │   ├── repo-docs.md              # Path-scoped — documentation rules
 │   │   └── workflows.md              # Path-scoped — workflow rules
 │   ├── skills/                  # Invokable workflow skills
+│   │   ├── imported--diff-review/       # /diff-review — pre-push differential review
+│   │   │   └── SKILL.md
+│   │   ├── imported--frontend-design/   # /frontend-design — distinctive UI creation
+│   │   │   └── SKILL.md
+│   │   ├── imported--git-cleanup/       # /git-cleanup — stale branch/worktree cleanup
+│   │   │   └── SKILL.md
+│   │   ├── imported--security-review/   # /security-review — OWASP/web security audit
+│   │   │   └── SKILL.md
+│   │   ├── imported--skill-creator/     # /skill-creator — create new skills
+│   │   │   └── SKILL.md
+│   │   ├── imported--webapp-testing/    # /webapp-testing — Playwright page testing
+│   │   │   └── SKILL.md
 │   │   ├── initialize/          # /initialize — first deployment setup
 │   │   │   └── SKILL.md
 │   │   ├── maintenance-mode/    # /maintenance-mode — toggle maintenance overlay
