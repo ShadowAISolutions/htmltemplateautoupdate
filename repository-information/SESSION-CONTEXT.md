@@ -4,25 +4,33 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
-**Date:** 2026-03-04 11:11:12 AM EST
-**Repo version:** v02.40r
+**Date:** 2026-03-04 02:14:37 PM EST
+**Repo version:** v02.57r
 
 ### What we worked on
-- Matched both `gas-template.gs` and `gas-test.gs` to the RND Code.gs reference (`RND_GAS_AND_WEBSITE/Code.gs`) with each file's own config variables
-- Added live B1 cell value display, embedded spreadsheet iframe with dynamic sheet name heading, and live quota/token info sidebar (v02.38r, 01.04g)
-- Added previously skipped RND features: test sound/beep/vibrate buttons, `playReadySound()` with error handling, `testVibrate()`, "Did it redirect?" and "Is this awesome?" radio buttons, SVG tree graphic (v02.39r, 01.05g)
-- Synced `.js.txt` deployment copies for both GAS files
-- Reinforced `TEMPLATE_DEPLOY` check in `chat-bookends.md` URL display rules — added explicit "check TEMPLATE_DEPLOY first" warning to prevent showing "no live site deployed" when `TEMPLATE_DEPLOY` = `On` (v02.40r)
+- Added "Bootstrap & Circular Dependency Reasoning" rule to behavioral-rules.md — catches chicken-and-egg logic (like GAS deployment ID bootstrap) in future explanations
+- Added two-step deployment instructions (Deploy #1 and Deploy #2) to both gas-test.html and gas-template.html setup steps, explaining why two deploys are needed
+- Reordered GAS setup steps multiple times per developer direction:
+  - First reorder: moved GITHUB_TOKEN before Deploy #1, Code.gs copy before OAuth, OAuth before Deploy #2, optional trigger last
+  - Second reorder: rearranged first 7 steps to: Enable API at usersettings → GCP project → Enable API in GCP → Create Apps Script project → Manifest toggle → Link GCP → GITHUB_TOKEN
+  - Split the manifest step: step 5 now just enables the toggle, step 8 (after GITHUB_TOKEN) sets the JSON contents
+- Added subtle subsection group labels to the setup `<ol>` on both GAS pages:
+  - Google Account Setup (steps 1-3)
+  - New Apps Script Project (step 4)
+  - GAS Project Settings (steps 5-7)
+  - GAS Editor (steps 8-12)
+  - GAS Triggers (step 13)
 
 ### Key decisions made
-- When matching a reference implementation, ALL features should be included — never filter out features as "R&D-only" or "test-only", especially on the template repo
-- The `TEMPLATE_DEPLOY: On` toggle means live URLs must always be shown in the end-of-response block — never default to "no live site deployed" without checking the toggle first
-- The RND Code.gs (`RND_GAS_AND_WEBSITE/Code.gs`) is the "golden" reference for GAS web app features — both gas-template.gs and gas-test.gs should match it (with their own config values)
+- Setup steps should follow logical dependency order: prerequisites first, then the things that depend on them
+- The manifest JSON setting was split from enabling the toggle because the toggle is a project setting while the JSON content is editor work
+- OAuth authorization should happen after pasting Code.gs (so functions exist) but before Deploy #2 (so deploy has all auth)
+- Group labels use `.step-group-label` CSS class — 10px uppercase muted gray text, no list number
 
 ### Where we left off
-- Both GAS files now fully match RND Code.gs (with config-specific values)
 - All changes committed and merged to main via auto-merge workflow
-- GAS versions at 01.05g, repo version at v02.40r
+- GAS Test at v01.23w, GAS Template at v01.18w, repo at v02.57r
+- CHANGELOG at 100/100 sections — next push will trigger archive rotation
 
 ### Active context
 - Active reminders in REMINDERS.md (developer-owned, do not touch without approval):
@@ -35,17 +43,20 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Previous Sessions
 
-**Date:** 2026-03-02 07:05:53 PM EST
-**Reconstructed:** Auto-recovered from CHANGELOG (original session did not save context)
-**Repo version:** v02.15r
+**Date:** 2026-03-04 11:11:12 AM EST
+**Repo version:** v02.40r
 
 ### What we worked on
-- Added "Imported Skills — Do Not Modify" immutability rule in behavioral-rules.md (v02.13r)
-- Bumped repository version (v02.14r)
-- Re-applied v02.14r version bump through proper `claude/*` branch workflow — v02.14r was erroneously pushed directly to `main` (v02.15r)
+- Matched both `gas-template.gs` and `gas-test.gs` to the RND Code.gs reference (`RND_GAS_AND_WEBSITE/Code.gs`) with each file's own config variables
+- Added live B1 cell value display, embedded spreadsheet iframe with dynamic sheet name heading, and live quota/token info sidebar (v02.38r, 01.04g)
+- Added previously skipped RND features: test sound/beep/vibrate buttons, `playReadySound()` with error handling, `testVibrate()`, "Did it redirect?" and "Is this awesome?" radio buttons, SVG tree graphic (v02.39r, 01.05g)
+- Synced `.js.txt` deployment copies for both GAS files
+- Reinforced `TEMPLATE_DEPLOY` check in `chat-bookends.md` URL display rules — added explicit "check TEMPLATE_DEPLOY first" warning to prevent showing "no live site deployed" when `TEMPLATE_DEPLOY` = `On` (v02.40r)
 
 ### Where we left off
-- All changes committed and merged to main
+- Both GAS files now fully match RND Code.gs (with config-specific values)
+- All changes committed and merged to main via auto-merge workflow
+- GAS versions at 01.05g, repo version at v02.40r
 
 ### Active context
 - Active reminders in REMINDERS.md (developer-owned, do not touch without approval):
