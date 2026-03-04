@@ -3,9 +3,41 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 70/100`
+`Sections: 71/100`
 
 ## [Unreleased]
+
+## [v02.28r] — 2026-03-04 08:52:09 AM EST
+
+### Added
+- Spreadsheet data viewing in GAS dashboards — displays live B1 value, current version (A1), and pushed version (C1) from the connected Google Sheet
+- "Open Spreadsheet" link in GAS dashboards for quick access to the connected sheet
+- Cache-backed B1 polling (every 15s) — reads from CacheService first, falls back to SpreadsheetApp on cache miss
+- `onEditWriteB1ToCache()` installable trigger function for real-time B1 cache updates on spreadsheet edits
+
+#### `gas-test.html` — v01.08w
+##### Added
+- New "Spreadsheet Data" dashboard section showing live cell values and a link to open the connected spreadsheet
+- Live B1 value display with automatic 15-second polling updates
+
+#### `gas-template.html` — v01.09w
+##### Added
+- New "Spreadsheet Data" dashboard section showing live cell values and a link to open the connected spreadsheet
+- Live B1 value display with automatic 15-second polling updates
+
+#### `gas-test.gs` — 01.01g
+##### Added
+- `readB1FromCacheOrSheet()` function for cache-backed B1 reading
+- `onEditWriteB1ToCache()` installable trigger for real-time cache updates
+- Spreadsheet data (A1, B1, C1 cell values) included in `getAppData()` response
+- B1 polling in GAS iframe client code that reports values to embedding page via postMessage
+
+#### `gas-template.gs` — 01.01g
+##### Added
+- `readB1FromCacheOrSheet()` function for cache-backed B1 reading
+- `onEditWriteB1ToCache()` installable trigger for real-time cache updates
+- Spreadsheet data (A1, B1, C1 cell values) included in `getAppData()` response
+- B1 polling in GAS iframe client code that reports values to embedding page via postMessage
 
 ## [v02.27r] — 2026-03-04 08:37:17 AM EST
 

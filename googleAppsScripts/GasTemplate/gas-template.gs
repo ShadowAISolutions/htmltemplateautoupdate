@@ -86,7 +86,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.00g";
+var VERSION = "01.01g";
 var TITLE = "GAS Integration Status";                               // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -187,6 +187,18 @@ function doGet() {
         google.script.run
           .withSuccessHandler(function(data) { applyData(data); })
           .getAppData();
+
+        // Poll cell B1 from cache every 15s and report to embedding page
+        function pollB1FromCache() {
+          google.script.run
+            .withSuccessHandler(function(val) {
+              try { window.top.postMessage({type: 'gas-b1', value: val}, '*'); } catch(e) {}
+              try { window.parent.postMessage({type: 'gas-b1', value: val}, '*'); } catch(e) {}
+            })
+            .readB1FromCacheOrSheet();
+        }
+        pollB1FromCache();
+        setInterval(pollB1FromCache, 15000);
 
         var _autoPulling = false;
         function pollPushedVersionFromCache() {
@@ -289,6 +301,25 @@ function getAppData() {
   data.hasDeployment = DEPLOYMENT_ID && DEPLOYMENT_ID !== "YOUR_DEPLOYMENT_ID";
   data.hasSpreadsheet = SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID";
   data.hasSound = SOUND_FILE_ID && SOUND_FILE_ID !== "";
+  data.spreadsheetId = (SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID") ? SPREADSHEET_ID : "";
+
+  // Read spreadsheet data if configured
+  if (data.hasSpreadsheet) {
+    try {
+      var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+      var sheet = ss.getSheetByName(SHEET_NAME);
+      if (sheet) {
+        data.sheetData = {
+          a1: sheet.getRange("A1").getDisplayValue() || "",
+          b1: readB1FromCacheOrSheet(),
+          c1: sheet.getRange("C1").getDisplayValue() || "",
+          sheetName: SHEET_NAME
+        };
+      }
+    } catch(e) {
+      data.sheetData = { error: "Could not read spreadsheet" };
+    }
+  }
 
   var cache = CacheService.getScriptCache();
   var vStatus = cache.get("version_count_status");
@@ -330,6 +361,35 @@ function getSoundBase64() {
 
 function readPushedVersionFromCache() {
   return CacheService.getScriptCache().get("pushed_version") || "";
+}
+
+function readB1FromCacheOrSheet() {
+  if (!SPREADSHEET_ID || SPREADSHEET_ID === "YOUR_SPREADSHEET_ID") return "";
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get("live_b1");
+  if (cached !== null) return cached;
+  try {
+    var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    var sheet = ss.getSheetByName(SHEET_NAME);
+    if (!sheet) return "";
+    var val = sheet.getRange("B1").getValue();
+    var result = val !== null && val !== undefined ? String(val) : "";
+    cache.put("live_b1", result, 21600);
+    return result;
+  } catch(e) { return ""; }
+}
+
+// Installable onEdit trigger. Writes B1 value to CacheService when edited.
+// Install: Apps Script editor → Triggers → + Add Trigger →
+//   Function: onEditWriteB1ToCache, Event source: From spreadsheet, Event type: On edit
+function onEditWriteB1ToCache(e) {
+  if (!e || !e.range) return;
+  var sheet = e.range.getSheet();
+  if (sheet.getName() !== SHEET_NAME) return;
+  if (e.range.getRow() !== 1 || e.range.getColumn() !== 2) return;
+  var val = e.range.getValue();
+  var result = val !== null && val !== undefined ? String(val) : "";
+  CacheService.getScriptCache().put("live_b1", result, 21600);
 }
 
 function writeVersionToSheet() {

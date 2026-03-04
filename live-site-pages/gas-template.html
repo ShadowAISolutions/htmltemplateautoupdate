@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.08w">
+  <meta name="build-version" content="v01.09w">
   <title>GAS Integration Status</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -415,6 +415,38 @@
       border: none;
       background: #fff;
     }
+    .sheet-data-row {
+      display: flex;
+      align-items: flex-start;
+      padding: 6px 0;
+      gap: 10px;
+    }
+    .sheet-data-label {
+      font-size: 12px;
+      color: #8b949e;
+      font-weight: 500;
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+    .sheet-data-value {
+      font: 13px/1.4 'SFMono-Regular', Consolas, monospace;
+      color: #c9d1d9;
+      word-break: break-all;
+    }
+    .sheet-link {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 12px;
+      background: #238636;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .sheet-link:hover { background: #2ea043;
+    }
   </style>
 </head>
 <body>
@@ -522,6 +554,27 @@
       <div class="status-dot gray" id="dot-gas-sound"></div>
       <span class="status-label">Sound File</span>
       <span class="status-value neutral" id="val-gas-sound">&#8212;</span>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-header">Spreadsheet Data</div>
+    <div id="sheet-data-section" style="display:none">
+      <div class="sheet-data-row">
+        <span class="sheet-data-label">Live B1</span>
+        <span class="sheet-data-value" id="val-sheet-b1" style="font-size:16px;font-weight:bold;color:#58a6ff">&mdash;</span>
+      </div>
+      <div class="sheet-data-row">
+        <span class="sheet-data-label">Current (A1)</span>
+        <span class="sheet-data-value" id="val-sheet-a1">&mdash;</span>
+      </div>
+      <div class="sheet-data-row">
+        <span class="sheet-data-label">Pushed (C1)</span>
+        <span class="sheet-data-value" id="val-sheet-c1">&mdash;</span>
+      </div>
+      <a id="sheet-link" class="sheet-link" href="#" target="_blank" rel="noopener" style="display:none">Open Spreadsheet</a>
+    </div>
+    <div id="sheet-data-empty">
+      <span class="status-value neutral" style="font-size:13px">No spreadsheet connected</span>
     </div>
 
     <div class="divider"></div>
@@ -993,6 +1046,42 @@
           setStatus('gas-sound', 'yellow', 'warn', 'Local only \u2014 update GAS script');
         } else {
           setStatus('gas-sound', 'yellow', 'warn', 'Not set');
+        }
+        // Spreadsheet data display
+        var sheetSection = document.getElementById('sheet-data-section');
+        var sheetEmpty = document.getElementById('sheet-data-empty');
+        if (cfg.sheetData && !cfg.sheetData.error) {
+          sheetSection.style.display = 'block';
+          sheetEmpty.style.display = 'none';
+          document.getElementById('val-sheet-b1').textContent = cfg.sheetData.b1 || '\u2014';
+          document.getElementById('val-sheet-a1').textContent = cfg.sheetData.a1 || '\u2014';
+          document.getElementById('val-sheet-c1').textContent = cfg.sheetData.c1 || '\u2014';
+        } else if (cfg.sheetData && cfg.sheetData.error) {
+          sheetSection.style.display = 'none';
+          sheetEmpty.style.display = 'block';
+          sheetEmpty.querySelector('.status-value').textContent = cfg.sheetData.error;
+        }
+        // Show "Open Spreadsheet" link
+        var sheetId = cfg.spreadsheetId || localStorage.getItem('gas-tpl-spreadsheet-id') || '';
+        var sheetLink = document.getElementById('sheet-link');
+        if (sheetId) {
+          sheetLink.href = 'https://docs.google.com/spreadsheets/d/' + sheetId + '/edit';
+          sheetLink.style.display = 'inline-block';
+          if (!cfg.sheetData) {
+            sheetSection.style.display = 'block';
+            sheetEmpty.style.display = 'none';
+          }
+        }
+      }
+      // Live B1 updates from GAS iframe polling
+      if (e.data && e.data.type === 'gas-b1') {
+        var b1El = document.getElementById('val-sheet-b1');
+        if (b1El) b1El.textContent = e.data.value || '\u2014';
+        var sheetSection = document.getElementById('sheet-data-section');
+        var sheetEmpty = document.getElementById('sheet-data-empty');
+        if (e.data.value && sheetSection.style.display === 'none') {
+          sheetSection.style.display = 'block';
+          sheetEmpty.style.display = 'none';
         }
       }
     });
