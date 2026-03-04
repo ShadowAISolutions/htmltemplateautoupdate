@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.17w">
+  <meta name="build-version" content="v01.18w">
   <title>GAS Test Dashboard</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -252,16 +252,16 @@
       width: 100%;
       margin-top: 10px;
       padding: 8px 12px;
-      background: #21262d;
-      border: 1px solid #30363d;
+      background: #1f6feb;
+      border: 1px solid #388bfd;
       border-radius: 6px;
-      color: #c9d1d9;
+      color: #fff;
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .btn-copy-gs:hover { background: #30363d; }
+    .btn-copy-gs:hover { background: #388bfd; }
     .config-toast {
       text-align: center;
       font-size: 12px;
@@ -271,31 +271,6 @@
       transition: opacity 0.3s;
     }
     .config-toast.show { opacity: 1; }
-    .config-output {
-      display: none;
-      margin-top: 12px;
-      background: #0d1117;
-      border: 1px solid #30363d;
-      border-radius: 6px;
-      padding: 12px;
-      font: 12px/1.5 'SFMono-Regular', Consolas, monospace;
-      color: #c9d1d9;
-      white-space: pre;
-      overflow-x: auto;
-      position: relative;
-    }
-    .config-output .copy-overlay {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      background: #238636;
-      color: #fff;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .config-output .copy-overlay:hover { background: #2ea043; }
     .saved-badge {
       display: inline-block;
       font-size: 10px;
@@ -782,14 +757,13 @@
 
     <div class="config-actions">
       <button class="btn-apply" id="btn-apply" onclick="applyConfig()" disabled>Apply</button>
-      <button class="btn-copy" id="btn-copy-config" onclick="showConfig()" disabled>Copy Config</button>
-      <button class="btn-clear" onclick="clearConfig()">Clear</button>
+      <button class="btn-copy" id="btn-copy-config" onclick="copyConfig()" disabled>Copy Config</button>
+      <button class="btn-clear" onclick="clearConfig()">Clear Local Storage</button>
     </div>
     <div class="config-toast" id="config-toast"></div>
-    <div class="config-output" id="config-output"></div>
 
     <div class="footer-note">
-      Values saved in browser localStorage for instant testing &mdash; use Copy Config to export for your repo
+      Values saved in browser localStorage for instant testing &mdash; Copy Config copies a Claude-ready prompt + JSON to your clipboard
     </div>
   </div>
   <!-- GAS panel — collapsible bottom drawer for iframe -->
@@ -1479,7 +1453,7 @@
       showToast('Configuration saved to localStorage');
     }
 
-    function showConfig() {
+    function copyConfig() {
       var title = document.getElementById('cfg-title').value.trim() || 'GAS Test Dashboard';
       var version = document.getElementById('cfg-version').value.trim() || '01.07g';
       var ghOwner = document.getElementById('cfg-github-owner').value.trim() || 'ShadowAISolutions';
@@ -1510,25 +1484,10 @@
 
       var prompt = 'Update ' + filePath + ' config — sync these values into the config.json, .gs file, and embedding HTML page:\n\n';
 
-      var output = document.getElementById('config-output');
-      output.style.display = 'block';
-      output.dataset.copyText = prompt + json;
-      output.innerHTML = '<span class="copy-overlay" onclick="copyConfigJson()">Copy</span>' + json;
-    }
-
-    function copyConfigJson() {
-      var output = document.getElementById('config-output');
-      var text = output.dataset.copyText || output.textContent.replace('Copy', '').trim();
-      navigator.clipboard.writeText(text).then(function() {
+      navigator.clipboard.writeText(prompt + json).then(function() {
         showToast('Config + prompt copied to clipboard');
       }).catch(function() {
-        // Fallback: select text
-        var range = document.createRange();
-        range.selectNodeContents(output);
-        var sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-        showToast('Select and copy manually (Ctrl+C)');
+        showToast('Copy failed — check browser permissions');
       });
     }
 
@@ -1576,7 +1535,7 @@
       document.getElementById('cfg-sound-id').value = '';
       document.getElementById('cfg-embedding-url').value = 'https://shadowaisolutions.github.io/htmltemplateautoupdate/gas-test.html';
       document.getElementById('cfg-splash-logo').value = 'https://www.shadowaisolutions.com/SAIS%20Logo.png';
-      document.getElementById('config-output').style.display = 'none';
+      // Config output panel removed — copy goes directly to clipboard
       document.getElementById('saved-badge').style.display = 'none';
 
       // Remove iframe + hide panel

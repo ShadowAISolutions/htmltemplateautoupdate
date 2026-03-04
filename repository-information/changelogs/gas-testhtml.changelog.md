@@ -3,9 +3,16 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-testhtml.changelog-archive.md](gas-testhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 17/50`
+`Sections: 18/50`
 
 ## [Unreleased]
+
+## [v01.18w] — 2026-03-04 01:15:40 PM EST — v02.52r
+
+### Changed
+- Copy Config now copies directly to clipboard — no output panel opens
+- "Copy code.gs" button is now blue when active
+- "Clear" button renamed to "Clear Local Storage"
 
 ## [v01.17w] — 2026-03-04 01:06:51 PM EST — v02.51r
 

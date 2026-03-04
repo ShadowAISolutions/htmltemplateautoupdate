@@ -3,9 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 94/100`
+`Sections: 95/100`
 
 ## [Unreleased]
+
+## [v02.52r] — 2026-03-04 01:15:40 PM EST
+
+### Changed
+- Copy Config button now copies prompt + JSON directly to clipboard instead of opening an output panel
+- "Clear" button renamed to "Clear Local Storage" for clarity
+- "Copy code.gs" button is now blue when active for better visibility
+- Removed config output display panel (no longer needed)
+
+#### `gas-test.html` — v01.18w
+
+##### Changed
+- Copy Config copies directly to clipboard with Claude-ready prompt instead of showing an output panel
+- "Copy code.gs" button styled blue when enabled
+- "Clear" button now reads "Clear Local Storage"
 
 ## [v02.51r] — 2026-03-04 01:06:51 PM EST
 
