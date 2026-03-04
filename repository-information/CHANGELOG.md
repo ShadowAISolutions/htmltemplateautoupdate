@@ -3,9 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 49/100`
+`Sections: 50/100`
 
 ## [Unreleased]
+
+## [v02.59r] — 2026-03-04 02:33:28 PM EST
+
+### Fixed
+- CSS specificity bug in setup section numbering fix — `.setup-steps > ol > li` (specificity 0,3,0) was overriding `.step-group-label`'s `counter-increment: none` (specificity 0,1,0). Moved counter-increment to `:not(.step-group-label)` selector so group labels truly don't increment the step counter
+
+#### `gas-template.html` — v01.20w
+
+##### Fixed
+- Setup steps now numbered correctly — group labels no longer consume step numbers
+
+#### `gas-test.html` — v01.25w
+
+##### Fixed
+- Setup steps now numbered correctly — group labels no longer consume step numbers
 
 ## [v02.58r] — 2026-03-04 02:20:46 PM EST
 

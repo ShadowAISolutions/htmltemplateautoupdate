@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-templatehtml.changelog-archive.md](gas-templatehtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 19/50`
+`Sections: 20/50`
 
 ## [Unreleased]
+
+## [v01.20w] — 2026-03-04 02:33:28 PM EST — v02.59r
+
+### Fixed
+- Setup steps now numbered correctly — group labels no longer consume step numbers
 
 ## [v01.19w] — 2026-03-04 02:20:46 PM EST — v02.58r
 

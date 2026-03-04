@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.19w">
+  <meta name="build-version" content="v01.20w">
   <title>GAS Integration Status</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -282,7 +282,7 @@
       list-style: none;
       counter-reset: setup-step;
     }
-    .setup-steps > ol > li {
+    .setup-steps > ol > li:not(.step-group-label) {
       counter-increment: setup-step;
     }
     .setup-steps > ol > li:not(.step-group-label)::before {
@@ -300,7 +300,6 @@
       margin: 14px 0 6px -4px;
       padding: 0;
       list-style: none;
-      counter-increment: none;
     }
     .setup-steps code {
       background: #0d1117;
