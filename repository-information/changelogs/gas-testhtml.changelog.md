@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-testhtml.changelog-archive.md](gas-testhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 8/50`
+`Sections: 9/50`
 
 ## [Unreleased]
+
+## [v01.09w] — 2026-03-04 09:47:03 AM EST — v02.32r
+
+### Added
+- Collapsible troubleshooting guide under "Link the GCP project" setup step — explains the "Apps Script-managed folder" error and how to fix it (grant Project Mover role, migrate project, or create a new one)
 
 ## [v01.08w] — 2026-03-04 08:52:09 AM EST — v02.28r
 

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.09w">
+  <meta name="build-version" content="v01.10w">
   <title>GAS Integration Status</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -303,6 +303,45 @@
       font-size: 11px;
       color: #8b949e;
       margin-top: 2px;
+    }
+    .setup-steps details {
+      margin-top: 8px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #0d1117;
+      padding: 0;
+    }
+    .setup-steps details[open] { padding-bottom: 10px; }
+    .setup-steps summary {
+      cursor: pointer;
+      padding: 8px 12px;
+      color: #f0883e;
+      font-size: 12px;
+      font-weight: 600;
+      list-style: none;
+      user-select: none;
+    }
+    .setup-steps summary::-webkit-details-marker { display: none; }
+    .setup-steps summary::before { content: '\25b6  '; font-size: 10px; }
+    .setup-steps details[open] > summary::before { content: '\25bc  '; }
+    .setup-steps details .troubleshoot-content {
+      padding: 4px 12px 0;
+      font-size: 12px;
+      color: #c9d1d9;
+      line-height: 1.6;
+    }
+    .setup-steps details .troubleshoot-content h4 {
+      color: #58a6ff;
+      font-size: 12px;
+      margin: 10px 0 4px;
+    }
+    .setup-steps details .troubleshoot-content ol,
+    .setup-steps details .troubleshoot-content ul {
+      margin: 4px 0;
+      padding-left: 18px;
+    }
+    .setup-steps details .troubleshoot-content li {
+      margin-bottom: 4px;
     }
     .step-input {
       display: flex;
@@ -611,6 +650,36 @@
         </li>
         <li>Link the GCP project in Apps Script
           <div class="step-note">Project Settings &rarr; Google Cloud Platform (GCP) Project &rarr; Change project</div>
+          <details>
+            <summary>Troubleshooting: &ldquo;You cannot switch to a Cloud Platform project in an Apps Script-managed folder&rdquo;</summary>
+            <div class="troubleshoot-content">
+              <p>This error means your GCP project ended up inside Google&rsquo;s hidden <code>apps-script</code> managed folder. Even projects you created manually can land there on Workspace accounts.</p>
+              <h4>How to diagnose</h4>
+              <ol>
+                <li>Go to <a href="https://console.cloud.google.com/cloud-resource-manager" target="_blank" rel="noopener" style="color:#58a6ff">Manage Resources</a></li>
+                <li>Look for: <strong>your org &rarr; system-gsuite &rarr; apps-script</strong></li>
+                <li>If your project is inside that folder, that&rsquo;s the problem</li>
+              </ol>
+              <h4>Fix &mdash; Option A: Move the project</h4>
+              <p style="color:#f0883e; font-size:11px">Requires the <strong>Project Mover</strong> IAM role &mdash; you likely don&rsquo;t have it by default, even as org owner/admin.</p>
+              <ol>
+                <li>Go to <a href="https://console.cloud.google.com/iam-admin/iam" target="_blank" rel="noopener" style="color:#58a6ff">IAM &amp; Admin</a> &rarr; use the top dropdown to select your <strong>organization</strong> (not a project)</li>
+                <li>Click <strong>Grant Access</strong> &rarr; enter your own email</li>
+                <li>Select role: <strong>Resource Manager &rarr; Project Mover</strong> &rarr; Save</li>
+                <li>Go to <a href="https://console.cloud.google.com/cloud-resource-manager" target="_blank" rel="noopener" style="color:#58a6ff">Manage Resources</a> &rarr; find your project in the <code>apps-script</code> folder</li>
+                <li>Three-dot menu &rarr; <strong>Migrate</strong> &rarr; move to org root or &ldquo;No organization&rdquo;</li>
+                <li>Retry changing the GCP project in Apps Script settings</li>
+              </ol>
+              <h4>Fix &mdash; Option B: Create a new project</h4>
+              <ol>
+                <li>Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener" style="color:#58a6ff">Google Cloud Console</a> &rarr; create a new project</li>
+                <li>Set <strong>Location</strong> to your org root or &ldquo;No organization&rdquo;</li>
+                <li>Verify the project number does <strong>not</strong> start with <code>sys-</code></li>
+                <li>Enable the Apps Script API in the new project</li>
+                <li>Use this project&rsquo;s number in Apps Script settings</li>
+              </ol>
+            </div>
+          </details>
         </li>
         <li>Enable the Apps Script API at <code>script.google.com/home/usersettings</code></li>
         <li>Deploy as a Web app
