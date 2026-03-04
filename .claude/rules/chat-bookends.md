@@ -87,6 +87,26 @@
 
 **The fix:** (1) always evaluate *after* all actions in the response are complete, and (2) *actually run* the three git commands — never reason about their output mentally.
 
+## Mid-Response Bookends — Omission Prevention
+
+**The failure pattern:** during complex multi-edit responses (especially those involving multiple file edits, checklists, and push cycles), mid-response bookends (CHECKLIST, RESEARCHING, NEXT PHASE, VERIFYING, CHANGES PUSHED, etc.) get silently dropped. The response produces correct file changes but reads as an undifferentiated wall of tool calls with no phase markers or `⏱️` duration annotations between them. This violates the Duration annotations rule ("No exceptions — if two bookends appear in sequence, there must be a `⏱️` line between them") and makes it impossible for the user to track progress or understand timing.
+
+**What to watch for:** any response where you are about to:
+- Run the Pre-Commit Checklist → emit `✔️✔️CHECKLIST✔️✔️` with `⏱️` before it
+- Start reading files or searching the codebase → emit `🔍🔍RESEARCHING🔍🔍` with `⏱️` before it
+- Transition between distinct sub-tasks → emit `🔄🔄NEXT PHASE🔄🔄` with `⏱️` before it
+- Validate or verify changes → emit `🧪🧪VERIFYING🧪🧪` with `⏱️` before it
+- Complete a `git push` → emit `➡️➡️CHANGES PUSHED➡️➡️` with `⏱️` before it
+- Hit a blocker → emit `🚧🚧BLOCKED🚧🚧` with `⏱️` before it
+
+**The self-check:** before every tool call batch, ask: "Am I entering a new phase? If yes, have I emitted the appropriate bookend with a `⏱️` annotation?" The most common omission points are:
+1. After CODING START and before the first edit — RESEARCHING or CHECKLIST is often skipped
+2. Between the last edit and the commit — CHECKLIST for Pre-Commit is often skipped
+3. After the commit and before the push — VERIFYING or CHECKLIST for Pre-Push is often skipped
+4. After a successful push — CHANGES PUSHED is often skipped
+
+**The fix:** treat bookend emission as a **mandatory gate** before phase transitions — you cannot start a checklist without first writing CHECKLIST, you cannot start verifying without first writing VERIFYING. Each bookend requires a `date` call, a `⏱️` duration computation, and the bookend marker with timestamp. This overhead is non-negotiable when `CHAT_BOOKENDS` = `On`.
+
 ### Token Budget Reference
 *See `repository-information/TOKEN-BUDGETS.md` — section "Chat Bookends"*
 
