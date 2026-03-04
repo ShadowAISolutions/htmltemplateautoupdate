@@ -3,9 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 63/100`
+`Sections: 64/100`
 
 ## [Unreleased]
+
+## [v02.21r] — 2026-03-03 10:27:04 PM EST
+
+### Changed
+- Restructured GAS Template and GAS Test pages — setup instructions are now the primary section with configuration inputs embedded inline at the relevant steps (e.g. Deployment ID input appears at step 8, Spreadsheet fields at step 11)
+- Replaced separate collapsible instructions + standalone config form with a unified "Setup & Configuration" flow
+
+#### `gas-template.html` — v01.03w
+##### Changed
+- Setup instructions moved before config inputs — inputs now appear inline within the step where they apply
+- Section header renamed from "Configuration" to "Setup & Configuration"
+
+#### `gas-test.html` — v01.02w
+##### Changed
+- Setup instructions moved before config inputs — inputs now appear inline within the step where they apply
+- Section header renamed from "Configuration" to "Setup & Configuration"
 
 ## [v02.20r] — 2026-03-03 10:19:44 PM EST
 

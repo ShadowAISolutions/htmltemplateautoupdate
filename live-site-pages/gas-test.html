@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.01w">
+  <meta name="build-version" content="v01.02w">
   <title>GAS Test Dashboard</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -269,49 +269,19 @@
       vertical-align: middle;
     }
     /* ── Setup Instructions ────────────────────────────────── */
-    .setup-instructions {
-      margin-top: 16px;
-      border: 1px solid #21262d;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .setup-instructions summary {
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: #58a6ff;
-      padding: 10px 14px;
-      cursor: pointer;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      user-select: none;
-    }
-    .setup-instructions summary::-webkit-details-marker { display: none; }
-    .setup-instructions summary::before {
-      content: '\25B6';
-      font-size: 9px;
-      transition: transform 0.2s;
-    }
-    .setup-instructions[open] summary::before {
-      transform: rotate(90deg);
-    }
-    .setup-instructions .setup-body {
-      padding: 0 14px 14px;
+    .setup-steps {
       font-size: 13px;
       color: #c9d1d9;
       line-height: 1.6;
     }
-    .setup-instructions .setup-body ol {
+    .setup-steps ol {
       margin: 0;
       padding-left: 20px;
     }
-    .setup-instructions .setup-body li {
-      margin-bottom: 8px;
+    .setup-steps li {
+      margin-bottom: 10px;
     }
-    .setup-instructions .setup-body code {
+    .setup-steps code {
       background: #0d1117;
       border: 1px solid #30363d;
       border-radius: 4px;
@@ -319,7 +289,7 @@
       font: 12px/1.4 'SFMono-Regular', Consolas, monospace;
       color: #79c0ff;
     }
-    .setup-instructions .setup-body pre {
+    .setup-steps pre {
       background: #0d1117;
       border: 1px solid #30363d;
       border-radius: 6px;
@@ -329,10 +299,43 @@
       overflow-x: auto;
       margin: 6px 0 10px;
     }
-    .setup-instructions .setup-body .step-note {
+    .setup-steps .step-note {
       font-size: 11px;
       color: #8b949e;
       margin-top: 2px;
+    }
+    .step-input {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 8px 0 4px;
+      padding: 8px 10px;
+      background: rgba(22,27,34,0.5);
+      border: 1px solid #21262d;
+      border-radius: 6px;
+    }
+    .step-input label {
+      font-size: 11px;
+      color: #58a6ff;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .step-input input {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: #c9d1d9;
+      font: 13px/1.4 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .step-input input:focus { border-color: #58a6ff; }
+    .step-input input::placeholder { color: #484f58; }
+    .step-input .field-hint {
+      font-size: 11px;
+      color: #484f58;
     }
   </style>
 </head>
@@ -417,56 +420,12 @@
     </div>
 
     <div class="divider"></div>
-    <div class="section-header">Configuration <span id="saved-badge" class="saved-badge" style="display:none">localStorage</span></div>
+    <div class="section-header">Setup &amp; Configuration <span id="saved-badge" class="saved-badge" style="display:none">localStorage</span></div>
 
-    <div class="config-field">
-      <label for="cfg-title">Title</label>
-      <input type="text" id="cfg-title" placeholder="My GAS Project">
-      <span class="field-hint">Shown in browser tab and GAS UI</span>
-    </div>
-
-    <div class="config-field">
-      <label for="cfg-deployment-id">Deployment ID</label>
-      <input type="text" id="cfg-deployment-id" placeholder="AKfycbw...">
-      <span class="field-hint">From Apps Script: Deploy &rarr; Manage deployments</span>
-    </div>
-
-    <div class="config-field">
-      <label for="cfg-spreadsheet-id">Spreadsheet ID <span style="color:#484f58">(optional)</span></label>
-      <input type="text" id="cfg-spreadsheet-id" placeholder="1abc2def3ghi...">
-      <span class="field-hint">Google Sheets ID for version tracking</span>
-    </div>
-
-    <div class="config-field">
-      <label for="cfg-sheet-name">Sheet Name <span style="color:#484f58">(optional)</span></label>
-      <input type="text" id="cfg-sheet-name" placeholder="Live_Sheet" value="Live_Sheet">
-      <span class="field-hint">Tab name in the spreadsheet</span>
-    </div>
-
-    <div class="config-field">
-      <label for="cfg-sound-id">Sound File ID <span style="color:#484f58">(optional)</span></label>
-      <input type="text" id="cfg-sound-id" placeholder="1bzVp6wp...">
-      <span class="field-hint">Google Drive file ID for notification sound</span>
-    </div>
-
-    <div class="config-actions">
-      <button class="btn-apply" onclick="applyConfig()">Apply</button>
-      <button class="btn-copy" onclick="showConfig()">Copy Config</button>
-      <button class="btn-clear" onclick="clearConfig()">Clear</button>
-    </div>
-    <div class="config-toast" id="config-toast"></div>
-    <div class="config-output" id="config-output"></div>
-
-    <div class="footer-note">
-      Values saved in browser localStorage for instant testing &mdash; use Copy Config to export for your repo
-    </div>
-
-    <details class="setup-instructions">
-      <summary>GAS Setup Instructions</summary>
-      <div class="setup-body">
-        <ol>
-          <li>Create a new Apps Script project at <code>script.google.com</code> and paste your <code>.gs</code> file contents</li>
-          <li>In Project Settings, enable <strong>Show appsscript.json manifest file</strong> and set its contents to:
+    <div class="setup-steps">
+      <ol>
+        <li>Create a new Apps Script project at <code>script.google.com</code> and paste your <code>.gs</code> file contents</li>
+        <li>In Project Settings, enable <strong>Show appsscript.json manifest file</strong> and set its contents to:
 <pre>{
   "timeZone": "America/New_York",
   "runtimeVersion": "V8",
@@ -484,30 +443,70 @@
     "https://www.googleapis.com/auth/script.send_mail"
   ]
 }</pre>
-          </li>
-          <li>Create or use a GCP project where you have <strong>Owner</strong> access</li>
-          <li>Enable the <strong>Apps Script API</strong> in your GCP project
-            <div class="step-note">APIs &amp; Services &rarr; Library &rarr; search "Apps Script API" &rarr; Enable</div>
-          </li>
-          <li>Link the GCP project in Apps Script
-            <div class="step-note">Project Settings &rarr; Google Cloud Platform (GCP) Project &rarr; Change project</div>
-          </li>
-          <li>Enable the Apps Script API at <code>script.google.com/home/usersettings</code></li>
-          <li>Deploy as a Web app
-            <div class="step-note">Deploy &rarr; New deployment &rarr; Select type: Web app &rarr; Execute as: Me &rarr; Who has access: Anyone</div>
-          </li>
-          <li>Copy the <strong>Deployment ID</strong> and paste it into the configuration form above</li>
-          <li>Set <code>GITHUB_TOKEN</code> in Script Properties
-            <div class="step-note">Project Settings &rarr; Script Properties &rarr; Add: Key = <code>GITHUB_TOKEN</code>, Value = your <code>github_pat_...</code> fine-grained token with "Public repositories" read-only access</div>
-          </li>
-          <li>Run any function from the Apps Script editor to trigger the initial <strong>OAuth authorization</strong> prompt</li>
-          <li><em>(Optional)</em> If using Google Sheets: create a spreadsheet, copy its ID into the Spreadsheet ID field above</li>
-          <li><em>(Optional)</em> If using an installable trigger for sheet caching:
-            <div class="step-note">Apps Script editor &rarr; Triggers &rarr; + Add Trigger &rarr; Function: <code>onEditWriteB1ToCache</code>, Event source: From spreadsheet, Event type: On edit</div>
-          </li>
-        </ol>
-      </div>
-    </details>
+        </li>
+        <li>Create or use a GCP project where you have <strong>Owner</strong> access</li>
+        <li>Enable the <strong>Apps Script API</strong> in your GCP project
+          <div class="step-note">APIs &amp; Services &rarr; Library &rarr; search "Apps Script API" &rarr; Enable</div>
+        </li>
+        <li>Link the GCP project in Apps Script
+          <div class="step-note">Project Settings &rarr; Google Cloud Platform (GCP) Project &rarr; Change project</div>
+        </li>
+        <li>Enable the Apps Script API at <code>script.google.com/home/usersettings</code></li>
+        <li>Deploy as a Web app
+          <div class="step-note">Deploy &rarr; New deployment &rarr; Select type: Web app &rarr; Execute as: Me &rarr; Who has access: Anyone</div>
+          <div class="step-input">
+            <label for="cfg-title">Title</label>
+            <input type="text" id="cfg-title" placeholder="My GAS Project">
+            <span class="field-hint">Shown in browser tab and GAS UI</span>
+          </div>
+        </li>
+        <li>Copy the <strong>Deployment ID</strong> and paste it below
+          <div class="step-input">
+            <label for="cfg-deployment-id">Deployment ID</label>
+            <input type="text" id="cfg-deployment-id" placeholder="AKfycbw...">
+            <span class="field-hint">From Apps Script: Deploy &rarr; Manage deployments</span>
+          </div>
+        </li>
+        <li>Set <code>GITHUB_TOKEN</code> in Script Properties
+          <div class="step-note">Project Settings &rarr; Script Properties &rarr; Add: Key = <code>GITHUB_TOKEN</code>, Value = your <code>github_pat_...</code> fine-grained token with "Public repositories" read-only access</div>
+        </li>
+        <li>Run any function from the Apps Script editor to trigger the initial <strong>OAuth authorization</strong> prompt</li>
+        <li><em>(Optional)</em> If using Google Sheets: create a spreadsheet and enter the details below
+          <div class="step-input">
+            <label for="cfg-spreadsheet-id">Spreadsheet ID</label>
+            <input type="text" id="cfg-spreadsheet-id" placeholder="1abc2def3ghi...">
+            <span class="field-hint">Google Sheets ID for version tracking</span>
+          </div>
+          <div class="step-input">
+            <label for="cfg-sheet-name">Sheet Name</label>
+            <input type="text" id="cfg-sheet-name" placeholder="Live_Sheet" value="Live_Sheet">
+            <span class="field-hint">Tab name in the spreadsheet</span>
+          </div>
+        </li>
+        <li><em>(Optional)</em> If using an installable trigger for sheet caching:
+          <div class="step-note">Apps Script editor &rarr; Triggers &rarr; + Add Trigger &rarr; Function: <code>onEditWriteB1ToCache</code>, Event source: From spreadsheet, Event type: On edit</div>
+        </li>
+        <li><em>(Optional)</em> Add a notification sound from Google Drive
+          <div class="step-input">
+            <label for="cfg-sound-id">Sound File ID</label>
+            <input type="text" id="cfg-sound-id" placeholder="1bzVp6wp...">
+            <span class="field-hint">Google Drive file ID for notification sound</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="config-actions">
+      <button class="btn-apply" onclick="applyConfig()">Apply</button>
+      <button class="btn-copy" onclick="showConfig()">Copy Config</button>
+      <button class="btn-clear" onclick="clearConfig()">Clear</button>
+    </div>
+    <div class="config-toast" id="config-toast"></div>
+    <div class="config-output" id="config-output"></div>
+
+    <div class="footer-note">
+      Values saved in browser localStorage for instant testing &mdash; use Copy Config to export for your repo
+    </div>
   </div>
   <!-- GAS 1fr4m3 injected dynamically by script -->
 
