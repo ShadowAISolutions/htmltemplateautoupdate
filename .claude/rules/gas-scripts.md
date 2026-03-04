@@ -3,6 +3,7 @@ paths:
   - "googleAppsScripts/**/*.gs"
   - "googleAppsScripts/**/*.config.json"
   - "googleAppsScripts/**/*gs.version.txt"
+  - "live-site-pages/**/*.html"
 ---
 
 # Google Apps Script Rules
@@ -99,5 +100,13 @@ Domain-specific coding constraints are maintained in a dedicated reference file.
 | UI Dialogs — No Browser Defaults | *See `repository-information/CODING-GUIDELINES.md` — section "UI Dialogs — No Browser Defaults"* |
 | AudioContext & Browser Autoplay Policy | *See `repository-information/CODING-GUIDELINES.md` — section "AudioContext & Browser Autoplay Policy"* |
 | Google Sign-In (GIS) for GAS Embedded Apps | *See `repository-information/CODING-GUIDELINES.md` — section "Google Sign-In (GIS) for GAS Embedded Apps"* |
+
+## GAS UI Layout Awareness
+
+GAS UI elements (iframe panels, toggle buttons, status indicators, overlays) are **guests** inside the host HTML page. They must defer to the host page's existing layout — the HTML page should never need to accommodate GAS elements. When making changes to GAS-related UI on any HTML page:
+- **Check for conflicts** with the version indicator (`#version-indicator`, fixed bottom-right), changelog overlay, splash screens, and any other fixed/absolute elements already on the page
+- **Avoid overlapping** interactive elements — if two fixed-position controls would occupy the same corner or edge, move the GAS element to an unoccupied position
+- **Test mental layout** — before finalizing CSS for any new fixed-position GAS UI element, mentally walk through all existing fixed elements on the page and verify no visual or interactive overlap occurs at any viewport size
+- This rule applies automatically to all GAS UI changes — the developer does not need to explicitly request layout-awareness each time
 
 Developed by: ShadowAISolutions

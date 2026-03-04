@@ -49,6 +49,7 @@ This rule applies to any future commands that could target a subset of pages —
   - **Existing `.claude/rules/` file** — if the rule fits an existing file's scope (check `paths:` frontmatter and existing content). Always-loaded files (no `paths:`) for universal behavioral rules; path-scoped files for domain-specific rules
   - **New `.claude/rules/` file** — only if the rule doesn't fit any existing file's scope and represents a distinct domain area that will likely accumulate more rules over time. A single rule does not justify a new file — add it to the closest existing file instead
 - **Always scan for contradictions** before adding a new rule — check CLAUDE.md and all `.claude/rules/` files for existing text that conflicts with the new rule. Resolve conflicts in the same commit (per the Continuous Improvement "Conflict cleanup" rule)
+- **Direction of responsibility** — when a rule describes how system A must accommodate system B, place the rule with the **accommodating system** (the one that must adapt), not the accommodated one. The system that must defer is the one that needs to be reminded. Example: "GAS UI must respect the host HTML page's layout" belongs in `gas-scripts.md` (the guest), not `html-pages.md` (the host) — the GAS code is what needs to check for conflicts, not the HTML page
 - State the chosen location and brief reasoning when adding the rule, so the user can redirect if they disagree with the placement
 
 ## Continuous Improvement
