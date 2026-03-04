@@ -7,12 +7,13 @@
 | Landing Page | `live-site-pages/index.html` | v01.17w | *(deploy to activate)* | Active |
 | Test Page | `live-site-pages/test.html` | v01.18w | *(deploy to activate)* | Active |
 | Soccer Ball | `live-site-pages/soccer-ball.html` | v01.01w | *(deploy to activate)* | Active |
+| GAS Template | `live-site-pages/gas-template.html` | v01.00w | *(deploy to activate)* | Active |
 
 ## GAS Projects
 
 | Project | Code File | Embedding Page | GAS Version | Status |
 |---------|-----------|----------------|-------------|--------|
-| *(none yet)* | — | — | — | — |
+| GasTemplate | `googleAppsScripts/GasTemplate/gas-template.gs` | `live-site-pages/gas-template.html` | 01.00g | Active |
 
 ## Templates
 

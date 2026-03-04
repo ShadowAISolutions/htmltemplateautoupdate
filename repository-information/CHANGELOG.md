@@ -3,9 +3,29 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 59/100`
+`Sections: 60/100`
 
 ## [Unreleased]
+
+## [v02.17r] — 2026-03-03 09:40:29 PM EST
+
+### Added
+- New GAS integration status page (`gas-template.html`) — diagnostic dashboard showing HTML and GAS layer configuration status
+- New GAS project `GasTemplate` with blank template `.gs` file, config.json, and all tracking files
+- GAS status reporting via postMessage — the `.gs` template sends config status to the embedding HTML page for real-time dashboard updates
+
+#### `gas-template.html` — v01.00w
+##### Added
+- Dark-themed diagnostic dashboard showing GAS integration status at a glance
+- HTML layer checks: Deployment ID, Page Title, Auto-Refresh, Version Polling, Audio Context, Wake Lock
+- GAS layer checks: Connection status, GAS Version, GitHub Config, Spreadsheet, Sound File
+- Real-time status updates — dots change color as configuration is detected
+
+#### `gas-template.gs` — 01.00g
+##### Added
+- Blank GAS template with all placeholder variables ready for configuration
+- Config status reporting via `getAppData()` — reports which variables are configured vs placeholder
+- postMessage integration sends `gas-status` to embedding page for dashboard display
 
 ## [v02.16r] — 2026-03-03 09:16:20 PM EST
 
