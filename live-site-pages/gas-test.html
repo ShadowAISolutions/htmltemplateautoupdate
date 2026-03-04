@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.00w">
+  <meta name="build-version" content="v01.01w">
   <title>GAS Test Dashboard</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -268,6 +268,72 @@
       margin-left: 6px;
       vertical-align: middle;
     }
+    /* ── Setup Instructions ────────────────────────────────── */
+    .setup-instructions {
+      margin-top: 16px;
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .setup-instructions summary {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #58a6ff;
+      padding: 10px 14px;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    .setup-instructions summary::-webkit-details-marker { display: none; }
+    .setup-instructions summary::before {
+      content: '\25B6';
+      font-size: 9px;
+      transition: transform 0.2s;
+    }
+    .setup-instructions[open] summary::before {
+      transform: rotate(90deg);
+    }
+    .setup-instructions .setup-body {
+      padding: 0 14px 14px;
+      font-size: 13px;
+      color: #c9d1d9;
+      line-height: 1.6;
+    }
+    .setup-instructions .setup-body ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .setup-instructions .setup-body li {
+      margin-bottom: 8px;
+    }
+    .setup-instructions .setup-body code {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 1px 5px;
+      font: 12px/1.4 'SFMono-Regular', Consolas, monospace;
+      color: #79c0ff;
+    }
+    .setup-instructions .setup-body pre {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font: 12px/1.5 'SFMono-Regular', Consolas, monospace;
+      color: #c9d1d9;
+      overflow-x: auto;
+      margin: 6px 0 10px;
+    }
+    .setup-instructions .setup-body .step-note {
+      font-size: 11px;
+      color: #8b949e;
+      margin-top: 2px;
+    }
   </style>
 </head>
 <body>
@@ -394,6 +460,54 @@
     <div class="footer-note">
       Values saved in browser localStorage for instant testing &mdash; use Copy Config to export for your repo
     </div>
+
+    <details class="setup-instructions">
+      <summary>GAS Setup Instructions</summary>
+      <div class="setup-body">
+        <ol>
+          <li>Create a new Apps Script project at <code>script.google.com</code> and paste your <code>.gs</code> file contents</li>
+          <li>In Project Settings, enable <strong>Show appsscript.json manifest file</strong> and set its contents to:
+<pre>{
+  "timeZone": "America/New_York",
+  "runtimeVersion": "V8",
+  "dependencies": {},
+  "webapp": {
+    "executeAs": "USER_DEPLOYING",
+    "access": "ANYONE_ANONYMOUS"
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/script.projects",
+    "https://www.googleapis.com/auth/script.external_request",
+    "https://www.googleapis.com/auth/script.deployments",
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/script.send_mail"
+  ]
+}</pre>
+          </li>
+          <li>Create or use a GCP project where you have <strong>Owner</strong> access</li>
+          <li>Enable the <strong>Apps Script API</strong> in your GCP project
+            <div class="step-note">APIs &amp; Services &rarr; Library &rarr; search "Apps Script API" &rarr; Enable</div>
+          </li>
+          <li>Link the GCP project in Apps Script
+            <div class="step-note">Project Settings &rarr; Google Cloud Platform (GCP) Project &rarr; Change project</div>
+          </li>
+          <li>Enable the Apps Script API at <code>script.google.com/home/usersettings</code></li>
+          <li>Deploy as a Web app
+            <div class="step-note">Deploy &rarr; New deployment &rarr; Select type: Web app &rarr; Execute as: Me &rarr; Who has access: Anyone</div>
+          </li>
+          <li>Copy the <strong>Deployment ID</strong> and paste it into the configuration form above</li>
+          <li>Set <code>GITHUB_TOKEN</code> in Script Properties
+            <div class="step-note">Project Settings &rarr; Script Properties &rarr; Add: Key = <code>GITHUB_TOKEN</code>, Value = your <code>github_pat_...</code> fine-grained token with "Public repositories" read-only access</div>
+          </li>
+          <li>Run any function from the Apps Script editor to trigger the initial <strong>OAuth authorization</strong> prompt</li>
+          <li><em>(Optional)</em> If using Google Sheets: create a spreadsheet, copy its ID into the Spreadsheet ID field above</li>
+          <li><em>(Optional)</em> If using an installable trigger for sheet caching:
+            <div class="step-note">Apps Script editor &rarr; Triggers &rarr; + Add Trigger &rarr; Function: <code>onEditWriteB1ToCache</code>, Event source: From spreadsheet, Event type: On edit</div>
+          </li>
+        </ol>
+      </div>
+    </details>
   </div>
   <!-- GAS 1fr4m3 injected dynamically by script -->
 

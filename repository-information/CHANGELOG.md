@@ -3,9 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 62/100`
+`Sections: 63/100`
 
 ## [Unreleased]
+
+## [v02.20r] — 2026-03-03 10:19:44 PM EST
+
+### Added
+- Collapsible GAS Setup Instructions section on both GAS Template and GAS Test pages — step-by-step guide covering Apps Script project creation, GCP linking, deployment, and token configuration
+
+#### `gas-template.html` — v01.02w
+##### Added
+- Collapsible setup instructions panel — 12-step guide for creating and configuring the Apps Script project, including manifest settings, GCP linking, deployment, and optional spreadsheet integration
+
+#### `gas-test.html` — v01.01w
+##### Added
+- Collapsible setup instructions panel — same 12-step guide as the GAS Template page
 
 ## [v02.19r] — 2026-03-03 10:09:44 PM EST
 
