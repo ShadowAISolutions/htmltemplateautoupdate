@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 86/100`
+`Sections: 87/100`
 
 ## [Unreleased]
+
+## [v02.44r] — 2026-03-04 12:02:24 PM EST
+
+### Changed
+- Moved all unique project variables (GitHub repo, deployment ID, spreadsheet ID, sheet name, sound file ID, embedding URL, splash logo URL) to a single configuration block at the top of `gas-template-code.js.txt` for easier management — all inline references now use the top-level variables
 
 ## [v02.43r] — 2026-03-04 11:53:21 AM EST
 
