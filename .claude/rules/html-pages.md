@@ -83,4 +83,12 @@ For pages that live directly in `live-site-pages/` (not in a subdirectory), the 
 
 Per-page and per-GAS changelogs are centralized in `repository-information/changelogs/` (e.g. `indexhtml.changelog.md`, `indexgs.changelog.md`) — see Pre-Commit item #17.
 
+## GAS UI Layout Awareness
+
+When making changes to GAS-related UI elements (iframe panels, toggle buttons, status indicators, overlays) on any HTML page, **always consider the host page's existing layout and fixed-position elements** before choosing positions, z-indexes, or dimensions. Specifically:
+- **Check for conflicts** with the version indicator (`#version-indicator`, fixed bottom-right), changelog overlay, splash screens, and any other fixed/absolute elements already on the page
+- **Avoid overlapping** interactive elements — if two fixed-position controls would occupy the same corner or edge, move the new element to an unoccupied position
+- **Test mental layout** — before finalizing CSS for any new fixed-position GAS UI element, mentally walk through all existing fixed elements on the page and verify no visual or interactive overlap occurs at any viewport size
+- This rule applies automatically to all GAS UI changes — the developer does not need to explicitly request layout-awareness each time
+
 Developed by: ShadowAISolutions

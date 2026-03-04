@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-templatehtml.changelog-archive.md](gas-templatehtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 7/50`
+`Sections: 8/50`
 
 ## [Unreleased]
+
+## [v01.08w] — 2026-03-04 08:29:56 AM EST — v02.26r
+
+### Fixed
+- GAS toggle tab moved to bottom-left to avoid overlapping the version/changelog button
 
 ## [v01.07w] — 2026-03-04 08:25:01 AM EST — v02.25r
 
