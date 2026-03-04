@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.18w">
+  <meta name="build-version" content="v01.19w">
   <title>GAS Integration Status</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -278,6 +278,17 @@
       margin: 0;
       padding-left: 20px;
     }
+    .setup-steps > ol {
+      list-style: none;
+      counter-reset: setup-step;
+    }
+    .setup-steps > ol > li {
+      counter-increment: setup-step;
+    }
+    .setup-steps > ol > li:not(.step-group-label)::before {
+      content: counter(setup-step) '. ';
+      font-weight: bold;
+    }
     .setup-steps li {
       margin-bottom: 10px;
     }
@@ -291,7 +302,6 @@
       list-style: none;
       counter-increment: none;
     }
-    .step-group-label::marker { content: ''; }
     .setup-steps code {
       background: #0d1117;
       border: 1px solid #30363d;
