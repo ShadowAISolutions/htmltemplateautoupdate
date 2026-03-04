@@ -3,9 +3,18 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-templatehtml.changelog-archive.md](gas-templatehtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 11/50`
+`Sections: 12/50`
 
 ## [Unreleased]
+
+## [v01.21w] — 2026-03-04 05:17:05 PM EST — v02.62r
+
+### Changed
+- Configuration form now requires Deployment ID before enabling Apply, Copy Config, Copy Code.gs, and GAS Preview
+- Deployment ID field moved to top of form with "required" label for better visibility
+- Copy Config now copies a Claude-ready prompt with JSON directly to clipboard instead of showing an inline output panel
+- Copy Code.gs button restyled as full-width action button with disabled state
+- Form default values updated to reflect actual template repo paths
 
 ### Added
 - Interactive embedded Google Sheets preview in the GAS web app — view and edit the connected spreadsheet directly without leaving the page

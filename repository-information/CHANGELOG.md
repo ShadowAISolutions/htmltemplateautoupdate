@@ -3,9 +3,23 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 52/100`
+`Sections: 53/100`
 
 ## [Unreleased]
+
+## [v02.62r] — 2026-03-04 05:17:05 PM EST
+
+### Changed
+- Synced gas-template.html with all structural improvements from gas-test.html — deployment ID moved above config fields with required label, deploy-separator styling, disabled-state gating on buttons/tabs until deployment ID entered, Copy Config copies directly to clipboard with Claude-ready prompt, Copy Code.gs styled as full-width button with disabled state
+
+#### `gas-template.html` — v01.21w
+
+##### Changed
+- Configuration form now requires Deployment ID before enabling Apply, Copy Config, Copy Code.gs, and GAS Preview
+- Deployment ID field moved to top of form with "required" label for better visibility
+- Copy Config now copies a Claude-ready prompt with JSON directly to clipboard instead of showing an inline output panel
+- Copy Code.gs button restyled as full-width action button with disabled state
+- Form default values updated to reflect actual template repo paths
 
 ## [v02.61r] — 2026-03-04 04:32:56 PM EST
 
