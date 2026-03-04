@@ -3,9 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 59/100`
+`Sections: 60/100`
 
 ## [Unreleased]
+
+## [v02.69r] — 2026-03-04 06:41:06 PM EST
+
+### Added
+- Created `live-site-pages/gas-template.html` — live embedding page for the GasTemplate GAS project
+- Created version and changelog deployment files for gas-template page
+- Registered GasTemplate in GAS Projects table and STATUS.md
+
+### Changed
+- Configured `gas-template.gs` with real org/repo values and embedding page URL
+- Updated `gas-project-creator-code.js.txt` to use HtmlTemplateAutoUpdate.gs (pure placeholders) as source
 
 ## [v02.68r] — 2026-03-04 06:32:59 PM EST
 

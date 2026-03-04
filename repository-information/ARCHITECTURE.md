@@ -49,6 +49,9 @@ graph TB
             GASTPL_VERTXT["gas-project-creatorhtml.version.txt"]
             GASTPL_CL["gas-project-creatorhtml.changelog.txt"]
             GASTPL_CODE["gas-project-creator-code.js.txt"]
+            GASTPL_LIVE["gas-template.html"]
+            GASTPL_LIVE_VER["gas-templatehtml.version.txt"]
+            GASTPL_LIVE_CL["gas-templatehtml.changelog.txt"]
             SND1["sounds/Website_Ready_Voice_1.mp3"]
             SND2["sounds/Code_Ready_Voice_1.mp3"]
         end
@@ -132,14 +135,18 @@ graph TB
     GAS_TEST_CFG -.->|"syncs to\n(Pre-Commit #15)"| TEST
     GAS_GASTPL_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_GASTPL
     GAS_GASTPL_CFG -.->|"syncs to\n(Pre-Commit #15)"| GASTPL_PAGE
+    GAS_NEWTPL_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_NEWTPL
+    GAS_NEWTPL_CFG -.->|"syncs to\n(Pre-Commit #15)"| GASTPL_LIVE
     LIVE -.->|"serves"| BROWSER
     INDEX -.->|"iframes"| GAS_APP
     TEST -.->|"iframes"| GAS_APP
     GASTPL_PAGE -.->|"iframes"| GAS_APP
+    GASTPL_LIVE -.->|"iframes"| GAS_APP
     GAS_POSTMSG -.->|"tells embedding\npage to reload"| BROWSER
     GAS_INDEX -.->|"source of truth\nfor GAS app\n(index.gs)"| GAS_PULL
     GAS_TEST -.->|"source of truth\nfor GAS app\n(test.gs)"| GAS_PULL
     GAS_GASTPL -.->|"source of truth\nfor GAS app\n(gas-project-creator.gs)"| GAS_PULL
+    GAS_NEWTPL -.->|"source of truth\nfor GAS app\n(gas-template.gs)"| GAS_PULL
     GAS_DEPLOY -.->|"curl POST\naction=deploy"| GAS_APP
     SHA_FILE -.->|"read by"| SHA_CHECK
     UPDATE_SHA -.->|"writes"| SHA_FILE

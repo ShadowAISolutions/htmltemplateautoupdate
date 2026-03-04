@@ -8,6 +8,7 @@
 | Test Page | `live-site-pages/test.html` | v01.18w | *(deploy to activate)* | Active |
 | Soccer Ball | `live-site-pages/soccer-ball.html` | v01.01w | *(deploy to activate)* | Active |
 | GAS Project Creator | `live-site-pages/gas-project-creator.html` | v01.26w | *(deploy to activate)* | Active |
+| GAS Template | `live-site-pages/gas-template.html` | v01.00w | *(deploy to activate)* | Active |
 
 
 ## GAS Projects
@@ -15,6 +16,7 @@
 | Project | Code File | Embedding Page | GAS Version | Status |
 |---------|-----------|----------------|-------------|--------|
 | GasProjectCreator | `googleAppsScripts/GasProjectCreator/gas-project-creator.gs` | `live-site-pages/gas-project-creator.html` | 01.08g | Active |
+| GasTemplate | `googleAppsScripts/GasTemplate/gas-template.gs` | `live-site-pages/gas-template.html` | 01.00g | Active |
 
 
 ## Templates
