@@ -3,9 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 88/100`
+`Sections: 89/100`
 
 ## [Unreleased]
+
+## [v02.46r] — 2026-03-04 12:22:18 PM EST
+
+### Changed
+- Reordered setup steps in GAS Template and GAS Test pages so entering project-specific variables and clicking "Copy Code.gs" is the final step — users complete all infrastructure setup first, then fill in config values last when they have all the information
+
+#### `gas-template.html` — v01.12w
+
+##### Changed
+- Setup steps reordered so entering project variables (Title, Deployment ID, Spreadsheet ID, Sheet Name, Sound File ID) and copying the code is the last step instead of the first
+
+#### `gas-test.html` — v01.12w
+
+##### Changed
+- Setup steps reordered so entering project variables and copying the code is the last step instead of the first
 
 ## [v02.45r] — 2026-03-04 12:13:44 PM EST
 

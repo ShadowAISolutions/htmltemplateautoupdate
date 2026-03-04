@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.11w">
+  <meta name="build-version" content="v01.12w">
   <title>GAS Test Dashboard</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -601,26 +601,7 @@
 
     <div class="setup-steps">
       <ol>
-        <li>Create a new Apps Script project at <code>script.google.com</code> and paste the configured <code>Code.gs</code>
-          <div class="step-note">Fill in any fields you have ready &mdash; they'll be baked into the code when you copy</div>
-          <div class="step-input">
-            <label for="cfg-spreadsheet-id">Spreadsheet ID <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-spreadsheet-id" placeholder="1abc2def3ghi..."><button class="field-clear" onclick="clearField('cfg-spreadsheet-id','gas-test-spreadsheet-id')" title="Clear">&times;</button></div>
-            <span class="field-hint">Google Sheets ID for version tracking</span>
-          </div>
-          <div class="step-input">
-            <label for="cfg-sheet-name">Sheet Name <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-sheet-name" placeholder="Live_Sheet" value="Live_Sheet"><button class="field-clear" onclick="clearField('cfg-sheet-name','gas-test-sheet-name')" title="Clear">&times;</button></div>
-            <span class="field-hint">Tab name in the spreadsheet</span>
-          </div>
-          <div class="step-input">
-            <label for="cfg-sound-id">Sound File ID <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-sound-id" placeholder="1bzVp6wp..."><button class="field-clear" onclick="clearField('cfg-sound-id','gas-test-sound-file-id')" title="Clear">&times;</button></div>
-            <span class="field-hint">Google Drive file ID for notification sound</span>
-          </div>
-          <div class="pre-wrap" style="margin-top:8px"><button class="btn-copy-json" onclick="copyGsCode(this)">Copy Code.gs</button></div>
-          <div class="step-note">In the Apps Script editor, replace all contents of <code>Code.gs</code> with the copied code</div>
-        </li>
+        <li>Create a new Apps Script project at <code>script.google.com</code></li>
         <li>In Project Settings, enable <strong>Show appsscript.json manifest file</strong> and set its contents to:
 <div class="pre-wrap"><button class="btn-copy-json" onclick="copyManifest(this)">Copy</button><pre id="manifest-json">{
   "timeZone": "America/New_York",
@@ -680,18 +661,6 @@
         <li>Enable the Apps Script API at <code>script.google.com/home/usersettings</code></li>
         <li>Deploy as a Web app
           <div class="step-note">Deploy &rarr; New deployment &rarr; Select type: Web app &rarr; Execute as: Me &rarr; Who has access: Anyone</div>
-          <div class="step-input">
-            <label for="cfg-title">Title</label>
-            <div class="input-row"><input type="text" id="cfg-title" placeholder="My GAS Project"><button class="field-clear" onclick="clearField('cfg-title','gas-test-title')" title="Clear">&times;</button></div>
-            <span class="field-hint">Shown in browser tab and GAS UI</span>
-          </div>
-        </li>
-        <li>Copy the <strong>Deployment ID</strong> and paste it below
-          <div class="step-input">
-            <label for="cfg-deployment-id">Deployment ID</label>
-            <div class="input-row"><input type="text" id="cfg-deployment-id" placeholder="AKfycbw..."><button class="field-clear" onclick="clearField('cfg-deployment-id','gas-test-deployment-id')" title="Clear">&times;</button></div>
-            <span class="field-hint">From Apps Script: Deploy &rarr; Manage deployments</span>
-          </div>
         </li>
         <li>Set <code>GITHUB_TOKEN</code> in Script Properties
           <div class="step-note">Project Settings &rarr; Script Properties &rarr; Add: Key = <code>GITHUB_TOKEN</code>, Value = your fine-grained personal access token</div>
@@ -699,13 +668,39 @@
           <div class="step-note"><strong>Reuse across projects:</strong> The same token works for all your GAS projects &mdash; you don't need a new one per repo. Just paste the same token into each project's Script Properties.</div>
         </li>
         <li>Run any function from the Apps Script editor to trigger the initial <strong>OAuth authorization</strong> prompt</li>
-        <li><em>(Optional)</em> If using Google Sheets: create a spreadsheet and enter the Spreadsheet ID and Sheet Name in Step 1 above
-          <div class="step-note">The values you entered will be included in the copied Code.gs automatically</div>
-        </li>
         <li><em>(Optional)</em> If using an installable trigger for sheet caching:
           <div class="step-note">Apps Script editor &rarr; Triggers &rarr; + Add Trigger &rarr; Function: <code>onEditWriteB1ToCache</code>, Event source: From spreadsheet, Event type: On edit</div>
         </li>
-        <li><em>(Optional)</em> Add a notification sound: enter the Sound File ID in Step 1 above</li>
+        <li>Fill in your project values below and copy the configured <code>Code.gs</code>
+          <div class="step-note">These values are baked into the code when you copy &mdash; this should be the last thing you do</div>
+          <div class="step-input">
+            <label for="cfg-title">Title</label>
+            <div class="input-row"><input type="text" id="cfg-title" placeholder="My GAS Project"><button class="field-clear" onclick="clearField('cfg-title','gas-test-title')" title="Clear">&times;</button></div>
+            <span class="field-hint">Shown in browser tab and GAS UI</span>
+          </div>
+          <div class="step-input">
+            <label for="cfg-deployment-id">Deployment ID</label>
+            <div class="input-row"><input type="text" id="cfg-deployment-id" placeholder="AKfycbw..."><button class="field-clear" onclick="clearField('cfg-deployment-id','gas-test-deployment-id')" title="Clear">&times;</button></div>
+            <span class="field-hint">From Apps Script: Deploy &rarr; Manage deployments</span>
+          </div>
+          <div class="step-input">
+            <label for="cfg-spreadsheet-id">Spreadsheet ID <em>(optional)</em></label>
+            <div class="input-row"><input type="text" id="cfg-spreadsheet-id" placeholder="1abc2def3ghi..."><button class="field-clear" onclick="clearField('cfg-spreadsheet-id','gas-test-spreadsheet-id')" title="Clear">&times;</button></div>
+            <span class="field-hint">Google Sheets ID for version tracking</span>
+          </div>
+          <div class="step-input">
+            <label for="cfg-sheet-name">Sheet Name <em>(optional)</em></label>
+            <div class="input-row"><input type="text" id="cfg-sheet-name" placeholder="Live_Sheet" value="Live_Sheet"><button class="field-clear" onclick="clearField('cfg-sheet-name','gas-test-sheet-name')" title="Clear">&times;</button></div>
+            <span class="field-hint">Tab name in the spreadsheet</span>
+          </div>
+          <div class="step-input">
+            <label for="cfg-sound-id">Sound File ID <em>(optional)</em></label>
+            <div class="input-row"><input type="text" id="cfg-sound-id" placeholder="1bzVp6wp..."><button class="field-clear" onclick="clearField('cfg-sound-id','gas-test-sound-file-id')" title="Clear">&times;</button></div>
+            <span class="field-hint">Google Drive file ID for notification sound</span>
+          </div>
+          <div class="pre-wrap" style="margin-top:8px"><button class="btn-copy-json" onclick="copyGsCode(this)">Copy Code.gs</button></div>
+          <div class="step-note">In the Apps Script editor, replace all contents of <code>Code.gs</code> with the copied code</div>
+        </li>
       </ol>
     </div>
 

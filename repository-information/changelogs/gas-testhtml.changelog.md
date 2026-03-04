@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-testhtml.changelog-archive.md](gas-testhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 11/50`
+`Sections: 12/50`
 
 ## [Unreleased]
+
+## [v01.12w] — 2026-03-04 12:22:18 PM EST — v02.46r
+
+### Changed
+- Setup steps reordered so entering project variables and copying the code is the last step — complete all infrastructure setup first, then fill in config values when you have all the information
 
 ## [v01.11w] — 2026-03-04 11:46:16 AM EST — v02.42r
 

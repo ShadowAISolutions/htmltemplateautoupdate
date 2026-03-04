@@ -3,12 +3,17 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-templatehtml.changelog-archive.md](gas-templatehtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 11/50`
+`Sections: 12/50`
 
 ## [Unreleased]
 
+## [v01.12w] — 2026-03-04 12:22:18 PM EST — v02.46r
+
 ### Added
 - Interactive embedded Google Sheets preview in the GAS web app — view and edit the connected spreadsheet directly without leaving the page
+
+### Changed
+- Setup steps reordered so entering project variables (Title, Deployment ID, Spreadsheet ID, Sheet Name, Sound File ID) and copying the code is the last step — complete all infrastructure setup first, then fill in config values when you have all the information
 
 ## [v01.11w] — 2026-03-04 10:09:15 AM EST — v02.33r
 
