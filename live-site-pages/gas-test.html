@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.05w">
+  <meta name="build-version" content="v01.06w">
   <title>GAS Test Dashboard</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -958,8 +958,22 @@
         setStatus('gas-conn', 'green', 'ok', 'Connected');
         setStatus('gas-version', cfg.version ? 'green' : 'gray', cfg.version ? 'ok' : 'neutral', cfg.version || '\u2014');
         setStatus('gas-github', cfg.hasGithub ? 'green' : 'red', cfg.hasGithub ? 'ok' : 'missing', cfg.hasGithub ? 'Configured' : 'Placeholder');
-        setStatus('gas-sheet', cfg.hasSpreadsheet ? 'green' : 'yellow', cfg.hasSpreadsheet ? 'ok' : 'warn', cfg.hasSpreadsheet ? 'Connected' : 'Not set');
-        setStatus('gas-sound', cfg.hasSound ? 'green' : 'yellow', cfg.hasSound ? 'ok' : 'warn', cfg.hasSound ? 'Configured' : 'Not set');
+        var localSheet = localStorage.getItem('gas-test-spreadsheet-id');
+        if (cfg.hasSpreadsheet) {
+          setStatus('gas-sheet', 'green', 'ok', 'Connected');
+        } else if (localSheet) {
+          setStatus('gas-sheet', 'yellow', 'warn', 'Local only \u2014 update GAS script');
+        } else {
+          setStatus('gas-sheet', 'yellow', 'warn', 'Not set');
+        }
+        var localSound = localStorage.getItem('gas-test-sound-file-id');
+        if (cfg.hasSound) {
+          setStatus('gas-sound', 'green', 'ok', 'Configured');
+        } else if (localSound) {
+          setStatus('gas-sound', 'yellow', 'warn', 'Local only \u2014 update GAS script');
+        } else {
+          setStatus('gas-sound', 'yellow', 'warn', 'Not set');
+        }
       }
     });
 

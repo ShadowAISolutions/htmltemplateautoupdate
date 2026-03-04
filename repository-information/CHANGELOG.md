@@ -3,9 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 67/100`
+`Sections: 68/100`
 
 ## [Unreleased]
+
+## [v02.25r] — 2026-03-04 08:25:01 AM EST
+
+### Fixed
+- GAS Layer "Spreadsheet" and "Sound File" status rows now show "Local only — update GAS script" when values are saved in localStorage but the GAS script still has placeholders, instead of misleading "Not set"
+
+#### `gas-template.html` — v01.07w
+##### Fixed
+- Spreadsheet and Sound File status now correctly reflects localStorage values when GAS script reports placeholders
+
+#### `gas-test.html` — v01.06w
+##### Fixed
+- Spreadsheet and Sound File status now correctly reflects localStorage values when GAS script reports placeholders
 
 ## [v02.24r] — 2026-03-04 08:15:33 AM EST
 
