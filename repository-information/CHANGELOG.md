@@ -3,9 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 96/100`
+`Sections: 97/100`
 
 ## [Unreleased]
+
+## [v02.54r] — 2026-03-04 01:39:56 PM EST
+
+### Changed
+- Reordered GAS setup steps on both GAS Test and GAS Template pages for logical flow: GITHUB_TOKEN before Deploy #1, Code.gs copy before OAuth, OAuth before Deploy #2, optional trigger last
+
+#### `gas-test.html` — v01.20w
+
+##### Changed
+- Setup steps reordered so each step's prerequisites are completed before it runs
+
+#### `gas-template.html` — v01.15w
+
+##### Changed
+- Setup steps reordered so each step's prerequisites are completed before it runs
 
 ## [v02.53r] — 2026-03-04 01:26:42 PM EST
 
