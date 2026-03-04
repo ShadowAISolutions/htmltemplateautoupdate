@@ -3,9 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 98/100`
+`Sections: 99/100`
 
 ## [Unreleased]
+
+## [v02.56r] — 2026-03-04 01:59:45 PM EST
+
+### Changed
+- Split manifest step on both GAS pages: step 5 now just enables the manifest file toggle, step 8 (after GITHUB_TOKEN) sets the JSON contents
+- Updated step references throughout (Deploy ID from step 9, code pasted in step 10)
+
+#### `gas-test.html` — v01.22w
+
+##### Changed
+- Manifest setup split into two steps: enable toggle (step 5) and set contents (step 8)
+
+#### `gas-template.html` — v01.17w
+
+##### Changed
+- Manifest setup split into two steps: enable toggle (step 5) and set contents (step 8)
 
 ## [v02.55r] — 2026-03-04 01:50:56 PM EST
 

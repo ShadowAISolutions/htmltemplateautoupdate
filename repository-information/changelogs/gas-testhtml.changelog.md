@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-testhtml.changelog-archive.md](gas-testhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 21/50`
+`Sections: 22/50`
 
 ## [Unreleased]
+
+## [v01.22w] — 2026-03-04 01:59:45 PM EST — v02.56r
+
+### Changed
+- Manifest setup split into two steps: enable the toggle first, set the JSON contents later after GITHUB_TOKEN
 
 ## [v01.21w] — 2026-03-04 01:50:56 PM EST — v02.55r
 
