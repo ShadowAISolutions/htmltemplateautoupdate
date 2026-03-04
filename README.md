@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-04 06:41:06 PM EST` · Repo version: `v02.69r`
+Last updated: `2026-03-04 06:53:55 PM EST` · Repo version: `v02.70r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -180,10 +180,6 @@ htmltemplateautoupdate/
 │   │   ├── test.gs            # Self-updating GAS web app
 │   │   ├── test.config.json   # Project config (source of truth)
 │   │   └── testgs.version.txt  # GAS version file (mirrors VERSION var)
-│   ├── GasProjectCreator/       # GAS for live-site-pages/gas-project-creator.html
-│   │   ├── gas-project-creator.gs      # GAS project creator web app
-│   │   ├── gas-project-creator.config.json  # Project config (source of truth)
-│   │   └── gas-project-creatorgs.version.txt  # GAS version file (mirrors VERSION var)
 │   ├── GasTemplate/             # GAS template for new projects (used by gas-project-creator)
 │   │   ├── gas-template.gs      # Template GAS web app (placeholder values)
 │   │   ├── gas-template.config.json  # Template config (placeholders)
@@ -250,8 +246,6 @@ htmltemplateautoupdate/
 │   │   ├── testgs.changelog-archive.md      # Older changelog sections (rotated)
 │   │   ├── gas-project-creatorhtml.changelog.md          # User-facing changelog for GAS Project Creator page
 │   │   ├── gas-project-creatorhtml.changelog-archive.md  # Older changelog sections (rotated)
-│   │   ├── gas-project-creatorgs.changelog.md            # User-facing changelog for GAS Project Creator GAS
-│   │   ├── gas-project-creatorgs.changelog-archive.md    # Older changelog sections (rotated)
 │   │   ├── GasTemplatehtml.changelog.md          # GAS template page changelog
 │   │   ├── GasTemplatehtml.changelog-archive.md  # GAS template page changelog archive
 │   │   ├── GasTemplategs.changelog.md            # GAS template GAS changelog

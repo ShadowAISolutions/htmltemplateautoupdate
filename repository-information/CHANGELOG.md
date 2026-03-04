@@ -3,9 +3,31 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 60/100`
+`Sections: 61/100`
 
 ## [Unreleased]
+
+## [v02.70r] — 2026-03-04 06:53:55 PM EST
+
+### Removed
+- Removed GAS iframe layer, postMessage listeners, GAS panel, and spreadsheet data display from gas-project-creator page — now a static setup tool with no GAS backend
+- Deleted `googleAppsScripts/GasProjectCreator/` directory (gas-project-creator.gs, config.json, version file)
+- Deleted GAS-specific changelog files for GasProjectCreator
+- Removed GasProjectCreator from GAS Projects table
+
+### Changed
+- Updated gas-project-creator page title and heading to "GAS Project Creator"
+
+#### `gas-project-creator.html` — v01.27w
+
+##### Removed
+- GAS iframe integration (iframe IIFE, panel toggle, resize handler)
+- GAS postMessage listeners (gas-reload, gas-status, gas-b1)
+- GAS Layer dashboard section and Spreadsheet Data section
+- GAS deploy sound handler
+
+##### Changed
+- Page title updated from "GAS Integration Status" to "GAS Project Creator"
 
 ## [v02.69r] — 2026-03-04 06:41:06 PM EST
 
