@@ -3,9 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 76/100`
+`Sections: 77/100`
 
 ## [Unreleased]
+
+## [v02.34r] — 2026-03-04 10:20:48 AM EST
+
+### Added
+- Spreadsheet data section in the GAS web app — when opening the web app directly (not embedded), spreadsheet cell values (A1, B1, C1) and sheet name are now visible
+- Live B1 polling updates the standalone web app display in addition to the embedding page
+
+#### `gas-template.gs` — 01.02g
+##### Added
+- Spreadsheet Data section showing sheet name, A1 (version), B1 (live value), and C1 (pushed version) when spreadsheet is configured
+- Live B1 value updates directly in the web app display via 15-second polling
+
+#### `gas-test.gs` — 01.02g
+##### Added
+- Spreadsheet Data section showing sheet name, A1 (version), B1 (live value), and C1 (pushed version) when spreadsheet is configured
+- Live B1 value updates directly in the web app display via 15-second polling
 
 ## [v02.33r] — 2026-03-04 10:09:15 AM EST
 
