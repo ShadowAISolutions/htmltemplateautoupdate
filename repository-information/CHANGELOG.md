@@ -3,9 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 53/100`
+`Sections: 54/100`
 
 ## [Unreleased]
+
+## [v02.63r] — 2026-03-04 05:27:21 PM EST
+
+### Changed
+- Moved Apply button (renamed "Test GAS Connection") directly under the Deployment ID field for immediate testing after entering the ID
+- Renamed "Copy Config" button to "Copy Claude Config" for clarity
+
+#### `gas-template.html` — v01.22w
+
+##### Changed
+- "Test GAS Connection" button now appears directly under the Deployment ID field — test your connection immediately after entering the ID
+- "Copy Config" renamed to "Copy Claude Config" to clarify it copies a Claude-ready prompt
 
 ## [v02.62r] — 2026-03-04 05:17:05 PM EST
 

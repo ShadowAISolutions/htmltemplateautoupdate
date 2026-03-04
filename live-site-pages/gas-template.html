@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.21w">
+  <meta name="build-version" content="v01.22w">
   <title>GAS Integration Status</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -714,6 +714,7 @@
             <label for="cfg-deployment-id">Deployment ID <em style="color:#f85149">(required)</em></label>
             <div class="input-row"><input type="text" id="cfg-deployment-id" placeholder="AKfycbw..." oninput="updateDeployGate()"><button class="field-clear" onclick="clearField('cfg-deployment-id','gas-template-deployment-id')" title="Clear">&times;</button></div>
             <span class="field-hint">From Apps Script: Deploy &rarr; Manage deployments &mdash; required before using Apply, Copy, or GAS Preview</span>
+            <button class="btn-apply" id="btn-apply" onclick="applyConfig()" disabled style="margin-top:8px">Test GAS Connection</button>
           </div>
           <div class="deploy-separator">
             <div class="deploy-separator-label">Project Configuration</div>
@@ -791,14 +792,13 @@
     </div>
 
     <div class="config-actions">
-      <button class="btn-apply" id="btn-apply" onclick="applyConfig()" disabled>Apply</button>
-      <button class="btn-copy" id="btn-copy-config" onclick="copyConfig()" disabled>Copy Config</button>
+      <button class="btn-copy" id="btn-copy-config" onclick="copyConfig()" disabled>Copy Claude Config</button>
       <button class="btn-clear" onclick="clearConfig()">Clear Local Storage</button>
     </div>
     <div class="config-toast" id="config-toast"></div>
 
     <div class="footer-note">
-      Values saved in browser localStorage for instant testing &mdash; Copy Config copies a Claude-ready prompt + JSON to your clipboard
+      Values saved in browser localStorage for instant testing &mdash; Copy Claude Config copies a Claude-ready prompt + JSON to your clipboard
     </div>
   </div>
   <!-- GAS panel — collapsible bottom drawer for iframe -->

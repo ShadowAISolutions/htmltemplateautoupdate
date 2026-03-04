@@ -3,9 +3,15 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-templatehtml.changelog-archive.md](gas-templatehtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 21/50`
+`Sections: 22/50`
 
 ## [Unreleased]
+
+## [v01.22w] — 2026-03-04 05:27:21 PM EST — v02.63r
+
+### Changed
+- "Test GAS Connection" button now appears directly under the Deployment ID field — test your connection immediately after entering the ID
+- "Copy Config" renamed to "Copy Claude Config" to clarify it copies a Claude-ready prompt
 
 ## [v01.21w] — 2026-03-04 05:17:05 PM EST — v02.62r
 
