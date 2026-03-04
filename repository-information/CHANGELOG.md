@@ -3,9 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 99/100`
+`Sections: 100/100`
 
 ## [Unreleased]
+
+## [v02.57r] — 2026-03-04 02:11:49 PM EST
+
+### Added
+- Subtle subsection group labels in GAS setup steps on both pages: Google Account Setup, New Apps Script Project, GAS Project Settings, GAS Editor, GAS Triggers
+
+#### `gas-test.html` — v01.23w
+
+##### Added
+- Setup steps now grouped with subtle section labels for easier navigation
+
+#### `gas-template.html` — v01.18w
+
+##### Added
+- Setup steps now grouped with subtle section labels for easier navigation
 
 ## [v02.56r] — 2026-03-04 01:59:45 PM EST
 

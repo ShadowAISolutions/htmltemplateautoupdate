@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.17w">
+  <meta name="build-version" content="v01.18w">
   <title>GAS Integration Status</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -281,6 +281,17 @@
     .setup-steps li {
       margin-bottom: 10px;
     }
+    .step-group-label {
+      font-size: 10px;
+      color: #484f58;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 14px 0 6px -4px;
+      padding: 0;
+      list-style: none;
+      counter-increment: none;
+    }
+    .step-group-label::marker { content: ''; }
     .setup-steps code {
       background: #0d1117;
       border: 1px solid #30363d;
@@ -621,12 +632,15 @@
 
     <div class="setup-steps">
       <ol>
+        <li class="step-group-label">Google Account Setup</li>
         <li>Enable the Apps Script API at <code>script.google.com/home/usersettings</code></li>
         <li>Create or use a GCP project where you have <strong>Owner</strong> access. If you don't have one, create a new project at <a href="https://console.cloud.google.com/home/" target="_blank" rel="noopener" style="color:#58a6ff">console.cloud.google.com</a></li>
         <li>Enable the <strong>Apps Script API</strong> in your GCP project
           <div class="step-note">APIs &amp; Services &rarr; Library &rarr; search "Apps Script API" &rarr; Enable</div>
         </li>
+        <li class="step-group-label">New Apps Script Project</li>
         <li>Create a new Apps Script project at <code>script.google.com</code></li>
+        <li class="step-group-label">GAS Project Settings</li>
         <li>In Project Settings, enable <strong>Show appsscript.json manifest file</strong>
           <div class="step-note">Project Settings &rarr; General settings &rarr; Show &ldquo;appsscript.json&rdquo; manifest file</div>
         </li>
@@ -668,6 +682,7 @@
           <div class="step-note" style="margin-top:6px"><strong>To create a token:</strong> GitHub.com &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens &rarr; Generate new token. Under "Repository access" select <strong>Public repositories (read-only)</strong>. No additional permissions are needed. Copy the <code>github_pat_...</code> value.</div>
           <div class="step-note"><strong>Reuse across projects:</strong> The same token works for all your GAS projects &mdash; you don't need a new one per repo. Just paste the same token into each project's Script Properties.</div>
         </li>
+        <li class="step-group-label">GAS Editor</li>
         <li>Set the <code>appsscript.json</code> manifest contents to:
 <div class="pre-wrap"><button class="btn-copy-json" onclick="copyManifest(this)">Copy</button><pre id="manifest-json">{
   "timeZone": "America/New_York",
@@ -763,6 +778,7 @@
           <div class="step-note">Deploy &rarr; Manage deployments &rarr; Edit (pencil icon) &rarr; Version: New version &rarr; Deploy</div>
           <div class="step-note" style="margin-top:6px"><strong>Why two deploys?</strong> Deploy #1 creates the deployment URL and gives you the Deployment ID. But the code you pasted in step 10 needs that ID to auto-update itself. Deploy #2 pushes the code (now containing the real Deployment ID) to the live deployment with all OAuth permissions granted. After this, all future updates are automatic &mdash; pushes to GitHub trigger the GAS to pull and redeploy itself.</div>
         </li>
+        <li class="step-group-label">GAS Triggers</li>
         <li><em>(Optional)</em> If using an installable trigger for sheet caching:
           <div class="step-note">Apps Script editor &rarr; Triggers &rarr; + Add Trigger &rarr; Function: <code>onEditWriteB1ToCache</code>, Event source: From spreadsheet, Event type: On edit</div>
         </li>
