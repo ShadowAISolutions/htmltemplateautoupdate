@@ -3,9 +3,19 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-testhtml.changelog-archive.md](gas-testhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 4/50`
+`Sections: 5/50`
 
 ## [Unreleased]
+
+## [v01.05w] — 2026-03-04 08:15:33 AM EST — v02.24r
+
+### Added
+- "Local Config" dashboard section showing saved Deployment ID, Spreadsheet ID, Sheet Name, and Sound File ID with status indicators
+- Per-field clear buttons (×) next to every configuration input for individually removing saved values
+- Collapsible bottom panel for GAS iframe with toggle tab and drag-to-resize handle
+
+### Changed
+- GAS iframe opens in a resizable bottom drawer instead of covering the entire page — dashboard stays interactive during testing
 
 ## [v01.04w] — 2026-03-04 07:50:45 AM EST — v02.23r
 

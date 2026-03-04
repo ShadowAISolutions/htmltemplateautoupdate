@@ -3,9 +3,38 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 66/100`
+`Sections: 67/100`
 
 ## [Unreleased]
+
+## [v02.24r] — 2026-03-04 08:15:33 AM EST
+
+### Added
+- "Local Config (localStorage)" dashboard section on GAS Template and GAS Test pages — shows saved Deployment ID, Spreadsheet ID, Sheet Name, and Sound File ID with green/gray status indicators
+- Per-field clear buttons (× icons) next to every configuration input for individually removing localStorage values
+- Collapsible bottom drawer panel for GAS iframe — replaces full-screen overlay, with toggle tab and drag-to-resize handle (mouse + touch)
+
+### Changed
+- GAS iframe no longer covers the entire page — opens in a resizable bottom panel so the dashboard remains interactive during testing
+- "Clear" button now also hides the GAS panel and resets local config status indicators
+
+#### `gas-template.html` — v01.06w
+##### Added
+- "Local Config" dashboard section showing localStorage values at a glance
+- Per-field clear buttons on every configuration input
+- Collapsible bottom panel for GAS iframe with toggle and drag-to-resize
+
+##### Changed
+- GAS iframe opens in a resizable bottom drawer instead of a full-screen overlay
+
+#### `gas-test.html` — v01.05w
+##### Added
+- "Local Config" dashboard section showing localStorage values at a glance
+- Per-field clear buttons on every configuration input
+- Collapsible bottom panel for GAS iframe with toggle and drag-to-resize
+
+##### Changed
+- GAS iframe opens in a resizable bottom drawer instead of a full-screen overlay
 
 ## [v02.23r] — 2026-03-04 07:50:45 AM EST
 
