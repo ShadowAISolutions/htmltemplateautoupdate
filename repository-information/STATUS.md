@@ -14,7 +14,7 @@
 
 | Project | Code File | Embedding Page | GAS Version | Status |
 |---------|-----------|----------------|-------------|--------|
-| GasTemplate | `googleAppsScripts/GasTemplate/gas-template.gs` | `live-site-pages/gas-template.html` | 01.06g | Active |
+| GasTemplate | `googleAppsScripts/GasTemplate/gas-template.gs` | `live-site-pages/gas-template.html` | 01.07g | Active |
 
 
 ## Templates

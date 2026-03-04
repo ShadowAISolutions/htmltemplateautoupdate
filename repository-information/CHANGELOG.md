@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 56/100`
+`Sections: 57/100`
 
 ## [Unreleased]
+
+## [v02.66r] — 2026-03-04 05:47:54 PM EST
+
+### Added
+- GAS iframe now reports config status to the embedding page dashboard via `gas-status` postMessage — resolves "GAS Connection: No response" indicator
+
+#### `gas-template.gs` — 01.07g
+
+##### Added
+- Dashboard now shows live connection status, GAS version, GitHub token status, spreadsheet connection, and sound configuration
 
 ## [v02.65r] — 2026-03-04 05:37:43 PM EST
 

@@ -106,7 +106,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.06g";
+var VERSION = "01.07g";
 var TITLE = "GAS Integration Status";                               // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -294,6 +294,14 @@ function doGet() {
         google.script.run
           .withSuccessHandler(function(data) { applyData(data); })
           .getAppData();
+
+        // Report config status to embedding page dashboard
+        google.script.run
+          .withSuccessHandler(function(status) {
+            try { window.top.postMessage({type: 'gas-status', config: status}, '*'); } catch(e) {}
+            try { window.parent.postMessage({type: 'gas-status', config: status}, '*'); } catch(e) {}
+          })
+          .getGasStatus();
 
         // Poll cell B1 from cache every 15s (cache is updated by onEditWriteB1ToCache trigger)
         function pollB1FromCache() {
@@ -538,6 +546,42 @@ function onEditWriteB1ToCache(e) {
   var val = e.range.getValue();
   var result = val !== null && val !== undefined ? String(val) : "";
   CacheService.getScriptCache().put("live_b1", result, 21600);
+}
+
+function getGasStatus() {
+  var status = {};
+  status.version = "v" + VERSION;
+
+  // Check if GITHUB_TOKEN is set in script properties
+  var GITHUB_TOKEN = PropertiesService.getScriptProperties().getProperty("GITHUB_TOKEN");
+  status.hasGithub = !!(GITHUB_TOKEN && GITHUB_TOKEN !== "");
+
+  // Check if SPREADSHEET_ID is configured
+  status.hasSpreadsheet = !!(SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID");
+  if (status.hasSpreadsheet) {
+    status.spreadsheetId = SPREADSHEET_ID;
+    // Read sheet data
+    try {
+      var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+      var sheet = ss.getSheetByName(SHEET_NAME);
+      if (sheet) {
+        status.sheetData = {
+          a1: String(sheet.getRange("A1").getValue() || ""),
+          b1: String(sheet.getRange("B1").getValue() || ""),
+          c1: String(sheet.getRange("C1").getValue() || "")
+        };
+      } else {
+        status.sheetData = { error: "Sheet '" + SHEET_NAME + "' not found" };
+      }
+    } catch(e) {
+      status.sheetData = { error: e.message };
+    }
+  }
+
+  // Check if SOUND_FILE_ID is configured
+  status.hasSound = !!(SOUND_FILE_ID && SOUND_FILE_ID !== "");
+
+  return status;
 }
 
 function writeVersionToSheet() {

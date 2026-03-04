@@ -3,9 +3,14 @@
 All notable user-facing changes to this script are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-templategs.changelog-archive.md](gas-templategs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 6/50`
+`Sections: 7/50`
 
 ## [Unreleased]
+
+## [01.07g] — 2026-03-04 05:47:54 PM EST — v02.66r
+
+### Added
+- Dashboard now shows live GAS connection status, version, GitHub configuration, spreadsheet connection, and sound configuration
 
 ## [01.06g] — 2026-03-04 11:28:22 AM EST — v02.41r
 
