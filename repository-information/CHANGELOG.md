@@ -3,9 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 74/100`
+`Sections: 75/100`
 
 ## [Unreleased]
+
+## [v02.84r] — 2026-03-04 09:17:35 PM EST
+
+### Changed
+- Removed pre-populated values from Title, Spreadsheet ID, and Sheet Name fields (restored placeholder hints)
+- Restored placeholder hint on Deployment ID field
+- Copy Config for Claude button color changed to Claude's coral/orange (#d97757)
+
+#### `gas-project-creator.html` — v01.41w
+
+##### Changed
+- Input fields now start empty with placeholder hints instead of pre-populated values
+- Copy Config button styled with Claude-branded coral/orange color
 
 ## [v02.83r] — 2026-03-04 09:11:25 PM EST
 

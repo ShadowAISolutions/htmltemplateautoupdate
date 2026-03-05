@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.40w">
+  <meta name="build-version" content="v01.41w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -180,10 +180,10 @@
     }
     .btn-apply:hover { background: #2ea043; }
     .btn-copy {
-      background: #6e40c9;
+      background: #d97757;
       color: #f0f0f0;
     }
-    .btn-copy:hover { background: #8957e5; }
+    .btn-copy:hover { background: #e08b6d; }
     .config-actions button:disabled,
     .btn-copy-gs:disabled,
     .btn-apply:disabled {
@@ -515,7 +515,7 @@
           <div class="step-note">Paste this code into your Apps Script project, replacing the existing code</div>
           <div class="step-input">
             <label for="cfg-deployment-id">Deployment ID <em style="color:#f85149">(required)</em></label>
-            <div class="input-row"><input type="text" id="cfg-deployment-id" oninput="updateDeployGate()"><button class="field-clear" onclick="clearField('cfg-deployment-id')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-deployment-id" placeholder="AKfycbw..." oninput="updateDeployGate()"><button class="field-clear" onclick="clearField('cfg-deployment-id')" title="Clear">&times;</button></div>
             <span class="field-hint">From Apps Script: Deploy &rarr; Manage deployments &mdash; required before using Test GAS Connection, Copy, or GAS Preview</span>
             <button class="btn-apply" id="btn-apply" onclick="testGasConnection()" disabled style="margin-top:8px">Test GAS Connection</button>
             <span class="field-hint" style="margin-top:6px">&#128161; If the GAS preview shows <strong>&ldquo;Script function not found: doGet&rdquo;</strong>, the deployment ID is valid &mdash; proceed with entering your other fields, then copy Code.gs for GAS into the Apps Script editor</span>
@@ -525,17 +525,17 @@
           </div>
           <div class="step-input">
             <label for="cfg-title">Title <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-title" value="CHANGE THIS PROJECT TITLE GAS TEMPLATE"><button class="field-clear" onclick="clearField('cfg-title')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-title" placeholder="My GAS Project"><button class="field-clear" onclick="clearField('cfg-title')" title="Clear">&times;</button></div>
             <span class="field-hint">Shown in browser tab and GAS UI</span>
           </div>
           <div class="step-input">
             <label for="cfg-spreadsheet-id">Spreadsheet ID <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-spreadsheet-id" value="12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE"><button class="field-clear" onclick="clearField('cfg-spreadsheet-id')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-spreadsheet-id" placeholder="1abc2def3ghi..."><button class="field-clear" onclick="clearField('cfg-spreadsheet-id')" title="Clear">&times;</button></div>
             <span class="field-hint">Google Sheets ID for version tracking</span>
           </div>
           <div class="step-input">
             <label for="cfg-sheet-name">Sheet Name <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-sheet-name" value="Live_Sheet"><button class="field-clear" onclick="clearField('cfg-sheet-name')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-sheet-name" placeholder="Live_Sheet"><button class="field-clear" onclick="clearField('cfg-sheet-name')" title="Clear">&times;</button></div>
             <span class="field-hint">Tab name in the spreadsheet</span>
           </div>
           <div class="step-input">
