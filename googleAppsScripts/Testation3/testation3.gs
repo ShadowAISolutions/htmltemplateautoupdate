@@ -86,7 +86,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.00g";
+var VERSION = "01.01g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -294,6 +294,14 @@ function doGet() {
             .pullAndDeployFromGitHub();
         }
       </script>
+      <div style="margin-top:30px;text-align:center;font-size:48px;color:#d32f2f;line-height:1.1;">
+        <div>🔴</div>
+        <div style="font-size:36px;">🔻</div>
+        <div style="font-size:52px;">🔻🔻</div>
+        <div style="font-size:64px;">🔻🔻🔻</div>
+        <div style="font-size:14px;color:#5d4037;">▐█▌</div>
+        <div style="font-size:11px;color:#d32f2f;margin-top:4px;">🌹 Red Tree 🌹</div>
+      </div>
     </body>
     </html>
   `;

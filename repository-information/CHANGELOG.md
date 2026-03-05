@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 100/100`
+`Sections: 95/100`
 
 ## [Unreleased]
+
+## [v03.10r] — 2026-03-05 02:56:41 PM EST
+
+### Added
+- Red tree decoration at the bottom of Testation3 GAS web app UI
+
+#### `testation3.gs` — 01.01g
+
+##### Added
+- Red tree emoji art displayed at the bottom of the app interface
 
 ## [v03.09r] — 2026-03-05 02:48:36 PM EST
 
@@ -1250,36 +1260,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with pr
 #### `test.html` — v01.18w
 ##### Changed
 - Maintenance mode deactivated — page is now accessible normally
-
-## [v02.15r] — 2026-03-02 06:52:41 PM EST
-
-### Fixed
-- Re-applied v02.14r version bump through proper `claude/*` branch workflow (v02.14r was erroneously pushed directly to `main`)
-
-## [v02.14r] — 2026-03-02 06:43:07 PM EST
-
-### Changed
-- Bumped repository version from v02.13r to v02.14r
-
-## [v02.13r] — 2026-03-02 12:55:00 PM EST
-
-### Added
-- "Imported Skills — Do Not Modify" rule in behavioral-rules.md — imported skills (`.claude/skills/imported--*`) are frozen; only location pointers may be updated, preserving traceability of which skill produces which behavior
-
-## [v02.12r] — 2026-03-02 12:18:12 PM EST
-
-### Added
-- `SKILLS-REFERENCE.md` — complete inventory of all Claude Code skills (custom, imported, and bundled/plugin) with visibility status and guidance on when to add local vs. rely on bundled
-
-## [v02.11r] — 2026-03-02 11:58:44 AM EST
-
-### Added
-- 6 imported Claude Code Skills in `.claude/skills/` with `imported--` prefix: `/webapp-testing` (Playwright page testing, from Anthropic), `/frontend-design` (distinctive UI creation, from Anthropic), `/skill-creator` (meta-skill for creating new skills, from Anthropic), `/security-review` (OWASP/web security audit, inspired by Trail of Bits), `/git-cleanup` (stale branch/worktree cleanup, inspired by Trail of Bits), `/diff-review` (pre-push differential code review, inspired by Trail of Bits)
-
-## [v02.10r] — 2026-03-02 11:48:51 AM EST
-
-### Added
-- Claude Code Skills — 6 invokable workflow skills in `.claude/skills/`: `/phantom-update` (timestamp alignment), `/maintenance-mode` (toggle maintenance overlay), `/new-page` (create new HTML page with boilerplate), `/reconcile` (end multi-session mode), `/remember-session` (save session context), `/initialize` (first deployment setup)
 
 
 Developed by: ShadowAISolutions
