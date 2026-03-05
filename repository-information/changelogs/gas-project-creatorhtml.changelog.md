@@ -3,9 +3,16 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-project-creatorhtml.changelog-archive.md](gas-project-creatorhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 38/50`
+`Sections: 39/50`
 
 ## [Unreleased]
+
+## [v01.39w] — 2026-03-04 09:01:23 PM EST — v02.82r
+
+### Changed
+- GAS preview panel tab is now always accessible
+- "Script function not found: doGet" hint with lightbulb emoji now appears at the top of the GAS preview panel
+- GitHub token link narrowed to only "Fine-grained tokens" text
 
 ## [v01.38w] — 2026-03-04 08:54:07 PM EST — v02.81r
 

@@ -3,9 +3,23 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 72/100`
+`Sections: 73/100`
 
 ## [Unreleased]
+
+## [v02.82r] — 2026-03-04 09:01:23 PM EST
+
+### Changed
+- GAS panel tab is now always enabled regardless of deployment ID
+- Moved doGet hint with lightbulb emoji to the top of the GAS preview panel overlay
+- GitHub token link now only wraps "Fine-grained tokens" text instead of the full path
+
+#### `gas-project-creator.html` — v01.39w
+
+##### Changed
+- GAS panel tab no longer requires deployment ID to be enabled
+- "Script function not found: doGet" hint moved to GAS preview overlay with lightbulb emoji
+- GitHub token creation link narrowed to only "Fine-grained tokens"
 
 ## [v02.81r] — 2026-03-04 08:54:07 PM EST
 
