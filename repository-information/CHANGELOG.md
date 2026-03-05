@@ -3,9 +3,29 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 66/100`
+`Sections: 67/100`
 
 ## [Unreleased]
+
+## [v02.76r] — 2026-03-04 08:18:28 PM EST
+
+### Changed
+- Made Title field optional in GAS Project Creator configuration form
+- Simplified Test GAS Connection to only validate the deployment ID — no longer saves config or changes page title
+
+### Removed
+- doGet tip banner from Test GAS Connection panel
+- Page title change side-effect when testing GAS connection
+
+#### `gas-project-creator.html` — v01.33w
+
+##### Changed
+- Title field now labeled as optional
+- Test GAS Connection button only loads the deployment URL to validate the ID
+
+##### Removed
+- doGet tip banner from the GAS preview panel
+- Config save and page title change triggered by Test GAS Connection
 
 ## [v02.75r] — 2026-03-04 08:08:19 PM EST
 

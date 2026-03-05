@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.32w">
+  <meta name="build-version" content="v01.33w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -599,7 +599,7 @@
             <div class="deploy-separator-label">Project Configuration</div>
           </div>
           <div class="step-input">
-            <label for="cfg-title">Title</label>
+            <label for="cfg-title">Title <em>(optional)</em></label>
             <div class="input-row"><input type="text" id="cfg-title" placeholder="My GAS Project" value="CHANGE THIS PROJECT TITLE GAS TEMPLATE"><button class="field-clear" onclick="clearField('cfg-title','gas-project-creator-title')" title="Clear">&times;</button></div>
             <span class="field-hint">Shown in browser tab and GAS UI</span>
           </div>
@@ -1112,14 +1112,6 @@
       localStorage.setItem('gas-project-creator-sound-file-id', soundId);
       localStorage.setItem('gas-project-creator-splash-logo', splashLogo);
 
-      // Update page title
-      if (title) document.title = title;
-
-      // Update title status
-      if (title && title !== 'CHANGE THIS PROJECT TITLE TEMPLATE') {
-        setStatus('title', 'green', 'ok', title);
-      }
-
       showToast('Configuration saved to localStorage');
     }
 
@@ -1128,26 +1120,14 @@
       var deployId = document.getElementById('cfg-deployment-id').value.trim();
       if (!deployId) return;
 
-      // Save config first
-      applyConfig();
-
       var panel = document.getElementById('gas-panel');
       var tab = document.getElementById('gas-panel-tab');
 
-      // Remove any existing iframe and tip
+      // Remove any existing iframe
       var old = document.getElementById('gas-app');
       if (old) old.remove();
-      var oldTip = document.getElementById('gas-panel-tip');
-      if (oldTip) oldTip.remove();
 
-      // Add doGet tip banner
-      var tip = document.createElement('div');
-      tip.id = 'gas-panel-tip';
-      tip.style.cssText = 'background:#1c2128;color:#8b949e;font-size:12px;padding:6px 12px;border-bottom:1px solid #30363d;flex-shrink:0';
-      tip.innerHTML = '\uD83D\uDCA1 If you see <strong style="color:#f0883e">Script function not found: doGet</strong>, it means the Deployment ID is valid &mdash; you just need to add a <code style="color:#79c0ff">doGet()</code> function to your script.';
-      panel.appendChild(tip);
-
-      // Create iframe via srcdoc trampoline
+      // Create iframe via srcdoc trampoline to validate the deployment ID
       var url = 'https://script.google.com/macros/s/' + deployId + '/exec';
       var f = document.createElement('iframe');
       f.id = 'gas-app';

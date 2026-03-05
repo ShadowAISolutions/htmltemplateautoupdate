@@ -3,9 +3,18 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-project-creatorhtml.changelog-archive.md](gas-project-creatorhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 32/50`
+`Sections: 33/50`
 
 ## [Unreleased]
+
+## [v01.33w] — 2026-03-04 08:18:28 PM EST — v02.76r
+
+### Changed
+- Title field is now marked as optional in the setup form
+- Test GAS Connection only validates the deployment ID — no longer changes the page title or saves configuration
+
+### Removed
+- Tip banner about doGet errors from the GAS preview panel
 
 ## [v01.32w] — 2026-03-04 08:08:19 PM EST — v02.75r
 
