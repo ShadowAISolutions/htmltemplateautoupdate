@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 92/100`
+`Sections: 93/100`
 
 ## [Unreleased]
+
+## [v03.02r] — 2026-03-05 10:25:03 AM EST
+
+### Changed
+- Replaced "Open in Google Sheets" link button with embedded Google Sheets iframe in test_link_gas_1_app GAS web app
+
+#### `test_link_gas_1_app.gs` — 01.03g
+
+##### Changed
+- Spreadsheet section now shows embedded Google Sheets iframe instead of external link button
 
 ## [v03.01r] — 2026-03-05 10:09:45 AM EST
 

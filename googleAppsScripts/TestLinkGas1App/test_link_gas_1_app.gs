@@ -86,7 +86,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.02g";
+var VERSION = "01.03g";
 var TITLE = "Test Title";                                          // ← test_link_gas_1_app.config.json
 
 // GitHub config — where to pull code from
@@ -135,8 +135,7 @@ function doGet() {
         #token-info { position: absolute; right: -170px; top: 0; font-size: 11px; color: #666; text-align: left; line-height: 1.6; white-space: nowrap; }
         #token-info div { margin-bottom: 2px; }
         #live-b1 { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 4px; text-align: center; }
-        .sheet-btn { display: inline-block; background: #1565c0; color: white; text-decoration: none; padding: 8px 20px; border-radius: 6px; font-size: 14px; margin-top: 6px; }
-        .sheet-btn:hover { background: #0d47a1; }
+        #sheet-iframe { width: 100%; height: 300px; border: 1px solid #ddd; border-radius: 6px; }
       </style>
     </head>
     <body>
@@ -155,7 +154,7 @@ function doGet() {
         <h3>${SHEET_NAME}</h3>
         <div id="token-info">...</div>
         <div id="live-b1">...</div>
-        <a class="sheet-btn" href="https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit" target="_blank" rel="noopener">📊 Open in Google Sheets</a>
+        <iframe id="sheet-iframe" src="https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit?rm=minimal"></iframe>
       </div>
       ` : ''}
 
