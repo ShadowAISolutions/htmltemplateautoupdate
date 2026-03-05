@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.31w">
+  <meta name="build-version" content="v01.32w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -604,26 +604,6 @@
             <span class="field-hint">Shown in browser tab and GAS UI</span>
           </div>
           <div class="step-input">
-            <label for="cfg-version">Version</label>
-            <div class="input-row"><input type="text" id="cfg-version" placeholder="01.00" value="01.00g"><button class="field-clear" onclick="clearField('cfg-version','gas-project-creator-version')" title="Clear">&times;</button></div>
-            <span class="field-hint">GAS script version number (e.g. 01.03)</span>
-          </div>
-          <div class="step-input">
-            <label for="cfg-github-owner">GitHub Owner</label>
-            <div class="input-row"><input type="text" id="cfg-github-owner" placeholder="YourGitHubUsername" value="ShadowAISolutions"><button class="field-clear" onclick="clearField('cfg-github-owner','gas-project-creator-github-owner')" title="Clear">&times;</button></div>
-            <span class="field-hint">GitHub org or username that owns the repo</span>
-          </div>
-          <div class="step-input">
-            <label for="cfg-github-repo">GitHub Repo</label>
-            <div class="input-row"><input type="text" id="cfg-github-repo" placeholder="my-gas-project" value="htmltemplateautoupdate"><button class="field-clear" onclick="clearField('cfg-github-repo','gas-project-creator-github-repo')" title="Clear">&times;</button></div>
-            <span class="field-hint">Repository name containing the .gs file</span>
-          </div>
-          <div class="step-input">
-            <label for="cfg-github-branch">GitHub Branch</label>
-            <div class="input-row"><input type="text" id="cfg-github-branch" placeholder="main" value="main"><button class="field-clear" onclick="clearField('cfg-github-branch','gas-project-creator-github-branch')" title="Clear">&times;</button></div>
-            <span class="field-hint">Branch to pull .gs updates from</span>
-          </div>
-          <div class="step-input">
             <label for="cfg-spreadsheet-id">Spreadsheet ID <em>(optional)</em></label>
             <div class="input-row"><input type="text" id="cfg-spreadsheet-id" placeholder="1abc2def3ghi..." value="12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE"><button class="field-clear" onclick="clearField('cfg-spreadsheet-id','gas-project-creator-spreadsheet-id')" title="Clear">&times;</button></div>
             <span class="field-hint">Google Sheets ID for version tracking</span>
@@ -1074,20 +1054,12 @@
         var code = _gsCode;
         // Inject config values from form fields into the code
         var title = (document.getElementById('cfg-title') || {}).value || '';
-        var version = (document.getElementById('cfg-version') || {}).value || '';
-        var ghOwner = (document.getElementById('cfg-github-owner') || {}).value || '';
-        var ghRepo = (document.getElementById('cfg-github-repo') || {}).value || '';
-        var ghBranch = (document.getElementById('cfg-github-branch') || {}).value || '';
         var deployId = (document.getElementById('cfg-deployment-id') || {}).value || '';
         var sheetId = (document.getElementById('cfg-spreadsheet-id') || {}).value || '';
         var sheetName = (document.getElementById('cfg-sheet-name') || {}).value || '';
         var soundId = (document.getElementById('cfg-sound-id') || {}).value || '';
         var splashLogo = (document.getElementById('cfg-splash-logo') || {}).value || '';
         if (title.trim()) code = code.replace(/var TITLE\s*=\s*"[^"]*"/, 'var TITLE = "' + title.trim().replace(/"/g, '\\"') + '"');
-        if (version.trim()) code = code.replace(/var VERSION\s*=\s*"[^"]*"/, 'var VERSION = "' + version.trim() + '"');
-        if (ghOwner.trim()) code = code.replace(/var GITHUB_OWNER\s*=\s*"[^"]*"/, 'var GITHUB_OWNER  = "' + ghOwner.trim() + '"');
-        if (ghRepo.trim()) code = code.replace(/var GITHUB_REPO\s*=\s*"[^"]*"/, 'var GITHUB_REPO   = "' + ghRepo.trim() + '"');
-        if (ghBranch.trim()) code = code.replace(/var GITHUB_BRANCH\s*=\s*"[^"]*"/, 'var GITHUB_BRANCH = "' + ghBranch.trim() + '"');
         if (deployId.trim()) code = code.replace(/var DEPLOYMENT_ID\s*=\s*"[^"]*"/, 'var DEPLOYMENT_ID = "' + deployId.trim() + '"');
         if (sheetId.trim()) code = code.replace(/var SPREADSHEET_ID\s*=\s*"[^"]*"/, 'var SPREADSHEET_ID = "' + sheetId.trim() + '"');
         if (sheetName.trim()) code = code.replace(/var SHEET_NAME\s*=\s*"[^"]*"/, 'var SHEET_NAME     = "' + sheetName.trim().replace(/"/g, '\\"') + '"');
@@ -1126,10 +1098,6 @@
     // ── Config Management ──────────────────────────────────────────
     function applyConfig() {
       var title = document.getElementById('cfg-title').value.trim();
-      var version = document.getElementById('cfg-version').value.trim();
-      var ghOwner = document.getElementById('cfg-github-owner').value.trim();
-      var ghRepo = document.getElementById('cfg-github-repo').value.trim();
-      var ghBranch = document.getElementById('cfg-github-branch').value.trim();
       var deployId = document.getElementById('cfg-deployment-id').value.trim();
       var sheetId = document.getElementById('cfg-spreadsheet-id').value.trim();
       var sheetName = document.getElementById('cfg-sheet-name').value.trim() || 'Live_Sheet';
@@ -1138,10 +1106,6 @@
 
       // Save to localStorage
       localStorage.setItem('gas-project-creator-title', title);
-      localStorage.setItem('gas-project-creator-version', version);
-      localStorage.setItem('gas-project-creator-github-owner', ghOwner);
-      localStorage.setItem('gas-project-creator-github-repo', ghRepo);
-      localStorage.setItem('gas-project-creator-github-branch', ghBranch);
       localStorage.setItem('gas-project-creator-deployment-id', deployId);
       localStorage.setItem('gas-project-creator-spreadsheet-id', sheetId);
       localStorage.setItem('gas-project-creator-sheet-name', sheetName);
@@ -1235,10 +1199,6 @@
 
     function copyConfig() {
       var title = document.getElementById('cfg-title').value.trim() || 'CHANGE THIS PROJECT TITLE GAS TEMPLATE';
-      var version = document.getElementById('cfg-version').value.trim() || '01.00g';
-      var ghOwner = document.getElementById('cfg-github-owner').value.trim() || 'ShadowAISolutions';
-      var ghRepo = document.getElementById('cfg-github-repo').value.trim() || 'htmltemplateautoupdate';
-      var ghBranch = document.getElementById('cfg-github-branch').value.trim() || 'main';
       var deployId = document.getElementById('cfg-deployment-id').value.trim() || 'YOUR_DEPLOYMENT_ID';
       var sheetId = document.getElementById('cfg-spreadsheet-id').value.trim() || '12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE';
       var sheetName = document.getElementById('cfg-sheet-name').value.trim() || 'Live_Sheet';
@@ -1247,10 +1207,6 @@
 
       var json = '{\n'
         + '  "TITLE": "' + title + '",\n'
-        + '  "VERSION": "' + version + '",\n'
-        + '  "GITHUB_OWNER": "' + ghOwner + '",\n'
-        + '  "GITHUB_REPO": "' + ghRepo + '",\n'
-        + '  "GITHUB_BRANCH": "' + ghBranch + '",\n'
         + '  "DEPLOYMENT_ID": "' + deployId + '",\n'
         + '  "SPREADSHEET_ID": "' + sheetId + '",\n'
         + '  "SHEET_NAME": "' + sheetName + '",\n'
@@ -1258,7 +1214,7 @@
         + '  "SPLASH_LOGO_URL": "' + splashLogo + '"\n'
         + '}';
 
-      var prompt = 'Create or update a GAS project with these config values. Determine the appropriate file path (under googleAppsScripts/) and embedding URL (under live-site-pages/) based on the project title. If the project does not exist yet in the repo, create the full page ecosystem by copying from the gas-template ecosystem: HTML page (from live-site-templates/GasTemplate.html), .gs file (from googleAppsScripts/GasTemplate/gas-template.gs), config.json (from googleAppsScripts/GasTemplate/gas-template.config.json), version files, changelogs, and all tracking files. Sync these values into the config.json, .gs file, and embedding HTML page. Register the new project in the GAS Projects table and update ARCHITECTURE.md, README.md, and STATUS.md:\n\n';
+      var prompt = 'Create or update a GAS project with these config values. Set VERSION to "01.00g". Determine GITHUB_OWNER, GITHUB_REPO, and GITHUB_BRANCH from the current repo (git remote -v and default branch). Determine the appropriate file path (under googleAppsScripts/) and embedding URL (under live-site-pages/) based on the project title. If the project does not exist yet in the repo, create the full page ecosystem by copying from the gas-template ecosystem: HTML page (from live-site-templates/GasTemplate.html), .gs file (from googleAppsScripts/GasTemplate/gas-template.gs), config.json (from googleAppsScripts/GasTemplate/gas-template.config.json), version files, changelogs, and all tracking files. Sync these values into the config.json, .gs file, and embedding HTML page. Register the new project in the GAS Projects table and update ARCHITECTURE.md, README.md, and STATUS.md:\n\n';
 
       navigator.clipboard.writeText(prompt + json).then(function() {
         showToast('Config + prompt copied to clipboard');
@@ -1269,7 +1225,7 @@
 
     function clearField(inputId, storageKey) {
       var el = document.getElementById(inputId);
-      var defaults = {'cfg-sheet-name':'Live_Sheet','cfg-github-branch':'main','cfg-version':'01.00g','cfg-title':'CHANGE THIS PROJECT TITLE GAS TEMPLATE','cfg-spreadsheet-id':'12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE','cfg-sound-id':'1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN','cfg-splash-logo':'https://www.shadowaisolutions.com/SAIS%20Logo.png','cfg-github-owner':'ShadowAISolutions','cfg-github-repo':'htmltemplateautoupdate'};
+      var defaults = {'cfg-sheet-name':'Live_Sheet','cfg-title':'CHANGE THIS PROJECT TITLE GAS TEMPLATE','cfg-spreadsheet-id':'12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE','cfg-sound-id':'1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN','cfg-splash-logo':'https://www.shadowaisolutions.com/SAIS%20Logo.png'};
       if (el) el.value = defaults[inputId] || '';
       localStorage.removeItem(storageKey);
       var label = el ? el.closest('.step-input').querySelector('label') : null;
@@ -1279,10 +1235,6 @@
 
     function clearConfig() {
       localStorage.removeItem('gas-project-creator-title');
-      localStorage.removeItem('gas-project-creator-version');
-      localStorage.removeItem('gas-project-creator-github-owner');
-      localStorage.removeItem('gas-project-creator-github-repo');
-      localStorage.removeItem('gas-project-creator-github-branch');
       localStorage.removeItem('gas-project-creator-deployment-id');
       localStorage.removeItem('gas-project-creator-spreadsheet-id');
       localStorage.removeItem('gas-project-creator-sheet-name');
@@ -1290,10 +1242,6 @@
       localStorage.removeItem('gas-project-creator-splash-logo');
 
       document.getElementById('cfg-title').value = 'CHANGE THIS PROJECT TITLE GAS TEMPLATE';
-      document.getElementById('cfg-version').value = '01.00g';
-      document.getElementById('cfg-github-owner').value = 'ShadowAISolutions';
-      document.getElementById('cfg-github-repo').value = 'htmltemplateautoupdate';
-      document.getElementById('cfg-github-branch').value = 'main';
       document.getElementById('cfg-deployment-id').value = '';
       document.getElementById('cfg-spreadsheet-id').value = '12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE';
       document.getElementById('cfg-sheet-name').value = 'Live_Sheet';
@@ -1317,10 +1265,6 @@
     // ── Load saved config on page load ──────────────────────────────
     (function() {
       var savedTitle = localStorage.getItem('gas-project-creator-title') || '';
-      var savedVersion = localStorage.getItem('gas-project-creator-version') || '';
-      var savedGhOwner = localStorage.getItem('gas-project-creator-github-owner') || '';
-      var savedGhRepo = localStorage.getItem('gas-project-creator-github-repo') || '';
-      var savedGhBranch = localStorage.getItem('gas-project-creator-github-branch') || '';
       var savedDeploy = localStorage.getItem('gas-project-creator-deployment-id') || '';
       var savedSheet = localStorage.getItem('gas-project-creator-spreadsheet-id') || '';
       var savedSheetName = localStorage.getItem('gas-project-creator-sheet-name') || '';
@@ -1328,10 +1272,6 @@
       var savedSplashLogo = localStorage.getItem('gas-project-creator-splash-logo') || '';
 
       if (savedTitle) document.getElementById('cfg-title').value = savedTitle;
-      if (savedVersion) document.getElementById('cfg-version').value = savedVersion;
-      if (savedGhOwner) document.getElementById('cfg-github-owner').value = savedGhOwner;
-      if (savedGhRepo) document.getElementById('cfg-github-repo').value = savedGhRepo;
-      if (savedGhBranch) document.getElementById('cfg-github-branch').value = savedGhBranch;
       if (savedDeploy) document.getElementById('cfg-deployment-id').value = savedDeploy;
       if (savedSheet) document.getElementById('cfg-spreadsheet-id').value = savedSheet;
       if (savedSheetName) document.getElementById('cfg-sheet-name').value = savedSheetName;

@@ -3,9 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 65/100`
+`Sections: 66/100`
 
 ## [Unreleased]
+
+## [v02.75r] — 2026-03-04 08:08:19 PM EST
+
+### Changed
+- Copy Claude Config now auto-handles Version (set to 01.00g), GitHub Owner, GitHub Repo, and GitHub Branch via the prompt — no longer requires manual input
+
+### Removed
+- Version, GitHub Owner, GitHub Repo, and GitHub Branch form fields from Project Configuration — these values are now determined automatically by Copy Claude Config
+
+#### `gas-project-creator.html` — v01.32w
+
+##### Changed
+- Copy Claude Config prompt now instructs Claude to set version to 01.00g and determine GitHub owner/repo/branch from the current repo
+
+##### Removed
+- Version, GitHub Owner, GitHub Repo, and GitHub Branch input fields from the form
 
 ## [v02.74r] — 2026-03-04 08:02:31 PM EST
 
