@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 78/100`
+`Sections: 79/100`
 
 ## [Unreleased]
+
+## [v02.88r] — 2026-03-04 09:59:20 PM EST
+
+### Fixed
+- Fixed indentation of setup steps in GAS Project Creator — items now align flush left under the section header
+
+#### `gas-project-creator.html` — v01.45w
+
+##### Fixed
+- Setup steps no longer indented away from the section header
 
 ## [v02.87r] — 2026-03-04 09:52:43 PM EST
 

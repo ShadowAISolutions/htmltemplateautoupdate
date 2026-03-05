@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-project-creatorhtml.changelog-archive.md](gas-project-creatorhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 44/50`
+`Sections: 45/50`
 
 ## [Unreleased]
+
+## [v01.45w] — 2026-03-04 09:59:20 PM EST — v02.88r
+
+### Fixed
+- Setup steps now align flush left under section headers instead of being indented
 
 ## [v01.44w] — 2026-03-04 09:52:43 PM EST — v02.87r
 
