@@ -3,9 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 68/100`
+`Sections: 69/100`
 
 ## [Unreleased]
+
+## [v02.78r] — 2026-03-04 08:36:59 PM EST
+
+### Changed
+- Updated deployment ID hint text to reference "Test GAS Connection" instead of "Apply"
+- Renamed "Copy Code.gs" button to "Copy Code.gs for GAS"
+- Renamed "Copy Claude Config" button to "Copy Config for Claude"
+
+#### `gas-project-creator.html` — v01.35w
+
+##### Changed
+- Deployment hint text now says "Test GAS Connection" instead of "Apply"
+- "Copy Code.gs" button renamed to "Copy Code.gs for GAS"
+- "Copy Claude Config" button renamed to "Copy Config for Claude"
+- Footer note updated to match new button name
 
 ## [v02.77r] — 2026-03-04 08:27:39 PM EST
 

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.34w">
+  <meta name="build-version" content="v01.35w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -587,7 +587,7 @@
           <div class="step-input">
             <label for="cfg-deployment-id">Deployment ID <em style="color:#f85149">(required)</em></label>
             <div class="input-row"><input type="text" id="cfg-deployment-id" placeholder="AKfycbw..." oninput="updateDeployGate()"><button class="field-clear" onclick="clearField('cfg-deployment-id')" title="Clear">&times;</button></div>
-            <span class="field-hint">From Apps Script: Deploy &rarr; Manage deployments &mdash; required before using Apply, Copy, or GAS Preview</span>
+            <span class="field-hint">From Apps Script: Deploy &rarr; Manage deployments &mdash; required before using Test GAS Connection, Copy, or GAS Preview</span>
             <button class="btn-apply" id="btn-apply" onclick="testGasConnection()" disabled style="margin-top:8px">Test GAS Connection</button>
           </div>
           <div class="deploy-separator">
@@ -618,7 +618,7 @@
             <div class="input-row"><input type="text" id="cfg-splash-logo" placeholder="https://yoursite.com/logo.png" value="https://www.shadowaisolutions.com/SAIS%20Logo.png"><button class="field-clear" onclick="clearField('cfg-splash-logo')" title="Clear">&times;</button></div>
             <span class="field-hint">Logo shown on the GAS splash screen</span>
           </div>
-          <button class="btn-copy-gs" id="btn-copy-gs" onclick="copyGsCode(this)" disabled>Copy Code.gs</button>
+          <button class="btn-copy-gs" id="btn-copy-gs" onclick="copyGsCode(this)" disabled>Copy Code.gs for GAS</button>
           <div class="step-note">In the Apps Script editor, replace all contents of <code>Code.gs</code> with the copied code</div>
         </li>
         <li>Run any function from the Apps Script editor to trigger the initial <strong>OAuth authorization</strong> prompt
@@ -636,12 +636,12 @@
     </div>
 
     <div class="config-actions">
-      <button class="btn-copy" id="btn-copy-config" onclick="copyConfig()" disabled>Copy Claude Config</button>
+      <button class="btn-copy" id="btn-copy-config" onclick="copyConfig()" disabled>Copy Config for Claude</button>
     </div>
     <div class="config-toast" id="config-toast"></div>
 
     <div class="footer-note">
-      Copy Claude Config copies a Claude-ready prompt + JSON to your clipboard
+      Copy Config for Claude copies a Claude-ready prompt + JSON to your clipboard
     </div>
   </div>
   <script>
@@ -1063,7 +1063,7 @@
         if (splashLogo.trim()) code = code.replace(/var SPLASH_LOGO_URL\s*=\s*"[^"]*"/, 'var SPLASH_LOGO_URL = "' + splashLogo.trim() + '"');
         navigator.clipboard.writeText(code).then(function() {
           btn.textContent = 'Copied!';
-          setTimeout(function() { btn.textContent = 'Copy Code.gs'; }, 1500);
+          setTimeout(function() { btn.textContent = 'Copy Code.gs for GAS'; }, 1500);
         });
       };
     })();
