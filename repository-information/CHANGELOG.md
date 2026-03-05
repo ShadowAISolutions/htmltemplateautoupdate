@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 95/100`
+`Sections: 96/100`
 
 ## [Unreleased]
+
+## [v03.11r] — 2026-03-05 03:14:41 PM EST
+
+### Fixed
+- Auto-refresh not triggering when workflow deploys GAS update before client polls — `checkForUpdates()` now calls `getAppData()` on "Already up to date" and triggers reload if displayed version is stale
+
+#### `testation3.gs` — 01.02g
+
+##### Fixed
+- Page now auto-refreshes when updates are deployed by the workflow
 
 ## [v03.10r] — 2026-03-05 02:56:41 PM EST
 

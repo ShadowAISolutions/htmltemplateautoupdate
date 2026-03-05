@@ -86,7 +86,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.01g";
+var VERSION = "01.02g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -268,7 +268,24 @@ function doGet() {
               document.getElementById('result').style.background = '#e8f5e9';
               document.getElementById('result').innerHTML = '✅ ' + msg;
               if (!wasUpdated) {
-                setTimeout(function() { document.getElementById('result').innerHTML = ''; }, 2000);
+                // Workflow may have already deployed — check if server has newer version
+                google.script.run
+                  .withSuccessHandler(function(data) {
+                    var currentVer = (document.getElementById('version').textContent || '').trim();
+                    if (data.version !== currentVer) {
+                      applyData(data);
+                      var btn = document.getElementById('reload-btn');
+                      btn.style.background = '#d32f2f';
+                      btn.textContent = '⚠️ Update Available — Reload Page';
+                      var reloadMsg = {type: 'gas-reload', version: data.version};
+                      if (_soundDataUrl) reloadMsg.soundDataUrl = _soundDataUrl;
+                      try { window.top.postMessage(reloadMsg, '*'); } catch(e) {}
+                      try { window.parent.postMessage(reloadMsg, '*'); } catch(e) {}
+                    } else {
+                      setTimeout(function() { document.getElementById('result').innerHTML = ''; }, 2000);
+                    }
+                  })
+                  .getAppData();
                 return;
               }
               setTimeout(function() {
