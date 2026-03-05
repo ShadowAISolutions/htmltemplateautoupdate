@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.47w">
+  <meta name="build-version" content="v01.48w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -527,6 +527,11 @@
             <div class="deploy-separator-label">Project Configuration</div>
           </div>
           <div class="step-input">
+            <label for="cfg-env-name">Project Environment Name <em style="color:#f85149">(required)</em></label>
+            <div class="input-row"><input type="text" id="cfg-env-name" placeholder="my-project" oninput="updateDeployGate()"><button class="field-clear" onclick="clearField('cfg-env-name')" title="Clear">&times;</button></div>
+            <span class="field-hint">Base name for all project files &mdash; e.g. <code>test</code> creates <code>test.html</code>, <code>test.gs</code>, <code>testhtml.version.txt</code>, etc.</span>
+          </div>
+          <div class="step-input">
             <label for="cfg-title">Title <em>(optional)</em></label>
             <div class="input-row"><input type="text" id="cfg-title" placeholder="My GAS Project"><button class="field-clear" onclick="clearField('cfg-title')" title="Clear">&times;</button></div>
             <span class="field-hint">Shown in browser tab and GAS UI</span>
@@ -985,14 +990,16 @@
     // ── Deployment ID Gate ─────────────────────────────────────────
     function updateDeployGate() {
       var hasId = (document.getElementById('cfg-deployment-id').value || '').trim().length > 0;
-      var btns = [
+      var hasEnvName = (document.getElementById('cfg-env-name').value || '').trim().length > 0;
+      var deployBtns = [
         document.getElementById('btn-copy-gs'),
-        document.getElementById('btn-apply'),
-        document.getElementById('btn-copy-config')
+        document.getElementById('btn-apply')
       ];
-      for (var i = 0; i < btns.length; i++) {
-        if (btns[i]) btns[i].disabled = !hasId;
+      for (var i = 0; i < deployBtns.length; i++) {
+        if (deployBtns[i]) deployBtns[i].disabled = !hasId;
       }
+      var configBtn = document.getElementById('btn-copy-config');
+      if (configBtn) configBtn.disabled = !(hasId && hasEnvName);
     }
 
     // ── Test GAS Connection (bottom panel) ─────────────────────
@@ -1058,6 +1065,7 @@
     })();
 
     function copyConfig() {
+      var envName = document.getElementById('cfg-env-name').value.trim();
       var title = document.getElementById('cfg-title').value.trim() || 'CHANGE THIS PROJECT TITLE GAS TEMPLATE';
       var deployId = document.getElementById('cfg-deployment-id').value.trim() || 'YOUR_DEPLOYMENT_ID';
       var sheetId = document.getElementById('cfg-spreadsheet-id').value.trim() || 'YOUR_SPREADSHEET_ID';
@@ -1066,6 +1074,7 @@
       var splashLogo = document.getElementById('cfg-splash-logo').value.trim() || 'YOUR_SPLASH_LOGO_URL';
 
       var json = '{\n'
+        + '  "PROJECT_ENVIRONMENT_NAME": "' + envName + '",\n'
         + '  "TITLE": "' + title + '",\n'
         + '  "DEPLOYMENT_ID": "' + deployId + '",\n'
         + '  "SPREADSHEET_ID": "' + sheetId + '",\n'
@@ -1074,7 +1083,7 @@
         + '  "SPLASH_LOGO_URL": "' + splashLogo + '"\n'
         + '}';
 
-      var prompt = 'Create or update a GAS project with these config values. Set VERSION to "01.00g". Determine GITHUB_OWNER, GITHUB_REPO, and GITHUB_BRANCH from the current repo (git remote -v and default branch). Determine the appropriate file path (under googleAppsScripts/) and embedding URL (under live-site-pages/) based on the project title. If the project does not exist yet in the repo, create the full page ecosystem by copying from the gas-template ecosystem: HTML page (from live-site-templates/GasTemplate.html), .gs file (from googleAppsScripts/GasTemplate/gas-template.gs), config.json (from googleAppsScripts/GasTemplate/gas-template.config.json), version files, changelogs, and all tracking files. Sync these values into the config.json, .gs file, and embedding HTML page. Register the new project in the GAS Projects table and update ARCHITECTURE.md, README.md, and STATUS.md:\n\n';
+      var prompt = 'Create or update a GAS project using the config below. PROJECT_ENVIRONMENT_NAME is the base name for all project files — e.g. "test" means test.html, test.gs, testhtml.version.txt, testgs.version.txt, etc. Set VERSION to "01.00g". Determine GITHUB_OWNER, GITHUB_REPO, and GITHUB_BRANCH from the current repo (git remote -v and default branch). If the project does not exist yet in the repo, create the full page ecosystem using the New Embedding Page Setup Checklist in .claude/rules/html-pages.md: HTML page (from live-site-templates/GasTemplate.html) as live-site-pages/PROJECT_ENVIRONMENT_NAME.html, .gs file (from googleAppsScripts/GasTemplate/gas-template.gs), config.json (from googleAppsScripts/GasTemplate/gas-template.config.json), version files, changelogs, deployment changelog copies, and all tracking files — all named using PROJECT_ENVIRONMENT_NAME. Sync these values into the config.json, .gs file, and embedding HTML page. Register the new project in the GAS Projects table and update ARCHITECTURE.md, README.md, and STATUS.md:\n\n';
 
       navigator.clipboard.writeText(prompt + json).then(function() {
         showToast('Config + prompt copied to clipboard');

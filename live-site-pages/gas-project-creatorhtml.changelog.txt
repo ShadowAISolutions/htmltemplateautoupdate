@@ -3,9 +3,18 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-project-creatorhtml.changelog-archive.md](gas-project-creatorhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 47/50`
+`Sections: 48/50`
 
 ## [Unreleased]
+
+## [v01.48w] — 2026-03-05 08:52:11 AM EST — v02.95r
+
+### Added
+- Project Environment Name input field — specifies the base name for all project files (e.g. `test` creates `test.html`, `test.gs`, etc.)
+
+### Changed
+- "Copy Config for Claude" button now requires both Deployment ID and Project Environment Name
+- Copied prompt uses the environment name for all file paths instead of guessing from the title
 
 ## [v01.47w] — 2026-03-04 10:19:18 PM EST — v02.90r
 

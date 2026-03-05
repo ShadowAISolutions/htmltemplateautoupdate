@@ -3,9 +3,23 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 85/100`
+`Sections: 86/100`
 
 ## [Unreleased]
+
+## [v02.95r] — 2026-03-05 08:52:11 AM EST
+
+### Changed
+- "Copy Config for Claude" prompt now uses an explicit **Project Environment Name** field instead of inferring file paths from the project title
+
+#### `gas-project-creator.html` — v01.48w
+
+##### Added
+- Project Environment Name input field (required) — specifies the base name for all project files (e.g. `test` creates `test.html`, `test.gs`, etc.)
+
+##### Changed
+- "Copy Config for Claude" button now requires both Deployment ID and Project Environment Name to be filled
+- Copied prompt now references the Page Setup Checklist and uses the environment name for all file paths
 
 ## [v02.94r] — 2026-03-05 08:41:02 AM EST
 
