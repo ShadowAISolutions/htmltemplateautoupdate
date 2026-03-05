@@ -3,9 +3,28 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 98/100`
+`Sections: 99/100`
 
 ## [Unreleased]
+
+## [v03.14r] — 2026-03-05 03:34:35 PM EST
+
+### Added
+- GAS version indicator pill (bottom-left) on Testation3 embedding page with countdown timer and GAS changelog popup
+- GAS iframe now reports its version to the embedding page via `postMessage` on load and on request
+- GAS changelog deployment copy (`testation3gs.changelog.txt`) for live site access
+
+#### `testation3.html` — v01.01w
+
+##### Added
+- GAS version indicator at bottom-left with countdown to next version check
+- GAS changelog popup (click the GAS version pill to view)
+
+#### `testation3.gs` — 01.05g
+
+##### Added
+- Reports version to embedding page on load for the GAS version indicator
+- Responds to version-request messages from embedding page
 
 ## [v03.13r] — 2026-03-05 03:26:01 PM EST
 
