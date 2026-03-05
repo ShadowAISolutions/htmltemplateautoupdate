@@ -3,9 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 91/100`
+`Sections: 92/100`
 
 ## [Unreleased]
+
+## [v03.01r] — 2026-03-05 10:09:45 AM EST
+
+### Added
+- Spreadsheet data section in test_link_gas_1_app GAS web app — shows sheet name, live B1 value with "Open in Google Sheets" button, and live quotas sidebar
+
+#### `test_link_gas_1_app.gs` — 01.02g
+
+##### Added
+- Spreadsheet data section showing sheet name, live B1 value, and "Open in Google Sheets" button when spreadsheet is configured
+- Live B1 value updates automatically every 15 seconds via cache-backed polling
+- Live quotas sidebar showing GitHub rate limit, email quota, and service estimates
 
 ## [v03.00r] — 2026-03-05 09:55:36 AM EST
 
