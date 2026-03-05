@@ -4,24 +4,24 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
-**Date:** 2026-03-04 10:51:33 PM EST
-**Repo version:** v02.91r
+**Date:** 2026-03-05 09:50:58 AM EST
+**Reconstructed:** Auto-recovered from CHANGELOG (original session did not save context)
+**Repo version:** v02.99r
 
 ### What we worked on
-- Continued building out GAS Project Creator page from v01.42w to v01.47w:
-  - Replaced hardcoded SAIS logo URLs with the `DEVELOPER_LOGO_URL` placeholder pattern (`https://www.shadowaisolutions.com/SAIS_Logo.png`) so forks can customize branding
-  - Fixed logo references across index.html, test.html, gas-template.html, and gas-project-creator.html
-  - Fixed test.html GAS iframe `_e` encoded deployment URL (was stale/incorrect)
-- Added "Mandatory first pushback" rule to Pushback & Reasoning in behavioral-rules.md — Claude must raise concerns about better alternatives once before implementing
-
-### Key decisions made
-- Logo URLs use the direct SAIS logo URL (`https://www.shadowaisolutions.com/SAIS_Logo.png`) as the template default, matching `DEVELOPER_LOGO_URL` in the variables table — forks replace this via init script
-- The "mandatory first pushback" rule was added at the developer's request — Claude should push back once per prompt when it sees a meaningfully better alternative, then comply after acknowledgment
+- Synced all 5 deployment changelog copies that had drifted behind their source changelogs (v02.92r)
+- Added Page Rename/Move Checklist to html-pages.md (v02.93r)
+- Restructured Page Rename/Move Checklist to use Project Environment Name field (v02.94r)
+- Added Project Environment Name input to GAS Project Creator "Copy Config for Claude" flow (v02.95r)
+- Copy Code.gs now injects EMBED_PAGE_URL using the environment name (v02.96r)
+- Created full test_link_gas_1_app GAS project ecosystem (v02.97r)
+- Copy Code.gs now injects GITHUB_OWNER, GITHUB_REPO, and FILE_PATH from page context (v02.98r)
+- Re-triggered GitHub Pages deployment after transient GitHub 500 error (v02.99r)
 
 ### Where we left off
-- All changes committed and merged to main via auto-merge workflow
-- GAS Project Creator at v01.47w, repo at v02.91r
-- Pushback rule is live in behavioral-rules.md
+- All changes committed and merged to main
+- GAS Project Creator at v01.50w, repo at v02.99r
+- test_link_gas_1_app ecosystem created at v01.00w
 
 ### Active context
 - Active reminders in REMINDERS.md (developer-owned, do not touch without approval):
@@ -34,20 +34,15 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Previous Sessions
 
-**Date:** 2026-03-04 09:34:12 PM EST
-**Repo version:** v02.85r
+**Date:** 2026-03-04 10:51:33 PM EST
+**Repo version:** v02.91r
 
 ### What we worked on
-- Built the GAS Project Creator page (`gas-project-creator.html`) from v01.00w to v01.42w across many iterations
-- Created step-by-step GAS setup wizard, live config panel, copy buttons, test connection, GAS preview
-- Added token budget warning banner, deployment gate, clear buttons on inputs
+- Continued building out GAS Project Creator page from v01.42w to v01.47w
+- Added "Mandatory first pushback" rule to Pushback & Reasoning in behavioral-rules.md
 
 ### Where we left off
 - All changes committed and merged to main via auto-merge workflow
-- GAS Project Creator at v01.42w, repo at v02.85r
-
-### Active context
-- Same toggle states as current session
-- TODO items unchanged
+- GAS Project Creator at v01.47w, repo at v02.91r
 
 Developed by: ShadowAISolutions
