@@ -86,7 +86,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.02g";
+var VERSION = "01.03g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -243,7 +243,11 @@ function doGet() {
               var current = (document.getElementById('version').textContent || '').trim();
               if (pushed !== current && pushed !== '') {
                 _autoPulling = true;
-                checkForUpdates();
+                // Workflow already deployed — just reload the embedding page directly
+                var reloadMsg = {type: 'gas-reload', version: pushed};
+                if (_soundDataUrl) reloadMsg.soundDataUrl = _soundDataUrl;
+                try { window.top.postMessage(reloadMsg, '*'); } catch(e) {}
+                try { window.parent.postMessage(reloadMsg, '*'); } catch(e) {}
                 setTimeout(function() { _autoPulling = false; }, 30000);
               }
             })

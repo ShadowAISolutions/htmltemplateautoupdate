@@ -3,9 +3,14 @@
 All notable user-facing changes to this script are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3gs.changelog-archive.md](testation3gs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 2/50`
+`Sections: 3/50`
 
 ## [Unreleased]
+
+## [01.03g] — 2026-03-05 03:21:18 PM EST — v03.12r
+
+### Fixed
+- All open tabs now reliably auto-refresh when updates are deployed
 
 ## [01.02g] — 2026-03-05 03:14:41 PM EST — v03.11r
 
