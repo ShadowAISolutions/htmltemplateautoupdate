@@ -3,9 +3,18 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-project-creatorhtml.changelog-archive.md](gas-project-creatorhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 33/50`
+`Sections: 34/50`
 
 ## [Unreleased]
+
+## [v01.34w] — 2026-03-04 08:27:39 PM EST — v02.77r
+
+### Changed
+- Audio context status now correctly shows as active when sound has been unlocked in the current session
+
+### Removed
+- Configuration values no longer persist between page refreshes — form resets to defaults on reload
+- Clear Local Storage button
 
 ## [v01.33w] — 2026-03-04 08:18:28 PM EST — v02.76r
 

@@ -3,9 +3,29 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 67/100`
+`Sections: 68/100`
 
 ## [Unreleased]
+
+## [v02.77r] — 2026-03-04 08:27:39 PM EST
+
+### Changed
+- Fixed audio context dashboard showing "Suspended" on page load when audio is actually available — now uses the same sessionStorage check as the version sound icon
+
+### Removed
+- All localStorage persistence for GAS Project Creator config fields — values reset to defaults on page refresh
+- Clear Local Storage button and `clearConfig()` function
+- `applyConfig()` function (was only used for localStorage saves)
+
+#### `gas-project-creator.html` — v01.34w
+
+##### Changed
+- Audio context dashboard status now correctly shows "Running" when audio has been unlocked in the current session
+
+##### Removed
+- localStorage save/load for all config fields
+- Clear Local Storage button
+- Footer note reference to localStorage
 
 ## [v02.76r] — 2026-03-04 08:18:28 PM EST
 
