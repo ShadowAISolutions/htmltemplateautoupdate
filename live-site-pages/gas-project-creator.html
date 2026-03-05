@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.27w">
+  <meta name="build-version" content="v01.28w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -598,12 +598,12 @@
           </div>
           <div class="step-input">
             <label for="cfg-title">Title</label>
-            <div class="input-row"><input type="text" id="cfg-title" placeholder="My GAS Project" value="GAS Project Creator"><button class="field-clear" onclick="clearField('cfg-title','gas-project-creator-title')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-title" placeholder="My GAS Project" value="CHANGE THIS PROJECT TITLE GAS TEMPLATE"><button class="field-clear" onclick="clearField('cfg-title','gas-project-creator-title')" title="Clear">&times;</button></div>
             <span class="field-hint">Shown in browser tab and GAS UI</span>
           </div>
           <div class="step-input">
             <label for="cfg-version">Version</label>
-            <div class="input-row"><input type="text" id="cfg-version" placeholder="01.00" value="01.06g"><button class="field-clear" onclick="clearField('cfg-version','gas-project-creator-version')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-version" placeholder="01.00" value="01.00g"><button class="field-clear" onclick="clearField('cfg-version','gas-project-creator-version')" title="Clear">&times;</button></div>
             <span class="field-hint">GAS script version number (e.g. 01.03)</span>
           </div>
           <div class="step-input">
@@ -623,12 +623,12 @@
           </div>
           <div class="step-input">
             <label for="cfg-file-path">File Path</label>
-            <div class="input-row"><input type="text" id="cfg-file-path" placeholder="Code.gs" value="googleAppsScripts/GasProjectCreator/gas-project-creator.gs"><button class="field-clear" onclick="clearField('cfg-file-path','gas-project-creator-file-path')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-file-path" placeholder="Code.gs" value="googleAppsScripts/NewGas/newgas1.gs"><button class="field-clear" onclick="clearField('cfg-file-path','gas-project-creator-file-path')" title="Clear">&times;</button></div>
             <span class="field-hint">Path to the .gs file in the repo</span>
           </div>
           <div class="step-input">
             <label for="cfg-spreadsheet-id">Spreadsheet ID <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-spreadsheet-id" placeholder="1abc2def3ghi..."><button class="field-clear" onclick="clearField('cfg-spreadsheet-id','gas-project-creator-spreadsheet-id')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-spreadsheet-id" placeholder="1abc2def3ghi..." value="12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE"><button class="field-clear" onclick="clearField('cfg-spreadsheet-id','gas-project-creator-spreadsheet-id')" title="Clear">&times;</button></div>
             <span class="field-hint">Google Sheets ID for version tracking</span>
           </div>
           <div class="step-input">
@@ -638,12 +638,12 @@
           </div>
           <div class="step-input">
             <label for="cfg-sound-id">Sound File ID <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-sound-id" placeholder="1bzVp6wp..."><button class="field-clear" onclick="clearField('cfg-sound-id','gas-project-creator-sound-file-id')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-sound-id" placeholder="1bzVp6wp..." value="1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN"><button class="field-clear" onclick="clearField('cfg-sound-id','gas-project-creator-sound-file-id')" title="Clear">&times;</button></div>
             <span class="field-hint">Google Drive file ID for notification sound</span>
           </div>
           <div class="step-input">
             <label for="cfg-embedding-url">Embedding URL <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-embedding-url" placeholder="https://yoursite.com/page" value="https://shadowaisolutions.github.io/htmltemplateautoupdate/gas-project-creator.html"><button class="field-clear" onclick="clearField('cfg-embedding-url','gas-project-creator-embedding-url')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-embedding-url" placeholder="https://yoursite.com/page" value="https://shadowaisolutions.github.io/htmltemplateautoupdate/newgas1.html"><button class="field-clear" onclick="clearField('cfg-embedding-url','gas-project-creator-embedding-url')" title="Clear">&times;</button></div>
             <span class="field-hint">External page that hosts this GAS app in an iframe</span>
           </div>
           <div class="step-input">
@@ -1190,18 +1190,18 @@
     }
 
     function copyConfig() {
-      var title = document.getElementById('cfg-title').value.trim() || 'GAS Project Creator';
-      var version = document.getElementById('cfg-version').value.trim() || '01.06g';
+      var title = document.getElementById('cfg-title').value.trim() || 'CHANGE THIS PROJECT TITLE GAS TEMPLATE';
+      var version = document.getElementById('cfg-version').value.trim() || '01.00g';
       var ghOwner = document.getElementById('cfg-github-owner').value.trim() || 'ShadowAISolutions';
       var ghRepo = document.getElementById('cfg-github-repo').value.trim() || 'htmltemplateautoupdate';
       var ghBranch = document.getElementById('cfg-github-branch').value.trim() || 'main';
-      var filePath = document.getElementById('cfg-file-path').value.trim() || 'googleAppsScripts/GasProjectCreator/gas-project-creator.gs';
+      var filePath = document.getElementById('cfg-file-path').value.trim() || 'googleAppsScripts/NewGas/newgas1.gs';
       var deployId = document.getElementById('cfg-deployment-id').value.trim() || 'YOUR_DEPLOYMENT_ID';
-      var sheetId = document.getElementById('cfg-spreadsheet-id').value.trim() || 'YOUR_SPREADSHEET_ID';
+      var sheetId = document.getElementById('cfg-spreadsheet-id').value.trim() || '12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE';
       var sheetName = document.getElementById('cfg-sheet-name').value.trim() || 'Live_Sheet';
-      var soundId = document.getElementById('cfg-sound-id').value.trim() || '';
-      var embedUrl = document.getElementById('cfg-embedding-url').value.trim() || '';
-      var splashLogo = document.getElementById('cfg-splash-logo').value.trim() || '';
+      var soundId = document.getElementById('cfg-sound-id').value.trim() || '1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN';
+      var embedUrl = document.getElementById('cfg-embedding-url').value.trim() || 'https://shadowaisolutions.github.io/htmltemplateautoupdate/newgas1.html';
+      var splashLogo = document.getElementById('cfg-splash-logo').value.trim() || 'https://www.shadowaisolutions.com/SAIS%20Logo.png';
 
       var json = '{\n'
         + '  "TITLE": "' + title + '",\n'
@@ -1229,7 +1229,7 @@
 
     function clearField(inputId, storageKey) {
       var el = document.getElementById(inputId);
-      var defaults = {'cfg-sheet-name':'Live_Sheet','cfg-github-branch':'main','cfg-file-path':'googleAppsScripts/GasProjectCreator/gas-project-creator.gs','cfg-version':'01.06g'};
+      var defaults = {'cfg-sheet-name':'Live_Sheet','cfg-github-branch':'main','cfg-file-path':'googleAppsScripts/NewGas/newgas1.gs','cfg-version':'01.00g','cfg-title':'CHANGE THIS PROJECT TITLE GAS TEMPLATE','cfg-spreadsheet-id':'12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE','cfg-sound-id':'1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN','cfg-embedding-url':'https://shadowaisolutions.github.io/htmltemplateautoupdate/newgas1.html','cfg-splash-logo':'https://www.shadowaisolutions.com/SAIS%20Logo.png','cfg-github-owner':'ShadowAISolutions','cfg-github-repo':'htmltemplateautoupdate'};
       if (el) el.value = defaults[inputId] || '';
       localStorage.removeItem(storageKey);
       var statusMap = {
@@ -1259,17 +1259,17 @@
       localStorage.removeItem('gas-project-creator-embedding-url');
       localStorage.removeItem('gas-project-creator-splash-logo');
 
-      document.getElementById('cfg-title').value = 'GAS Project Creator';
-      document.getElementById('cfg-version').value = '01.06g';
+      document.getElementById('cfg-title').value = 'CHANGE THIS PROJECT TITLE GAS TEMPLATE';
+      document.getElementById('cfg-version').value = '01.00g';
       document.getElementById('cfg-github-owner').value = 'ShadowAISolutions';
       document.getElementById('cfg-github-repo').value = 'htmltemplateautoupdate';
       document.getElementById('cfg-github-branch').value = 'main';
-      document.getElementById('cfg-file-path').value = 'googleAppsScripts/GasProjectCreator/gas-project-creator.gs';
+      document.getElementById('cfg-file-path').value = 'googleAppsScripts/NewGas/newgas1.gs';
       document.getElementById('cfg-deployment-id').value = '';
-      document.getElementById('cfg-spreadsheet-id').value = '';
+      document.getElementById('cfg-spreadsheet-id').value = '12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE';
       document.getElementById('cfg-sheet-name').value = 'Live_Sheet';
-      document.getElementById('cfg-sound-id').value = '';
-      document.getElementById('cfg-embedding-url').value = 'https://shadowaisolutions.github.io/htmltemplateautoupdate/gas-project-creator.html';
+      document.getElementById('cfg-sound-id').value = '1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN';
+      document.getElementById('cfg-embedding-url').value = 'https://shadowaisolutions.github.io/htmltemplateautoupdate/newgas1.html';
       document.getElementById('cfg-splash-logo').value = 'https://www.shadowaisolutions.com/SAIS%20Logo.png';
       // Config output panel removed — copy goes directly to clipboard
       document.getElementById('saved-badge').style.display = 'none';
@@ -1280,8 +1280,8 @@
       setStatus('local-sheet', 'gray', 'neutral', '\u2014');
       setStatus('local-sheetname', 'gray', 'neutral', '\u2014');
       setStatus('local-sound', 'gray', 'neutral', '\u2014');
-      document.title = 'GAS Project Creator';
-      setStatus('title', 'green', 'ok', 'GAS Project Creator');
+      document.title = 'CHANGE THIS PROJECT TITLE GAS TEMPLATE';
+      setStatus('title', 'green', 'ok', 'CHANGE THIS PROJECT TITLE GAS TEMPLATE');
 
       showToast('Configuration cleared');
       updateDeployGate();

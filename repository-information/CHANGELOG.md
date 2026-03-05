@@ -3,9 +3,23 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 61/100`
+`Sections: 62/100`
 
 ## [Unreleased]
+
+## [v02.71r] — 2026-03-04 07:02:02 PM EST
+
+### Changed
+- Updated default form placeholder values in GAS Project Creator to reference NewGas project configuration
+
+#### `gas-project-creator.html` — v01.28w
+
+##### Changed
+- Default project title changed to "CHANGE THIS PROJECT TITLE GAS TEMPLATE"
+- Default version changed to "01.00g"
+- Default file path changed to "googleAppsScripts/NewGas/newgas1.gs"
+- Default embedding URL changed to newgas1.html
+- Spreadsheet ID and Sound File ID now pre-filled with real values
 
 ## [v02.70r] — 2026-03-04 06:53:55 PM EST
 

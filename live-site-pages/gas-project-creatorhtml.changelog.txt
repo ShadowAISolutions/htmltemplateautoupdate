@@ -3,9 +3,18 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-project-creatorhtml.changelog-archive.md](gas-project-creatorhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 16/50`
+`Sections: 17/50`
 
 ## [Unreleased]
+
+## [v01.28w] — 2026-03-04 07:02:02 PM EST — v02.71r
+
+### Changed
+- Default project title changed to "CHANGE THIS PROJECT TITLE GAS TEMPLATE"
+- Default version changed to "01.00g"
+- Default file path changed to "googleAppsScripts/NewGas/newgas1.gs"
+- Default embedding URL changed to newgas1.html
+- Spreadsheet ID and Sound File ID now pre-filled with real values
 
 ## [v01.27w] — 2026-03-04 06:53:55 PM EST — v02.70r
 
