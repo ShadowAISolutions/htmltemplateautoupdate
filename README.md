@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-05 09:07:01 AM EST` · Repo version: `v02.96r`
+Last updated: `2026-03-05 09:22:51 AM EST` · Repo version: `v02.97r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -165,6 +165,9 @@ htmltemplateautoupdate/
 │   ├── gas-template.html              # GAS template embedding page
 │   ├── gas-templatehtml.version.txt   # Version file for gas-template page auto-refresh
 │   ├── gas-templatehtml.changelog.txt # Deployed changelog for popup
+│   ├── test_link_gas_1_app.html       # Test Link Gas 1 App embedding page
+│   ├── test_link_gas_1_apphtml.version.txt   # Version file for test_link_gas_1_app page auto-refresh
+│   ├── test_link_gas_1_apphtml.changelog.txt # Deployed changelog for popup
 │   └── sounds/                 # Audio feedback files
 ├── live-site-templates/        # Templates for new pages
 │   ├── HtmlTemplateAutoUpdate.html           # Template HTML page (no GAS)
@@ -184,6 +187,10 @@ htmltemplateautoupdate/
 │   │   ├── gas-template.gs      # Template GAS web app (placeholder values)
 │   │   ├── gas-template.config.json  # Template config (placeholders)
 │   │   └── gas-templategs.version.txt  # Template GAS version file
+│   ├── TestLinkGas1App/         # GAS for live-site-pages/test_link_gas_1_app.html
+│   │   ├── test_link_gas_1_app.gs           # Self-updating GAS web app
+│   │   ├── test_link_gas_1_app.config.json  # Project config (source of truth)
+│   │   └── test_link_gas_1_appgs.version.txt  # GAS version file (mirrors VERSION var)
 │   └── HtmlTemplateAutoUpdate/  # Original GAS template (base for GasTemplate)
 │       ├── HtmlTemplateAutoUpdate.gs           # Template GAS web app
 │       ├── HtmlTemplateAutoUpdate.config.json  # Template config (placeholders)
@@ -252,6 +259,10 @@ htmltemplateautoupdate/
 │   │   ├── GasTemplatehtml.changelog-archive.md  # GAS template page changelog archive
 │   │   ├── GasTemplategs.changelog.md            # GAS template GAS changelog
 │   │   ├── GasTemplategs.changelog-archive.md    # GAS template GAS changelog archive
+│   │   ├── test_link_gas_1_apphtml.changelog.md          # User-facing changelog for Test Link Gas 1 App page
+│   │   ├── test_link_gas_1_apphtml.changelog-archive.md  # Older changelog sections (rotated)
+│   │   ├── test_link_gas_1_appgs.changelog.md            # User-facing changelog for Test Link Gas 1 App GAS
+│   │   ├── test_link_gas_1_appgs.changelog-archive.md    # Older changelog sections (rotated)
 │   │   ├── HtmlTemplateAutoUpdatehtml.changelog.md          # Template page changelog
 │   │   ├── HtmlTemplateAutoUpdatehtml.changelog-archive.md  # Template page changelog archive
 │   │   ├── HtmlTemplateAutoUpdategs.changelog.md            # Template GAS changelog

@@ -3,9 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 87/100`
+`Sections: 88/100`
 
 ## [Unreleased]
+
+## [v02.97r] — 2026-03-05 09:22:51 AM EST
+
+### Added
+- Created full `test_link_gas_1_app` GAS project ecosystem: HTML embedding page, `.gs` file, config.json, version files, changelogs, and deployment changelog copy
+- Registered TestLinkGas1App in GAS Projects table
+
+#### `test_link_gas_1_app.html` — v01.00w
+
+##### Added
+- New embedding page for Test Link Gas 1 App GAS project with full template features (auto-refresh, version polling, maintenance mode, changelog popup)
 
 ## [v02.96r] — 2026-03-05 09:07:01 AM EST
 
