@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.49w">
+  <meta name="build-version" content="v01.50w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -973,7 +973,18 @@
         if (splashLogo.trim()) code = code.replace(/var SPLASH_LOGO_URL\s*=\s*"[^"]*"/, 'var SPLASH_LOGO_URL = "' + splashLogo.trim() + '"');
         var envName = (document.getElementById('cfg-env-name') || {}).value || '';
         if (envName.trim()) {
-          var repoBase = window.location.origin + '/' + window.location.pathname.split('/')[1];
+          // Derive GITHUB_OWNER and GITHUB_REPO from the GitHub Pages URL
+          // URL pattern: https://ORG.github.io/REPO/gas-project-creator.html
+          var ghOwner = window.location.hostname.split('.')[0];
+          var ghRepo = window.location.pathname.split('/')[1];
+          code = code.replace(/var GITHUB_OWNER\s*=\s*"[^"]*"/, 'var GITHUB_OWNER  = "' + ghOwner + '"');
+          code = code.replace(/var GITHUB_REPO\s*=\s*"[^"]*"/, 'var GITHUB_REPO   = "' + ghRepo + '"');
+          // Derive FILE_PATH: folder is PascalCase of env name, file is env_name.gs
+          var folder = envName.trim().split(/[-_]/).map(function(w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join('');
+          var filePath = 'googleAppsScripts/' + folder + '/' + envName.trim() + '.gs';
+          code = code.replace(/var FILE_PATH\s*=\s*"[^"]*"/, 'var FILE_PATH     = "' + filePath + '"');
+          // Derive EMBED_PAGE_URL from the GitHub Pages base
+          var repoBase = window.location.origin + '/' + ghRepo;
           var embedUrl = repoBase + '/' + envName.trim() + '.html';
           code = code.replace(/var EMBED_PAGE_URL\s*=\s*"[^"]*"/, 'var EMBED_PAGE_URL = "' + embedUrl + '"');
         }
