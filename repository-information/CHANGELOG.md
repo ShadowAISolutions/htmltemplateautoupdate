@@ -3,9 +3,18 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 82/100`
+`Sections: 83/100`
 
 ## [Unreleased]
+
+## [v02.92r] — 2026-03-04 11:01:11 PM EST
+
+### Fixed
+- Synced all 5 deployment changelog copies (`.txt` files in `live-site-pages/`) that had drifted behind their source changelogs — gas-project-creator was missing 16 versions (v01.43w–v01.47w plus earlier gaps), test was missing 2, index/soccer-ball/gas-template each missing 1
+
+### Changed
+- Added "Deployment copy sync" step to Pre-Commit #17 — after any page changelog update, the corresponding `.txt` deployment copy in `live-site-pages/` must be synced. This was the root cause of the drift: the sync rule existed in `html-pages.md` but was not referenced in the Pre-Commit checklist item itself
+- Added deployment copy sync reminder to `.claude/rules/changelogs.md` quick reference
 
 ## [v02.91r] — 2026-03-04 10:26:49 PM EST
 
