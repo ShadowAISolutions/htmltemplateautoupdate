@@ -62,6 +62,36 @@ When Claude runs Pre-Commit #7 on the push commit, after creating the new versio
 
 ---
 
+## [v02.15r] — 2026-03-02 06:52:41 PM EST
+
+### Fixed
+- Re-applied v02.14r version bump through proper `claude/*` branch workflow (v02.14r was erroneously pushed directly to `main`)
+
+## [v02.14r] — 2026-03-02 06:43:07 PM EST
+
+### Changed
+- Bumped repository version from v02.13r to v02.14r
+
+## [v02.13r] — 2026-03-02 12:55:00 PM EST
+
+### Added
+- "Imported Skills — Do Not Modify" rule in behavioral-rules.md — imported skills (`.claude/skills/imported--*`) are frozen; only location pointers may be updated, preserving traceability of which skill produces which behavior
+
+## [v02.12r] — 2026-03-02 12:18:12 PM EST
+
+### Added
+- `SKILLS-REFERENCE.md` — complete inventory of all Claude Code skills (custom, imported, and bundled/plugin) with visibility status and guidance on when to add local vs. rely on bundled
+
+## [v02.11r] — 2026-03-02 11:58:44 AM EST
+
+### Added
+- 6 imported Claude Code Skills in `.claude/skills/` with `imported--` prefix: `/webapp-testing` (Playwright page testing, from Anthropic), `/frontend-design` (distinctive UI creation, from Anthropic), `/skill-creator` (meta-skill for creating new skills, from Anthropic), `/security-review` (OWASP/web security audit, inspired by Trail of Bits), `/git-cleanup` (stale branch/worktree cleanup, inspired by Trail of Bits), `/diff-review` (pre-push differential code review, inspired by Trail of Bits)
+
+## [v02.10r] — 2026-03-02 11:48:51 AM EST
+
+### Added
+- Claude Code Skills — 6 invokable workflow skills in `.claude/skills/`: `/phantom-update` (timestamp alignment), `/maintenance-mode` (toggle maintenance overlay), `/new-page` (create new HTML page with boilerplate), `/reconcile` (end multi-session mode), `/remember-session` (save session context), `/initialize` (first deployment setup)
+
 ## [v02.09r] — 2026-03-01 06:17:49 PM EST — [012851c](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/012851cb4fae8015d5762db11c9d908c91954c83)
 
 ### Added
