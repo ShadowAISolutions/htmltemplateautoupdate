@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.43w">
+  <meta name="build-version" content="v01.44w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -444,7 +444,9 @@
           <div class="step-note">APIs &amp; Services &rarr; Library &rarr; search "Apps Script API" &rarr; Enable</div>
         </li>
         <li class="step-group-label">New Apps Script Project</li>
-        <li>Create a new Apps Script project at <a href="https://script.google.com" target="_blank" rel="noopener" style="color:#58a6ff">script.google.com</a> (this creates a <strong>standalone</strong> script; if you create one via Google Sheets &rarr; Extensions &rarr; Apps Script, it will be <strong>linked</strong> to that spreadsheet instead)</li>
+        <li>Create a new Apps Script project via <strong>Google Sheets</strong> (recommended): open a new or existing Google Sheet &rarr; <strong>Extensions</strong> &rarr; <strong>Apps Script</strong>. This creates a script <strong>linked</strong> to that spreadsheet, which is needed for version-tracking features.
+          <div class="step-note">Alternatively, for a <strong>standalone</strong> script (no spreadsheet link), create one at <a href="https://script.google.com" target="_blank" rel="noopener" style="color:#58a6ff">script.google.com</a></div>
+        </li>
         <li class="step-group-label">GAS Project Settings</li>
         <li>In Project Settings, enable <strong>Show appsscript.json manifest file</strong>
           <div class="step-note">Project Settings &rarr; General settings &rarr; Show &ldquo;appsscript.json&rdquo; manifest file</div>

@@ -3,9 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 77/100`
+`Sections: 78/100`
 
 ## [Unreleased]
+
+## [v02.87r] — 2026-03-04 09:52:43 PM EST
+
+### Changed
+- Restructured Step 4 in GAS Project Creator to recommend Google Sheets method as preferred, with script.google.com as standalone alternative
+
+#### `gas-project-creator.html` — v01.44w
+
+##### Changed
+- Step 4 now recommends creating scripts via Google Sheets (Extensions → Apps Script) as the preferred method
+- Standalone script creation via script.google.com shown as an alternative option
 
 ## [v02.86r] — 2026-03-04 09:39:40 PM EST
 

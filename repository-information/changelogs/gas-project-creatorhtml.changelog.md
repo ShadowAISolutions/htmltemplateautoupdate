@@ -3,9 +3,15 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-project-creatorhtml.changelog-archive.md](gas-project-creatorhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 43/50`
+`Sections: 44/50`
 
 ## [Unreleased]
+
+## [v01.44w] — 2026-03-04 09:52:43 PM EST — v02.87r
+
+### Changed
+- Step 4 now recommends creating scripts via Google Sheets as the preferred method
+- Standalone script creation shown as an alternative option
 
 ## [v01.43w] — 2026-03-04 09:39:40 PM EST — v02.86r
 
