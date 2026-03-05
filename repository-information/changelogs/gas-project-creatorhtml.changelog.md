@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-project-creatorhtml.changelog-archive.md](gas-project-creatorhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 46/50`
+`Sections: 47/50`
 
 ## [Unreleased]
+
+## [v01.47w] — 2026-03-04 10:19:18 PM EST — v02.90r
+
+### Changed
+- Blank optional fields now show placeholder variable names in copied config instead of hardcoded defaults
 
 ## [v01.46w] — 2026-03-04 10:10:42 PM EST — v02.89r
 

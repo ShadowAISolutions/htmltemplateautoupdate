@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 80/100`
+`Sections: 81/100`
 
 ## [Unreleased]
+
+## [v02.90r] — 2026-03-04 10:19:18 PM EST
+
+### Changed
+- Blank optional config fields in GAS Project Creator now output placeholder variables (e.g. `YOUR_SPREADSHEET_ID`) instead of hardcoded defaults
+
+#### `gas-project-creator.html` — v01.47w
+
+##### Changed
+- Blank optional fields now produce placeholder variable names in copied config JSON
 
 ## [v02.89r] — 2026-03-04 10:10:42 PM EST
 
