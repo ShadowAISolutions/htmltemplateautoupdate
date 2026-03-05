@@ -86,8 +86,8 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.00g";
-var TITLE = "optional title";                                      // ← test_link_gas_1_app.config.json
+var VERSION = "01.01g";
+var TITLE = "Test Title";                                          // ← test_link_gas_1_app.config.json
 
 // GitHub config — where to pull code from
 var GITHUB_OWNER  = "ShadowAISolutions";

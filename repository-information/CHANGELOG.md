@@ -3,9 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 90/100`
+`Sections: 91/100`
 
 ## [Unreleased]
+
+## [v03.00r] — 2026-03-05 09:55:36 AM EST
+
+### Changed
+- Updated test_link_gas_1_app GAS project config: TITLE changed from "optional title" to "Test Title"
+
+#### `test_link_gas_1_app.html` — v01.01w
+
+##### Changed
+- Page title updated to "Test Title"
+
+#### `test_link_gas_1_app.gs` — 01.01g
+
+##### Changed
+- App title updated to "Test Title"
 
 ## [v02.99r] — 2026-03-05 09:42:31 AM EST
 

@@ -9,7 +9,7 @@
 | Soccer Ball | `live-site-pages/soccer-ball.html` | v01.02w | *(deploy to activate)* | Active |
 | GAS Project Creator | `live-site-pages/gas-project-creator.html` | v01.50w | *(deploy to activate)* | Active |
 | GAS Template | `live-site-pages/gas-template.html` | v01.01w | *(deploy to activate)* | Active |
-| Test Link Gas 1 App | `live-site-pages/test_link_gas_1_app.html` | v01.00w | *(deploy to activate)* | Active |
+| Test Link Gas 1 App | `live-site-pages/test_link_gas_1_app.html` | v01.01w | *(deploy to activate)* | Active |
 
 
 ## GAS Projects
@@ -17,7 +17,7 @@
 | Project | Code File | Embedding Page | GAS Version | Status |
 |---------|-----------|----------------|-------------|--------|
 | GasTemplate | `googleAppsScripts/GasTemplate/gas-template.gs` | `live-site-pages/gas-template.html` | 01.01g | Active |
-| TestLinkGas1App | `googleAppsScripts/TestLinkGas1App/test_link_gas_1_app.gs` | `live-site-pages/test_link_gas_1_app.html` | 01.00g | Active |
+| TestLinkGas1App | `googleAppsScripts/TestLinkGas1App/test_link_gas_1_app.gs` | `live-site-pages/test_link_gas_1_app.html` | 01.01g | Active |
 
 
 ## Templates
