@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 95/100`
+`Sections: 96/100`
 
 ## [Unreleased]
+
+## [v03.05r] — 2026-03-05 01:32:42 PM EST
+
+### Changed
+- "Copy Config for Claude" button now includes a natural-language preamble and post-script steps, so Claude Code knows the full intent and follow-up actions without guessing
+
+#### `gas-project-creator.html` — v01.52w
+
+##### Changed
+- Copy Config button output now includes setup instructions and post-script checklist for Claude Code
 
 ## [v03.04r] — 2026-03-05 11:25:27 AM EST
 
