@@ -86,7 +86,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.07g";
+var VERSION = "01.08g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -165,6 +165,8 @@ function doGet() {
       <form id="redirect-form" method="GET" action="${EMBED_PAGE_URL}" target="_top" style="display:inline;">
         <button id="reload-btn" type="submit" style="background:#2e7d32;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;margin-top:10px;">🔄 Reload Page</button>
       </form>
+      <button id="pull-btn" onclick="pullLatest()" style="background:#1565c0;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;margin-top:10px;">⬇️ Pull Latest from GitHub</button>
+      <div id="pull-status" style="font-size:12px;color:#888;margin-top:4px;"></div>
       <div id="versionCount"></div>
 
       ${SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID" ? `
@@ -255,6 +257,33 @@ function doGet() {
         if (document.getElementById('token-info')) {
           pollQuotaAndLimits();
           setInterval(pollQuotaAndLimits, 60000);
+        }
+
+        function pullLatest() {
+          var btn = document.getElementById('pull-btn');
+          var status = document.getElementById('pull-status');
+          btn.disabled = true;
+          btn.style.opacity = '0.5';
+          status.textContent = 'Pulling from GitHub...';
+          google.script.run
+            .withSuccessHandler(function(result) {
+              status.textContent = result;
+              btn.disabled = false;
+              btn.style.opacity = '1';
+              if (result.indexOf('Updated to') !== -1) {
+                status.textContent = result + ' — reloading...';
+                var reloadMsg = {type: 'gas-reload', version: result};
+                if (_soundDataUrl) reloadMsg.soundDataUrl = _soundDataUrl;
+                try { window.top.postMessage(reloadMsg, '*'); } catch(e) {}
+                try { window.parent.postMessage(reloadMsg, '*'); } catch(e) {}
+              }
+            })
+            .withFailureHandler(function(err) {
+              status.textContent = 'Error: ' + err.message;
+              btn.disabled = false;
+              btn.style.opacity = '1';
+            })
+            .pullAndDeployFromGitHub();
         }
 
         var _autoPulling = false;

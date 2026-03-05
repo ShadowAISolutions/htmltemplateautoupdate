@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 94/100`
+`Sections: 95/100`
 
 ## [Unreleased]
+
+## [v03.17r] — 2026-03-05 04:08:59 PM EST
+
+### Added
+- Re-added "Pull Latest from GitHub" button to the Testation3 GAS web app for manual update triggering
+
+#### `testation3.gs` — 01.08g
+
+##### Added
+- "Pull Latest from GitHub" button for manually triggering code updates from GitHub
 
 ## [v03.16r] — 2026-03-05 04:01:02 PM EST
 
