@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-project-creatorhtml.changelog-archive.md](gas-project-creatorhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 18/50`
+`Sections: 19/50`
 
 ## [Unreleased]
+
+## [v01.30w] — 2026-03-04 07:20:53 PM EST — v02.73r
+
+### Changed
+- Test GAS Connection now opens in a resizable bottom panel with a tab toggle instead of a popup window — easier to interact with while configuring
 
 ## [v01.29w] — 2026-03-04 07:13:41 PM EST — v02.72r
 

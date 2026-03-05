@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.29w">
+  <meta name="build-version" content="v01.30w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -412,38 +412,44 @@
       font-size: 11px;
       color: #484f58;
     }
-    /* ── Test GAS Connection Overlay ───────────────────────── */
-    #gas-test-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7); z-index: 10002; display: none;
-      align-items: center; justify-content: center;
+    /* ── GAS Panel (bottom drawer) ─────────────────────────── */
+    #gas-panel {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      transition: height 0.3s ease; display: flex; flex-direction: column;
     }
-    #gas-test-popup {
-      background: #1a1a2e; border-radius: 12px;
-      max-width: 560px; width: 92%; max-height: 80vh;
-      display: flex; flex-direction: column;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    #gas-panel.collapsed { height: 0 !important; }
+    #gas-panel-tab {
+      position: fixed; bottom: 0; left: 16px; z-index: 101;
+      background: #238636; color: #fff; border: none;
+      border-radius: 8px 8px 0 0; padding: 4px 14px;
+      font: 600 12px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      cursor: pointer; display: none;
     }
-    #gas-test-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    #gas-panel-tab:hover { background: #2ea043; }
+    #gas-panel-tab.active { background: #da3633; }
+    #gas-panel-tab.active:hover { background: #f85149; }
+    #gas-panel-tab:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
     }
-    #gas-test-header span { font: bold 15px/1 sans-serif; color: #fff; }
-    #gas-test-close {
-      background: none; border: none; color: #888; font-size: 24px;
-      cursor: pointer; padding: 4px 8px; line-height: 1;
+    #gas-panel-resize {
+      height: 5px;
+      background: #30363d;
+      cursor: ns-resize;
+      flex-shrink: 0;
     }
-    #gas-test-close:hover { color: #fff; }
-    #gas-test-body {
-      flex: 1; min-height: 320px; position: relative;
+    #gas-panel-resize::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 3px;
+      background: #484f58;
+      border-radius: 2px;
+      margin: 1px auto;
     }
-    #gas-test-body iframe {
-      width: 100%; height: 100%; min-height: 320px; border: none;
-      border-radius: 0 0 12px 12px;
-    }
-    #gas-test-body .gas-test-loading {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      color: #888; font: 13px/1.4 sans-serif;
+    #gas-panel iframe {
+      flex: 1; width: 100%; border: none; background: #fff;
     }
     .pre-wrap {
       position: relative;
@@ -468,17 +474,11 @@
   <div id="splash-green" class="splash"><div class="splash-title">Website Ready</div><img id="splash-logo" src="" alt=""></div>
   <div id="splash-maintenance" class="splash"><div class="splash-title">&#128295;This Webpage is Undergoing Maintenance<span id="maint-bypass" tabindex="-1" style="cursor:inherit;-webkit-user-select:none;user-select:text">&#128295;</span></div><img id="maintenance-logo" src="" alt=""><div id="maintenance-timestamp" class="maintenance-timestamp"></div></div>
 
-  <!-- Test GAS Connection Overlay -->
-  <div id="gas-test-overlay">
-    <div id="gas-test-popup">
-      <div id="gas-test-header">
-        <span>Test GAS Connection</span>
-        <button id="gas-test-close">&times;</button>
-      </div>
-      <div id="gas-test-body">
-        <div class="gas-test-loading">Loading GAS deployment&hellip;</div>
-      </div>
-    </div>
+  <!-- GAS panel — collapsible bottom drawer for iframe -->
+  <button id="gas-panel-tab">&#9650; GAS</button>
+  <div id="gas-panel" class="collapsed">
+    <div id="gas-panel-resize"></div>
+    <!-- GAS iframe injected dynamically by testGasConnection() -->
   </div>
 
   <!-- GAS Project Creator Dashboard -->
@@ -1131,7 +1131,8 @@
       var btns = [
         document.getElementById('btn-copy-gs'),
         document.getElementById('btn-apply'),
-        document.getElementById('btn-copy-config')
+        document.getElementById('btn-copy-config'),
+        document.getElementById('gas-panel-tab')
       ];
       for (var i = 0; i < btns.length; i++) {
         if (btns[i]) btns[i].disabled = !hasId;
@@ -1183,7 +1184,7 @@
       showToast('Configuration saved to localStorage');
     }
 
-    // ── Test GAS Connection Overlay ──────────────────────────────
+    // ── Test GAS Connection (bottom panel) ─────────────────────
     function testGasConnection() {
       var deployId = document.getElementById('cfg-deployment-id').value.trim();
       if (!deployId) return;
@@ -1191,27 +1192,60 @@
       // Save config first
       applyConfig();
 
-      var overlay = document.getElementById('gas-test-overlay');
-      var body = document.getElementById('gas-test-body');
-      var url = 'https://script.google.com/macros/s/' + deployId + '/exec';
+      var panel = document.getElementById('gas-panel');
+      var tab = document.getElementById('gas-panel-tab');
 
-      // Reset body and show overlay
-      body.innerHTML = '<div class="gas-test-loading">Loading GAS deployment&hellip;</div>'
-        + '<iframe src="' + url + '" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>';
-      overlay.style.display = 'flex';
+      // Remove any existing iframe
+      var old = document.getElementById('gas-app');
+      if (old) old.remove();
+
+      // Create iframe via srcdoc trampoline
+      var url = 'https://script.google.com/macros/s/' + deployId + '/exec';
+      var f = document.createElement('iframe');
+      f.id = 'gas-app';
+      window._r = url;
+      f.srcdoc = '<script>var d=parent._r;delete parent._r;if(d)location.replace(d)<\/script>';
+      panel.appendChild(f);
+
+      // Show tab and expand panel
+      tab.style.display = 'block';
+      panel.classList.remove('collapsed');
+      panel.style.height = '40%';
+      tab.classList.add('active');
+      tab.textContent = '\u25BC GAS';
+      tab.style.bottom = '40%';
     }
+
+    // GAS panel toggle + resize
     (function() {
-      var closeBtn = document.getElementById('gas-test-close');
-      var overlay = document.getElementById('gas-test-overlay');
-      function closeOverlay() {
-        overlay.style.display = 'none';
-        var body = document.getElementById('gas-test-body');
-        body.innerHTML = '<div class="gas-test-loading">Loading GAS deployment&hellip;</div>';
-      }
-      closeBtn.addEventListener('click', closeOverlay);
-      overlay.addEventListener('click', function(e) { if (e.target === overlay) closeOverlay(); });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && overlay.style.display === 'flex') closeOverlay();
+      var panel = document.getElementById('gas-panel');
+      var tab = document.getElementById('gas-panel-tab');
+      var resize = document.getElementById('gas-panel-resize');
+      tab.addEventListener('click', function() {
+        panel.classList.toggle('collapsed');
+        tab.classList.toggle('active');
+        tab.textContent = panel.classList.contains('collapsed') ? '\u25B2 GAS' : '\u25BC GAS';
+        tab.style.bottom = panel.classList.contains('collapsed') ? '0' : panel.style.height;
+      });
+      var startY, startH;
+      resize.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        startY = e.clientY; startH = panel.offsetHeight;
+        function onMove(ev) {
+          var h = Math.max(120, Math.min(window.innerHeight * 0.8, startH + (startY - ev.clientY)));
+          panel.style.height = h + 'px'; tab.style.bottom = h + 'px';
+        }
+        function onUp() { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp);
+      });
+      resize.addEventListener('touchstart', function(e) {
+        var t0 = e.touches[0]; startY = t0.clientY; startH = panel.offsetHeight;
+        function onTM(ev) {
+          var h = Math.max(120, Math.min(window.innerHeight * 0.8, startH + (startY - ev.touches[0].clientY)));
+          panel.style.height = h + 'px'; tab.style.bottom = h + 'px';
+        }
+        function onTE() { document.removeEventListener('touchmove', onTM); document.removeEventListener('touchend', onTE); }
+        document.addEventListener('touchmove', onTM); document.addEventListener('touchend', onTE);
       });
     })();
 
@@ -1329,6 +1363,10 @@
         if (savedTitle) document.title = savedTitle;
       }
       updateDeployGate();
+      // Show panel tab if deployment ID is saved (collapsed by default)
+      if (savedDeploy && savedDeploy !== 'YOUR_DEPLOYMENT_ID') {
+        document.getElementById('gas-panel-tab').style.display = 'block';
+      }
     })();
 
     // Initial HTML layer checks

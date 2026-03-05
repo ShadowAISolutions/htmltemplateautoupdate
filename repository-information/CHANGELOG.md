@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 63/100`
+`Sections: 64/100`
 
 ## [Unreleased]
+
+## [v02.73r] — 2026-03-04 07:20:53 PM EST
+
+### Changed
+- Test GAS Connection now uses a bottom-panel drawer with tab toggle instead of a popup overlay — matches the original GAS panel design with slide-up panel, resize handle, and collapsible tab
+
+#### `gas-project-creator.html` — v01.30w
+
+##### Changed
+- Test GAS Connection replaced popup overlay with bottom-panel drawer (tab at bottom-left, resizable panel with iframe)
 
 ## [v02.72r] — 2026-03-04 07:13:41 PM EST
 
