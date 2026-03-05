@@ -86,7 +86,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.03g";
+var VERSION = "01.04g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -125,10 +125,9 @@ function doGet() {
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0d47a1; z-index: 9999; transition: opacity 0.3s ease; display: flex; align-items: center; justify-content: center; }
         #splash img { max-width: 500px; max-height: 500px; }
         #version { font-size: 80px; font-weight: bold; color: #e65100; line-height: 1; }
-        button { background: #e65100; color: white; border: none; padding: 8px 20px;
+        button { background: #2e7d32; color: white; border: none; padding: 8px 20px;
                  border-radius: 6px; cursor: pointer; font-size: 14px; margin-top: 10px; }
-        button:hover { background: #bf360c; }
-        #result { margin-top: 8px; padding: 8px 15px; border-radius: 8px; font-size: 13px; }
+        button:hover { background: #1b5e20; }
         #versionCount { margin-top: 6px; font-size: 12px; color: #888; }
         #sheet-container { margin-top: 10px; width: 90%; max-width: 600px; position: relative; }
         #sheet-container h3 { text-align: center; color: #333; margin: 0 0 4px 0; }
@@ -142,11 +141,9 @@ function doGet() {
       <div id="splash"><img src="${SPLASH_LOGO_URL}" alt=""></div>
       <h1 id="title" style="font-size: 28px; margin: 0 0 4px 0;">...</h1>
       <div id="version">...</div>
-      <button onclick="checkForUpdates()">🔄 Pull Latest from GitHub</button>
       <form id="redirect-form" method="GET" action="${EMBED_PAGE_URL}" target="_top" style="display:inline;">
         <button id="reload-btn" type="submit" style="background:#2e7d32;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;margin-top:10px;">🔄 Reload Page</button>
       </form>
-      <div id="result"></div>
       <div id="versionCount"></div>
 
       ${SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID" ? `
@@ -255,65 +252,12 @@ function doGet() {
         }
         setInterval(pollPushedVersionFromCache, 15000);
 
-        checkForUpdates();
-
         setTimeout(function() {
           var splash = document.getElementById('splash');
           splash.style.opacity = '0';
           setTimeout(function() { splash.style.display = 'none'; }, 300);
         }, 1000);
 
-        function checkForUpdates() {
-          document.getElementById('result').style.background = '#fff3e0';
-          document.getElementById('result').innerHTML = '⏳ Pulling...';
-          google.script.run
-            .withSuccessHandler(function(msg) {
-              var wasUpdated = msg.indexOf('Updated to') === 0;
-              document.getElementById('result').style.background = '#e8f5e9';
-              document.getElementById('result').innerHTML = '✅ ' + msg;
-              if (!wasUpdated) {
-                // Workflow may have already deployed — check if server has newer version
-                google.script.run
-                  .withSuccessHandler(function(data) {
-                    var currentVer = (document.getElementById('version').textContent || '').trim();
-                    if (data.version !== currentVer) {
-                      applyData(data);
-                      var btn = document.getElementById('reload-btn');
-                      btn.style.background = '#d32f2f';
-                      btn.textContent = '⚠️ Update Available — Reload Page';
-                      var reloadMsg = {type: 'gas-reload', version: data.version};
-                      if (_soundDataUrl) reloadMsg.soundDataUrl = _soundDataUrl;
-                      try { window.top.postMessage(reloadMsg, '*'); } catch(e) {}
-                      try { window.parent.postMessage(reloadMsg, '*'); } catch(e) {}
-                    } else {
-                      setTimeout(function() { document.getElementById('result').innerHTML = ''; }, 2000);
-                    }
-                  })
-                  .getAppData();
-                return;
-              }
-              setTimeout(function() {
-                google.script.run.writeVersionToSheet();
-                google.script.run
-                  .withSuccessHandler(function(data) {
-                    applyData(data);
-                    var btn = document.getElementById('reload-btn');
-                    btn.style.background = '#d32f2f';
-                    btn.textContent = '⚠️ Update Available — Reload Page';
-                    var reloadMsg = {type: 'gas-reload', version: data.version};
-                    if (_soundDataUrl) reloadMsg.soundDataUrl = _soundDataUrl;
-                    try { window.top.postMessage(reloadMsg, '*'); } catch(e) {}
-                    try { window.parent.postMessage(reloadMsg, '*'); } catch(e) {}
-                  })
-                  .getAppData();
-              }, 2000);
-            })
-            .withFailureHandler(function(err) {
-              document.getElementById('result').style.background = '#ffebee';
-              document.getElementById('result').innerHTML = '❌ ' + err.message;
-            })
-            .pullAndDeployFromGitHub();
-        }
       </script>
       <div style="margin-top:30px;text-align:center;font-size:48px;color:#d32f2f;line-height:1.1;">
         <div>🔴</div>

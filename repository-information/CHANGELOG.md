@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 97/100`
+`Sections: 98/100`
 
 ## [Unreleased]
+
+## [v03.13r] — 2026-03-05 03:26:01 PM EST
+
+### Removed
+- "Pull Latest from GitHub" button — updates are now fully automatic via the workflow deploy pipeline
+
+#### `testation3.gs` — 01.04g
+
+##### Removed
+- Manual "Pull Latest from GitHub" button — updates happen automatically
 
 ## [v03.12r] — 2026-03-05 03:21:18 PM EST
 
