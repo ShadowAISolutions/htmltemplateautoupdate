@@ -3,9 +3,15 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-project-creatorhtml.changelog-archive.md](gas-project-creatorhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 41/50`
+`Sections: 42/50`
 
 ## [Unreleased]
+
+## [v01.42w] — 2026-03-04 09:31:18 PM EST — v02.85r
+
+### Changed
+- Step 4 now explains standalone vs. linked script creation
+- Troubleshooting label updated to "Potential Troubleshooting"
 
 ## [v01.41w] — 2026-03-04 09:17:35 PM EST — v02.84r
 

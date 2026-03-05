@@ -3,9 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 75/100`
+`Sections: 76/100`
 
 ## [Unreleased]
+
+## [v02.85r] — 2026-03-04 09:31:18 PM EST
+
+### Changed
+- Added standalone vs. linked script note to step 4 (creating Apps Script project)
+- Changed "Troubleshooting:" to "Potential Troubleshooting:" on the Cloud Platform folder error
+
+#### `gas-project-creator.html` — v01.42w
+
+##### Changed
+- Step 4 now explains standalone vs. linked script creation
+- Troubleshooting label updated to "Potential Troubleshooting"
 
 ## [v02.84r] — 2026-03-04 09:17:35 PM EST
 

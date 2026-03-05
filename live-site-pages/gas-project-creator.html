@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.41w">
+  <meta name="build-version" content="v01.42w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -444,7 +444,7 @@
           <div class="step-note">APIs &amp; Services &rarr; Library &rarr; search "Apps Script API" &rarr; Enable</div>
         </li>
         <li class="step-group-label">New Apps Script Project</li>
-        <li>Create a new Apps Script project at <a href="https://script.google.com" target="_blank" rel="noopener" style="color:#58a6ff">script.google.com</a></li>
+        <li>Create a new Apps Script project at <a href="https://script.google.com" target="_blank" rel="noopener" style="color:#58a6ff">script.google.com</a> (this creates a <strong>standalone</strong> script; if you create one via Google Sheets &rarr; Extensions &rarr; Apps Script, it will be <strong>linked</strong> to that spreadsheet instead)</li>
         <li class="step-group-label">GAS Project Settings</li>
         <li>In Project Settings, enable <strong>Show appsscript.json manifest file</strong>
           <div class="step-note">Project Settings &rarr; General settings &rarr; Show &ldquo;appsscript.json&rdquo; manifest file</div>
@@ -452,7 +452,7 @@
         <li>Link the GCP project in Apps Script
           <div class="step-note">Project Settings &rarr; Google Cloud Platform (GCP) Project &rarr; Change project</div>
           <details>
-            <summary>Troubleshooting: &ldquo;You cannot switch to a Cloud Platform project in an Apps Script-managed folder&rdquo;</summary>
+            <summary>Potential Troubleshooting: &ldquo;You cannot switch to a Cloud Platform project in an Apps Script-managed folder&rdquo;</summary>
             <div class="troubleshoot-content">
               <p>This error means your GCP project ended up inside Google&rsquo;s hidden <code>apps-script</code> managed folder. Even projects you created manually can land there on Workspace accounts.</p>
               <h4>How to diagnose</h4>
