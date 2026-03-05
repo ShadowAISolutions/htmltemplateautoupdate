@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.39w">
+  <meta name="build-version" content="v01.40w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -180,10 +180,10 @@
     }
     .btn-apply:hover { background: #2ea043; }
     .btn-copy {
-      background: #21262d;
-      color: #c9d1d9;
+      background: #6e40c9;
+      color: #f0f0f0;
     }
-    .btn-copy:hover { background: #30363d; }
+    .btn-copy:hover { background: #8957e5; }
     .config-actions button:disabled,
     .btn-copy-gs:disabled,
     .btn-apply:disabled {
@@ -485,7 +485,7 @@
         <li>Set <code>GITHUB_TOKEN</code> in Script Properties
           <div class="step-note">Project Settings &rarr; Script Properties &rarr; Add: Key = <code>GITHUB_TOKEN</code>, Value = your fine-grained personal access token</div>
           <div class="step-note" style="margin-top:6px"><strong>To create a token:</strong> GitHub.com &rarr; Settings &rarr; Developer settings &rarr; <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:#58a6ff">Fine-grained tokens</a> &rarr; Generate new token. Under "Repository access" select <strong>Public repositories (read-only)</strong>. No additional permissions are needed. Copy the <code>github_pat_...</code> value.</div>
-          <div class="step-note"><strong>Reuse across projects:</strong> The same token works for all your GAS projects &mdash; you don't need a new one per repo. Just paste the same token into each project's Script Properties.</div>
+          <div class="step-note"><strong>Reuse across projects:</strong> The same token works for all your GAS projects &mdash; you don't need a new one per repo. Just paste the same token into each project's Script Properties. Note: GitHub only shows the token once at the time of creation and permanently hides it afterward &mdash; save it somewhere secure before closing the page.</div>
         </li>
         <li class="step-group-label">GAS Editor</li>
         <li>Set the <code>appsscript.json</code> manifest contents to:
@@ -515,26 +515,27 @@
           <div class="step-note">Paste this code into your Apps Script project, replacing the existing code</div>
           <div class="step-input">
             <label for="cfg-deployment-id">Deployment ID <em style="color:#f85149">(required)</em></label>
-            <div class="input-row"><input type="text" id="cfg-deployment-id" placeholder="AKfycbw..." oninput="updateDeployGate()"><button class="field-clear" onclick="clearField('cfg-deployment-id')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-deployment-id" oninput="updateDeployGate()"><button class="field-clear" onclick="clearField('cfg-deployment-id')" title="Clear">&times;</button></div>
             <span class="field-hint">From Apps Script: Deploy &rarr; Manage deployments &mdash; required before using Test GAS Connection, Copy, or GAS Preview</span>
             <button class="btn-apply" id="btn-apply" onclick="testGasConnection()" disabled style="margin-top:8px">Test GAS Connection</button>
+            <span class="field-hint" style="margin-top:6px">&#128161; If the GAS preview shows <strong>&ldquo;Script function not found: doGet&rdquo;</strong>, the deployment ID is valid &mdash; proceed with entering your other fields, then copy Code.gs for GAS into the Apps Script editor</span>
           </div>
           <div class="deploy-separator">
             <div class="deploy-separator-label">Project Configuration</div>
           </div>
           <div class="step-input">
             <label for="cfg-title">Title <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-title" placeholder="My GAS Project" value="CHANGE THIS PROJECT TITLE GAS TEMPLATE"><button class="field-clear" onclick="clearField('cfg-title')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-title" value="CHANGE THIS PROJECT TITLE GAS TEMPLATE"><button class="field-clear" onclick="clearField('cfg-title')" title="Clear">&times;</button></div>
             <span class="field-hint">Shown in browser tab and GAS UI</span>
           </div>
           <div class="step-input">
             <label for="cfg-spreadsheet-id">Spreadsheet ID <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-spreadsheet-id" placeholder="1abc2def3ghi..." value="12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE"><button class="field-clear" onclick="clearField('cfg-spreadsheet-id')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-spreadsheet-id" value="12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE"><button class="field-clear" onclick="clearField('cfg-spreadsheet-id')" title="Clear">&times;</button></div>
             <span class="field-hint">Google Sheets ID for version tracking</span>
           </div>
           <div class="step-input">
             <label for="cfg-sheet-name">Sheet Name <em>(optional)</em></label>
-            <div class="input-row"><input type="text" id="cfg-sheet-name" placeholder="Live_Sheet" value="Live_Sheet"><button class="field-clear" onclick="clearField('cfg-sheet-name')" title="Clear">&times;</button></div>
+            <div class="input-row"><input type="text" id="cfg-sheet-name" value="Live_Sheet"><button class="field-clear" onclick="clearField('cfg-sheet-name')" title="Clear">&times;</button></div>
             <span class="field-hint">Tab name in the spreadsheet</span>
           </div>
           <div class="step-input">
@@ -1081,8 +1082,7 @@
 
     function clearField(inputId) {
       var el = document.getElementById(inputId);
-      var defaults = {'cfg-sheet-name':'Live_Sheet','cfg-title':'CHANGE THIS PROJECT TITLE GAS TEMPLATE','cfg-spreadsheet-id':'12OgP5hFV34oprTcAShaqlWHN35KZHzD13YjX8H7QhbE','cfg-sound-id':'1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN','cfg-splash-logo':'https://www.shadowaisolutions.com/SAIS%20Logo.png'};
-      if (el) el.value = defaults[inputId] || '';
+      if (el) el.value = '';
       var label = el ? el.closest('.step-input').querySelector('label') : null;
       showToast('Cleared ' + (label ? label.textContent : inputId));
       updateDeployGate();

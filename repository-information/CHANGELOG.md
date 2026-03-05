@@ -3,9 +3,27 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 73/100`
+`Sections: 74/100`
 
 ## [Unreleased]
+
+## [v02.83r] — 2026-03-04 09:11:25 PM EST
+
+### Changed
+- Copy Config for Claude button now uses purple color instead of grey
+- X clear buttons now fully clear fields instead of resetting to defaults
+- Removed placeholder text from Deployment ID, Title, Spreadsheet ID, and Sheet Name fields (kept placeholders for Sound File ID and Splash Logo URL)
+- Added doGet hint with lightbulb emoji below Test GAS Connection button
+- Added one-time token visibility warning under "Reuse across projects" note
+
+#### `gas-project-creator.html` — v01.40w
+
+##### Changed
+- Copy Config button styled with purple color for better visibility
+- Clear buttons now empty fields completely
+- Input placeholders removed from most fields for cleaner appearance
+- "Script function not found: doGet" hint also shown below Test GAS Connection button
+- GitHub token reuse note now warns that tokens are only shown once at creation
 
 ## [v02.82r] — 2026-03-04 09:01:23 PM EST
 
