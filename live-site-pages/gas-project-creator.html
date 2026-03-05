@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.48w">
+  <meta name="build-version" content="v01.49w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -971,6 +971,12 @@
         if (sheetName.trim()) code = code.replace(/var SHEET_NAME\s*=\s*"[^"]*"/, 'var SHEET_NAME     = "' + sheetName.trim().replace(/"/g, '\\"') + '"');
         if (soundId.trim()) code = code.replace(/var SOUND_FILE_ID\s*=\s*"[^"]*"/, 'var SOUND_FILE_ID = "' + soundId.trim() + '"');
         if (splashLogo.trim()) code = code.replace(/var SPLASH_LOGO_URL\s*=\s*"[^"]*"/, 'var SPLASH_LOGO_URL = "' + splashLogo.trim() + '"');
+        var envName = (document.getElementById('cfg-env-name') || {}).value || '';
+        if (envName.trim()) {
+          var repoBase = window.location.origin + '/' + window.location.pathname.split('/')[1];
+          var embedUrl = repoBase + '/' + envName.trim() + '.html';
+          code = code.replace(/var EMBED_PAGE_URL\s*=\s*"[^"]*"/, 'var EMBED_PAGE_URL = "' + embedUrl + '"');
+        }
         navigator.clipboard.writeText(code).then(function() {
           btn.textContent = 'Copied!';
           setTimeout(function() { btn.textContent = 'Copy Code.gs for GAS'; }, 1500);
@@ -991,13 +997,10 @@
     function updateDeployGate() {
       var hasId = (document.getElementById('cfg-deployment-id').value || '').trim().length > 0;
       var hasEnvName = (document.getElementById('cfg-env-name').value || '').trim().length > 0;
-      var deployBtns = [
-        document.getElementById('btn-copy-gs'),
-        document.getElementById('btn-apply')
-      ];
-      for (var i = 0; i < deployBtns.length; i++) {
-        if (deployBtns[i]) deployBtns[i].disabled = !hasId;
-      }
+      var applyBtn = document.getElementById('btn-apply');
+      if (applyBtn) applyBtn.disabled = !hasId;
+      var gsBtn = document.getElementById('btn-copy-gs');
+      if (gsBtn) gsBtn.disabled = !(hasId && hasEnvName);
       var configBtn = document.getElementById('btn-copy-config');
       if (configBtn) configBtn.disabled = !(hasId && hasEnvName);
     }

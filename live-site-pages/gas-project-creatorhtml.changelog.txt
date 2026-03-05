@@ -3,9 +3,15 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-project-creatorhtml.changelog-archive.md](gas-project-creatorhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 48/50`
+`Sections: 49/50`
 
 ## [Unreleased]
+
+## [v01.49w] — 2026-03-05 09:07:01 AM EST — v02.96r
+
+### Changed
+- Copy Code.gs now sets the embedding page URL automatically from the environment name
+- Copy Code.gs button now requires both Deployment ID and Project Environment Name
 
 ## [v01.48w] — 2026-03-05 08:52:11 AM EST — v02.95r
 

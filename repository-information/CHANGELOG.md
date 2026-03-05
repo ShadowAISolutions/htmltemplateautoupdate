@@ -3,9 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 86/100`
+`Sections: 87/100`
 
 ## [Unreleased]
+
+## [v02.96r] — 2026-03-05 09:07:01 AM EST
+
+### Changed
+- Copy Code.gs now injects `EMBED_PAGE_URL` using the Project Environment Name, so the `.gs` code knows its containing HTML page for redirects
+
+#### `gas-project-creator.html` — v01.49w
+
+##### Changed
+- Copy Code.gs now sets the embedding page URL automatically from the environment name
+- Copy Code.gs button now requires both Deployment ID and Project Environment Name (was Deployment ID only)
 
 ## [v02.95r] — 2026-03-05 08:52:11 AM EST
 
