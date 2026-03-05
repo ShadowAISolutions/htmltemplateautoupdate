@@ -3,9 +3,23 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 94/100`
+`Sections: 95/100`
 
 ## [Unreleased]
+
+## [v03.04r] — 2026-03-05 11:25:27 AM EST
+
+### Added
+- Shell script `scripts/setup-gas-project.sh` automates GAS project file creation — replaces the 13-step manual Claude prompt with a single command that creates 10+ files (HTML page, .gs script, config, versions, changelogs)
+- Script supports both create mode (new projects) and update mode (sync config into existing projects)
+
+### Changed
+- "Copy Config for Claude" button now copies a setup script command instead of a natural language prompt — paste into Claude Code or run directly in terminal
+
+#### `gas-project-creator.html` — v01.51w
+
+##### Changed
+- Copy Config button now outputs a shell script command instead of a Claude prompt — faster, deterministic project creation
 
 ## [v03.03r] — 2026-03-05 10:34:03 AM EST
 

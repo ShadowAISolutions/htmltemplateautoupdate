@@ -48,6 +48,8 @@ The html.version.txt polling system supports a **maintenance mode** that display
 - The HTML pages fetch this file via a relative URL (same pattern as `html.version.txt`), so the changelog popup works regardless of whether the repo is public or private
 
 ### New Embedding Page Setup Checklist
+> **Automated by `scripts/setup-gas-project.sh`** — for GAS-embedded pages, the setup script handles all mechanical file creation (steps 1–13). Claude runs the script, then handles ARCHITECTURE.md, README.md tree, STATUS.md, and commit/push.
+
 When creating a **new** HTML embedding page, follow every step below:
 
 1. **Copy the template** — start from `live-site-templates/HtmlTemplateAutoUpdate.html`, which already includes:

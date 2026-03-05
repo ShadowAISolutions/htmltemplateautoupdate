@@ -114,9 +114,11 @@ graph TB
             SHA_FILE[".github/last-processed-commit.sha\n(inherited branch guard)"]
         end
 
-        subgraph "Initialization"
+        subgraph "Scripts"
             INIT_SCRIPT["scripts/init-repo.sh\n(one-shot fork initialization)"]
+            GAS_SETUP["scripts/setup-gas-project.sh\n(GAS project file creation)"]
             INIT_SCRIPT -.->|"auto-detects org/repo\nreplaces 23+ files"| CLAUDE_MD
+            GAS_SETUP -.->|"copies templates\ncreates 10+ files"| GAS_NEWTPL
         end
     end
 
