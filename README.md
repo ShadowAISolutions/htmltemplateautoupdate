@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-06 09:47:59 AM EST` · Repo version: `v03.59r`
+Last updated: `2026-03-06 09:54:15 AM EST` · Repo version: `v03.60r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -182,6 +182,11 @@ htmltemplateautoupdate/
 │   ├── testation5.html                # Testation5 GAS embedding page
 │   ├── testation5html.version.txt     # Version file for testation5 page auto-refresh
 │   ├── testation5html.changelog.txt   # Deployed changelog for popup
+│   ├── testation6.html                # Testation6 GAS embedding page
+│   ├── testation6html.version.txt     # Version file for testation6 page auto-refresh
+│   ├── testation6html.changelog.txt   # Deployed HTML changelog for popup
+│   ├── testation6gs.changelog.txt     # Deployed GAS changelog for popup
+│   ├── testation6gs.version.txt       # Deployed GAS version for pill polling
 │   └── sounds/                 # Audio feedback files
 ├── live-site-templates/        # Templates for new pages
 │   ├── HtmlTemplateAutoUpdate.html           # Template HTML page (no GAS)
@@ -221,6 +226,10 @@ htmltemplateautoupdate/
 │   │   ├── testation5.gs        # Self-updating GAS web app
 │   │   ├── testation5.config.json  # Project config (source of truth)
 │   │   └── testation5gs.version.txt  # GAS version file (mirrors VERSION var)
+│   ├── Testation6/              # GAS for live-site-pages/testation6.html
+│   │   ├── testation6.gs        # Self-updating GAS web app
+│   │   ├── testation6.config.json  # Project config (source of truth)
+│   │   └── testation6gs.version.txt  # GAS version file (mirrors VERSION var)
 │   └── HtmlTemplateAutoUpdate/  # Original GAS template (base for GasTemplate)
 │       ├── HtmlTemplateAutoUpdate.gs           # Template GAS web app
 │       ├── HtmlTemplateAutoUpdate.config.json  # Template config (placeholders)
@@ -309,6 +318,10 @@ htmltemplateautoupdate/
 │   │   ├── testation5html.changelog-archive.md  # Older changelog sections (rotated)
 │   │   ├── testation5gs.changelog.md            # User-facing changelog for Testation5 GAS
 │   │   ├── testation5gs.changelog-archive.md    # Older changelog sections (rotated)
+│   │   ├── testation6html.changelog.md          # User-facing changelog for Testation6 page
+│   │   ├── testation6html.changelog-archive.md  # Older changelog sections (rotated)
+│   │   ├── testation6gs.changelog.md            # User-facing changelog for Testation6 GAS
+│   │   ├── testation6gs.changelog-archive.md    # Older changelog sections (rotated)
 │   │   ├── HtmlTemplateAutoUpdatehtml.changelog.md          # Template page changelog
 │   │   ├── HtmlTemplateAutoUpdatehtml.changelog-archive.md  # Template page changelog archive
 │   │   ├── HtmlTemplateAutoUpdategs.changelog.md            # Template GAS changelog

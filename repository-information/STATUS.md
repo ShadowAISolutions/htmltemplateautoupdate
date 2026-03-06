@@ -14,6 +14,7 @@
 | Testation3 | `live-site-pages/testation3.html` | v01.15w | *(deploy to activate)* | Active |
 | Testation4 | `live-site-pages/testation4.html` | v01.00w | *(deploy to activate)* | Active |
 | Testation5 | `live-site-pages/testation5.html` | v01.00w | *(deploy to activate)* | Active |
+| Testation6 | `live-site-pages/testation6.html` | v01.00w | *(deploy to activate)* | Active |
 
 
 ## GAS Projects
@@ -26,6 +27,7 @@
 | Testation3 | `googleAppsScripts/Testation3/testation3.gs` | `live-site-pages/testation3.html` | 01.35g | Active |
 | Testation4 | `googleAppsScripts/Testation4/testation4.gs` | `live-site-pages/testation4.html` | 01.00g | Active |
 | Testation5 | `googleAppsScripts/Testation5/testation5.gs` | `live-site-pages/testation5.html` | 01.00g | Active |
+| Testation6 | `googleAppsScripts/Testation6/testation6.gs` | `live-site-pages/testation6.html` | 01.00g | Active |
 
 
 ## Templates
