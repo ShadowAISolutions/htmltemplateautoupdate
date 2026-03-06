@@ -3,9 +3,18 @@
 All notable user-facing changes to this script are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3gs.changelog-archive.md](testation3gs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 20/50`
+`Sections: 21/50`
 
 ## [Unreleased]
+
+## [01.21g] — 2026-03-05 11:17:54 PM EST — v03.33r
+
+### Added
+- Large orange version number display restored at the top of the app
+
+### Removed
+- GAS version pill with countdown dot and changelog popup (moved to embedding page)
+- Server-side changelog fetching (now handled directly by the embedding page)
 
 ## [01.20g] — 2026-03-05 11:06:42 PM EST — v03.32r
 

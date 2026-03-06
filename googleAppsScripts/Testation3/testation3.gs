@@ -17,9 +17,8 @@
 // ---------------------------------
 // The GAS sandbox iframe blocks programmatic navigation from async
 // callbacks. Solution: embed the web app as a full-screen iframe on
-// a GitHub Pages page. After deploy, the GAS client sends:
-//   window.top.postMessage({type:'gas-reload', version: ...}, '*')
-// The embedding page catches this and reloads itself.
+// a GitHub Pages page. The embedding page polls a version file on
+// GitHub Pages to detect updates and reloads automatically.
 //
 // ARCHITECTURE — DYNAMIC LOADER PATTERN
 // ---------------------------------------
@@ -36,7 +35,7 @@
 //   3. GitHub Action calls doPost(action=deploy)
 //   4. doPost() calls pullAndDeployFromGitHub() directly
 //   5. GAS pulls new code from GitHub, overwrites project, deploys
-//   6. postMessage tells the embedding page to reload
+//   6. Embedding page detects version change via gs.version.txt polling
 //   7. App shows new version — zero manual clicks
 //
 // SETUP STEPS
@@ -86,7 +85,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.20g";
+var VERSION = "01.21g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -134,31 +133,12 @@ function doGet() {
         #token-info div { margin-bottom: 2px; }
         #live-b1 { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 4px; text-align: center; }
         #sheet-iframe { width: 100%; height: 300px; border: 1px solid #ddd; border-radius: 6px; }
-        #gas-pill { position: fixed; bottom: 8px; left: 8px; z-index: 9999; display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.55); color: #ccc; padding: 4px 10px; border-radius: 12px; font: 11px/1 monospace; user-select: none; cursor: pointer; transition: all 0.3s ease; }
-        #gas-pill:hover { background: rgba(0,0,0,0.75); }
-        #gas-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: #888; transition: background 0.3s; display: flex; align-items: center; justify-content: center; font-size: 6px; line-height: 1; color: #fff; }
-        #gas-pill .dot.checking { background: #ffa726; animation: gpulse 0.6s infinite alternate; }
-        #gas-pill .dot.counting { background: #888; }
-        #gas-pill .dot.found { background: #66bb6a; }
-        @keyframes gpulse { from { opacity: 1; } to { opacity: 0.4; } }
-        #gcl-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10001; display: none; align-items: center; justify-content: center; }
-        #gcl-popup { background: #1a1a2e; color: #e0e0e0; border-radius: 12px; max-width: 480px; width: 90%; max-height: 70vh; display: flex; flex-direction: column; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
-        #gcl-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        #gcl-title { font: bold 16px/1 sans-serif; color: #fff; }
-        #gcl-close { background: none; border: none; color: #888; font-size: 24px; cursor: pointer; padding: 4px 8px; line-height: 1; }
-        #gcl-close:hover { color: #fff; }
-        #gcl-body { padding: 16px 20px; overflow-y: auto; font: 13px/1.5 sans-serif; }
-        #gcl-body h3 { font-size: 14px; color: #7c8bff; margin: 16px 0 8px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; }
-        #gcl-body h3:first-child { margin-top: 0; }
-        #gcl-body h4 { font-size: 12px; color: #a0a0a0; margin: 10px 0 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-        #gcl-body ul { margin: 0 0 8px; padding-left: 20px; }
-        #gcl-body li { margin-bottom: 4px; }
+        #version { color: #e65100; font-size: 48px; margin: 0 0 4px 0; }
       </style>
     </head>
     <body>
       <div id="splash"><img src="${SPLASH_LOGO_URL}" alt=""></div>
-      <div id="gas-pill"><span class="dot"></span><span id="gas-pill-label">GAS ...</span></div>
-      <div id="gcl-overlay"><div id="gcl-popup"><div id="gcl-header"><span id="gcl-title">GAS Changelog</span><button id="gcl-close">&times;</button></div><div id="gcl-body"></div></div></div>
+      <h2 id="version">...</h2>
       <h1 id="title" style="font-size: 28px; margin: 0 0 4px 0;">...</h1>
       <form id="redirect-form" method="GET" action="${EMBED_PAGE_URL}" target="_top" style="display:inline;">
         <button id="reload-btn" type="submit" style="background:#2e7d32;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;margin-top:10px;">🔄 Reload Page</button>
@@ -247,9 +227,6 @@ function doGet() {
         google.script.run
           .withSuccessHandler(function(data) {
             applyData(data);
-            // Update the GAS version pill
-            var pl = document.getElementById('gas-pill-label');
-            if (pl && data.version) pl.textContent = 'GAS ' + data.version;
           })
           .getAppData();
 
@@ -304,67 +281,6 @@ function doGet() {
             })
             .pullAndDeployFromGitHub();
         }
-
-        // GAS version pill — changelog popup
-        (function() {
-          var pill = document.getElementById('gas-pill');
-
-          // Changelog popup
-          var overlay = document.getElementById('gcl-overlay');
-          var clBody = document.getElementById('gcl-body');
-          var clCache = null;
-
-          pill.addEventListener('click', function(e) {
-            e.stopPropagation();
-            overlay.style.display = 'flex';
-            if (!clCache) {
-              clBody.innerHTML = '<p style="color:#888">Loading changelog\\u2026</p>';
-              google.script.run
-                .withSuccessHandler(function(md) {
-                  clCache = parseGCL(md);
-                  clBody.innerHTML = clCache;
-                  var ver = (document.getElementById('version').textContent || '').trim();
-                  if (ver) document.getElementById('gcl-title').textContent = 'GAS Changelog \\u2014 ' + ver;
-                })
-                .withFailureHandler(function() {
-                  clBody.innerHTML = '<p style="color:#888">Could not load changelog.</p>';
-                })
-                .getGasChangelog();
-            }
-          });
-
-          document.getElementById('gcl-close').addEventListener('click', function() { overlay.style.display = 'none'; });
-          document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && overlay.style.display === 'flex') overlay.style.display = 'none'; });
-
-          function parseGCL(md) {
-            var lines = md.split('\\n');
-            var html = '';
-            var inList = false;
-            for (var i = 0; i < lines.length; i++) {
-              var line = lines[i];
-              if (line.match(/^# /) || line.match(/^\`Sections:/) || line.match(/^All notable/) || line.match(/^Format follows/) || line.match(/^Developed by:/)) continue;
-              if (line.match(/^## \\[Unreleased\\]/)) continue;
-              if (line.match(/^## \\[/)) {
-                if (inList) { html += '</ul>'; inList = false; }
-                var m = line.match(/^## \\[([\\d.]+g)\\].*?\\u2014 (.+)/);
-                if (m) html += '<h3>' + m[1] + ' \\u2014 ' + m[2] + '</h3>';
-                continue;
-              }
-              if (line.match(/^### /)) {
-                if (inList) { html += '</ul>'; inList = false; }
-                html += '<h4>' + line.substring(4) + '</h4>';
-                continue;
-              }
-              if (line.match(/^- /)) {
-                if (!inList) { html += '<ul>'; inList = true; }
-                html += '<li>' + line.substring(2) + '</li>';
-                continue;
-              }
-            }
-            if (inList) html += '</ul>';
-            return html || '<p style="color:#888">No changelog entries yet.</p>';
-          }
-        })();
 
         // Auto-check for updates on page load (fallback if webhook missed)
         checkForUpdates();
@@ -447,26 +363,6 @@ function getSoundBase64() {
   var base64 = Utilities.base64Encode(blob.getBytes());
   var contentType = blob.getContentType() || "audio/mpeg";
   return "data:" + contentType + ";base64," + base64;
-}
-
-function getGasChangelog() {
-  var cache = CacheService.getScriptCache();
-  var cached = cache.get("gas_changelog");
-  if (cached) return cached;
-  var pageName = FILE_PATH.split('/').pop().replace('.gs', '');
-  var changelogPath = "live-site-pages/" + pageName + "gs.changelog.txt";
-  var url = "https://raw.githubusercontent.com/" + GITHUB_OWNER + "/" + GITHUB_REPO + "/" + GITHUB_BRANCH + "/" + changelogPath;
-  var GITHUB_TOKEN = PropertiesService.getScriptProperties().getProperty("GITHUB_TOKEN");
-  var headers = {};
-  if (GITHUB_TOKEN) headers["Authorization"] = "token " + GITHUB_TOKEN;
-  try {
-    var resp = UrlFetchApp.fetch(url, { headers: headers });
-    var text = resp.getContentText();
-    cache.put("gas_changelog", text, 3600);
-    return text;
-  } catch(e) {
-    return "";
-  }
 }
 
 
