@@ -3,9 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 61/100`
+`Sections: 62/100`
 
 ## [Unreleased]
+
+## [v03.55r] — 2026-03-06 08:52:56 AM EST
+
+### Changed
+
+- Updated GAS template (`gas-template.gs`) and HTML template (`GasTemplate.html`) to use testation3 codebase as the new baseline — includes dual splash screens, GAS changelog popup, anti-sync countdown logic, audio system, wake lock, and flex layout
+- Updated `gas-project-creator-code.js.txt` with matching template code and proper placeholders for the "Copy Code.gs for GAS" button
 
 ## [v03.54r] — 2026-03-06 08:23:52 AM EST
 

@@ -17,9 +17,8 @@
 // ---------------------------------
 // The GAS sandbox iframe blocks programmatic navigation from async
 // callbacks. Solution: embed the web app as a full-screen iframe on
-// a GitHub Pages page. After deploy, the GAS client sends:
-//   window.top.postMessage({type:'gas-reload', version: ...}, '*')
-// The embedding page catches this and reloads itself.
+// a GitHub Pages page. The embedding page polls a version file on
+// GitHub Pages to detect updates and reloads automatically.
 //
 // ARCHITECTURE — DYNAMIC LOADER PATTERN
 // ---------------------------------------
@@ -36,7 +35,7 @@
 //   3. GitHub Action calls doPost(action=deploy)
 //   4. doPost() calls pullAndDeployFromGitHub() directly
 //   5. GAS pulls new code from GitHub, overwrites project, deploys
-//   6. postMessage tells the embedding page to reload
+//   6. Embedding page detects version change via gs.version.txt polling
 //   7. App shows new version — zero manual clicks
 //
 // SETUP STEPS
@@ -83,8 +82,8 @@
 // Checklist syncs the values here and to the embedding HTML page.
 //
 // VERSION and repo-derived values (GITHUB_OWNER, GITHUB_REPO,
-// FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
-// in this file — they are NOT in config.json.
+// FILE_PATH, EMBED_PAGE_URL) are managed directly in this file —
+// they are NOT in config.json.
 
 var VERSION = "01.00g";
 var TITLE = "YOUR_PROJECT_TITLE";                                // ← <page-name>.config.json
@@ -108,8 +107,6 @@ var SOUND_FILE_ID = "";                                          // ← <page-na
 // Embedding page URL — the GitHub Pages page that iframes this GAS app
 var EMBED_PAGE_URL = "YOUR_EMBED_PAGE_URL";
 
-// Logo shown on the splash screen
-var SPLASH_LOGO_URL = "https://www.shadowaisolutions.com/SAIS_Logo.png";
 // ──────────────────────────────────────────────────────────────────
 
 function doGet() {
@@ -122,41 +119,57 @@ function doGet() {
       <style>
         html, body { height: 100%; margin: 0; overflow: auto; }
         body { font-family: Arial; display: flex; flex-direction: column; align-items: center; padding: 20px 0; box-sizing: border-box; }
-        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0d47a1; z-index: 9999; transition: opacity 0.3s ease; display: flex; align-items: center; justify-content: center; }
-        #splash img { max-width: 500px; max-height: 500px; }
-        #version { font-size: 80px; font-weight: bold; color: #e65100; line-height: 1; }
-        button { background: #e65100; color: white; border: none; padding: 8px 20px;
+        button { background: #2e7d32; color: white; border: none; padding: 8px 20px;
                  border-radius: 6px; cursor: pointer; font-size: 14px; margin-top: 10px; }
-        button:hover { background: #bf360c; }
-        #result { margin-top: 8px; padding: 8px 15px; border-radius: 8px; font-size: 13px; }
+        button:hover { background: #1b5e20; }
         #versionCount { margin-top: 6px; font-size: 12px; color: #888; }
-        #sheet-container { margin-top: 10px; width: 90%; max-width: 600px; position: relative; }
+        #main-content { position: relative; width: 90%; max-width: 600px; text-align: center; }
+        #sheet-container { margin-top: 10px; }
         #sheet-container h3 { text-align: center; color: #333; margin: 0 0 4px 0; }
-        #token-info { position: absolute; right: -170px; top: 0; font-size: 11px; color: #666; text-align: left; line-height: 1.6; white-space: nowrap; }
+        #token-info { font-size: 11px; color: #666; text-align: left; line-height: 1.6; white-space: nowrap; flex-shrink: 0; padding-top: 6px; }
         #token-info div { margin-bottom: 2px; }
         #live-b1 { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 4px; text-align: center; }
         #sheet-iframe { width: 100%; height: 300px; border: 1px solid #ddd; border-radius: 6px; }
+        #version { position: fixed; bottom: 8px; left: 8px; z-index: 9999; color: #1565c0; font-size: 12px; margin: 0; font-family: monospace; opacity: 0.8; }
       </style>
     </head>
     <body>
-      <div id="splash"><img src="${SPLASH_LOGO_URL}" alt=""></div>
-      <h1 id="title" style="font-size: 28px; margin: 0 0 4px 0;">...</h1>
-      <div id="version">...</div>
-      <button onclick="checkForUpdates()">🔄 Pull Latest from GitHub</button>
-      <form id="redirect-form" method="GET" action="${EMBED_PAGE_URL}" target="_top" style="display:inline;">
-        <button id="reload-btn" type="submit" style="background:#2e7d32;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;margin-top:10px;">🔄 Reload Page</button>
-      </form>
-      <div id="result"></div>
-      <div id="versionCount"></div>
-
-      ${SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID" ? `
-      <div id="sheet-container">
-        <h3>${SHEET_NAME}</h3>
-        <div id="token-info">...</div>
-        <div id="live-b1">...</div>
-        <iframe id="sheet-iframe" src="https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit?rm=minimal"></iframe>
+      <h2 id="version">v\${VERSION}</h2>
+      <div style="display:flex; align-items:flex-start; justify-content:center; width:100%; gap:20px; padding:0 20px; box-sizing:border-box;">
+      <div style="text-align:center; flex:0 1 auto;">
+      <h1 id="title" style="font-size: 28px; margin: 0 0 4px 0;">\${TITLE}</h1>
+      <div id="main-content">
+        <form id="redirect-form" method="GET" action="\${EMBED_PAGE_URL}" target="_top" style="display:inline;">
+          <button id="reload-btn" type="submit" style="background:#2e7d32;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;white-space:nowrap;">🔄 Reload Page</button>
+        </form>
+        \${SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID" ? \`<h3 style="color:#333; margin:6px 0 2px 0;">\${SHEET_NAME}</h3>\` : ''}
+        <div id="versionCount" style="margin-top:6px; font-size:12px; color:#888;"><span style="color:#666;">Versions:</span> <span id="versionCountValue">...</span></div>
+        \${SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID" ? \`<div style="margin-top:4px;"><span style="font-size:14px; color:#666;">B1 Content:</span> <span id="live-b1" style="font-size:20px; font-weight:bold; color:#333;">...</span></div>\` : ''}
       </div>
-      ` : ''}
+      </div>
+      <div id="token-info">
+        <div style="font-weight:bold;color:#1b5e20;margin-bottom:3px;">Live Quotas</div>
+        <div>GitHub: <span id="qi-github">...</span></div>
+        <div>Mail: <span id="qi-mail">...</span></div>
+        <div style="border-top:1px solid #ccc;margin:4px 0;"></div>
+        <div style="font-weight:bold;color:#666;margin-bottom:3px;">Estimates</div>
+        <div>UrlFetch: <span id="qi-urlfetch">...</span></div>
+        <div>Sheets: <span id="qi-sheets">...</span></div>
+        <div>Exec: <span id="qi-exec">...</span></div>
+      </div>
+      </div>
+
+      \${SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID" ? \`
+      <div id="sheet-container" style="width:90%;max-width:600px;text-align:center;">
+        <iframe id="sheet-iframe" src="https://docs.google.com/spreadsheets/d/\${SPREADSHEET_ID}/edit?rm=minimal" style="width:100%;height:300px;border:1px solid #ddd;border-radius:6px;"></iframe>
+      </div>
+      \` : ''}
+
+      <div style="margin-top:10px;">
+        <button onclick="playReadySound()" style="background:#1565c0;color:white;border:none;padding:6px 16px;border-radius:6px;cursor:pointer;font-size:13px;">🔊 Test Sound (Drive)</button>
+        <button onclick="playBeep()" style="background:#6a1b9a;color:white;border:none;padding:6px 16px;border-radius:6px;cursor:pointer;font-size:13px;margin-left:6px;">🔔 Test Beep (Old)</button>
+        <button onclick="testVibrate()" style="background:#2e7d32;color:white;border:none;padding:6px 16px;border-radius:6px;cursor:pointer;font-size:13px;margin-left:6px;">📳 Test Vibrate</button>
+      </div>
 
       <script>
         var _soundDataUrl = null;
@@ -179,21 +192,43 @@ function doGet() {
           } catch(e) {}
         }
 
+        function playReadySound() {
+          if (!_soundDataUrl) return;
+          try {
+            var audio = new Audio(_soundDataUrl);
+            audio.play().catch(function() {});
+          } catch(e) {}
+        }
+
+        function testVibrate() {
+          if (navigator.vibrate) {
+            navigator.vibrate(200);
+          }
+        }
+
         function applyData(data) {
           for (var key in data) {
-            var el = document.getElementById(key);
-            if (el) {
-              el.textContent = data[key];
-              if (key === 'versionCount' && data[key].indexOf('LIMIT') !== -1) {
-                el.style.color = '#d32f2f';
-                el.style.fontWeight = 'bold';
+            if (key === 'versionCount') {
+              var vcEl = document.getElementById('versionCountValue');
+              if (vcEl) {
+                var vcText = data[key].replace(/ versions$/i, '');
+                vcEl.textContent = vcText;
+                if (data[key].indexOf('LIMIT') !== -1) {
+                  vcEl.style.color = '#d32f2f';
+                  vcEl.style.fontWeight = 'bold';
+                }
               }
+              continue;
             }
+            var el = document.getElementById(key);
+            if (el) el.textContent = data[key];
           }
         }
 
         google.script.run
-          .withSuccessHandler(function(data) { applyData(data); })
+          .withSuccessHandler(function(data) {
+            applyData(data);
+          })
           .getAppData();
 
         // Poll cell B1 from cache every 15s (cache is updated by onEditWriteB1ToCache trigger)
@@ -214,17 +249,10 @@ function doGet() {
         function pollQuotaAndLimits() {
           google.script.run
             .withSuccessHandler(function(t) {
-              var el = document.getElementById('token-info');
-              if (el) {
-                el.innerHTML =
-                  '<div style="font-weight:bold;color:#1b5e20;margin-bottom:3px;">Live Quotas</div>'
-                  + '<div>GitHub: ' + t.github + '</div>'
-                  + '<div>Mail: ' + t.mail + '</div>'
-                  + '<div style="border-top:1px solid #ccc;margin:4px 0;"></div>'
-                  + '<div style="font-weight:bold;color:#666;margin-bottom:3px;">Estimates</div>'
-                  + '<div>UrlFetch: ' + t.urlFetch + '</div>'
-                  + '<div>Sheets: ' + t.spreadsheet + '</div>'
-                  + '<div>Exec: ' + t.execTime + '</div>';
+              var ids = {github:'qi-github', mail:'qi-mail', urlFetch:'qi-urlfetch', spreadsheet:'qi-sheets', execTime:'qi-exec'};
+              for (var k in ids) {
+                var span = document.getElementById(ids[k]);
+                if (span && t[k]) span.textContent = t[k];
               }
             })
             .fetchGitHubQuotaAndLimits();
@@ -235,64 +263,22 @@ function doGet() {
         }
 
         var _autoPulling = false;
-        function pollPushedVersionFromCache() {
-          if (_autoPulling) return;
-          google.script.run
-            .withSuccessHandler(function(pushed) {
-              if (!pushed) return;
-              var current = (document.getElementById('version').textContent || '').trim();
-              if (pushed !== current && pushed !== '') {
-                _autoPulling = true;
-                checkForUpdates();
-                setTimeout(function() { _autoPulling = false; }, 30000);
-              }
-            })
-            .readPushedVersionFromCache();
-        }
-        setInterval(pollPushedVersionFromCache, 15000);
-
-        checkForUpdates();
-
-        setTimeout(function() {
-          var splash = document.getElementById('splash');
-          splash.style.opacity = '0';
-          setTimeout(function() { splash.style.display = 'none'; }, 300);
-        }, 1000);
-
         function checkForUpdates() {
-          document.getElementById('result').style.background = '#fff3e0';
-          document.getElementById('result').innerHTML = '⏳ Pulling...';
+          if (_autoPulling) return;
+          _autoPulling = true;
           google.script.run
-            .withSuccessHandler(function(msg) {
-              var wasUpdated = msg.indexOf('Updated to') === 0;
-              document.getElementById('result').style.background = '#e8f5e9';
-              document.getElementById('result').innerHTML = '✅ ' + msg;
-              if (!wasUpdated) {
-                setTimeout(function() { document.getElementById('result').innerHTML = ''; }, 2000);
-                return;
-              }
-              setTimeout(function() {
-                google.script.run.writeVersionToSheet();
-                google.script.run
-                  .withSuccessHandler(function(data) {
-                    applyData(data);
-                    var btn = document.getElementById('reload-btn');
-                    btn.style.background = '#d32f2f';
-                    btn.textContent = '⚠️ Update Available — Reload Page';
-                    var reloadMsg = {type: 'gas-reload', version: data.version};
-                    if (_soundDataUrl) reloadMsg.soundDataUrl = _soundDataUrl;
-                    try { window.top.postMessage(reloadMsg, '*'); } catch(e) {}
-                    try { window.parent.postMessage(reloadMsg, '*'); } catch(e) {}
-                  })
-                  .getAppData();
-              }, 2000);
+            .withSuccessHandler(function(result) {
+              setTimeout(function() { _autoPulling = false; }, 30000);
             })
-            .withFailureHandler(function(err) {
-              document.getElementById('result').style.background = '#ffebee';
-              document.getElementById('result').innerHTML = '❌ ' + err.message;
+            .withFailureHandler(function() {
+              setTimeout(function() { _autoPulling = false; }, 30000);
             })
             .pullAndDeployFromGitHub();
         }
+
+        // Auto-check for updates on page load (fallback if webhook missed)
+        checkForUpdates();
+
       </script>
     </body>
     </html>
@@ -320,7 +306,6 @@ function doPost(e) {
         sheet.getRange("C1").setValue(value + " — " + new Date().toLocaleString());
       } catch(e) {}
     }
-    CacheService.getScriptCache().put("pushed_version", value, 3600);
     return ContentService.createTextOutput("OK");
   }
 
@@ -347,11 +332,11 @@ function getAppData() {
         if (vListData.versions) totalVersions += vListData.versions.length;
         vPageToken = vListData.nextPageToken || null;
       } while (vPageToken);
-      vStatus = totalVersions + "/200 versions";
+      vStatus = totalVersions + "/200";
       if (totalVersions >= 180) vStatus += " — APPROACHING LIMIT!";
       cache.put("version_count_status", vStatus, 21600);
     } catch(e) {
-      vStatus = "Unable to check version count";
+      vStatus = "...";
     }
   }
   data.versionCount = vStatus;
@@ -368,9 +353,6 @@ function getSoundBase64() {
   return "data:" + contentType + ";base64," + base64;
 }
 
-function readPushedVersionFromCache() {
-  return CacheService.getScriptCache().get("pushed_version") || "";
-}
 
 function writeVersionToSheet() {
   if (!SPREADSHEET_ID || SPREADSHEET_ID === "YOUR_SPREADSHEET_ID") return;
@@ -530,15 +512,13 @@ function pullAndDeployFromGitHub() {
       if (vListData.versions) totalVersions += vListData.versions.length;
       vPageToken = vListData.nextPageToken || null;
     } while (vPageToken);
-    cleanupInfo = " | " + totalVersions + "/200 versions";
-    var versionStatus = totalVersions + "/200 versions";
+    cleanupInfo = " | " + totalVersions + "/200";
+    var versionStatus = totalVersions + "/200";
     if (totalVersions >= 180) versionStatus += " — APPROACHING LIMIT!";
     CacheService.getScriptCache().put("version_count_status", versionStatus, 21600);
   } catch(cleanupErr) {
     cleanupInfo = " | Version count error: " + cleanupErr.message;
   }
-
-  CacheService.getScriptCache().put("pushed_version", "v" + pulledVersion, 3600);
 
   return "Updated to v" + pulledVersion + " (deployment " + newVersion + ")" + cleanupInfo;
 }
