@@ -3,9 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 70/100`
+`Sections: 71/100`
 
 ## [Unreleased]
+
+## [v03.64r] — 2026-03-06 11:06:50 AM EST
+
+### Fixed
+
+- Added backward-compatibility stub files at old flat `live-site-pages/` locations for version and changelog files — pages cached before the subfolder reorganization (v03.63r) were polling 404 URLs, preventing auto-refresh and GAS version detection; stubs provide a one-time nudge that triggers a page reload, after which new JavaScript uses the correct subfolder paths
 
 ## [v03.63r] — 2026-03-06 10:59:11 AM EST
 
