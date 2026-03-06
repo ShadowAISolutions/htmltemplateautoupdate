@@ -85,7 +85,7 @@
 // FILE_PATH, EMBED_PAGE_URL) are managed directly in this file —
 // they are NOT in config.json.
 
-var VERSION = "01.32g";
+var VERSION = "01.33g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -219,7 +219,8 @@ function doGet() {
             if (key === 'versionCount') {
               var vcEl = document.getElementById('versionCountValue');
               if (vcEl) {
-                vcEl.textContent = data[key];
+                var vcText = data[key].replace(/ versions$/i, '');
+                vcEl.textContent = vcText;
                 if (data[key].indexOf('LIMIT') !== -1) {
                   vcEl.style.color = '#d32f2f';
                   vcEl.style.fontWeight = 'bold';

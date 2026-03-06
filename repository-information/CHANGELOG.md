@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 55/100`
+`Sections: 56/100`
 
 ## [Unreleased]
+
+## [v03.49r] — 2026-03-06 12:55:49 AM EST
+
+### Fixed
+- Version count now strips trailing "versions" text from cached values client-side
+
+#### `testation3.gs` — 01.33g
+
+##### Fixed
+- Version display no longer shows "versions" suffix (handles old cached values)
 
 ## [v03.48r] — 2026-03-06 12:52:21 AM EST
 
