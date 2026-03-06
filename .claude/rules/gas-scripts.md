@@ -111,6 +111,14 @@ Domain-specific coding constraints are maintained in a dedicated reference file.
 | Testation6 | `googleAppsScripts/Testation6/testation6.gs` | `googleAppsScripts/Testation6/testation6.config.json` | `live-site-pages/testation6.html` |
 | Testation7 | `googleAppsScripts/Testation7/testation7.gs` | `googleAppsScripts/Testation7/testation7.config.json` | `live-site-pages/testation7.html` |
 
+## GAS Webhook Auto-Deploy (Confirmed Working)
+
+When a `.gs` file is pushed and merged to `main`, the `auto-merge-claude.yml` workflow triggers a webhook (`doPost(action=deploy)`) on the corresponding GAS web app. This causes the GAS script to pull its latest source from GitHub and redeploy itself — **without the embedding HTML page needing to be open**. The GAS backend updates server-side; the next time a user loads the page, they get the new version automatically.
+
+- **Confirmed 2026-03-06**: Testation7 GAS updated from 01.00g → 01.01g via webhook with no page open — the workflow deploy step successfully triggered `doPost`, and the GAS app pulled and redeployed itself
+- Each GAS project gets its own deploy step in the workflow (added by `setup-gas-project.sh` during project creation)
+- The webhook URL is constructed from the `DEPLOYMENT_ID` in each project's `.config.json`
+
 ## Copy Code.gs Deployment File
 
 GAS-enabled HTML pages include a "Copy Code.gs" button that lets users copy the full `.gs` source to their clipboard. All pages fetch from a **single shared deployment copy**: `live-site-pages/gas-project-creator-code.js.txt`.

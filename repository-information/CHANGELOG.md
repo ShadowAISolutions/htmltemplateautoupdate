@@ -3,9 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 85/100`
+`Sections: 86/100`
 
 ## [Unreleased]
+
+## [v03.79r] — 2026-03-06 01:33:55 PM EST
+
+### Added
+
+- Documented confirmed GAS webhook auto-deploy behavior in `.claude/rules/gas-scripts.md` — Testation7 successfully updated from 01.00g to 01.01g via workflow webhook without the page being open
 
 ## [v03.78r] — 2026-03-06 01:28:05 PM EST
 
