@@ -86,7 +86,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.17g";
+var VERSION = "01.18g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -322,7 +322,11 @@ function doGet() {
               if (!pushed) return;
               var current = (document.getElementById('version').textContent || '').trim();
               if (pushed !== current && pushed !== '') {
-                checkForUpdates();
+                // Deploy already happened server-side via doPost — just reload
+                var reloadMsg = {type: 'gas-reload', version: pushed};
+                if (_soundDataUrl) reloadMsg.soundDataUrl = _soundDataUrl;
+                try { window.top.postMessage(reloadMsg, '*'); } catch(e) {}
+                try { window.parent.postMessage(reloadMsg, '*'); } catch(e) {}
               }
             })
             .readPushedVersionFromCache();

@@ -3,9 +3,14 @@
 All notable user-facing changes to this script are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3gs.changelog-archive.md](testation3gs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 18/50`
+`Sections: 19/50`
 
 ## [Unreleased]
+
+## [01.18g] — 2026-03-05 10:47:58 PM EST — v03.30r
+
+### Fixed
+- Auto-refresh now reloads the page immediately when a new version is detected instead of re-deploying (which found "Already up to date" and skipped the reload)
 
 ## [01.17g] — 2026-03-05 09:30:02 PM EST — v03.29r
 

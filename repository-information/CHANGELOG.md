@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 36/100`
+`Sections: 37/100`
 
 ## [Unreleased]
+
+## [v03.30r] — 2026-03-05 10:47:58 PM EST
+
+### Fixed
+- GAS auto-refresh not triggering page reload after server-side deploy
+
+#### `testation3.gs` — 01.18g
+
+##### Fixed
+- Auto-refresh now reloads the page immediately when a new version is detected instead of re-deploying (which found "Already up to date" and skipped the reload)
 
 ## [v03.29r] — 2026-03-05 09:30:02 PM EST
 
