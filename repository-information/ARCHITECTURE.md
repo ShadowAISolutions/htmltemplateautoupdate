@@ -37,7 +37,6 @@ graph TB
         subgraph "live-site-pages/ — Hosted Content"
             direction LR
             INDEX["index.html"]
-            TEST["test.html"]
             GASTPL_PAGE["gas-project-creator.html"]
             GASTPL_CODE["gas-code/\ngas-project-creator-code.js.txt"]
             TSTA7_PAGE["testation7.html"]
@@ -46,7 +45,6 @@ graph TB
 
             subgraph "html-versions/"
                 VERTXT["indexhtml.version.txt"]
-                TEST_VERTXT["testhtml.version.txt"]
                 GASTPL_VERTXT["gas-project-creatorhtml.version.txt"]
                 TSTA7_VERTXT["testation7html.version.txt"]
             end
@@ -57,7 +55,6 @@ graph TB
 
             subgraph "html-changelogs/"
                 INDEX_CL["indexhtml.changelog.txt"]
-                TEST_CL["testhtml.changelog.txt"]
                 GASTPL_CL["gas-project-creatorhtml.changelog.txt"]
                 TSTA7_CL["testation7html.changelog.txt"]
             end
@@ -85,8 +82,6 @@ graph TB
             direction LR
             GAS_INDEX["googleAppsScripts/Index/index.gs"]
             GAS_CFG["index.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
-            GAS_TEST["googleAppsScripts/Test/test.gs"]
-            GAS_TEST_CFG["test.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
             GAS_TSTA7["googleAppsScripts/Testation7/\ntestation7.gs"]
             GAS_TSTA7_CFG["testation7.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
         end
@@ -126,23 +121,17 @@ graph TB
     end
 
     TPL -.->|"copy to create\nnew pages"| INDEX
-    TPL -.->|"copy to create\nnew pages"| TEST
     GAS_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_INDEX
     GAS_CFG -.->|"syncs to\n(Pre-Commit #15)"| INDEX
-    GAS_TEST_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_TEST
-    GAS_TEST_CFG -.->|"syncs to\n(Pre-Commit #15)"| TEST
     GAS_TSTA7_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_TSTA7
     GAS_TSTA7_CFG -.->|"syncs to\n(Pre-Commit #15)"| TSTA7_PAGE
     GASTPL_CODE -.->|"template source\n(setup-gas-project.sh)"| GAS_INDEX
-    GASTPL_CODE -.->|"template source\n(setup-gas-project.sh)"| GAS_TEST
     GASTPL_CODE -.->|"template source\n(setup-gas-project.sh)"| GAS_TSTA7
     LIVE -.->|"serves"| BROWSER
     INDEX -.->|"iframes"| GAS_APP
-    TEST -.->|"iframes"| GAS_APP
     TSTA7_PAGE -.->|"iframes"| GAS_APP
     GAS_POSTMSG -.->|"tells embedding\npage to reload"| BROWSER
     GAS_INDEX -.->|"source of truth\nfor GAS app\n(index.gs)"| GAS_PULL
-    GAS_TEST -.->|"source of truth\nfor GAS app\n(test.gs)"| GAS_PULL
     GAS_TSTA7 -.->|"source of truth\nfor GAS app\n(testation7.gs)"| GAS_PULL
     GAS_DEPLOY -.->|"curl POST\naction=deploy"| GAS_APP
     SHA_FILE -.->|"read by"| SHA_CHECK
@@ -155,9 +144,7 @@ graph TB
     style SPLASH fill:#1b5e20,color:#fff
     style TPL fill:#ffa726,color:#000
     style GAS_INDEX fill:#ff7043,color:#fff
-    style GAS_TEST fill:#ff7043,color:#fff
     style GAS_CFG fill:#ffe082,color:#000
-    style GAS_TEST_CFG fill:#ffe082,color:#000
     style GAS_TSTA7 fill:#ff7043,color:#fff
     style GAS_TSTA7_CFG fill:#ffe082,color:#000
     style GAS_TPL_PAGE fill:#ffa726,color:#000

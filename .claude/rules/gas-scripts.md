@@ -24,7 +24,6 @@ Each GAS project has a code file and a corresponding embedding page. Register th
 | Project | Code File | Config File | Embedding Page |
 |---------|-----------|-------------|----------------|
 | Index | `googleAppsScripts/Index/index.gs` | `googleAppsScripts/Index/index.config.json` | `live-site-pages/index.html` |
-| Test | `googleAppsScripts/Test/test.gs` | `googleAppsScripts/Test/test.config.json` | `live-site-pages/test.html` |
 
 
 ## GAS Project Config (config.json)

@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-06 06:22:15 PM EST` · Repo version: `v03.86r`
+Last updated: `2026-03-06 06:41:54 PM EST` · Repo version: `v03.87r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -150,22 +150,18 @@ This error means the Apps Script API is not enabled in the GCP project associate
 htmltemplateautoupdate/
 ├── live-site-pages/             # Deployed to GitHub Pages
 │   ├── index.html              # Live landing page
-│   ├── test.html               # GAS Self-Update Dashboard test page
 │   ├── gas-project-creator.html       # GAS project creator dashboard
 │   ├── gas-code/                # GAS code files (.js.txt) for Copy Code.gs buttons
 │   │   └── gas-project-creator-code.js.txt # Shared GAS template source
 │   ├── html-versions/           # HTML page version files for auto-refresh polling
 │   │   ├── indexhtml.version.txt
-│   │   ├── testhtml.version.txt
 │   │   ├── gas-project-creatorhtml.version.txt
 │   │   └── testation7html.version.txt
 │   ├── gs-versions/             # GAS version files for GAS version pill polling
 │   │   ├── indexgs.version.txt
-│   │   ├── testgs.version.txt
 │   │   └── testation7gs.version.txt
 │   ├── html-changelogs/         # Deployed HTML changelogs for popup
 │   │   ├── indexhtml.changelog.txt
-│   │   ├── testhtml.changelog.txt
 │   │   ├── gas-project-creatorhtml.changelog.txt
 │   │   └── testation7html.changelog.txt
 │   ├── gs-changelogs/           # Deployed GAS changelogs for popup
@@ -182,9 +178,6 @@ htmltemplateautoupdate/
 │   ├── Index/                 # GAS for live-site-pages/index.html
 │   │   ├── index.gs           # Self-updating GAS web app
 │   │   └── index.config.json  # Project config (source of truth)
-│   ├── Test/                  # GAS for live-site-pages/test.html
-│   │   ├── test.gs            # Self-updating GAS web app
-│   │   └── test.config.json   # Project config (source of truth)
 │   └── Testation7/              # GAS for live-site-pages/testation7.html
 │       ├── testation7.gs        # Self-updating GAS web app
 │       └── testation7.config.json  # Project config (source of truth)
@@ -236,12 +229,8 @@ htmltemplateautoupdate/
 │   ├── changelogs/             # Per-page and per-GAS changelogs (centralized)
 │   │   ├── indexhtml.changelog.md           # User-facing changelog for landing page
 │   │   ├── indexhtml.changelog-archive.md   # Older changelog sections (rotated)
-│   │   ├── testhtml.changelog.md            # User-facing changelog for test page
-│   │   ├── testhtml.changelog-archive.md    # Older changelog sections (rotated)
 │   │   ├── indexgs.changelog.md             # User-facing changelog for Index GAS
 │   │   ├── indexgs.changelog-archive.md     # Older changelog sections (rotated)
-│   │   ├── testgs.changelog.md              # User-facing changelog for Test GAS
-│   │   ├── testgs.changelog-archive.md      # Older changelog sections (rotated)
 │   │   ├── gas-project-creatorhtml.changelog.md          # User-facing changelog for GAS Project Creator page
 │   │   ├── gas-project-creatorhtml.changelog-archive.md  # Older changelog sections (rotated)
 │   │   ├── testation7html.changelog.md          # User-facing changelog for Testation7 page
