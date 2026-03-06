@@ -3,9 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 41/100`
+`Sections: 42/100`
 
 ## [Unreleased]
+
+## [v03.35r] — 2026-03-05 11:30:39 PM EST
+
+### Changed
+- Update-triggered reloads now differentiate between HTML and GAS updates with distinct splash screens and sounds
+
+#### `testation3.html` — v01.07w
+
+##### Added
+- Blue "Website Ready" splash screen with website sound for HTML version updates
+- Green "Code Ready" splash screen with code sound for GAS version updates
+- Pre-caching of Code Ready sound for instant playback
+
+##### Changed
+- GAS update reload now shows its own green splash and plays "Code Ready" sound instead of reusing the website update behavior
 
 ## [v03.34r] — 2026-03-05 11:22:48 PM EST
 

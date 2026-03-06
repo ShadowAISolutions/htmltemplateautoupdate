@@ -3,9 +3,18 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3html.changelog-archive.md](testation3html.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 6/50`
+`Sections: 7/50`
 
 ## [Unreleased]
+
+## [v01.07w] — 2026-03-05 11:30:39 PM EST — v03.35r
+
+### Added
+- Green "Code Ready" splash screen with dedicated sound for GAS version updates
+- Blue "Website Ready" splash screen with website sound for HTML version updates
+
+### Changed
+- GAS update reload now shows its own green splash and plays "Code Ready" sound instead of reusing the website update behavior
 
 ## [v01.06w] — 2026-03-05 11:17:54 PM EST — v03.33r
 
