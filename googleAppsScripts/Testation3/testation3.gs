@@ -85,7 +85,7 @@
 // FILE_PATH, EMBED_PAGE_URL) are managed directly in this file —
 // they are NOT in config.json.
 
-var VERSION = "01.28g";
+var VERSION = "01.29g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -126,7 +126,7 @@ function doGet() {
         #main-content { position: relative; width: 90%; max-width: 600px; text-align: center; }
         #sheet-container { margin-top: 10px; }
         #sheet-container h3 { text-align: center; color: #333; margin: 0 0 4px 0; }
-        #token-info { position: fixed; top: 10px; right: 10px; font-size: 11px; color: #666; text-align: left; line-height: 1.6; white-space: nowrap; }
+        #token-info { font-size: 11px; color: #666; text-align: left; line-height: 1.6; white-space: nowrap; flex-shrink: 0; padding-top: 6px; }
         #token-info div { margin-bottom: 2px; }
         #live-b1 { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 4px; text-align: center; }
         #sheet-iframe { width: 100%; height: 300px; border: 1px solid #ddd; border-radius: 6px; }
@@ -135,8 +135,9 @@ function doGet() {
     </head>
     <body>
       <h2 id="version">v${VERSION}</h2>
+      <div style="display:flex; align-items:flex-start; justify-content:center; width:100%; gap:20px; padding:0 20px; box-sizing:border-box;">
+      <div style="text-align:center; flex:0 1 auto;">
       <h1 id="title" style="font-size: 28px; margin: 0 0 4px 0;">${TITLE}</h1>
-      <div id="token-info">...</div>
       <div id="main-content">
         <form id="redirect-form" method="GET" action="${EMBED_PAGE_URL}" target="_top" style="display:inline;">
           <button id="reload-btn" type="submit" style="background:#2e7d32;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;margin-top:10px;">🔄 Reload Page</button>
@@ -150,6 +151,9 @@ function doGet() {
           <iframe id="sheet-iframe" src="https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit?rm=minimal" style="width:100%;height:300px;border:1px solid #ddd;border-radius:6px;"></iframe>
         </div>
         ` : ''}
+      </div>
+      </div>
+      <div id="token-info">...</div>
       </div>
 
       <div style="margin-top:10px;">

@@ -3,9 +3,14 @@
 All notable user-facing changes to this script are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3gs.changelog-archive.md](testation3gs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 28/50`
+`Sections: 29/50`
 
 ## [Unreleased]
+
+## [01.29g] — 2026-03-06 12:36:18 AM EST — v03.45r
+
+### Changed
+- Live quotas and estimates moved from corner to inline next to the page title and controls
 
 ## [01.28g] — 2026-03-06 12:24:44 AM EST — v03.44r
 
