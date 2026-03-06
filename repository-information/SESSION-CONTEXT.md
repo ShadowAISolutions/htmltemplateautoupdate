@@ -4,6 +4,32 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-03-06 06:44:47 PM EST
+**Repo version:** v03.87r
+
+### What was done
+- Renamed `GasExample.html` → `HtmlAndGasTemplateAutoUpdate.html` — clearer naming for the GAS-enabled HTML page template used by `setup-gas-project.sh` (v03.86r)
+- Deleted Test project environment — `test.html`, `googleAppsScripts/Test/`, all associated version/changelog files (v03.87r)
+- Consolidated GAS template to single source of truth: `gas-project-creator-code.js.txt` — eliminated `HtmlTemplateAutoUpdate.gs` (v03.85r, done in prior push same session context)
+
+### Where we left off
+All changes committed and merged to main. Repo is cleaner — only 3 hosted pages remain: index.html, gas-project-creator.html, testation7.html. Only 1 GAS project active: Testation7.
+
+### Key decisions made
+- Renamed GasExample → HtmlAndGasTemplateAutoUpdate to make it clear it's a template, not an example project
+- Deleted entire Test project environment (was unused)
+
+### Active context
+- Branch: `claude/setup-gas-project-BrKrG`
+- Repo version: v03.87r
+- Active reminders in REMINDERS.md (developer-owned):
+  - "Check test.html issues in Chrome DevTools" (note: test.html was deleted this session — reminder may be obsolete)
+- TODO items: Get mayo, Get lettuce, Get sliced turkey, Get mustard, Get pickles
+- `TEMPLATE_DEPLOY` = `On`, `CHAT_BOOKENDS` = `On`, `END_OF_RESPONSE_BLOCK` = `On`
+- `MULTI_SESSION_MODE` = `Off`
+
+## Previous Sessions
+
 **Date:** 2026-03-06 01:51:14 PM EST
 **Reconstructed:** Auto-recovered from CHANGELOG (original session did not save context)
 **Repo version:** v03.79r
@@ -14,28 +40,6 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - Set up Testation7 GAS project — created 11 files, registered in all tables and workflow (v03.77r)
 - Cleaned up header comments in testation6.gs, gas-example.gs, and gas-project-creator-code.js.txt to reflect webhook-only update flow (v03.76r)
 - Removed client-side auto-pull on page load from testation6.gs and gas-example.gs (v03.75r)
-
-### Where we left off
-All changes committed and merged to main
-
-### Active context
-- Active reminders in REMINDERS.md (developer-owned):
-  - "Check test.html issues in Chrome DevTools"
-- TODO items: Get mayo, Get lettuce, Get sliced turkey, Get mustard, Get pickles
-- `TEMPLATE_DEPLOY` = `On`, `CHAT_BOOKENDS` = `On`, `END_OF_RESPONSE_BLOCK` = `On`
-- `MULTI_SESSION_MODE` = `Off`
-
-## Previous Sessions
-
-**Date:** 2026-03-06 01:21:49 PM EST
-**Reconstructed:** Auto-recovered from CHANGELOG (original session did not save context)
-**Repo version:** v03.76r
-
-### What was done
-- Cleaned up header comments in testation6.gs, gas-example.gs, and gas-project-creator-code.js.txt to reflect webhook-only update flow (v03.76r)
-- Removed client-side auto-pull on page load from testation6.gs and gas-example.gs — GAS updates now handled exclusively by workflow webhook (v03.75r)
-- Automated workflow deploy step in setup-gas-project.sh — new GAS projects get webhook deploy step automatically (v03.74r)
-- Added workflow deploy step for Testation6 GAS (v03.73r)
 
 ### Where we left off
 All changes committed and merged to main
