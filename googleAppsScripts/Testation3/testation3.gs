@@ -85,7 +85,7 @@
 // FILE_PATH, EMBED_PAGE_URL) are managed directly in this file —
 // they are NOT in config.json.
 
-var VERSION = "01.26g";
+var VERSION = "01.27g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -123,10 +123,10 @@ function doGet() {
                  border-radius: 6px; cursor: pointer; font-size: 14px; margin-top: 10px; }
         button:hover { background: #1b5e20; }
         #versionCount { margin-top: 6px; font-size: 12px; color: #888; }
-        #sheet-container { margin-top: 10px; width: 90%; max-width: 600px; }
+        #main-content { position: relative; width: 90%; max-width: 600px; text-align: center; }
+        #sheet-container { margin-top: 10px; }
         #sheet-container h3 { text-align: center; color: #333; margin: 0 0 4px 0; }
-        #reload-row { display: flex; align-items: flex-start; justify-content: center; gap: 16px; margin-top: 10px; }
-        #token-info { font-size: 11px; color: #666; text-align: left; line-height: 1.6; white-space: nowrap; }
+        #token-info { position: absolute; right: -170px; top: 0; font-size: 11px; color: #666; text-align: left; line-height: 1.6; white-space: nowrap; }
         #token-info div { margin-bottom: 2px; }
         #live-b1 { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 4px; text-align: center; }
         #sheet-iframe { width: 100%; height: 300px; border: 1px solid #ddd; border-radius: 6px; }
@@ -136,21 +136,21 @@ function doGet() {
     <body>
       <h2 id="version">v${VERSION}</h2>
       <h1 id="title" style="font-size: 28px; margin: 0 0 4px 0;">${TITLE}</h1>
-      <div id="reload-row">
-        <form id="redirect-form" method="GET" action="${EMBED_PAGE_URL}" target="_top" style="display:inline;">
-          <button id="reload-btn" type="submit" style="background:#2e7d32;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;">🔄 Reload Page</button>
-        </form>
+      <div id="main-content">
         <div id="token-info">...</div>
-      </div>
-      <div id="versionCount"></div>
+        <form id="redirect-form" method="GET" action="${EMBED_PAGE_URL}" target="_top" style="display:inline;">
+          <button id="reload-btn" type="submit" style="background:#2e7d32;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;margin-top:10px;">🔄 Reload Page</button>
+        </form>
+        <div id="versionCount"></div>
 
-      ${SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID" ? `
-      <div id="sheet-container">
-        <h3>${SHEET_NAME}</h3>
-        <div id="live-b1">...</div>
-        <iframe id="sheet-iframe" src="https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit?rm=minimal"></iframe>
+        ${SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID" ? `
+        <div id="sheet-container">
+          <h3>${SHEET_NAME}</h3>
+          <div id="live-b1">...</div>
+          <iframe id="sheet-iframe" src="https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit?rm=minimal" style="width:100%;height:300px;border:1px solid #ddd;border-radius:6px;"></iframe>
+        </div>
+        ` : ''}
       </div>
-      ` : ''}
 
       <div style="margin-top:10px;">
         <button onclick="playReadySound()" style="background:#1565c0;color:white;border:none;padding:6px 16px;border-radius:6px;cursor:pointer;font-size:13px;">🔊 Test Sound (Drive)</button>

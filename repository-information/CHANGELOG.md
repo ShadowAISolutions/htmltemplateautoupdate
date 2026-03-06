@@ -3,9 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 49/100`
+`Sections: 50/100`
 
 ## [Unreleased]
+
+## [v03.43r] — 2026-03-06 12:19:57 AM EST
+
+### Changed
+- GAS app layout refined: reload button re-centered, live quotas/estimates positioned to the right of the main content area
+
+#### `testation3.gs` — 01.27g
+
+##### Changed
+- Reload button re-centered with live quotas and estimates displayed to its right
+- Version count and spreadsheet remain centered below the reload button
 
 ## [v03.42r] — 2026-03-06 12:14:16 AM EST
 

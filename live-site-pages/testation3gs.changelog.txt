@@ -3,9 +3,15 @@
 All notable user-facing changes to this script are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3gs.changelog-archive.md](testation3gs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 26/50`
+`Sections: 27/50`
 
 ## [Unreleased]
+
+## [01.27g] — 2026-03-06 12:19:57 AM EST — v03.43r
+
+### Changed
+- Reload button re-centered with live quotas and estimates displayed to its right
+- Version count and spreadsheet remain centered below the reload button
 
 ## [01.26g] — 2026-03-06 12:14:16 AM EST — v03.42r
 
