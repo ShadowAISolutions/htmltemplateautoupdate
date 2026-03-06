@@ -3,9 +3,15 @@
 All notable user-facing changes to this script are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3gs.changelog-archive.md](testation3gs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 25/50`
+`Sections: 26/50`
 
 ## [Unreleased]
+
+## [01.26g] — 2026-03-06 12:14:16 AM EST — v03.42r
+
+### Changed
+- Sound test buttons moved below the spreadsheet
+- Live quotas and estimates now appear next to the reload button instead of beside the spreadsheet
 
 ## [01.25g] — 2026-03-06 12:03:36 AM EST — v03.40r
 

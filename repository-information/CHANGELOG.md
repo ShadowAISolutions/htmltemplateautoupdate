@@ -3,9 +3,26 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 48/100`
+`Sections: 49/100`
 
 ## [Unreleased]
+
+## [v03.42r] — 2026-03-06 12:14:16 AM EST
+
+### Changed
+- GAS pill blinking indicator lightened to brighter blue
+- GAS app UI rearranged: sound/beep/vibrate buttons moved between spreadsheet and tree, live quotas moved next to reload button
+
+#### `testation3.html` — v01.11w
+
+##### Changed
+- GAS version checking indicator lightened to brighter blue
+
+#### `testation3.gs` — 01.26g
+
+##### Changed
+- Sound test buttons moved below the spreadsheet
+- Live quotas and estimates moved next to the reload button
 
 ## [v03.41r] — 2026-03-06 12:08:15 AM EST
 

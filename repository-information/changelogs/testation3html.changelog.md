@@ -3,9 +3,14 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3html.changelog-archive.md](testation3html.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 10/50`
+`Sections: 11/50`
 
 ## [Unreleased]
+
+## [v01.11w] — 2026-03-06 12:14:16 AM EST — v03.42r
+
+### Changed
+- GAS version checking indicator lightened to brighter blue
 
 ## [v01.10w] — 2026-03-06 12:08:15 AM EST — v03.41r
 
