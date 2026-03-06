@@ -3,9 +3,83 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 73/100`
+`Sections: 74/100`
 
 ## [Unreleased]
+
+## [v03.67r] — 2026-03-06 11:52:48 AM EST
+
+### Added
+
+- Two-phase GAS version polling — when `gs.version.txt` reports a new version, the HTML page now verifies the GAS iframe is actually running the new code via postMessage before reloading, preventing premature reloads that show stale GAS behavior
+- postMessage listener in all 7 active GAS scripts (testation2–6, gas-template, test_link_gas_1_app) — responds to `gas-version-check` requests from the parent page with the running GAS version
+- `waitForGasDeploy()` function in GAS-enabled HTML pages — polls the GAS iframe every 5 seconds via postMessage, with 60-second safety timeout fallback
+
+#### `testation3.html` — v01.17w
+
+##### Added
+
+- Two-phase GAS version detection with postMessage-based verification before reload
+
+#### `testation4.html` — v01.02w
+
+##### Added
+
+- Two-phase GAS version detection with postMessage-based verification before reload
+
+#### `testation5.html` — v01.02w
+
+##### Added
+
+- Two-phase GAS version detection with postMessage-based verification before reload
+
+#### `testation6.html` — v01.02w
+
+##### Added
+
+- Two-phase GAS version detection with postMessage-based verification before reload
+
+#### `testation3.gs` — 01.36g
+
+##### Added
+
+- postMessage listener for version check requests from parent page
+
+#### `testation4.gs` — 01.01g
+
+##### Added
+
+- postMessage listener for version check requests from parent page
+
+#### `testation5.gs` — 01.01g
+
+##### Added
+
+- postMessage listener for version check requests from parent page
+
+#### `testation6.gs` — 01.03g
+
+##### Added
+
+- postMessage listener for version check requests from parent page
+
+#### `gas-template.gs` — 01.03g
+
+##### Added
+
+- postMessage listener for version check requests from parent page
+
+#### `test_link_gas_1_app.gs` — 01.04g
+
+##### Added
+
+- postMessage listener for version check requests from parent page
+
+#### `testation2.gs` — 01.02g
+
+##### Added
+
+- postMessage listener for version check requests from parent page
 
 ## [v03.66r] — 2026-03-06 11:13:56 AM EST
 

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.01w">
+  <meta name="build-version" content="v01.02w">
   <title>This is my title 4</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -452,6 +452,9 @@
       var gasVersionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'gs-versions/' + pageName + 'gs.version.txt';
 
       var currentGasVersion = null;
+      var targetGasVersion = null;
+      var gasCheckInterval = null;
+      var GAS_CHECK_INTERVAL = 5000;
       var pill = document.getElementById('gas-pill');
       var pillLabel = document.getElementById('gas-pill-label');
       var dot = pill ? pill.querySelector('.dot') : null;
@@ -484,10 +487,11 @@
               if (pill) { pill.style.display = 'flex'; }
               if (pillLabel) pillLabel.textContent = 'GAS ' + fetched;
             } else if (fetched !== currentGasVersion) {
+              // Don't reload yet — GAS may not have deployed. Enter "awaiting" mode.
+              targetGasVersion = fetched;
               if (dot) dot.className = 'dot found';
-              if (pillLabel) pillLabel.textContent = 'Updating...';
-              sessionStorage.setItem('gas-pending-sound', '1');
-              setTimeout(function() { window.location.reload(); }, 2000);
+              if (pillLabel) pillLabel.textContent = 'Awaiting GAS update...';
+              waitForGasDeploy();
               return;
             }
             if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
@@ -507,6 +511,51 @@
             startCountdown();
             setTimeout(checkGasUpdate, GAS_POLL_INTERVAL);
           });
+      }
+
+      function waitForGasDeploy() {
+        var gasFrame = document.getElementById('gas-app');
+        if (!gasFrame) {
+          // No iframe — fall back to immediate reload
+          sessionStorage.setItem('gas-pending-sound', '1');
+          setTimeout(function() { window.location.reload(); }, 2000);
+          return;
+        }
+
+        // Listen for version response from GAS iframe
+        function onGasVersion(e) {
+          if (!e.data || e.data.type !== 'gas-version') return;
+          var reported = e.data.version;
+          // getAppData returns "v01.02g" — strip leading "v" for comparison
+          if (reported && reported.charAt(0) === 'v') reported = reported.substring(1);
+          if (reported === targetGasVersion) {
+            // GAS has caught up — reload now
+            window.removeEventListener('message', onGasVersion);
+            if (gasCheckInterval) clearInterval(gasCheckInterval);
+            if (pillLabel) pillLabel.textContent = 'GAS updated!';
+            sessionStorage.setItem('gas-pending-sound', '1');
+            setTimeout(function() { window.location.reload(); }, 1500);
+          }
+          // else: GAS still on old version — keep waiting
+        }
+        window.addEventListener('message', onGasVersion);
+
+        // Request version check immediately, then every 5s
+        function requestGasVersion() {
+          if (gasFrame.contentWindow) {
+            gasFrame.contentWindow.postMessage({type: 'gas-version-check'}, '*');
+          }
+        }
+        requestGasVersion();
+        gasCheckInterval = setInterval(requestGasVersion, GAS_CHECK_INTERVAL);
+
+        // Safety timeout: if GAS doesn't respond in 60s, reload anyway
+        setTimeout(function() {
+          window.removeEventListener('message', onGasVersion);
+          if (gasCheckInterval) clearInterval(gasCheckInterval);
+          sessionStorage.setItem('gas-pending-sound', '1');
+          window.location.reload();
+        }, 60000);
       }
 
       // Fetch version immediately for display, then start polling after 15s initial delay (5s offset from HTML)

@@ -3,9 +3,15 @@
 All notable user-facing changes to this script are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [test_link_gas_1_appgs.changelog-archive.md](test_link_gas_1_appgs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 3/50`
+`Sections: 4/50`
 
 ## [Unreleased]
+
+## [01.04g] — 2026-03-06 11:52:48 AM EST — v03.67r
+
+### Added
+
+- Responds to version check requests from the page for smoother auto-updates
 
 ## [01.03g] — 2026-03-05 10:25:03 AM EST — v03.02r
 
