@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 47/100`
+`Sections: 48/100`
 
 ## [Unreleased]
+
+## [v03.41r] — 2026-03-06 12:08:15 AM EST
+
+### Changed
+- GAS version pill blinking indicator changed from orange to blue
+
+#### `testation3.html` — v01.10w
+
+##### Changed
+- GAS version checking indicator now blinks blue instead of orange
 
 ## [v03.40r] — 2026-03-06 12:03:36 AM EST
 
