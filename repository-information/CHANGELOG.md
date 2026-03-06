@@ -3,9 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 79/100`
+`Sections: 80/100`
 
 ## [Unreleased]
+
+## [v03.73r] — 2026-03-06 12:56:23 PM EST
+
+### Added
+
+- Workflow deploy step for Testation6 GAS — pushes to `testation6.gs` now auto-trigger `doPost(action=deploy)` via the auto-merge workflow, enabling GAS self-update without the page being open
 
 ## [v03.72r] — 2026-03-06 12:42:40 PM EST
 
