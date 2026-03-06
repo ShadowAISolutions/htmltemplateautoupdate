@@ -3,9 +3,18 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 87/100`
+`Sections: 88/100`
 
 ## [Unreleased]
+
+## [v03.81r] — 2026-03-06 02:13:47 PM EST
+
+### Removed
+
+- Deleted `RND_GAS/` folder — R&D GAS scripts no longer needed
+- Deleted `RND_GAS_AND_WEBSITE/` folder — R&D combined GAS/website files no longer needed
+- Deleted `originalworkinggas/` folder — original working GAS code no longer needed
+- Deleted `RND_WEBSITE/` folder — R&D website files no longer needed
 
 ## [v03.80r] — 2026-03-06 02:04:49 PM EST
 
