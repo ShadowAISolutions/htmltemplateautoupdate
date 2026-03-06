@@ -261,6 +261,20 @@ function doGet() {
           setInterval(pollQuotaAndLimits, 60000);
         }
 
+        // Listen for version check requests from parent page
+        window.addEventListener('message', function(e) {
+          if (e.data && e.data.type === 'gas-version-check') {
+            google.script.run
+              .withSuccessHandler(function(data) {
+                parent.postMessage({type: 'gas-version', version: data.version}, '*');
+              })
+              .withFailureHandler(function() {
+                parent.postMessage({type: 'gas-version', version: null}, '*');
+              })
+              .getAppData();
+          }
+        });
+
       </script>
     </body>
     </html>

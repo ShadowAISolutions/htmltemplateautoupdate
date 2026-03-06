@@ -72,11 +72,11 @@ When creating a **new** HTML embedding page, follow every step below:
 13. **Create changelog deployment copy** — copy the page changelog created in step 12 to `live-site-pages/html-changelogs/` as `<page-name>html.changelog.txt` (same content, `.txt` extension). This deployment copy is fetched by the changelog popup on the live site (see "Changelog Deployment Copies" above)
 
 ### Page Rename/Move Checklist
-When **renaming** an existing HTML page's project environment, follow every step below. **Renaming is high-risk for changelog drift** — the `gas-template` → `gas-project-creator` rename caused 16 missing entries in the deployment changelog because associated files were not fully synced.
+When **renaming** an existing HTML page's project environment, follow every step below. **Renaming is high-risk for changelog drift** — the `gas-template` → `gas-example` rename caused 16 missing entries in the deployment changelog because associated files were not fully synced.
 
-**Project Environment Name** (required) — the base name shared by the HTML page and all its associated files. This is the name without extensions — e.g. `gas-template`, `gas-project-creator`, `test`, `index`. All file paths below are derived from this name:
-- **Old name**: `OLD` (e.g. `gas-template`)
-- **New name**: `NEW` (e.g. `gas-project-creator`)
+**Project Environment Name** (required) — the base name shared by the HTML page and all its associated files. This is the name without extensions — e.g. `gas-example`, `test`, `index`. All file paths below are derived from this name:
+- **Old name**: `OLD` (e.g. `gas-example`)
+- **New name**: `NEW` (e.g. `my-new-project`)
 
 | # | File | Old path | New path |
 |---|------|----------|----------|

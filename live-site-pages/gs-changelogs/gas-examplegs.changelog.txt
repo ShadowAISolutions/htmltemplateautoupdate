@@ -1,11 +1,16 @@
-# Changelog — GAS Template (Google Apps Script)
+# Changelog — GAS Example (Google Apps Script)
 
 All notable user-facing changes to this script are documented here.
-Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [GasTemplategs.changelog-archive.md](GasTemplategs.changelog-archive.md) when this file exceeds 50 version sections.
+Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [gas-examplegs.changelog-archive.md](gas-examplegs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 3/50`
+`Sections: 4/50`
 
 ## [Unreleased]
+
+## [01.04g] — 2026-03-06 02:04:49 PM EST — v03.80r
+
+### Changed
+- Project renamed from "GAS Template" to "GAS Example"
 
 ## [01.03g] — 2026-03-06 11:52:48 AM EST — v03.67r
 

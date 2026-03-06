@@ -76,7 +76,7 @@
 // =============================================
 
 // ── PROJECT CONFIG ────────────────────────────────────────────────
-// gas-template.config.json (same directory) is the SINGLE SOURCE OF TRUTH for
+// testation3.config.json (same directory) is the SINGLE SOURCE OF TRUTH for
 // project-unique values: TITLE, DEPLOYMENT_ID, SPREADSHEET_ID,
 // SHEET_NAME, SOUND_FILE_ID. Edit config.json; the Pre-Commit
 // Checklist syncs the values here and to the embedding HTML page.
@@ -86,7 +86,7 @@
 // they are NOT in config.json.
 
 var VERSION = "01.36g";
-var TITLE = "Test Title 3";                                      // ← gas-template.config.json
+var TITLE = "Test Title 3";                                      // ← testation3.config.json
 
 // GitHub config — where to pull code from
 var GITHUB_OWNER  = "ShadowAISolutions";
@@ -95,14 +95,14 @@ var GITHUB_BRANCH = "main";
 var FILE_PATH     = "googleAppsScripts/Testation3/testation3.gs";
 
 // Apps Script deployment ID (from Deploy → Manage deployments)
-var DEPLOYMENT_ID = "AKfycbzE--oM0T_h3Ox4tzj6haZyVEjrVfRMt-8AJnGrUGcyW8bGMr3emggbbT1AJeiaSWIL";                        // ← gas-template.config.json
+var DEPLOYMENT_ID = "AKfycbzE--oM0T_h3Ox4tzj6haZyVEjrVfRMt-8AJnGrUGcyW8bGMr3emggbbT1AJeiaSWIL";                        // ← testation3.config.json
 
 // Google Sheets config (optional — for version tracking)
-var SPREADSHEET_ID = "1uTw8VG5Wi5KOr_KVmBz6yz25TJQpEUFfT3xsM_vajw8";                      // ← gas-template.config.json
-var SHEET_NAME     = "Live_Sheet";                               // ← gas-template.config.json
+var SPREADSHEET_ID = "1uTw8VG5Wi5KOr_KVmBz6yz25TJQpEUFfT3xsM_vajw8";                      // ← testation3.config.json
+var SHEET_NAME     = "Live_Sheet";                               // ← testation3.config.json
 
 // Sound config (optional — Google Drive file ID for notification sound)
-var SOUND_FILE_ID = "1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN";                                          // ← gas-template.config.json
+var SOUND_FILE_ID = "1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN";                                          // ← testation3.config.json
 
 // Embedding page URL — the GitHub Pages page that iframes this GAS app
 var EMBED_PAGE_URL = "https://ShadowAISolutions.github.io/htmltemplateautoupdate/testation3.html";

@@ -77,7 +77,7 @@
 // =============================================
 
 // ── PROJECT CONFIG ────────────────────────────────────────────────
-// gas-template.config.json (same directory) is the SINGLE SOURCE OF TRUTH for
+// testation2.config.json (same directory) is the SINGLE SOURCE OF TRUTH for
 // project-unique values: TITLE, DEPLOYMENT_ID, SPREADSHEET_ID,
 // SHEET_NAME, SOUND_FILE_ID. Edit config.json; the Pre-Commit
 // Checklist syncs the values here and to the embedding HTML page.
@@ -87,7 +87,7 @@
 // in this file — they are NOT in config.json.
 
 var VERSION = "01.02g";
-var TITLE = "Tital for testation 2";                                      // ← gas-template.config.json
+var TITLE = "Tital for testation 2";                                      // ← testation2.config.json
 
 // GitHub config — where to pull code from
 var GITHUB_OWNER  = "ShadowAISolutions";
@@ -96,14 +96,14 @@ var GITHUB_BRANCH = "main";
 var FILE_PATH     = "googleAppsScripts/Testation2/testation2.gs";
 
 // Apps Script deployment ID (from Deploy → Manage deployments)
-var DEPLOYMENT_ID = "AKfycbyTaBYpvIcF64qjZflDwbNBefJ8mooYQ_LYl3Za2rFBdKZ075D8zRsz63sUbcTLGECp";                        // ← gas-template.config.json
+var DEPLOYMENT_ID = "AKfycbyTaBYpvIcF64qjZflDwbNBefJ8mooYQ_LYl3Za2rFBdKZ075D8zRsz63sUbcTLGECp";                        // ← testation2.config.json
 
 // Google Sheets config (optional — for version tracking)
-var SPREADSHEET_ID = "1nnNzjARD1kqpuaIuFDHrmKgcaaFrPVKl3AMqUTtfLPo";                      // ← gas-template.config.json
-var SHEET_NAME     = "Live_Sheet";                               // ← gas-template.config.json
+var SPREADSHEET_ID = "1nnNzjARD1kqpuaIuFDHrmKgcaaFrPVKl3AMqUTtfLPo";                      // ← testation2.config.json
+var SHEET_NAME     = "Live_Sheet";                               // ← testation2.config.json
 
 // Sound config (optional — Google Drive file ID for notification sound)
-var SOUND_FILE_ID = "1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN";                                          // ← gas-template.config.json
+var SOUND_FILE_ID = "1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN";                                          // ← testation2.config.json
 
 // Embedding page URL — the GitHub Pages page that iframes this GAS app
 var EMBED_PAGE_URL = "https://ShadowAISolutions.github.io/htmltemplateautoupdate/testation2.html";

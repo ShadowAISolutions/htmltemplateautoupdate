@@ -3,9 +3,37 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 86/100`
+`Sections: 87/100`
 
 ## [Unreleased]
+
+## [v03.80r] — 2026-03-06 02:04:49 PM EST
+
+### Changed
+
+- Renamed GasTemplate project to GasExample across the entire repo — GAS script, config, HTML page, all version files, changelogs, and documentation
+- Added postMessage listener to HtmlTemplateAutoUpdate.gs for parent page version check requests (synced to gas-project-creator-code.js.txt)
+- Fixed setup-gas-project.sh to replace config.json references when creating new projects (previously left stale `gas-template.config.json` comments)
+- Fixed stale `gas-template.config.json` comments in all testation GAS scripts (2–7) to reference their own config files
+- Removed duplicate PascalCase changelog files (GasTemplatehtml.changelog.md and archive) — consolidated to kebab-case naming
+
+#### `gas-example.gs` — 01.04g
+
+##### Changed
+
+- Renamed from gas-template.gs to gas-example.gs with all internal references updated
+
+#### `gas-example.html` — v01.03w
+
+##### Changed
+
+- Renamed from gas-template.html with title updated to "GAS Example"
+
+#### `HtmlTemplateAutoUpdate.gs` — 01.02g
+
+##### Added
+
+- Responds to version check requests from the parent page for smoother auto-updates
 
 ## [v03.79r] — 2026-03-06 01:33:55 PM EST
 

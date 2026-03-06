@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-06 01:33:55 PM EST` · Repo version: `v03.79r`
+Last updated: `2026-03-06 02:04:49 PM EST` · Repo version: `v03.80r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -154,7 +154,7 @@ htmltemplateautoupdate/
 │   ├── soccer-ball.html        # Soccer ball animation page
 │   ├── gas-project-creator.html       # GAS project creator dashboard
 │   ├── gas-project-creator-code.js.txt # Shared GAS template source for all Copy Code.gs buttons
-│   ├── gas-template.html              # GAS template embedding page
+│   ├── gas-example.html               # GAS example embedding page
 │   ├── test_link_gas_1_app.html       # Test Link Gas 1 App embedding page
 │   ├── testation2.html                # Testation2 GAS embedding page
 │   ├── testation3.html                # Testation3 GAS embedding page
@@ -166,7 +166,7 @@ htmltemplateautoupdate/
 │   │   ├── testhtml.version.txt
 │   │   ├── soccer-ballhtml.version.txt
 │   │   ├── gas-project-creatorhtml.version.txt
-│   │   ├── gas-templatehtml.version.txt
+│   │   ├── gas-examplehtml.version.txt
 │   │   ├── test_link_gas_1_apphtml.version.txt
 │   │   ├── testation2html.version.txt
 │   │   ├── testation3html.version.txt
@@ -177,7 +177,7 @@ htmltemplateautoupdate/
 │   ├── gs-versions/             # GAS version files for GAS version pill polling
 │   │   ├── indexgs.version.txt
 │   │   ├── testgs.version.txt
-│   │   ├── gas-templategs.version.txt
+│   │   ├── gas-examplegs.version.txt
 │   │   ├── test_link_gas_1_appgs.version.txt
 │   │   ├── testation2gs.version.txt
 │   │   ├── testation3gs.version.txt
@@ -191,7 +191,7 @@ htmltemplateautoupdate/
 │   │   ├── testhtml.changelog.txt
 │   │   ├── soccer-ballhtml.changelog.txt
 │   │   ├── gas-project-creatorhtml.changelog.txt
-│   │   ├── gas-templatehtml.changelog.txt
+│   │   ├── gas-examplehtml.changelog.txt
 │   │   ├── test_link_gas_1_apphtml.changelog.txt
 │   │   ├── testation2html.changelog.txt
 │   │   ├── testation3html.changelog.txt
@@ -214,8 +214,8 @@ htmltemplateautoupdate/
 ├── live-site-templates/        # Templates for new pages
 │   ├── HtmlTemplateAutoUpdate.html           # Template HTML page (no GAS)
 │   ├── HtmlTemplateAutoUpdatehtml.version.txt # Template version file (frozen at v01.00w)
-│   ├── GasTemplate.html                      # GAS-enabled template HTML page
-│   └── GasTemplatehtml.version.txt           # GAS template version file (frozen at v01.00w)
+│   ├── GasExample.html                       # GAS-enabled example HTML page
+│   └── GasExamplehtml.version.txt            # GAS example version file (frozen at v01.00w)
 ├── googleAppsScripts/          # Google Apps Script projects
 │   ├── Index/                 # GAS for live-site-pages/index.html
 │   │   ├── index.gs           # Self-updating GAS web app
@@ -223,9 +223,9 @@ htmltemplateautoupdate/
 │   ├── Test/                  # GAS for live-site-pages/test.html
 │   │   ├── test.gs            # Self-updating GAS web app
 │   │   └── test.config.json   # Project config (source of truth)
-│   ├── GasTemplate/             # GAS template for new projects (used by gas-project-creator)
-│   │   ├── gas-template.gs      # Template GAS web app (placeholder values)
-│   │   └── gas-template.config.json  # Template config (placeholders)
+│   ├── GasExample/              # GAS example for new projects (used by gas-project-creator)
+│   │   ├── gas-example.gs       # Example GAS web app (placeholder values)
+│   │   └── gas-example.config.json  # Example config (placeholders)
 │   ├── TestLinkGas1App/         # GAS for live-site-pages/test_link_gas_1_app.html
 │   │   ├── test_link_gas_1_app.gs           # Self-updating GAS web app
 │   │   └── test_link_gas_1_app.config.json  # Project config (source of truth)
@@ -247,7 +247,7 @@ htmltemplateautoupdate/
 │   ├── Testation7/              # GAS for live-site-pages/testation7.html
 │   │   ├── testation7.gs        # Self-updating GAS web app
 │   │   └── testation7.config.json  # Project config (source of truth)
-│   └── HtmlTemplateAutoUpdate/  # Original GAS template (base for GasTemplate)
+│   └── HtmlTemplateAutoUpdate/  # Original GAS template (base for GasExample)
 │       ├── HtmlTemplateAutoUpdate.gs           # Template GAS web app
 │       └── HtmlTemplateAutoUpdate.config.json  # Template config (placeholders)
 ├── .claude/
@@ -308,12 +308,10 @@ htmltemplateautoupdate/
 │   │   ├── testgs.changelog-archive.md      # Older changelog sections (rotated)
 │   │   ├── gas-project-creatorhtml.changelog.md          # User-facing changelog for GAS Project Creator page
 │   │   ├── gas-project-creatorhtml.changelog-archive.md  # Older changelog sections (rotated)
-│   │   ├── gas-templatehtml.changelog.md          # User-facing changelog for gas-template page
-│   │   ├── gas-templatehtml.changelog-archive.md  # Older changelog sections (rotated)
-│   │   ├── GasTemplatehtml.changelog.md          # GAS template page changelog
-│   │   ├── GasTemplatehtml.changelog-archive.md  # GAS template page changelog archive
-│   │   ├── GasTemplategs.changelog.md            # GAS template GAS changelog
-│   │   ├── GasTemplategs.changelog-archive.md    # GAS template GAS changelog archive
+│   │   ├── gas-examplehtml.changelog.md           # User-facing changelog for gas-example page
+│   │   ├── gas-examplehtml.changelog-archive.md   # Older changelog sections (rotated)
+│   │   ├── gas-examplegs.changelog.md             # GAS example GAS changelog
+│   │   ├── gas-examplegs.changelog-archive.md     # GAS example GAS changelog archive
 │   │   ├── test_link_gas_1_apphtml.changelog.md          # User-facing changelog for Test Link Gas 1 App page
 │   │   ├── test_link_gas_1_apphtml.changelog-archive.md  # Older changelog sections (rotated)
 │   │   ├── test_link_gas_1_appgs.changelog.md            # User-facing changelog for Test Link Gas 1 App GAS
