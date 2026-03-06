@@ -3,9 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 83/100`
+`Sections: 84/100`
 
 ## [Unreleased]
+
+## [v03.77r] — 2026-03-06 01:23:28 PM EST
+
+### Added
+
+- Set up Testation7 GAS project — created 11 files (HTML page, GAS script, config, version files, changelogs), registered in GAS Projects table, STATUS.md, README tree, and auto-merge workflow
 
 ## [v03.76r] — 2026-03-06 01:13:59 PM EST
 

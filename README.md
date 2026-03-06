@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-06 01:13:59 PM EST` · Repo version: `v03.76r`
+Last updated: `2026-03-06 01:23:28 PM EST` · Repo version: `v03.77r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -173,6 +173,7 @@ htmltemplateautoupdate/
 │   │   ├── testation4html.version.txt
 │   │   ├── testation5html.version.txt
 │   │   └── testation6html.version.txt
+│   │   ├── testation7html.version.txt     # Version file for testation7 page auto-refresh
 │   ├── gs-versions/             # GAS version files for GAS version pill polling
 │   │   ├── indexgs.version.txt
 │   │   ├── testgs.version.txt
@@ -184,6 +185,7 @@ htmltemplateautoupdate/
 │   │   ├── testation5gs.version.txt
 │   │   ├── testation6gs.version.txt
 │   │   └── HtmlTemplateAutoUpdategs.version.txt
+│   │   ├── testation7gs.version.txt       # Deployed GAS version for pill polling
 │   ├── html-changelogs/         # Deployed HTML changelogs for popup
 │   │   ├── indexhtml.changelog.txt
 │   │   ├── testhtml.changelog.txt
@@ -196,6 +198,7 @@ htmltemplateautoupdate/
 │   │   ├── testation4html.changelog.txt
 │   │   ├── testation5html.changelog.txt
 │   │   └── testation6html.changelog.txt
+│   │   ├── testation7html.changelog.txt   # Deployed HTML changelog for popup
 │   ├── gs-changelogs/           # Deployed GAS changelogs for popup
 │   │   ├── indexgs.changelog.txt
 │   │   ├── test_link_gas_1_appgs.changelog.txt
@@ -205,6 +208,8 @@ htmltemplateautoupdate/
 │   │   ├── testation5gs.changelog.txt
 │   │   ├── testation6gs.changelog.txt
 │   │   └── HtmlTemplateAutoUpdategs.changelog.txt
+│   │   ├── testation7gs.changelog.txt     # Deployed GAS changelog for popup
+│   ├── testation7.html                # Testation7 GAS embedding page
 │   └── sounds/                 # Audio feedback files
 ├── live-site-templates/        # Templates for new pages
 │   ├── HtmlTemplateAutoUpdate.html           # Template HTML page (no GAS)
@@ -239,6 +244,9 @@ htmltemplateautoupdate/
 │   ├── Testation6/              # GAS for live-site-pages/testation6.html
 │   │   ├── testation6.gs        # Self-updating GAS web app
 │   │   └── testation6.config.json  # Project config (source of truth)
+│   ├── Testation7/              # GAS for live-site-pages/testation7.html
+│   │   ├── testation7.gs        # Self-updating GAS web app
+│   │   └── testation7.config.json  # Project config (source of truth)
 │   └── HtmlTemplateAutoUpdate/  # Original GAS template (base for GasTemplate)
 │       ├── HtmlTemplateAutoUpdate.gs           # Template GAS web app
 │       └── HtmlTemplateAutoUpdate.config.json  # Template config (placeholders)
@@ -330,6 +338,10 @@ htmltemplateautoupdate/
 │   │   ├── testation6html.changelog-archive.md  # Older changelog sections (rotated)
 │   │   ├── testation6gs.changelog.md            # User-facing changelog for Testation6 GAS
 │   │   ├── testation6gs.changelog-archive.md    # Older changelog sections (rotated)
+│   │   ├── testation7html.changelog.md          # User-facing changelog for Testation7 page
+│   │   ├── testation7html.changelog-archive.md  # Older changelog sections (rotated)
+│   │   ├── testation7gs.changelog.md            # User-facing changelog for Testation7 GAS
+│   │   ├── testation7gs.changelog-archive.md    # Older changelog sections (rotated)
 │   │   ├── HtmlTemplateAutoUpdatehtml.changelog.md          # Template page changelog
 │   │   ├── HtmlTemplateAutoUpdatehtml.changelog-archive.md  # Template page changelog archive
 │   │   ├── HtmlTemplateAutoUpdategs.changelog.md            # Template GAS changelog

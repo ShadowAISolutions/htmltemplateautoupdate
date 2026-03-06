@@ -109,6 +109,7 @@ Domain-specific coding constraints are maintained in a dedicated reference file.
 | Testation4 | `googleAppsScripts/Testation4/testation4.gs` | `googleAppsScripts/Testation4/testation4.config.json` | `live-site-pages/testation4.html` |
 | Testation5 | `googleAppsScripts/Testation5/testation5.gs` | `googleAppsScripts/Testation5/testation5.config.json` | `live-site-pages/testation5.html` |
 | Testation6 | `googleAppsScripts/Testation6/testation6.gs` | `googleAppsScripts/Testation6/testation6.config.json` | `live-site-pages/testation6.html` |
+| Testation7 | `googleAppsScripts/Testation7/testation7.gs` | `googleAppsScripts/Testation7/testation7.config.json` | `live-site-pages/testation7.html` |
 
 ## Copy Code.gs Deployment File
 
