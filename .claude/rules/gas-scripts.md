@@ -25,9 +25,6 @@ Each GAS project has a code file and a corresponding embedding page. Register th
 |---------|-----------|-------------|----------------|
 | Index | `googleAppsScripts/Index/index.gs` | `googleAppsScripts/Index/index.config.json` | `live-site-pages/index.html` |
 | Test | `googleAppsScripts/Test/test.gs` | `googleAppsScripts/Test/test.config.json` | `live-site-pages/test.html` |
-| GasExample | `googleAppsScripts/GasExample/gas-example.gs` | `googleAppsScripts/GasExample/gas-example.config.json` | `live-site-pages/gas-example.html` |
-| TestLinkGas1App | `googleAppsScripts/TestLinkGas1App/test_link_gas_1_app.gs` | `googleAppsScripts/TestLinkGas1App/test_link_gas_1_app.config.json` | `live-site-pages/test_link_gas_1_app.html` |
-| Testation2 | `googleAppsScripts/Testation2/testation2.gs` | `googleAppsScripts/Testation2/testation2.config.json` | `live-site-pages/testation2.html` |
 
 
 ## GAS Project Config (config.json)
@@ -73,7 +70,7 @@ To generate via command line: `echo -n 'https://script.google.com/macros/s/{DEPL
 The inline decode reverses this: `atob()` then string-reverse. The iframe is created dynamically via srcdoc trampoline (no `src` attribute set). This is obfuscation, not security — the Network tab still shows the URL
 
 ### Template config
-`googleAppsScripts/HtmlTemplateAutoUpdate/HtmlTemplateAutoUpdate.config.json` contains placeholder values. When creating a new GAS project, copy it to the new project directory and fill in the real values.
+`googleAppsScripts/HtmlTemplateAutoUpdate/HtmlTemplateAutoUpdate.config.json` contains placeholder values. The setup script (`scripts/setup-gas-project.sh`) copies this to new project directories and fills in real values.
 
 ## Commit Message Naming
 *Rule: see Pre-Commit Checklist item #9 in CLAUDE.md.*
@@ -104,11 +101,6 @@ Domain-specific coding constraints are maintained in a dedicated reference file.
 | AudioContext & Browser Autoplay Policy | *See `repository-information/CODING-GUIDELINES.md` — section "AudioContext & Browser Autoplay Policy"* |
 | Google Sign-In (GIS) for GAS Embedded Apps | *See `repository-information/CODING-GUIDELINES.md` — section "Google Sign-In (GIS) for GAS Embedded Apps"* |
 | GCP Project Setup & Troubleshooting | *See `repository-information/CODING-GUIDELINES.md` — section "GCP Project Setup & Troubleshooting"* |
-| Testation2 | `googleAppsScripts/Testation2/testation2.gs` | `googleAppsScripts/Testation2/testation2.config.json` | `live-site-pages/testation2.html` |
-| Testation3 | `googleAppsScripts/Testation3/testation3.gs` | `googleAppsScripts/Testation3/testation3.config.json` | `live-site-pages/testation3.html` |
-| Testation4 | `googleAppsScripts/Testation4/testation4.gs` | `googleAppsScripts/Testation4/testation4.config.json` | `live-site-pages/testation4.html` |
-| Testation5 | `googleAppsScripts/Testation5/testation5.gs` | `googleAppsScripts/Testation5/testation5.config.json` | `live-site-pages/testation5.html` |
-| Testation6 | `googleAppsScripts/Testation6/testation6.gs` | `googleAppsScripts/Testation6/testation6.config.json` | `live-site-pages/testation6.html` |
 | Testation7 | `googleAppsScripts/Testation7/testation7.gs` | `googleAppsScripts/Testation7/testation7.config.json` | `live-site-pages/testation7.html` |
 
 ## GAS Webhook Auto-Deploy (Confirmed Working)

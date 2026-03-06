@@ -3,8 +3,8 @@
 # setup-gas-project.sh — Fully automated GAS project setup
 #
 # Creates all files and updates all documentation for a new GAS project:
-#   - HTML embedding page (from GasExample.html)
-#   - .gs script (from gas-example.gs)
+#   - HTML embedding page (from GasExample.html template)
+#   - .gs script (from HtmlTemplateAutoUpdate.gs)
 #   - .config.json
 #   - Version files (html + gs)
 #   - Changelogs (html + gs, plus archives)
@@ -126,8 +126,8 @@ GAS_SCRIPTS_RULES=".claude/rules/gas-scripts.md"
 
 # ── Template sources ─────────────────────────────────────────────
 TPL_HTML="live-site-templates/GasExample.html"
-TPL_GS="googleAppsScripts/GasExample/gas-example.gs"
-TPL_CFG="googleAppsScripts/GasExample/gas-example.config.json"
+TPL_GS="googleAppsScripts/HtmlTemplateAutoUpdate/HtmlTemplateAutoUpdate.gs"
+TPL_CFG="googleAppsScripts/HtmlTemplateAutoUpdate/HtmlTemplateAutoUpdate.config.json"
 
 # ── Phase 1: Pre-flight Checks ──────────────────────────────────
 info "Phase 1: Pre-flight checks..."
@@ -253,9 +253,9 @@ sed -i "s|var EMBED_PAGE_URL = .*;|var EMBED_PAGE_URL = \"${EMBED_URL}\";|" "$GA
 if [ "$SPLASH_LOGO_URL" != "YOUR_SPLASH_LOGO_URL" ] && [ -n "$SPLASH_LOGO_URL" ]; then
     sed -i "s|var SPLASH_LOGO_URL = .*;|var SPLASH_LOGO_URL = \"${SPLASH_LOGO_URL}\";|" "$GAS_FILE"
 fi
-# Fix template comment references: gas-example.gs/.config.json → {env_name}.gs/.config.json
-sed -i "s|this file (gas-example.gs)|this file (${ENV_NAME}.gs)|g" "$GAS_FILE"
-sed -i "s|gas-example.config.json|${ENV_NAME}.config.json|g" "$GAS_FILE"
+# Fix template comment references: HtmlTemplateAutoUpdate.gs/.config.json → {env_name}.gs/.config.json
+sed -i "s|this file (HtmlTemplateAutoUpdate.gs)|this file (${ENV_NAME}.gs)|g" "$GAS_FILE"
+sed -i "s|HtmlTemplateAutoUpdate.config.json|${ENV_NAME}.config.json|g" "$GAS_FILE"
 ok "Created $GAS_FILE"
 
 # --- Config JSON ---
@@ -610,7 +610,7 @@ done
 # Check for remaining template placeholders in new files
 echo ""
 info "Checking for remaining template placeholders..."
-PLACEHOLDER_CHECK=$(grep -rn "CHANGE THIS PROJECT TITLE TEMPLATE\|this file (gas-example\.gs)\|GasExample/" \
+PLACEHOLDER_CHECK=$(grep -rn "CHANGE THIS PROJECT TITLE TEMPLATE\|this file (HtmlTemplateAutoUpdate\.gs)\|HtmlTemplateAutoUpdate/" \
     "$HTML_PAGE" "$GAS_FILE" "$GAS_CONFIG" 2>/dev/null || true)
 
 if [ -n "$PLACEHOLDER_CHECK" ]; then

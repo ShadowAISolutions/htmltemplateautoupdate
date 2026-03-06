@@ -3,9 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 88/100`
+`Sections: 89/100`
 
 ## [Unreleased]
+
+## [v03.82r] — 2026-03-06 02:22:45 PM EST
+
+### Removed
+
+- Deleted 8 project environments: GasExample, Soccer Ball, TestLinkGas1App, Testation2–6
+  - GAS project directories (`googleAppsScripts/`), HTML pages, version files, changelog deployment copies, source changelogs, and all associated archives
+- Removed Testation3 and Testation6 webhook deploy steps from auto-merge workflow
+
+### Changed
+
+- Updated `setup-gas-project.sh` to use HtmlTemplateAutoUpdate as GAS template source (previously used deleted GasExample)
+- Cleaned up GAS Projects table, STATUS.md, ARCHITECTURE.md, and README tree
 
 ## [v03.81r] — 2026-03-06 02:13:47 PM EST
 

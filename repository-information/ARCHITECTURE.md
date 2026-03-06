@@ -38,44 +38,32 @@ graph TB
             direction LR
             INDEX["index.html"]
             TEST["test.html"]
-            SOCCER["soccer-ball.html"]
             GASTPL_PAGE["gas-project-creator.html"]
             GASTPL_CODE["gas-project-creator-code.js.txt"]
-            GASEX_LIVE["gas-example.html"]
-            TLGA_PAGE["test_link_gas_1_app.html"]
-            TSTA2_PAGE["testation2.html"]
-            TSTT_PAGE["testation3.html"]
+            TSTA7_PAGE["testation7.html"]
             SND1["sounds/Website_Ready_Voice_1.mp3"]
             SND2["sounds/Code_Ready_Voice_1.mp3"]
 
             subgraph "html-versions/"
                 VERTXT["indexhtml.version.txt"]
                 TEST_VERTXT["testhtml.version.txt"]
-                SOCCER_VERTXT["soccer-ballhtml.version.txt"]
                 GASTPL_VERTXT["gas-project-creatorhtml.version.txt"]
-                GASEX_LIVE_VER["gas-examplehtml.version.txt"]
-                TLGA_VERTXT["test_link_gas_1_apphtml.version.txt"]
-                TSTA2_VERTXT["testation2html.version.txt"]
-                TSTT_VERTXT["testation3html.version.txt"]
+                TSTA7_VERTXT["testation7html.version.txt"]
             end
 
             subgraph "gs-versions/"
-                TSTT_GVERTXT["testation3gs.version.txt"]
+                TSTA7_GVERTXT["testation7gs.version.txt"]
             end
 
             subgraph "html-changelogs/"
                 INDEX_CL["indexhtml.changelog.txt"]
                 TEST_CL["testhtml.changelog.txt"]
-                SOCCER_CL["soccer-ballhtml.changelog.txt"]
                 GASTPL_CL["gas-project-creatorhtml.changelog.txt"]
-                GASEX_LIVE_CL["gas-examplehtml.changelog.txt"]
-                TLGA_CL["test_link_gas_1_apphtml.changelog.txt"]
-                TSTA2_CL["testation2html.changelog.txt"]
-                TSTT_CL["testation3html.changelog.txt"]
+                TSTA7_CL["testation7html.changelog.txt"]
             end
 
             subgraph "gs-changelogs/"
-                TSTT_GCL["testation3gs.changelog.txt"]
+                TSTA7_GCL["testation7gs.changelog.txt"]
             end
         end
 
@@ -101,14 +89,8 @@ graph TB
             GAS_TEST_CFG["test.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
             GAS_TPL["googleAppsScripts/HtmlTemplateAutoUpdate/\nHtmlTemplateAutoUpdate.gs\n(template)"]
             GAS_TPL_CFG["HtmlTemplateAutoUpdate.config.json\n(template placeholders)"]
-            GAS_GASEX["googleAppsScripts/GasExample/\ngas-example.gs\n(GAS example)"]
-            GAS_GASEX_CFG["gas-example.config.json\n(GAS example placeholders)"]
-            GAS_TLGA["googleAppsScripts/TestLinkGas1App/\ntest_link_gas_1_app.gs"]
-            GAS_TLGA_CFG["test_link_gas_1_app.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
-            GAS_TSTA2["googleAppsScripts/Testation2/\ntestation2.gs"]
-            GAS_TSTA2_CFG["testation2.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
-            GAS_TSTT["googleAppsScripts/Testation3/\ntestation3.gs"]
-            GAS_TSTT_CFG["testation3.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
+            GAS_TSTA7["googleAppsScripts/Testation7/\ntestation7.gs"]
+            GAS_TSTA7_CFG["testation7.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
         end
 
         subgraph "GAS Self-Update Loop"
@@ -142,51 +124,31 @@ graph TB
             INIT_SCRIPT["scripts/init-repo.sh\n(one-shot fork initialization)"]
             GAS_SETUP["scripts/setup-gas-project.sh\n(GAS project file creation)"]
             INIT_SCRIPT -.->|"auto-detects org/repo\nreplaces 23+ files"| CLAUDE_MD
-            GAS_SETUP -.->|"copies templates\ncreates 10+ files"| GAS_GASEX
         end
     end
 
     TPL -.->|"copy to create\nnew pages"| INDEX
     TPL -.->|"copy to create\nnew pages"| TEST
-    TPL -.->|"copy to create\nnew pages"| SOCCER
-    GAS_GASEX -.->|"copy to create\nnew GAS projects"| GAS_INDEX
-    GAS_GASEX -.->|"copy to create\nnew GAS projects"| GAS_TEST
-    GAS_GASEX -.->|"copy to create\nnew GAS projects"| GAS_TLGA
-    GAS_GASEX -.->|"copy to create\nnew GAS projects"| GAS_TSTA2
-    GAS_GASEX -.->|"copy to create\nnew GAS projects"| GAS_TSTT
-    GAS_GASEX_CFG -.->|"copy to create\nnew configs"| GAS_CFG
-    GAS_GASEX_CFG -.->|"copy to create\nnew configs"| GAS_TEST_CFG
-    GAS_GASEX_CFG -.->|"copy to create\nnew configs"| GAS_TLGA_CFG
-    GAS_GASEX_CFG -.->|"copy to create\nnew configs"| GAS_TSTA2_CFG
-    GAS_GASEX_CFG -.->|"copy to create\nnew configs"| GAS_TSTT_CFG
-    GAS_TPL -.->|"original base\ntemplate"| GAS_GASEX
-    GAS_TPL_CFG -.->|"original base\ntemplate"| GAS_GASEX_CFG
     GAS_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_INDEX
     GAS_CFG -.->|"syncs to\n(Pre-Commit #15)"| INDEX
     GAS_TEST_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_TEST
     GAS_TEST_CFG -.->|"syncs to\n(Pre-Commit #15)"| TEST
-    GAS_GASEX_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_GASEX
-    GAS_GASEX_CFG -.->|"syncs to\n(Pre-Commit #15)"| GASEX_LIVE
-    GAS_TLGA_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_TLGA
-    GAS_TLGA_CFG -.->|"syncs to\n(Pre-Commit #15)"| TLGA_PAGE
-    GAS_TSTA2_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_TSTA2
-    GAS_TSTA2_CFG -.->|"syncs to\n(Pre-Commit #15)"| TSTA2_PAGE
-    GAS_TSTT_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_TSTT
-    GAS_TSTT_CFG -.->|"syncs to\n(Pre-Commit #15)"| TSTT_PAGE
+    GAS_TSTA7_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_TSTA7
+    GAS_TSTA7_CFG -.->|"syncs to\n(Pre-Commit #15)"| TSTA7_PAGE
+    GAS_TPL -.->|"original base\ntemplate"| GAS_INDEX
+    GAS_TPL -.->|"original base\ntemplate"| GAS_TEST
+    GAS_TPL -.->|"original base\ntemplate"| GAS_TSTA7
+    GAS_TPL_CFG -.->|"original base\ntemplate"| GAS_CFG
+    GAS_TPL_CFG -.->|"original base\ntemplate"| GAS_TEST_CFG
+    GAS_TPL_CFG -.->|"original base\ntemplate"| GAS_TSTA7_CFG
     LIVE -.->|"serves"| BROWSER
     INDEX -.->|"iframes"| GAS_APP
     TEST -.->|"iframes"| GAS_APP
-    GASEX_LIVE -.->|"iframes"| GAS_APP
-    TLGA_PAGE -.->|"iframes"| GAS_APP
-    TSTA2_PAGE -.->|"iframes"| GAS_APP
-    TSTT_PAGE -.->|"iframes"| GAS_APP
+    TSTA7_PAGE -.->|"iframes"| GAS_APP
     GAS_POSTMSG -.->|"tells embedding\npage to reload"| BROWSER
     GAS_INDEX -.->|"source of truth\nfor GAS app\n(index.gs)"| GAS_PULL
     GAS_TEST -.->|"source of truth\nfor GAS app\n(test.gs)"| GAS_PULL
-    GAS_GASEX -.->|"source of truth\nfor GAS app\n(gas-example.gs)"| GAS_PULL
-    GAS_TLGA -.->|"source of truth\nfor GAS app\n(test_link_gas_1_app.gs)"| GAS_PULL
-    GAS_TSTA2 -.->|"source of truth\nfor GAS app\n(testation2.gs)"| GAS_PULL
-    GAS_TSTT -.->|"source of truth\nfor GAS app\n(testation3.gs)"| GAS_PULL
+    GAS_TSTA7 -.->|"source of truth\nfor GAS app\n(testation7.gs)"| GAS_PULL
     GAS_DEPLOY -.->|"curl POST\naction=deploy"| GAS_APP
     SHA_FILE -.->|"read by"| SHA_CHECK
     UPDATE_SHA -.->|"writes"| SHA_FILE
@@ -203,16 +165,10 @@ graph TB
     style GAS_CFG fill:#ffe082,color:#000
     style GAS_TEST_CFG fill:#ffe082,color:#000
     style GAS_TPL_CFG fill:#ffe082,color:#000
-    style GAS_GASEX fill:#ffa726,color:#000
-    style GAS_GASEX_CFG fill:#ffe082,color:#000
-    style GAS_TLGA fill:#ff7043,color:#fff
-    style GAS_TLGA_CFG fill:#ffe082,color:#000
-    style GAS_TSTA2 fill:#ff7043,color:#fff
-    style GAS_TSTA2_CFG fill:#ffe082,color:#000
+    style GAS_TSTA7 fill:#ff7043,color:#fff
+    style GAS_TSTA7_CFG fill:#ffe082,color:#000
     style GAS_TPL_PAGE fill:#ffa726,color:#000
     style GAS_APP fill:#42a5f5,color:#fff
-    style GAS_TSTT fill:#ff7043,color:#fff
-    style GAS_TSTT_CFG fill:#ffe082,color:#000
     style CLAUDE_MD fill:#ce93d8,color:#000
     style RULES fill:#ce93d8,color:#000
     style SKILLS fill:#ce93d8,color:#000

@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-06 02:13:47 PM EST` · Repo version: `v03.81r`
+Last updated: `2026-03-06 02:22:45 PM EST` · Repo version: `v03.82r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -151,65 +151,28 @@ htmltemplateautoupdate/
 ├── live-site-pages/             # Deployed to GitHub Pages
 │   ├── index.html              # Live landing page
 │   ├── test.html               # GAS Self-Update Dashboard test page
-│   ├── soccer-ball.html        # Soccer ball animation page
 │   ├── gas-project-creator.html       # GAS project creator dashboard
 │   ├── gas-project-creator-code.js.txt # Shared GAS template source for all Copy Code.gs buttons
-│   ├── gas-example.html               # GAS example embedding page
-│   ├── test_link_gas_1_app.html       # Test Link Gas 1 App embedding page
-│   ├── testation2.html                # Testation2 GAS embedding page
-│   ├── testation3.html                # Testation3 GAS embedding page
-│   ├── testation4.html                # Testation4 GAS embedding page
-│   ├── testation5.html                # Testation5 GAS embedding page
-│   ├── testation6.html                # Testation6 GAS embedding page
 │   ├── html-versions/           # HTML page version files for auto-refresh polling
 │   │   ├── indexhtml.version.txt
 │   │   ├── testhtml.version.txt
-│   │   ├── soccer-ballhtml.version.txt
 │   │   ├── gas-project-creatorhtml.version.txt
-│   │   ├── gas-examplehtml.version.txt
-│   │   ├── test_link_gas_1_apphtml.version.txt
-│   │   ├── testation2html.version.txt
-│   │   ├── testation3html.version.txt
-│   │   ├── testation4html.version.txt
-│   │   ├── testation5html.version.txt
-│   │   └── testation6html.version.txt
-│   │   ├── testation7html.version.txt     # Version file for testation7 page auto-refresh
+│   │   └── testation7html.version.txt
 │   ├── gs-versions/             # GAS version files for GAS version pill polling
 │   │   ├── indexgs.version.txt
 │   │   ├── testgs.version.txt
-│   │   ├── gas-examplegs.version.txt
-│   │   ├── test_link_gas_1_appgs.version.txt
-│   │   ├── testation2gs.version.txt
-│   │   ├── testation3gs.version.txt
-│   │   ├── testation4gs.version.txt
-│   │   ├── testation5gs.version.txt
-│   │   ├── testation6gs.version.txt
-│   │   └── HtmlTemplateAutoUpdategs.version.txt
-│   │   ├── testation7gs.version.txt       # Deployed GAS version for pill polling
+│   │   ├── HtmlTemplateAutoUpdategs.version.txt
+│   │   └── testation7gs.version.txt
 │   ├── html-changelogs/         # Deployed HTML changelogs for popup
 │   │   ├── indexhtml.changelog.txt
 │   │   ├── testhtml.changelog.txt
-│   │   ├── soccer-ballhtml.changelog.txt
 │   │   ├── gas-project-creatorhtml.changelog.txt
-│   │   ├── gas-examplehtml.changelog.txt
-│   │   ├── test_link_gas_1_apphtml.changelog.txt
-│   │   ├── testation2html.changelog.txt
-│   │   ├── testation3html.changelog.txt
-│   │   ├── testation4html.changelog.txt
-│   │   ├── testation5html.changelog.txt
-│   │   └── testation6html.changelog.txt
-│   │   ├── testation7html.changelog.txt   # Deployed HTML changelog for popup
+│   │   └── testation7html.changelog.txt
 │   ├── gs-changelogs/           # Deployed GAS changelogs for popup
 │   │   ├── indexgs.changelog.txt
-│   │   ├── test_link_gas_1_appgs.changelog.txt
-│   │   ├── testation2gs.changelog.txt
-│   │   ├── testation3gs.changelog.txt
-│   │   ├── testation4gs.changelog.txt
-│   │   ├── testation5gs.changelog.txt
-│   │   ├── testation6gs.changelog.txt
-│   │   └── HtmlTemplateAutoUpdategs.changelog.txt
-│   │   ├── testation7gs.changelog.txt     # Deployed GAS changelog for popup
-│   ├── testation7.html                # Testation7 GAS embedding page
+│   │   ├── HtmlTemplateAutoUpdategs.changelog.txt
+│   │   └── testation7gs.changelog.txt
+│   ├── testation7.html           # Testation7 GAS embedding page
 │   └── sounds/                 # Audio feedback files
 ├── live-site-templates/        # Templates for new pages
 │   ├── HtmlTemplateAutoUpdate.html           # Template HTML page (no GAS)
@@ -223,27 +186,6 @@ htmltemplateautoupdate/
 │   ├── Test/                  # GAS for live-site-pages/test.html
 │   │   ├── test.gs            # Self-updating GAS web app
 │   │   └── test.config.json   # Project config (source of truth)
-│   ├── GasExample/              # GAS example for new projects (used by gas-project-creator)
-│   │   ├── gas-example.gs       # Example GAS web app (placeholder values)
-│   │   └── gas-example.config.json  # Example config (placeholders)
-│   ├── TestLinkGas1App/         # GAS for live-site-pages/test_link_gas_1_app.html
-│   │   ├── test_link_gas_1_app.gs           # Self-updating GAS web app
-│   │   └── test_link_gas_1_app.config.json  # Project config (source of truth)
-│   ├── Testation2/              # GAS for live-site-pages/testation2.html
-│   │   ├── testation2.gs        # Self-updating GAS web app
-│   │   └── testation2.config.json  # Project config (source of truth)
-│   ├── Testation3/              # GAS for live-site-pages/testation3.html
-│   │   ├── testation3.gs        # Self-updating GAS web app
-│   │   └── testation3.config.json  # Project config (source of truth)
-│   ├── Testation4/              # GAS for live-site-pages/testation4.html
-│   │   ├── testation4.gs        # Self-updating GAS web app
-│   │   └── testation4.config.json  # Project config (source of truth)
-│   ├── Testation5/              # GAS for live-site-pages/testation5.html
-│   │   ├── testation5.gs        # Self-updating GAS web app
-│   │   └── testation5.config.json  # Project config (source of truth)
-│   ├── Testation6/              # GAS for live-site-pages/testation6.html
-│   │   ├── testation6.gs        # Self-updating GAS web app
-│   │   └── testation6.config.json  # Project config (source of truth)
 │   ├── Testation7/              # GAS for live-site-pages/testation7.html
 │   │   ├── testation7.gs        # Self-updating GAS web app
 │   │   └── testation7.config.json  # Project config (source of truth)
@@ -300,42 +242,12 @@ htmltemplateautoupdate/
 │   │   ├── indexhtml.changelog-archive.md   # Older changelog sections (rotated)
 │   │   ├── testhtml.changelog.md            # User-facing changelog for test page
 │   │   ├── testhtml.changelog-archive.md    # Older changelog sections (rotated)
-│   │   ├── soccer-ballhtml.changelog.md          # User-facing changelog for soccer ball page
-│   │   ├── soccer-ballhtml.changelog-archive.md  # Older changelog sections (rotated)
 │   │   ├── indexgs.changelog.md             # User-facing changelog for Index GAS
 │   │   ├── indexgs.changelog-archive.md     # Older changelog sections (rotated)
 │   │   ├── testgs.changelog.md              # User-facing changelog for Test GAS
 │   │   ├── testgs.changelog-archive.md      # Older changelog sections (rotated)
 │   │   ├── gas-project-creatorhtml.changelog.md          # User-facing changelog for GAS Project Creator page
 │   │   ├── gas-project-creatorhtml.changelog-archive.md  # Older changelog sections (rotated)
-│   │   ├── gas-examplehtml.changelog.md           # User-facing changelog for gas-example page
-│   │   ├── gas-examplehtml.changelog-archive.md   # Older changelog sections (rotated)
-│   │   ├── gas-examplegs.changelog.md             # GAS example GAS changelog
-│   │   ├── gas-examplegs.changelog-archive.md     # GAS example GAS changelog archive
-│   │   ├── test_link_gas_1_apphtml.changelog.md          # User-facing changelog for Test Link Gas 1 App page
-│   │   ├── test_link_gas_1_apphtml.changelog-archive.md  # Older changelog sections (rotated)
-│   │   ├── test_link_gas_1_appgs.changelog.md            # User-facing changelog for Test Link Gas 1 App GAS
-│   │   ├── test_link_gas_1_appgs.changelog-archive.md    # Older changelog sections (rotated)
-│   │   ├── testation2html.changelog.md          # User-facing changelog for Testation2 page
-│   │   ├── testation2html.changelog-archive.md  # Older changelog sections (rotated)
-│   │   ├── testation2gs.changelog.md            # User-facing changelog for Testation2 GAS
-│   │   ├── testation2gs.changelog-archive.md    # Older changelog sections (rotated)
-│   │   ├── testation3html.changelog.md          # User-facing changelog for Testation3 page
-│   │   ├── testation3html.changelog-archive.md  # Older changelog sections (rotated)
-│   │   ├── testation3gs.changelog.md            # User-facing changelog for Testation3 GAS
-│   │   ├── testation3gs.changelog-archive.md    # Older changelog sections (rotated)
-│   │   ├── testation4html.changelog.md          # User-facing changelog for Testation4 page
-│   │   ├── testation4html.changelog-archive.md  # Older changelog sections (rotated)
-│   │   ├── testation4gs.changelog.md            # User-facing changelog for Testation4 GAS
-│   │   ├── testation4gs.changelog-archive.md    # Older changelog sections (rotated)
-│   │   ├── testation5html.changelog.md          # User-facing changelog for Testation5 page
-│   │   ├── testation5html.changelog-archive.md  # Older changelog sections (rotated)
-│   │   ├── testation5gs.changelog.md            # User-facing changelog for Testation5 GAS
-│   │   ├── testation5gs.changelog-archive.md    # Older changelog sections (rotated)
-│   │   ├── testation6html.changelog.md          # User-facing changelog for Testation6 page
-│   │   ├── testation6html.changelog-archive.md  # Older changelog sections (rotated)
-│   │   ├── testation6gs.changelog.md            # User-facing changelog for Testation6 GAS
-│   │   ├── testation6gs.changelog-archive.md    # Older changelog sections (rotated)
 │   │   ├── testation7html.changelog.md          # User-facing changelog for Testation7 page
 │   │   ├── testation7html.changelog-archive.md  # Older changelog sections (rotated)
 │   │   ├── testation7gs.changelog.md            # User-facing changelog for Testation7 GAS
