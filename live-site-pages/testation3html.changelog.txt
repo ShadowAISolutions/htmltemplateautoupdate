@@ -3,9 +3,15 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3html.changelog-archive.md](testation3html.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 7/50`
+`Sections: 8/50`
 
 ## [Unreleased]
+
+## [v01.08w] — 2026-03-05 11:45:52 PM EST — v03.37r
+
+### Changed
+- GAS version check now polls every 10 seconds (was 15), starting after a 15-second initial delay to stay 5 seconds offset from the HTML version check
+- GAS version pill moved from the far left to just left of the website version pill
 
 ## [v01.07w] — 2026-03-05 11:30:39 PM EST — v03.35r
 

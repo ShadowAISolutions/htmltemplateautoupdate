@@ -3,9 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 43/100`
+`Sections: 44/100`
 
 ## [Unreleased]
+
+## [v03.37r] — 2026-03-05 11:45:52 PM EST
+
+### Changed
+- GAS version polling interval changed from 15s to 10s with 15s initial delay (5s offset from HTML polling)
+- GAS version pill repositioned from bottom-left to bottom-right, just left of the HTML version pill
+
+#### `testation3.html` — v01.08w
+
+##### Changed
+- GAS version check now polls every 10 seconds (was 15), starting after a 15-second initial delay to stay 5 seconds offset from the HTML version check
+- GAS version pill moved from the far left to just left of the website version pill
 
 ## [v03.36r] — 2026-03-05 11:37:56 PM EST
 
