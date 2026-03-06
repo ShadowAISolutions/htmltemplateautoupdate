@@ -3,9 +3,84 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 69/100`
+`Sections: 70/100`
 
 ## [Unreleased]
+
+## [v03.63r] — 2026-03-06 10:59:11 AM EST
+
+### Changed
+
+- Reorganized version and changelog deployment files in `live-site-pages/` into 4 dedicated subfolders: `html-versions/`, `gs-versions/`, `html-changelogs/`, `gs-changelogs/` — replaces flat file layout for cleaner directory structure
+- Updated JavaScript polling logic in all 11 HTML pages and both templates to construct URLs with subfolder paths for version and changelog file fetching
+- Updated `setup-gas-project.sh` path constants and README tree insertion logic to target new subfolder locations
+- Updated all rules files, skills files, and CLAUDE.md references to reflect new file locations
+
+#### `index.html` — v01.19w
+
+##### Changed
+
+- Updated version and changelog polling URLs to use subfolder paths (`html-versions/`, `html-changelogs/`)
+
+#### `test.html` — v01.20w
+
+##### Changed
+
+- Updated version and changelog polling URLs to use subfolder paths (`html-versions/`, `html-changelogs/`)
+
+#### `soccer-ball.html` — v01.03w
+
+##### Changed
+
+- Updated version and changelog polling URLs to use subfolder paths (`html-versions/`, `html-changelogs/`)
+
+#### `gas-project-creator.html` — v01.55w
+
+##### Changed
+
+- Updated version and changelog polling URLs to use subfolder paths (`html-versions/`, `html-changelogs/`)
+
+#### `gas-template.html` — v01.02w
+
+##### Changed
+
+- Updated version and changelog polling URLs to use subfolder paths (`html-versions/`, `gs-versions/`, `html-changelogs/`, `gs-changelogs/`)
+
+#### `test_link_gas_1_app.html` — v01.02w
+
+##### Changed
+
+- Updated version and changelog polling URLs to use subfolder paths (`html-versions/`, `gs-versions/`, `html-changelogs/`, `gs-changelogs/`)
+
+#### `testation2.html` — v01.01w
+
+##### Changed
+
+- Updated version and changelog polling URLs to use subfolder paths (`html-versions/`, `gs-versions/`, `html-changelogs/`, `gs-changelogs/`)
+
+#### `testation3.html` — v01.16w
+
+##### Changed
+
+- Updated version and changelog polling URLs to use subfolder paths (`html-versions/`, `gs-versions/`, `html-changelogs/`, `gs-changelogs/`)
+
+#### `testation4.html` — v01.01w
+
+##### Changed
+
+- Updated version and changelog polling URLs to use subfolder paths (`html-versions/`, `gs-versions/`, `html-changelogs/`, `gs-changelogs/`)
+
+#### `testation5.html` — v01.01w
+
+##### Changed
+
+- Updated version and changelog polling URLs to use subfolder paths (`html-versions/`, `gs-versions/`, `html-changelogs/`, `gs-changelogs/`)
+
+#### `testation6.html` — v01.01w
+
+##### Changed
+
+- Updated version and changelog polling URLs to use subfolder paths (`html-versions/`, `gs-versions/`, `html-changelogs/`, `gs-changelogs/`)
 
 ## [v03.62r] — 2026-03-06 10:29:44 AM EST
 

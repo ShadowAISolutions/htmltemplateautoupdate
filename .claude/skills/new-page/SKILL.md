@@ -25,7 +25,7 @@ Create a new HTML embedding page with all the required files and boilerplate.
 
 2. **Create the directory** — `live-site-pages/$0/`
 
-3. **Create the version file** — `live-site-pages/$0/indexhtml.version.txt` with initial content `|v01.00w|`
+3. **Create the version file** — `live-site-pages/html-versions/$0html.version.txt` (note: lives in the shared `html-versions/` folder, not the page subdirectory) with initial content `|v01.00w|`
 
 4. **Create the sounds directory** — copy `live-site-pages/sounds/` into `live-site-pages/$0/sounds/`
 
@@ -35,13 +35,13 @@ Create a new HTML embedding page with all the required files and boilerplate.
 
 7. **Create page changelog** — copy `repository-information/changelogs/HtmlTemplateAutoUpdatehtml.changelog.md` to `repository-information/changelogs/$0html.changelog.md`. Update the title and archive link filename. Also copy the archive template as `$0html.changelog-archive.md`
 
-8. **Create changelog deployment copy** — copy the new changelog to `live-site-pages/$0/indexhtml.changelog.txt`
+8. **Create changelog deployment copy** — copy the new changelog to `live-site-pages/html-changelogs/$0html.changelog.txt` (note: lives in the shared `html-changelogs/` folder)
 
 9. **Ask about GAS** — ask the user if this page needs a Google Apps Script project embedded. If yes:
    - Create `googleAppsScripts/<ProjectName>/` directory
    - Copy `HtmlTemplateAutoUpdate.gs` → `$0.gs`
    - Copy `HtmlTemplateAutoUpdate.config.json` → `$0.config.json`
-   - Create `live-site-pages/$0gs.version.txt` with content `01.00g` (GAS version file — lives in `live-site-pages/` only)
+   - Create `live-site-pages/gs-versions/$0gs.version.txt` with content `01.00g` (GAS version file — lives in `live-site-pages/gs-versions/` only)
    - Create GAS changelogs: `$0gs.changelog.md` and `$0gs.changelog-archive.md`
    - Register in the GAS Projects table in `.claude/rules/gas-scripts.md`
 
@@ -51,10 +51,12 @@ Create a new HTML embedding page with all the required files and boilerplate.
 
 ## File Naming Convention
 
-- HTML version files: `<page-name>html.version.txt`
-- HTML changelogs: `<page-name>html.changelog.md`
-- GAS version files: `<page-name>gs.version.txt`
-- GAS changelogs: `<page-name>gs.changelog.md`
+- HTML version files: `live-site-pages/html-versions/<page-name>html.version.txt`
+- HTML changelog deploys: `live-site-pages/html-changelogs/<page-name>html.changelog.txt`
+- GAS version files: `live-site-pages/gs-versions/<page-name>gs.version.txt`
+- GAS changelog deploys: `live-site-pages/gs-changelogs/<page-name>gs.changelog.txt`
+- HTML changelog sources: `repository-information/changelogs/<page-name>html.changelog.md`
+- GAS changelog sources: `repository-information/changelogs/<page-name>gs.changelog.md`
 - No two files in the repo may share the same basename (Pre-Commit #18)
 
 Developed by: ShadowAISolutions

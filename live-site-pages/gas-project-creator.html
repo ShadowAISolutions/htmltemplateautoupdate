@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.54w">
+  <meta name="build-version" content="v01.55w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -529,7 +529,7 @@
           <div class="step-input">
             <label for="cfg-env-name">Project Environment Name <em style="color:#f85149">(required)</em></label>
             <div class="input-row"><input type="text" id="cfg-env-name" placeholder="my-project" oninput="updateDeployGate()"><button class="field-clear" onclick="clearField('cfg-env-name')" title="Clear">&times;</button></div>
-            <span class="field-hint">Base name for all project files &mdash; e.g. <code>test</code> creates <code>test.html</code>, <code>test.gs</code>, <code>testhtml.version.txt</code>, etc.</span>
+            <span class="field-hint">Base name for all project files &mdash; e.g. <code>test</code> creates <code>test.html</code>, <code>test.gs</code>, <code>html-versions/testhtml.version.txt</code>, etc.</span>
           </div>
           <div class="step-input">
             <label for="cfg-title">Title <em>(optional)</em></label>
@@ -727,7 +727,7 @@
       var basePath = window.location.href.split('?')[0].split('#')[0];
       var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
       if (!pageName) pageName = 'index';
-      var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + pageName + 'html.version.txt';
+      var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'html-versions/' + pageName + 'html.version.txt';
 
       var currentVersion = null;
       var currentTimestamp = null;
@@ -867,7 +867,7 @@
         var basePath = window.location.href.split('?')[0].split('#')[0];
         var pn = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
         if (!pn) pn = 'index';
-        return basePath.substring(0, basePath.lastIndexOf('/') + 1) + pn + 'html.changelog.txt';
+        return basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'html-changelogs/' + pn + 'html.changelog.txt';
       }
 
       function parseChangelog(md) {

@@ -109,18 +109,18 @@ info "GitHub: $GITHUB_OWNER/$GITHUB_REPO (branch: $GITHUB_BRANCH)"
 
 # ── Path constants ───────────────────────────────────────────────
 HTML_PAGE="live-site-pages/${ENV_NAME}.html"
-HTML_VERSION="live-site-pages/${ENV_NAME}html.version.txt"
+HTML_VERSION="live-site-pages/html-versions/${ENV_NAME}html.version.txt"
 GAS_DIR="googleAppsScripts/${PROJECT_DIR}"
 GAS_FILE="${GAS_DIR}/${ENV_NAME}.gs"
 GAS_CONFIG="${GAS_DIR}/${ENV_NAME}.config.json"
-GAS_VERSION="live-site-pages/${ENV_NAME}gs.version.txt"
+GAS_VERSION="live-site-pages/gs-versions/${ENV_NAME}gs.version.txt"
 CL_DIR="repository-information/changelogs"
 HTML_CL="${CL_DIR}/${ENV_NAME}html.changelog.md"
 HTML_CL_ARCHIVE="${CL_DIR}/${ENV_NAME}html.changelog-archive.md"
 GAS_CL="${CL_DIR}/${ENV_NAME}gs.changelog.md"
 GAS_CL_ARCHIVE="${CL_DIR}/${ENV_NAME}gs.changelog-archive.md"
-HTML_CL_DEPLOY="live-site-pages/${ENV_NAME}html.changelog.txt"
-GAS_CL_DEPLOY="live-site-pages/${ENV_NAME}gs.changelog.txt"
+HTML_CL_DEPLOY="live-site-pages/html-changelogs/${ENV_NAME}html.changelog.txt"
+GAS_CL_DEPLOY="live-site-pages/gs-changelogs/${ENV_NAME}gs.changelog.txt"
 GAS_SCRIPTS_RULES=".claude/rules/gas-scripts.md"
 
 # ── Template sources ─────────────────────────────────────────────
@@ -495,8 +495,34 @@ if [ -f "README.md" ]; then
         # 1. Add page files in live-site-pages section (before "└── sounds/")
         SOUNDS_LINE=$(grep -n '│   └── sounds/' "README.md" | head -1 | cut -d: -f1)
         if [ -n "$SOUNDS_LINE" ]; then
-            sed -i "${SOUNDS_LINE}i\\│   ├── ${ENV_NAME}.html                # ${PROJECT_DIR} GAS embedding page\n│   ├── ${ENV_NAME}html.version.txt     # Version file for ${ENV_NAME} page auto-refresh\n│   ├── ${ENV_NAME}html.changelog.txt   # Deployed HTML changelog for popup\n│   ├── ${ENV_NAME}gs.changelog.txt     # Deployed GAS changelog for popup\n│   ├── ${ENV_NAME}gs.version.txt       # Deployed GAS version for pill polling" "README.md"
-            ok "Added page files to README.md tree"
+            sed -i "${SOUNDS_LINE}i\\│   ├── ${ENV_NAME}.html                # ${PROJECT_DIR} GAS embedding page" "README.md"
+            ok "Added page entry to README.md tree"
+
+            # Add version/changelog files to their respective subfolder sections
+            # html-versions/
+            HV_LAST=$(grep -n '│   │   .\+html\.version\.txt' "README.md" | tail -1 | cut -d: -f1)
+            if [ -n "$HV_LAST" ]; then
+                sed -i "${HV_LAST}a\\│   │   ├── ${ENV_NAME}html.version.txt     # Version file for ${ENV_NAME} page auto-refresh" "README.md"
+                ok "Added html-versions entry"
+            fi
+            # gs-versions/
+            GV_LAST=$(grep -n '│   │   .\+gs\.version\.txt' "README.md" | tail -1 | cut -d: -f1)
+            if [ -n "$GV_LAST" ]; then
+                sed -i "${GV_LAST}a\\│   │   ├── ${ENV_NAME}gs.version.txt       # Deployed GAS version for pill polling" "README.md"
+                ok "Added gs-versions entry"
+            fi
+            # html-changelogs/
+            HC_LAST=$(grep -n '│   │   .\+html\.changelog\.txt' "README.md" | tail -1 | cut -d: -f1)
+            if [ -n "$HC_LAST" ]; then
+                sed -i "${HC_LAST}a\\│   │   ├── ${ENV_NAME}html.changelog.txt   # Deployed HTML changelog for popup" "README.md"
+                ok "Added html-changelogs entry"
+            fi
+            # gs-changelogs/
+            GC_LAST=$(grep -n '│   │   .\+gs\.changelog\.txt' "README.md" | tail -1 | cut -d: -f1)
+            if [ -n "$GC_LAST" ]; then
+                sed -i "${GC_LAST}a\\│   │   ├── ${ENV_NAME}gs.changelog.txt     # Deployed GAS changelog for popup" "README.md"
+                ok "Added gs-changelogs entry"
+            fi
         fi
 
         # 2. Add GAS directory in googleAppsScripts section (before "└── HtmlTemplateAutoUpdate/")

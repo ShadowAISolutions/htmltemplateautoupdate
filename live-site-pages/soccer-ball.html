@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.02w">
+  <meta name="build-version" content="v01.03w">
   <title>Soccer Ball Animation</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -586,7 +586,7 @@
       var basePath = window.location.href.split('?')[0].split('#')[0];
       var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
       if (!pageName) pageName = 'index';
-      var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + pageName + 'html.version.txt';
+      var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'html-versions/' + pageName + 'html.version.txt';
 
       var currentVersion = null;
       var currentTimestamp = null;
@@ -760,7 +760,7 @@
         var basePath = window.location.href.split('?')[0].split('#')[0];
         var pn = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
         if (!pn) pn = 'index';
-        return basePath.substring(0, basePath.lastIndexOf('/') + 1) + pn + 'html.changelog.txt';
+        return basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'html-changelogs/' + pn + 'html.changelog.txt';
       }
 
       function parseChangelog(md) {

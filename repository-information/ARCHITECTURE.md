@@ -37,34 +37,46 @@ graph TB
         subgraph "live-site-pages/ — Hosted Content"
             direction LR
             INDEX["index.html"]
-            VERTXT["indexhtml.version.txt"]
-            INDEX_CL["indexhtml.changelog.txt"]
             TEST["test.html"]
-            TEST_VERTXT["testhtml.version.txt"]
-            TEST_CL["testhtml.changelog.txt"]
             SOCCER["soccer-ball.html"]
-            SOCCER_VERTXT["soccer-ballhtml.version.txt"]
-            SOCCER_CL["soccer-ballhtml.changelog.txt"]
             GASTPL_PAGE["gas-project-creator.html"]
-            GASTPL_VERTXT["gas-project-creatorhtml.version.txt"]
-            GASTPL_CL["gas-project-creatorhtml.changelog.txt"]
             GASTPL_CODE["gas-project-creator-code.js.txt"]
             GASTPL_LIVE["gas-template.html"]
-            GASTPL_LIVE_VER["gas-templatehtml.version.txt"]
-            GASTPL_LIVE_CL["gas-templatehtml.changelog.txt"]
             TLGA_PAGE["test_link_gas_1_app.html"]
-            TLGA_VERTXT["test_link_gas_1_apphtml.version.txt"]
-            TLGA_CL["test_link_gas_1_apphtml.changelog.txt"]
             TSTA2_PAGE["testation2.html"]
-            TSTA2_VERTXT["testation2html.version.txt"]
-            TSTA2_CL["testation2html.changelog.txt"]
             TSTT_PAGE["testation3.html"]
-            TSTT_VERTXT["testation3html.version.txt"]
-            TSTT_CL["testation3html.changelog.txt"]
-            TSTT_GCL["testation3gs.changelog.txt"]
-            TSTT_GVERTXT["testation3gs.version.txt"]
             SND1["sounds/Website_Ready_Voice_1.mp3"]
             SND2["sounds/Code_Ready_Voice_1.mp3"]
+
+            subgraph "html-versions/"
+                VERTXT["indexhtml.version.txt"]
+                TEST_VERTXT["testhtml.version.txt"]
+                SOCCER_VERTXT["soccer-ballhtml.version.txt"]
+                GASTPL_VERTXT["gas-project-creatorhtml.version.txt"]
+                GASTPL_LIVE_VER["gas-templatehtml.version.txt"]
+                TLGA_VERTXT["test_link_gas_1_apphtml.version.txt"]
+                TSTA2_VERTXT["testation2html.version.txt"]
+                TSTT_VERTXT["testation3html.version.txt"]
+            end
+
+            subgraph "gs-versions/"
+                TSTT_GVERTXT["testation3gs.version.txt"]
+            end
+
+            subgraph "html-changelogs/"
+                INDEX_CL["indexhtml.changelog.txt"]
+                TEST_CL["testhtml.changelog.txt"]
+                SOCCER_CL["soccer-ballhtml.changelog.txt"]
+                GASTPL_CL["gas-project-creatorhtml.changelog.txt"]
+                GASTPL_LIVE_CL["gas-templatehtml.changelog.txt"]
+                TLGA_CL["test_link_gas_1_apphtml.changelog.txt"]
+                TSTA2_CL["testation2html.changelog.txt"]
+                TSTT_CL["testation3html.changelog.txt"]
+            end
+
+            subgraph "gs-changelogs/"
+                TSTT_GCL["testation3gs.changelog.txt"]
+            end
         end
 
         subgraph "Auto-Refresh Loop (Client-Side)"

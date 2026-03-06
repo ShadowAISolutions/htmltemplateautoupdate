@@ -4,17 +4,17 @@
 
 | Page | File | Version | Live URL | Status |
 |------|------|---------|----------|--------|
-| Landing Page | `live-site-pages/index.html` | v01.18w | *(deploy to activate)* | Active |
-| Test Page | `live-site-pages/test.html` | v01.19w | *(deploy to activate)* | Active |
-| Soccer Ball | `live-site-pages/soccer-ball.html` | v01.02w | *(deploy to activate)* | Active |
-| GAS Project Creator | `live-site-pages/gas-project-creator.html` | v01.54w | *(deploy to activate)* | Active |
-| GAS Template | `live-site-pages/gas-template.html` | v01.01w | *(deploy to activate)* | Active |
-| Test Link Gas 1 App | `live-site-pages/test_link_gas_1_app.html` | v01.01w | *(deploy to activate)* | Active |
-| Testation2 | `live-site-pages/testation2.html` | v01.00w | *(deploy to activate)* | Active |
-| Testation3 | `live-site-pages/testation3.html` | v01.15w | *(deploy to activate)* | Active |
-| Testation4 | `live-site-pages/testation4.html` | v01.00w | *(deploy to activate)* | Active |
-| Testation5 | `live-site-pages/testation5.html` | v01.00w | *(deploy to activate)* | Active |
-| Testation6 | `live-site-pages/testation6.html` | v01.00w | *(deploy to activate)* | Active |
+| Landing Page | `live-site-pages/index.html` | v01.19w | *(deploy to activate)* | Active |
+| Test Page | `live-site-pages/test.html` | v01.20w | *(deploy to activate)* | Active |
+| Soccer Ball | `live-site-pages/soccer-ball.html` | v01.03w | *(deploy to activate)* | Active |
+| GAS Project Creator | `live-site-pages/gas-project-creator.html` | v01.55w | *(deploy to activate)* | Active |
+| GAS Template | `live-site-pages/gas-template.html` | v01.02w | *(deploy to activate)* | Active |
+| Test Link Gas 1 App | `live-site-pages/test_link_gas_1_app.html` | v01.02w | *(deploy to activate)* | Active |
+| Testation2 | `live-site-pages/testation2.html` | v01.01w | *(deploy to activate)* | Active |
+| Testation3 | `live-site-pages/testation3.html` | v01.16w | *(deploy to activate)* | Active |
+| Testation4 | `live-site-pages/testation4.html` | v01.01w | *(deploy to activate)* | Active |
+| Testation5 | `live-site-pages/testation5.html` | v01.01w | *(deploy to activate)* | Active |
+| Testation6 | `live-site-pages/testation6.html` | v01.01w | *(deploy to activate)* | Active |
 
 
 ## GAS Projects

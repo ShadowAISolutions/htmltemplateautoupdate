@@ -23,7 +23,7 @@ Toggle the maintenance overlay on or off for HTML pages deployed to GitHub Pages
 
 ## Activate (on)
 
-1. Edit the page's `<page-name>html.version.txt`
+1. Edit the page's version file at `live-site-pages/html-versions/<page-name>html.version.txt`
 2. Change the first field from empty to `maintenance` and fill the third field with the exact display string
 3. Format: `maintenance|vXX.XXw|As of: HH:MM:SS AM/PM EST MM/DD/YYYY`
 4. Get the timestamp value by running: `TZ=America/New_York date '+As of: %I:%M:%S %p EST %m/%d/%Y'`
@@ -31,7 +31,7 @@ Toggle the maintenance overlay on or off for HTML pages deployed to GitHub Pages
 
 ## Deactivate (off)
 
-1. Edit the page's `<page-name>html.version.txt`
+1. Edit the page's version file at `live-site-pages/html-versions/<page-name>html.version.txt`
 2. Clear the first field back to empty: `maintenance|vXX.XXw|...` → `|vXX.XXw|`
 3. **Do NOT bump the version** — only clear the maintenance prefix and timestamp
 

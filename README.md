@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-06 10:29:44 AM EST` · Repo version: `v03.62r`
+Last updated: `2026-03-06 10:56:10 AM EST` · Repo version: `v03.63r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -73,7 +73,7 @@ Your site will be live at `https://<your-org>.github.io/<your-repo>/`
 ## How It Works
 
 ### Auto-Refresh via Version Polling
-Every hosted page polls a lightweight `html.version.txt` file every 10 seconds. When a new version is deployed, the page detects the mismatch and auto-reloads — showing a green "Website Ready" splash with audio feedback.
+Every hosted page polls a lightweight `html.version.txt` file (from `live-site-pages/html-versions/`) every 10 seconds. When a new version is deployed, the page detects the mismatch and auto-reloads — showing a green "Website Ready" splash with audio feedback.
 
 ### CI/CD Auto-Merge Flow
 1. Push to a `claude/*` branch
@@ -150,43 +150,61 @@ This error means the Apps Script API is not enabled in the GCP project associate
 htmltemplateautoupdate/
 ├── live-site-pages/             # Deployed to GitHub Pages
 │   ├── index.html              # Live landing page
-│   ├── indexhtml.version.txt   # Version file for auto-refresh
-│   ├── indexhtml.changelog.txt # Deployed changelog for popup
 │   ├── test.html               # GAS Self-Update Dashboard test page
-│   ├── testhtml.version.txt    # Version file for test page auto-refresh
-│   ├── testhtml.changelog.txt  # Deployed changelog for popup
 │   ├── soccer-ball.html        # Soccer ball animation page
-│   ├── soccer-ballhtml.version.txt   # Version file for soccer ball page auto-refresh
-│   ├── soccer-ballhtml.changelog.txt # Deployed changelog for popup
 │   ├── gas-project-creator.html       # GAS project creator dashboard
-│   ├── gas-project-creatorhtml.version.txt   # Version file for gas-project-creator page auto-refresh
-│   ├── gas-project-creatorhtml.changelog.txt # Deployed changelog for popup
 │   ├── gas-project-creator-code.js.txt # Shared GAS template source for all Copy Code.gs buttons
 │   ├── gas-template.html              # GAS template embedding page
-│   ├── gas-templatehtml.version.txt   # Version file for gas-template page auto-refresh
-│   ├── gas-templatehtml.changelog.txt # Deployed changelog for popup
 │   ├── test_link_gas_1_app.html       # Test Link Gas 1 App embedding page
-│   ├── test_link_gas_1_apphtml.version.txt   # Version file for test_link_gas_1_app page auto-refresh
-│   ├── test_link_gas_1_apphtml.changelog.txt # Deployed changelog for popup
 │   ├── testation2.html                # Testation2 GAS embedding page
-│   ├── testation2html.version.txt     # Version file for testation2 page auto-refresh
-│   ├── testation2html.changelog.txt   # Deployed changelog for popup
 │   ├── testation3.html                # Testation3 GAS embedding page
-│   ├── testation3html.version.txt     # Version file for testation3 page auto-refresh
-│   ├── testation3html.changelog.txt   # Deployed page changelog for popup
-│   ├── testation3gs.changelog.txt    # Deployed GAS changelog for popup
-│   ├── testation3gs.version.txt     # Deployed GAS version for auto-refresh polling
 │   ├── testation4.html                # Testation4 GAS embedding page
-│   ├── testation4html.version.txt     # Version file for testation4 page auto-refresh
-│   ├── testation4html.changelog.txt   # Deployed changelog for popup
 │   ├── testation5.html                # Testation5 GAS embedding page
-│   ├── testation5html.version.txt     # Version file for testation5 page auto-refresh
-│   ├── testation5html.changelog.txt   # Deployed changelog for popup
 │   ├── testation6.html                # Testation6 GAS embedding page
-│   ├── testation6html.version.txt     # Version file for testation6 page auto-refresh
-│   ├── testation6html.changelog.txt   # Deployed HTML changelog for popup
-│   ├── testation6gs.changelog.txt     # Deployed GAS changelog for popup
-│   ├── testation6gs.version.txt       # Deployed GAS version for pill polling
+│   ├── html-versions/           # HTML page version files for auto-refresh polling
+│   │   ├── indexhtml.version.txt
+│   │   ├── testhtml.version.txt
+│   │   ├── soccer-ballhtml.version.txt
+│   │   ├── gas-project-creatorhtml.version.txt
+│   │   ├── gas-templatehtml.version.txt
+│   │   ├── test_link_gas_1_apphtml.version.txt
+│   │   ├── testation2html.version.txt
+│   │   ├── testation3html.version.txt
+│   │   ├── testation4html.version.txt
+│   │   ├── testation5html.version.txt
+│   │   └── testation6html.version.txt
+│   ├── gs-versions/             # GAS version files for GAS version pill polling
+│   │   ├── indexgs.version.txt
+│   │   ├── testgs.version.txt
+│   │   ├── gas-templategs.version.txt
+│   │   ├── test_link_gas_1_appgs.version.txt
+│   │   ├── testation2gs.version.txt
+│   │   ├── testation3gs.version.txt
+│   │   ├── testation4gs.version.txt
+│   │   ├── testation5gs.version.txt
+│   │   ├── testation6gs.version.txt
+│   │   └── HtmlTemplateAutoUpdategs.version.txt
+│   ├── html-changelogs/         # Deployed HTML changelogs for popup
+│   │   ├── indexhtml.changelog.txt
+│   │   ├── testhtml.changelog.txt
+│   │   ├── soccer-ballhtml.changelog.txt
+│   │   ├── gas-project-creatorhtml.changelog.txt
+│   │   ├── gas-templatehtml.changelog.txt
+│   │   ├── test_link_gas_1_apphtml.changelog.txt
+│   │   ├── testation2html.changelog.txt
+│   │   ├── testation3html.changelog.txt
+│   │   ├── testation4html.changelog.txt
+│   │   ├── testation5html.changelog.txt
+│   │   └── testation6html.changelog.txt
+│   ├── gs-changelogs/           # Deployed GAS changelogs for popup
+│   │   ├── indexgs.changelog.txt
+│   │   ├── test_link_gas_1_appgs.changelog.txt
+│   │   ├── testation2gs.changelog.txt
+│   │   ├── testation3gs.changelog.txt
+│   │   ├── testation4gs.changelog.txt
+│   │   ├── testation5gs.changelog.txt
+│   │   ├── testation6gs.changelog.txt
+│   │   └── HtmlTemplateAutoUpdategs.changelog.txt
 │   └── sounds/                 # Audio feedback files
 ├── live-site-templates/        # Templates for new pages
 │   ├── HtmlTemplateAutoUpdate.html           # Template HTML page (no GAS)
