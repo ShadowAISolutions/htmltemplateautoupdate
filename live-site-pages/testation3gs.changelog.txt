@@ -3,9 +3,14 @@
 All notable user-facing changes to this script are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3gs.changelog-archive.md](testation3gs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 16/50`
+`Sections: 17/50`
 
 ## [Unreleased]
+
+## [01.16g] — 2026-03-05 09:17:29 PM EST — v03.27r
+
+### Fixed
+- App now pulls and deploys updates before triggering page reload, ensuring the new version is live when the page refreshes
 
 ## [01.15g] — 2026-03-05 08:24:20 PM EST — v03.26r
 

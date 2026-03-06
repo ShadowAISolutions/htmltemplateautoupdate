@@ -86,7 +86,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.15g";
+var VERSION = "01.16g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -275,6 +275,29 @@ function doGet() {
         }
 
         var _autoPulling = false;
+        function checkForUpdates() {
+          if (_autoPulling) return;
+          _autoPulling = true;
+          google.script.run
+            .withSuccessHandler(function(result) {
+              if (result.indexOf('Updated to') !== -1) {
+                google.script.run
+                  .withSuccessHandler(function(data) {
+                    var reloadMsg = {type: 'gas-reload', version: data.version};
+                    if (_soundDataUrl) reloadMsg.soundDataUrl = _soundDataUrl;
+                    try { window.top.postMessage(reloadMsg, '*'); } catch(e) {}
+                    try { window.parent.postMessage(reloadMsg, '*'); } catch(e) {}
+                  })
+                  .getAppData();
+              }
+              setTimeout(function() { _autoPulling = false; }, 30000);
+            })
+            .withFailureHandler(function() {
+              setTimeout(function() { _autoPulling = false; }, 30000);
+            })
+            .pullAndDeployFromGitHub();
+        }
+
         function pollPushedVersionFromCache() {
           if (_autoPulling) return;
           google.script.run
@@ -282,12 +305,7 @@ function doGet() {
               if (!pushed) return;
               var current = (document.getElementById('version').textContent || '').trim();
               if (pushed !== current && pushed !== '') {
-                _autoPulling = true;
-                var reloadMsg = {type: 'gas-reload', version: pushed};
-                if (_soundDataUrl) reloadMsg.soundDataUrl = _soundDataUrl;
-                try { window.top.postMessage(reloadMsg, '*'); } catch(e) {}
-                try { window.parent.postMessage(reloadMsg, '*'); } catch(e) {}
-                setTimeout(function() { _autoPulling = false; }, 30000);
+                checkForUpdates();
               }
             })
             .readPushedVersionFromCache();
@@ -372,17 +390,7 @@ function doGet() {
         })();
 
         // Auto-check for updates on page load (fallback if webhook missed)
-        google.script.run
-          .withSuccessHandler(function(result) {
-            if (result.indexOf('Updated to') !== -1) {
-              var reloadMsg = {type: 'gas-reload', version: result};
-              if (_soundDataUrl) reloadMsg.soundDataUrl = _soundDataUrl;
-              try { window.top.postMessage(reloadMsg, '*'); } catch(e) {}
-              try { window.parent.postMessage(reloadMsg, '*'); } catch(e) {}
-            }
-          })
-          .withFailureHandler(function() {})
-          .pullAndDeployFromGitHub();
+        checkForUpdates();
 
         setTimeout(function() {
           var splash = document.getElementById('splash');
