@@ -3,9 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 71/100`
+`Sections: 72/100`
 
 ## [Unreleased]
+
+## [v03.65r] — 2026-03-06 11:10:33 AM EST
+
+### Removed
+
+- Removed 41 backward-compatibility stub files from flat `live-site-pages/` — stubs served their purpose (nudging cached pages to reload with new subfolder-aware JavaScript) and are no longer needed
 
 ## [v03.64r] — 2026-03-06 11:06:50 AM EST
 
