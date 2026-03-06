@@ -13,6 +13,7 @@
 #   - STATUS.md (Hosted Pages + GAS Projects tables)
 #   - ARCHITECTURE.md (Mermaid diagram nodes, edges, styles)
 #   - README.md (structure tree — 3 insertion points)
+#   - Workflow deploy step (auto-merge-claude.yml — webhook for GAS self-update)
 #
 # Usage:
 #   bash scripts/setup-gas-project.sh <<'CONFIG'
@@ -544,7 +545,30 @@ else
     warn "README.md not found — skipping"
 fi
 
-# ── Phase 10: Sounds Directory ───────────────────────────────────
+# ── Phase 10: Add Workflow Deploy Step ──────────────────────────
+info "Phase 10: Adding workflow deploy step..."
+WORKFLOW_FILE=".github/workflows/auto-merge-claude.yml"
+if [ -f "$WORKFLOW_FILE" ]; then
+    if grep -q "Deploy ${PROJECT_DIR}" "$WORKFLOW_FILE"; then
+        warn "${PROJECT_DIR} deploy step already in workflow — skipping"
+    elif [ "$DEPLOYMENT_ID" = "YOUR_DEPLOYMENT_ID" ] || [ -z "$DEPLOYMENT_ID" ]; then
+        warn "DEPLOYMENT_ID is placeholder — skipping workflow deploy step (add manually after first deploy)"
+    else
+        # Insert before "- name: Delete branch" (the first occurrence after GAS DEPLOY STEPS)
+        DELETE_LINE=$(grep -n '      - name: Delete branch' "$WORKFLOW_FILE" | head -1 | cut -d: -f1)
+        if [ -n "$DELETE_LINE" ]; then
+            DEPLOY_BLOCK="      - name: Deploy ${PROJECT_DIR}\n        if: steps.guard.outputs.skip != 'true'\n        run: |\n          PRE=\${{ steps.merge.outputs.pre_merge_sha }}\n          git diff --name-only \"\$PRE\" HEAD | grep -q \"googleAppsScripts/${PROJECT_DIR}/${ENV_NAME}.gs\" \&\& \\\\\n          curl -L -X POST \\\\\n            \"https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec\" \\\\\n            -d \"action=deploy\" \\\\\n            --max-time 120 || true\n"
+            sed -i "${DELETE_LINE}i\\${DEPLOY_BLOCK}" "$WORKFLOW_FILE"
+            ok "Added Deploy ${PROJECT_DIR} step to workflow"
+        else
+            warn "Could not find 'Delete branch' step in workflow — manual update needed"
+        fi
+    fi
+else
+    warn "Workflow file not found — skipping"
+fi
+
+# ── Phase 11: Sounds Directory ───────────────────────────────────
 info "Phase 10: Ensuring sounds directory..."
 if [ -f "live-site-pages/sounds/Website_Ready_Voice_1.mp3" ]; then
     ok "Sounds directory already populated"
@@ -552,8 +576,8 @@ else
     warn "Sound file not found — live-site-pages/sounds/Website_Ready_Voice_1.mp3 missing"
 fi
 
-# ── Phase 11: Verification ───────────────────────────────────────
-info "Phase 11: Verification..."
+# ── Phase 12: Verification ───────────────────────────────────────
+info "Phase 12: Verification..."
 echo ""
 
 ERRORS=0
@@ -616,6 +640,7 @@ echo "  - repository-information/STATUS.md (Hosted Pages + GAS Projects)"
 echo "  - repository-information/ARCHITECTURE.md (Mermaid diagram)"
 echo "  - README.md (structure tree)"
 echo "  - .claude/rules/gas-scripts.md (GAS Projects table)"
+echo "  - .github/workflows/auto-merge-claude.yml (GAS deploy webhook step)"
 echo ""
 echo "Claude just needs to: commit and push (Pre-Commit checklist applies)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

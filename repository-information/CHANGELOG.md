@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 80/100`
+`Sections: 81/100`
 
 ## [Unreleased]
+
+## [v03.74r] — 2026-03-06 01:01:24 PM EST
+
+### Added
+
+- Automated workflow deploy step in `setup-gas-project.sh` — new GAS projects now get a webhook deploy step in `auto-merge-claude.yml` automatically, enabling GAS self-update on push without needing the page open
+
+### Changed
+
+- Updated CLAUDE.md Setup GAS Project Command to document the new workflow deploy step
 
 ## [v03.73r] — 2026-03-06 12:56:23 PM EST
 

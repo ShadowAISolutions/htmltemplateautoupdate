@@ -257,7 +257,7 @@ This triggers the auto-merge workflow, which merges into `main` and deploys to G
 ## Setup GAS Project Command
 When the user pastes output from the **Copy Config for Claude** button (the prompt starts with "Set up a new GAS project with the following config"), execute this deterministic sequence — no research or reasoning needed:
 
-1. **Run the setup script** — pipe the JSON config from the user's prompt into `bash scripts/setup-gas-project.sh`. The script handles everything: creates 10 files, registers in all tables, updates ARCHITECTURE.md, README.md tree, and STATUS.md
+1. **Run the setup script** — pipe the JSON config from the user's prompt into `bash scripts/setup-gas-project.sh`. The script handles everything: creates 10 files, registers in all tables, updates ARCHITECTURE.md, README.md tree, STATUS.md, and adds a workflow deploy step to `auto-merge-claude.yml` (webhook for GAS self-update)
 2. **Check script output** — if the script reports warnings (e.g. remaining template placeholders), fix them. If it reports zero warnings, proceed
 3. **No version bumps for new files** — the script creates files at initial versions (v01.00w, 01.00g). Do NOT bump versions for newly created files. Only bump if you make additional edits to them (e.g. fixing a warning)
 4. **Pre-Commit Checklist applies** — run the normal checklist. Key items: CHANGELOG entry under `## [Unreleased]` describing the new project, repo version bump on push commit, README timestamp update. No page/GAS changelog entries needed (new files at initial versions have no user-facing changes to log)
