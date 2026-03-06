@@ -3,9 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 89/100`
+`Sections: 90/100`
 
 ## [Unreleased]
+
+## [v03.83r] — 2026-03-06 02:28:14 PM EST
+
+### Changed
+
+- Moved `gas-project-creator-code.js.txt` into `live-site-pages/gas-project-creator/` subfolder for consistent directory structure
+- Updated all references to the new path across HTML pages, rules, README tree, and ARCHITECTURE.md
+
+#### `gas-project-creator.html` — v01.56w
+
+##### Changed
+
+- Updated Copy Code.gs fetch path to new subfolder location
 
 ## [v03.82r] — 2026-03-06 02:22:45 PM EST
 
