@@ -82,10 +82,10 @@
 // Checklist syncs the values here and to the embedding HTML page.
 //
 // VERSION and repo-derived values (GITHUB_OWNER, GITHUB_REPO,
-// FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
-// in this file — they are NOT in config.json.
+// FILE_PATH, EMBED_PAGE_URL) are managed directly in this file —
+// they are NOT in config.json.
 
-var VERSION = "01.22g";
+var VERSION = "01.23g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -107,8 +107,6 @@ var SOUND_FILE_ID = "1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN";                        
 // Embedding page URL — the GitHub Pages page that iframes this GAS app
 var EMBED_PAGE_URL = "https://ShadowAISolutions.github.io/htmltemplateautoupdate/testation3.html";
 
-// Logo shown on the splash screen
-var SPLASH_LOGO_URL = "https://www.shadowaisolutions.com/SAIS_Logo.png";
 // ──────────────────────────────────────────────────────────────────
 
 function doGet() {
@@ -121,8 +119,6 @@ function doGet() {
       <style>
         html, body { height: 100%; margin: 0; overflow: auto; }
         body { font-family: Arial; display: flex; flex-direction: column; align-items: center; padding: 20px 0; box-sizing: border-box; }
-        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0d47a1; z-index: 9999; transition: opacity 0.3s ease; display: flex; align-items: center; justify-content: center; }
-        #splash img { max-width: 500px; max-height: 500px; }
         button { background: #2e7d32; color: white; border: none; padding: 8px 20px;
                  border-radius: 6px; cursor: pointer; font-size: 14px; margin-top: 10px; }
         button:hover { background: #1b5e20; }
@@ -137,7 +133,6 @@ function doGet() {
       </style>
     </head>
     <body>
-      <div id="splash"><img src="${SPLASH_LOGO_URL}" alt=""></div>
       <h2 id="version">...</h2>
       <h1 id="title" style="font-size: 28px; margin: 0 0 4px 0;">...</h1>
       <form id="redirect-form" method="GET" action="${EMBED_PAGE_URL}" target="_top" style="display:inline;">
@@ -284,12 +279,6 @@ function doGet() {
 
         // Auto-check for updates on page load (fallback if webhook missed)
         checkForUpdates();
-
-        setTimeout(function() {
-          var splash = document.getElementById('splash');
-          splash.style.opacity = '0';
-          setTimeout(function() { splash.style.display = 'none'; }, 300);
-        }, 1000);
 
       </script>
     </body>

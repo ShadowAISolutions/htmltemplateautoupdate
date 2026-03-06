@@ -3,9 +3,14 @@
 All notable user-facing changes to this script are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3gs.changelog-archive.md](testation3gs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 22/50`
+`Sections: 23/50`
 
 ## [Unreleased]
+
+## [01.23g] — 2026-03-05 11:37:56 PM EST — v03.36r
+
+### Removed
+- Blue splash screen overlay that appeared on every page load
 
 ## [01.22g] — 2026-03-05 11:22:48 PM EST — v03.34r
 
