@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.02w">
+  <meta name="build-version" content="v01.03w">
   <title>Testing test 6</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -455,6 +455,7 @@
       var targetGasVersion = null;
       var gasCheckInterval = null;
       var GAS_CHECK_INTERVAL = 5000;
+      var GAS_DEPLOY_TIMEOUT = 180000;
       var pill = document.getElementById('gas-pill');
       var pillLabel = document.getElementById('gas-pill-label');
       var dot = pill ? pill.querySelector('.dot') : null;
@@ -515,8 +516,9 @@
 
       function waitForGasDeploy() {
         var gasFrame = document.getElementById('gas-app');
+        console.log('[GAS Poll] Entering waitForGasDeploy — target:', targetGasVersion);
         if (!gasFrame) {
-          // No iframe — fall back to immediate reload
+          console.log('[GAS Poll] No iframe found — falling back to reload');
           sessionStorage.setItem('gas-pending-sound', '1');
           setTimeout(function() { window.location.reload(); }, 2000);
           return;
@@ -528,10 +530,12 @@
           var reported = e.data.version;
           // getAppData returns "v01.02g" — strip leading "v" for comparison
           if (reported && reported.charAt(0) === 'v') reported = reported.substring(1);
+          console.log('[GAS Poll] Iframe reports version:', reported, '(target:', targetGasVersion + ')');
           if (reported === targetGasVersion) {
             // GAS has caught up — reload now
             window.removeEventListener('message', onGasVersion);
             if (gasCheckInterval) clearInterval(gasCheckInterval);
+            console.log('[GAS Poll] Version matched! Reloading in 1.5s');
             if (pillLabel) pillLabel.textContent = 'GAS updated!';
             sessionStorage.setItem('gas-pending-sound', '1');
             setTimeout(function() { window.location.reload(); }, 1500);
@@ -549,13 +553,15 @@
         requestGasVersion();
         gasCheckInterval = setInterval(requestGasVersion, GAS_CHECK_INTERVAL);
 
-        // Safety timeout: if GAS doesn't respond in 60s, reload anyway
+        // Safety timeout: if GAS doesn't respond, reload anyway
+        console.log('[GAS Poll] Safety timeout set:', GAS_DEPLOY_TIMEOUT / 1000, 'seconds');
         setTimeout(function() {
+          console.log('[GAS Poll] Safety timeout reached — forcing reload');
           window.removeEventListener('message', onGasVersion);
           if (gasCheckInterval) clearInterval(gasCheckInterval);
           sessionStorage.setItem('gas-pending-sound', '1');
           window.location.reload();
-        }, 60000);
+        }, GAS_DEPLOY_TIMEOUT);
       }
 
       // Fetch version immediately for display, then start polling after 15s initial delay (5s offset from HTML)

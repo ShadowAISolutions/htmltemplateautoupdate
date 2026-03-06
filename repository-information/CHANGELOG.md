@@ -3,9 +3,48 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 76/100`
+`Sections: 77/100`
 
 ## [Unreleased]
+
+## [v03.70r] — 2026-03-06 12:24:38 PM EST
+
+### Changed
+
+#### `testation3.html` — v01.18w
+
+##### Changed
+
+- Increased GAS deploy verification timeout from 60s to 3 minutes for more reliable auto-updates
+- Added debug logging for GAS version polling
+
+#### `testation4.html` — v01.03w
+
+##### Changed
+
+- Increased GAS deploy verification timeout from 60s to 3 minutes for more reliable auto-updates
+- Added debug logging for GAS version polling
+
+#### `testation5.html` — v01.03w
+
+##### Changed
+
+- Increased GAS deploy verification timeout from 60s to 3 minutes for more reliable auto-updates
+- Added debug logging for GAS version polling
+
+#### `testation6.html` — v01.03w
+
+##### Changed
+
+- Increased GAS deploy verification timeout from 60s to 3 minutes for more reliable auto-updates
+- Added debug logging for GAS version polling
+
+#### `GasTemplate.html` — v01.00w (no change)
+
+##### Changed
+
+- Increased GAS deploy verification timeout from 60s to 3 minutes for more reliable auto-updates
+- Added debug logging for GAS version polling
 
 ## [v03.69r] — 2026-03-06 12:12:47 PM EST
 

@@ -3,9 +3,16 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3html.changelog-archive.md](testation3html.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 16/50`
+`Sections: 17/50`
 
 ## [Unreleased]
+
+## [v01.18w] — 2026-03-06 12:24:38 PM EST — v03.70r
+
+### Changed
+
+- Increased GAS deploy verification timeout for more reliable auto-updates
+- Added debug logging for GAS version polling
 
 ## [v01.17w] — 2026-03-06 11:52:48 AM EST — v03.67r
 
