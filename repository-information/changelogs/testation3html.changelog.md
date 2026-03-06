@@ -3,9 +3,15 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation3html.changelog-archive.md](testation3html.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 13/50`
+`Sections: 14/50`
 
 ## [Unreleased]
+
+## [v01.14w] — 2026-03-06 01:14:31 AM EST — v03.53r
+
+### Fixed
+
+- GAS and page version badges no longer overlap when the update status text is showing
 
 ## [v01.13w] — 2026-03-06 01:10:49 AM EST — v03.52r
 
