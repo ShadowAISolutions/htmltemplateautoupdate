@@ -87,7 +87,7 @@ When **renaming** an existing HTML page's project environment, follow every step
 | 5 | **Deployment changelog copy** | `live-site-pages/OLDhtml.changelog.txt` | `live-site-pages/NEWhtml.changelog.txt` |
 | 6 | GAS script (if applicable) | `googleAppsScripts/OLD_PROJECT/OLD.gs` | `googleAppsScripts/NEW_PROJECT/NEW.gs` |
 | 7 | GAS config (if applicable) | `googleAppsScripts/OLD_PROJECT/OLD.config.json` | `googleAppsScripts/NEW_PROJECT/NEW.config.json` |
-| 8 | GAS version file | `googleAppsScripts/OLD_PROJECT/OLDgs.version.txt` | `googleAppsScripts/NEW_PROJECT/NEWgs.version.txt` |
+| 8 | GAS version file | `live-site-pages/OLDgs.version.txt` | `live-site-pages/NEWgs.version.txt` |
 | 9 | GAS source changelog | `repository-information/changelogs/OLDgs.changelog.md` | `repository-information/changelogs/NEWgs.changelog.md` |
 | 10 | GAS source changelog archive | `repository-information/changelogs/OLDgs.changelog-archive.md` | `repository-information/changelogs/NEWgs.changelog-archive.md` |
 

@@ -113,7 +113,7 @@ HTML_VERSION="live-site-pages/${ENV_NAME}html.version.txt"
 GAS_DIR="googleAppsScripts/${PROJECT_DIR}"
 GAS_FILE="${GAS_DIR}/${ENV_NAME}.gs"
 GAS_CONFIG="${GAS_DIR}/${ENV_NAME}.config.json"
-GAS_VERSION="${GAS_DIR}/${ENV_NAME}gs.version.txt"
+GAS_VERSION="live-site-pages/${ENV_NAME}gs.version.txt"
 CL_DIR="repository-information/changelogs"
 HTML_CL="${CL_DIR}/${ENV_NAME}html.changelog.md"
 HTML_CL_ARCHIVE="${CL_DIR}/${ENV_NAME}html.changelog-archive.md"
@@ -121,7 +121,6 @@ GAS_CL="${CL_DIR}/${ENV_NAME}gs.changelog.md"
 GAS_CL_ARCHIVE="${CL_DIR}/${ENV_NAME}gs.changelog-archive.md"
 HTML_CL_DEPLOY="live-site-pages/${ENV_NAME}html.changelog.txt"
 GAS_CL_DEPLOY="live-site-pages/${ENV_NAME}gs.changelog.txt"
-GAS_VERSION_DEPLOY="live-site-pages/${ENV_NAME}gs.version.txt"
 GAS_SCRIPTS_RULES=".claude/rules/gas-scripts.md"
 
 # ── Template sources ─────────────────────────────────────────────
@@ -354,8 +353,6 @@ cp "$HTML_CL" "$HTML_CL_DEPLOY"
 ok "Created $HTML_CL_DEPLOY"
 cp "$GAS_CL" "$GAS_CL_DEPLOY"
 ok "Created $GAS_CL_DEPLOY"
-cp "$GAS_VERSION" "$GAS_VERSION_DEPLOY"
-ok "Created $GAS_VERSION_DEPLOY"
 
 # ── Phase 6: Register in GAS Projects Table ──────────────────────
 info "Phase 6: Registering in GAS Projects table..."
@@ -437,6 +434,7 @@ if [ -f "$ARCH_FILE" ]; then
         SND_LINE=$(grep -n 'SND1\["sounds/' "$ARCH_FILE" | head -1 | cut -d: -f1)
         if [ -n "$SND_LINE" ]; then
             sed -i "${SND_LINE}i\\            ${NODE_PREFIX}_PAGE[\"${ENV_NAME}.html\"]\n            ${NODE_PREFIX}_VERTXT[\"${ENV_NAME}html.version.txt\"]\n            ${NODE_PREFIX}_CL[\"${ENV_NAME}html.changelog.txt\"]\n            ${NODE_PREFIX}_GSCL[\"${ENV_NAME}gs.changelog.txt\"]\n            ${NODE_PREFIX}_GSVER[\"${ENV_NAME}gs.version.txt\"]" "$ARCH_FILE"
+            # Note: gs.version.txt lives in live-site-pages/ (no copy in googleAppsScripts/)
             ok "Added page nodes to live-site-pages"
         fi
 
@@ -504,7 +502,7 @@ if [ -f "README.md" ]; then
         # 2. Add GAS directory in googleAppsScripts section (before "└── HtmlTemplateAutoUpdate/")
         HTAU_LINE=$(grep -n '│   └── HtmlTemplateAutoUpdate/' "README.md" | head -1 | cut -d: -f1)
         if [ -n "$HTAU_LINE" ]; then
-            sed -i "${HTAU_LINE}i\\│   ├── ${PROJECT_DIR}/              # GAS for live-site-pages/${ENV_NAME}.html\n│   │   ├── ${ENV_NAME}.gs        # Self-updating GAS web app\n│   │   ├── ${ENV_NAME}.config.json  # Project config (source of truth)\n│   │   └── ${ENV_NAME}gs.version.txt  # GAS version file (mirrors VERSION var)" "README.md"
+            sed -i "${HTAU_LINE}i\\│   ├── ${PROJECT_DIR}/              # GAS for live-site-pages/${ENV_NAME}.html\n│   │   ├── ${ENV_NAME}.gs        # Self-updating GAS web app\n│   │   └── ${ENV_NAME}.config.json  # Project config (source of truth)" "README.md"
             ok "Added GAS directory to README.md tree"
         fi
 
@@ -547,7 +545,6 @@ EXPECTED_FILES=(
     "$GAS_CL_ARCHIVE"
     "$HTML_CL_DEPLOY"
     "$GAS_CL_DEPLOY"
-    "$GAS_VERSION_DEPLOY"
 )
 
 for f in "${EXPECTED_FILES[@]}"; do

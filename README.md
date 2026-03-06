@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-06 09:57:09 AM EST` · Repo version: `v03.61r`
+Last updated: `2026-03-06 10:29:44 AM EST` · Repo version: `v03.62r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -196,44 +196,34 @@ htmltemplateautoupdate/
 ├── googleAppsScripts/          # Google Apps Script projects
 │   ├── Index/                 # GAS for live-site-pages/index.html
 │   │   ├── index.gs           # Self-updating GAS web app
-│   │   ├── index.config.json  # Project config (source of truth)
-│   │   └── indexgs.version.txt  # GAS version file (mirrors VERSION var)
+│   │   └── index.config.json  # Project config (source of truth)
 │   ├── Test/                  # GAS for live-site-pages/test.html
 │   │   ├── test.gs            # Self-updating GAS web app
-│   │   ├── test.config.json   # Project config (source of truth)
-│   │   └── testgs.version.txt  # GAS version file (mirrors VERSION var)
+│   │   └── test.config.json   # Project config (source of truth)
 │   ├── GasTemplate/             # GAS template for new projects (used by gas-project-creator)
 │   │   ├── gas-template.gs      # Template GAS web app (placeholder values)
-│   │   ├── gas-template.config.json  # Template config (placeholders)
-│   │   └── gas-templategs.version.txt  # Template GAS version file
+│   │   └── gas-template.config.json  # Template config (placeholders)
 │   ├── TestLinkGas1App/         # GAS for live-site-pages/test_link_gas_1_app.html
 │   │   ├── test_link_gas_1_app.gs           # Self-updating GAS web app
-│   │   ├── test_link_gas_1_app.config.json  # Project config (source of truth)
-│   │   └── test_link_gas_1_appgs.version.txt  # GAS version file (mirrors VERSION var)
+│   │   └── test_link_gas_1_app.config.json  # Project config (source of truth)
 │   ├── Testation2/              # GAS for live-site-pages/testation2.html
 │   │   ├── testation2.gs        # Self-updating GAS web app
-│   │   ├── testation2.config.json  # Project config (source of truth)
-│   │   └── testation2gs.version.txt  # GAS version file (mirrors VERSION var)
+│   │   └── testation2.config.json  # Project config (source of truth)
 │   ├── Testation3/              # GAS for live-site-pages/testation3.html
 │   │   ├── testation3.gs        # Self-updating GAS web app
-│   │   ├── testation3.config.json  # Project config (source of truth)
-│   │   └── testation3gs.version.txt  # GAS version file (mirrors VERSION var)
+│   │   └── testation3.config.json  # Project config (source of truth)
 │   ├── Testation4/              # GAS for live-site-pages/testation4.html
 │   │   ├── testation4.gs        # Self-updating GAS web app
-│   │   ├── testation4.config.json  # Project config (source of truth)
-│   │   └── testation4gs.version.txt  # GAS version file (mirrors VERSION var)
+│   │   └── testation4.config.json  # Project config (source of truth)
 │   ├── Testation5/              # GAS for live-site-pages/testation5.html
 │   │   ├── testation5.gs        # Self-updating GAS web app
-│   │   ├── testation5.config.json  # Project config (source of truth)
-│   │   └── testation5gs.version.txt  # GAS version file (mirrors VERSION var)
+│   │   └── testation5.config.json  # Project config (source of truth)
 │   ├── Testation6/              # GAS for live-site-pages/testation6.html
 │   │   ├── testation6.gs        # Self-updating GAS web app
-│   │   ├── testation6.config.json  # Project config (source of truth)
-│   │   └── testation6gs.version.txt  # GAS version file (mirrors VERSION var)
+│   │   └── testation6.config.json  # Project config (source of truth)
 │   └── HtmlTemplateAutoUpdate/  # Original GAS template (base for GasTemplate)
 │       ├── HtmlTemplateAutoUpdate.gs           # Template GAS web app
-│       ├── HtmlTemplateAutoUpdate.config.json  # Template config (placeholders)
-│       └── HtmlTemplateAutoUpdategs.version.txt  # Template GAS version file
+│       └── HtmlTemplateAutoUpdate.config.json  # Template config (placeholders)
 ├── .claude/
 │   ├── rules/                  # Always-loaded + path-scoped rules
 │   │   ├── behavioral-rules.md        # Always loaded — execution style, pushback, etc.

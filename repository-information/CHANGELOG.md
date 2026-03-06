@@ -3,9 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 68/100`
+`Sections: 69/100`
 
 ## [Unreleased]
+
+## [v03.62r] — 2026-03-06 10:29:44 AM EST
+
+### Changed
+
+- Consolidated GAS version files — eliminated duplicate `gs.version.txt` from all `googleAppsScripts/` directories; `live-site-pages/` is now the single location (polled by HTML layer for GAS version display)
+- Updated `setup-gas-project.sh` to create GAS version file directly in `live-site-pages/` instead of `googleAppsScripts/` with a separate deployment copy
+- Updated Pre-Commit #1, rules files, and skills files to reference `live-site-pages/` as the single `gs.version.txt` location
+
+### Removed
+
+- Removed 10 redundant `gs.version.txt` files from `googleAppsScripts/` directories (Index, Test, GasTemplate, TestLinkGas1App, Testation2–6, HtmlTemplateAutoUpdate) — these were unused copies; the `.gs` file's `VERSION` variable is the source of truth and `live-site-pages/` is the deployment location
 
 ## [v03.61r] — 2026-03-06 09:57:09 AM EST
 

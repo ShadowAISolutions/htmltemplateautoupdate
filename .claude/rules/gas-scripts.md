@@ -2,7 +2,7 @@
 paths:
   - "googleAppsScripts/**/*.gs"
   - "googleAppsScripts/**/*.config.json"
-  - "googleAppsScripts/**/*gs.version.txt"
+  - "live-site-pages/**/*gs.version.txt"
   - "live-site-pages/**/*.html"
   - "live-site-pages/*-code.js.txt"
 ---
@@ -15,7 +15,7 @@ paths:
 
 - The `VERSION` variable is near the top of each `.gs` file (look for `var VERSION = "..."`)
 - Format includes a `g` suffix: e.g. `"01.13g"` → `"01.14g"`
-- Each GAS project also has a `<page-name>gs.version.txt` that mirrors the `VERSION` variable value (e.g. `01.00g`). This file is bumped alongside `VERSION` by Pre-Commit #1
+- Each GAS project also has a `<page-name>gs.version.txt` in `live-site-pages/` that mirrors the `VERSION` variable value (e.g. `01.00g`). This file is bumped alongside `VERSION` by Pre-Commit #1. There is no copy in `googleAppsScripts/` — the `live-site-pages/` file is the single location, polled by the HTML layer for GAS version display
 - Do NOT bump VERSION if the commit doesn't touch the `.gs` file
 
 ### GAS Projects
