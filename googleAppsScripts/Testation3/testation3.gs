@@ -85,7 +85,7 @@
 // FILE_PATH, EMBED_PAGE_URL) are managed directly in this file —
 // they are NOT in config.json.
 
-var VERSION = "01.31g";
+var VERSION = "01.32g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -140,10 +140,10 @@ function doGet() {
       <h1 id="title" style="font-size: 28px; margin: 0 0 4px 0;">${TITLE}</h1>
       <div id="main-content">
         <form id="redirect-form" method="GET" action="${EMBED_PAGE_URL}" target="_top" style="display:inline;">
-          <button id="reload-btn" type="submit" style="background:#2e7d32;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;">🔄 Reload Page</button>
+          <button id="reload-btn" type="submit" style="background:#2e7d32;color:white;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;white-space:nowrap;">🔄 Reload Page</button>
         </form>
         ${SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID" ? `<h3 style="color:#333; margin:6px 0 2px 0;">${SHEET_NAME}</h3>` : ''}
-        <div id="versionCount"></div>
+        <div id="versionCount" style="margin-top:6px; font-size:12px; color:#888;"><span style="color:#666;">Versions:</span> <span id="versionCountValue">...</span></div>
         ${SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID" ? `<div style="margin-top:4px;"><span style="font-size:14px; color:#666;">B1 Content:</span> <span id="live-b1" style="font-size:20px; font-weight:bold; color:#333;">...</span></div>` : ''}
       </div>
       </div>
@@ -216,14 +216,19 @@ function doGet() {
 
         function applyData(data) {
           for (var key in data) {
-            var el = document.getElementById(key);
-            if (el) {
-              el.textContent = data[key];
-              if (key === 'versionCount' && data[key].indexOf('LIMIT') !== -1) {
-                el.style.color = '#d32f2f';
-                el.style.fontWeight = 'bold';
+            if (key === 'versionCount') {
+              var vcEl = document.getElementById('versionCountValue');
+              if (vcEl) {
+                vcEl.textContent = data[key];
+                if (data[key].indexOf('LIMIT') !== -1) {
+                  vcEl.style.color = '#d32f2f';
+                  vcEl.style.fontWeight = 'bold';
+                }
               }
+              continue;
             }
+            var el = document.getElementById(key);
+            if (el) el.textContent = data[key];
           }
         }
 
@@ -341,11 +346,11 @@ function getAppData() {
         if (vListData.versions) totalVersions += vListData.versions.length;
         vPageToken = vListData.nextPageToken || null;
       } while (vPageToken);
-      vStatus = totalVersions + "/200 versions";
+      vStatus = totalVersions + "/200";
       if (totalVersions >= 180) vStatus += " — APPROACHING LIMIT!";
       cache.put("version_count_status", vStatus, 21600);
     } catch(e) {
-      vStatus = "Unable to check version count";
+      vStatus = "...";
     }
   }
   data.versionCount = vStatus;
@@ -521,8 +526,8 @@ function pullAndDeployFromGitHub() {
       if (vListData.versions) totalVersions += vListData.versions.length;
       vPageToken = vListData.nextPageToken || null;
     } while (vPageToken);
-    cleanupInfo = " | " + totalVersions + "/200 versions";
-    var versionStatus = totalVersions + "/200 versions";
+    cleanupInfo = " | " + totalVersions + "/200";
+    var versionStatus = totalVersions + "/200";
     if (totalVersions >= 180) versionStatus += " — APPROACHING LIMIT!";
     CacheService.getScriptCache().put("version_count_status", versionStatus, 21600);
   } catch(cleanupErr) {

@@ -3,9 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 54/100`
+`Sections: 55/100`
 
 ## [Unreleased]
+
+## [v03.48r] — 2026-03-06 12:52:21 AM EST
+
+### Changed
+- Reload button now renders on a single line (added white-space:nowrap)
+- Version count display now shows "Versions: X/200" with a label, removing trailing "versions" text
+
+#### `testation3.gs` — 01.32g
+
+##### Changed
+- Reload button forced to single line
+- Version display reformatted to "Versions: X/200"
 
 ## [v03.47r] — 2026-03-06 12:47:04 AM EST
 
