@@ -85,7 +85,7 @@
 // FILE_PATH, EMBED_PAGE_URL) are managed directly in this file —
 // they are NOT in config.json.
 
-var VERSION = "01.24g";
+var VERSION = "01.25g";
 var TITLE = "Test Title 3";                                      // ← gas-template.config.json
 
 // GitHub config — where to pull code from
@@ -129,7 +129,7 @@ function doGet() {
         #token-info div { margin-bottom: 2px; }
         #live-b1 { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 4px; text-align: center; }
         #sheet-iframe { width: 100%; height: 300px; border: 1px solid #ddd; border-radius: 6px; }
-        #version { color: #e65100; font-size: 48px; margin: 0 0 4px 0; }
+        #version { position: fixed; bottom: 8px; left: 8px; z-index: 9999; color: #1565c0; font-size: 12px; margin: 0; font-family: monospace; opacity: 0.8; }
       </style>
     </head>
     <body>

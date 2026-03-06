@@ -3,9 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 46/100`
+`Sections: 47/100`
 
 ## [Unreleased]
+
+## [v03.40r] — 2026-03-06 12:03:36 AM EST
+
+### Changed
+- GAS version display moved from large centered orange to small fixed bottom-left blue
+
+#### `testation3.gs` — 01.25g
+
+##### Changed
+- Version moved to bottom-left corner as a small blue label instead of large centered orange text
 
 ## [v03.39r] — 2026-03-05 11:57:12 PM EST
 
