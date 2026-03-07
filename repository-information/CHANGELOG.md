@@ -3,7 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 97/100`
+`Sections: 98/100`
+
+## [v03.91r] — 2026-03-06 08:47:22 PM EST
+
+### Changed
+
+- Removed "Awaiting GAS update" polling flow — GAS version change now triggers immediate page reload
+- Removed `waitForGasDeploy` function and related iframe version-check handshake
+
+#### `testation7.html` — v01.02w
+
+##### Changed
+
+- GAS version change detection now reloads the page immediately instead of entering an "awaiting" state
+- Removed unused `waitForGasDeploy` function and associated variables (`targetGasVersion`, `gasCheckInterval`, `GAS_CHECK_INTERVAL`, `GAS_DEPLOY_TIMEOUT`)
 
 ## [v03.90r] — 2026-03-06 08:34:42 PM EST
 

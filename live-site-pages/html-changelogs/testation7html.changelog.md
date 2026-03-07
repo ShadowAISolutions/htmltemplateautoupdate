@@ -3,7 +3,13 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [testation7html.changelog-archive.md](testation7html.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 1/50`
+`Sections: 2/50`
+
+## [v01.02w] — 2026-03-06 08:47:22 PM EST — v03.91r
+
+### Changed
+
+- Script updates now refresh the page immediately instead of showing an "awaiting" status
 
 ## [v01.01w] — 2026-03-06 08:15:21 PM EST — v03.88r
 
