@@ -92,7 +92,7 @@ echo ""
 
 REPLACE_FILES=(
   "README.md"
-  "LICENSE"
+  "LICENSE.md"
   "CITATION.cff"
   "CODE_OF_CONDUCT.md"
   "CONTRIBUTING.md"
@@ -152,7 +152,7 @@ if [ "$DEVELOPER_NAME" != "$ORG_NAME" ]; then
     fi
   done
   # LICENSE uses the developer name in copyright, not "Developed by:"
-  sed -i "s|${ORG_NAME}|${DEVELOPER_NAME}|g" "$REPO_ROOT/LICENSE" 2>/dev/null || true
+  sed -i "s|${ORG_NAME}|${DEVELOPER_NAME}|g" "$REPO_ROOT/LICENSE.md" 2>/dev/null || true
   # GOVERNANCE.md uses "owned and maintained by **X**"
   sed -i "s|owned and maintained by \*\*${ORG_NAME}\*\*|owned and maintained by **${DEVELOPER_NAME}**|g" \
     "$REPO_ROOT/repository-information/GOVERNANCE.md" 2>/dev/null || true

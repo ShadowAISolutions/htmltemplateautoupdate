@@ -50,7 +50,7 @@ Community health files (`CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`) 
 |------|-------------|
 | README.md | `./README.md` (root) |
 | CLAUDE.md | `./CLAUDE.md` (root) |
-| LICENSE | `./LICENSE` (root) |
+| LICENSE.md | `./LICENSE.md` (root) |
 | CODE_OF_CONDUCT.md | `./CODE_OF_CONDUCT.md` (root) |
 | CONTRIBUTING.md | `./CONTRIBUTING.md` (root) |
 | SECURITY.md | `./SECURITY.md` (root) |

@@ -3,7 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 95/100`
+`Sections: 96/100`
+
+## [v03.89r] — 2026-03-06 08:26:23 PM EST
+
+### Changed
+
+- Renamed `LICENSE` to `LICENSE.md` and formatted as markdown with heading, bold copyright, and disclaimer section
+- Updated all references to LICENSE in README.md tree, CLAUDE.md Template Variables, repo-docs.md path table, and init-repo.sh
 
 ## [v03.88r] — 2026-03-06 08:15:21 PM EST
 

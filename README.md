@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-06 08:15:21 PM EST` · Repo version: `v03.88r`
+Last updated: `2026-03-06 08:26:23 PM EST` · Repo version: `v03.89r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -256,7 +256,7 @@ htmltemplateautoupdate/
 ├── CLAUDE.md                   # Developer instructions
 ├── CODE_OF_CONDUCT.md          # Community standards
 ├── CONTRIBUTING.md             # How to contribute
-├── LICENSE                     # Proprietary license
+├── LICENSE.md                  # Proprietary license
 └── SECURITY.md                 # Vulnerability reporting
 ```
 
