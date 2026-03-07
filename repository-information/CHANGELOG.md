@@ -3,7 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 56/100`
+`Sections: 57/100`
+
+## [Unreleased]
+
+## [v03.96r] — 2026-03-06 10:06:18 PM EST
+
+### Fixed
+
+- Fixed changelog popup showing "No changelog entries yet." on all pages — root cause was GitHub Pages Jekyll processing converting `.md` changelog files into rendered HTML instead of serving raw markdown; added `.nojekyll` file to disable Jekyll
 
 ## [v03.95r] — 2026-03-06 09:43:17 PM EST
 

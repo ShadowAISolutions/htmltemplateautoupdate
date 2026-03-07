@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-06 09:43:17 PM EST` · Repo version: `v03.95r`
+Last updated: `2026-03-06 10:06:18 PM EST` · Repo version: `v03.96r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -149,6 +149,7 @@ This error means the Apps Script API is not enabled in the GCP project associate
 ```
 htmltemplateautoupdate/
 ├── live-site-pages/             # Deployed to GitHub Pages
+│   ├── .nojekyll               # Disables Jekyll processing on GitHub Pages
 │   ├── index.html              # Live landing page
 │   ├── gas-project-creator.html       # GAS project creator dashboard
 │   ├── gas-code/                # GAS code files (.js.txt) for Copy Code.gs buttons

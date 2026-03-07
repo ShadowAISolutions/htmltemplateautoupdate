@@ -36,6 +36,7 @@ graph TB
 
         subgraph "live-site-pages/ — Hosted Content"
             direction LR
+            NOJEKYLL[".nojekyll"]
             INDEX["index.html"]
             GASTPL_PAGE["gas-project-creator.html"]
             GASTPL_CODE["gas-code/\ngas-project-creator-code.js.txt"]
