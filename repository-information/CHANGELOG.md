@@ -3,9 +3,51 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 76/100`
+`Sections: 77/100`
 
 ## [Unreleased]
+
+## [v04.16r] — 2026-03-07 12:03:58 PM EST
+
+### Changed
+
+- Shortened all `═` structural dividers from 34 to 14 characters across all HTML pages, GAS scripts, template sources, init script, and workflow file
+- Updated `html-pages.md` and `gas-scripts.md` rules to document 14-char divider standard
+
+#### `index.html` — v01.27w
+
+##### Changed
+- Internal code organization dividers shortened (no user-visible change)
+
+#### `gas-project-creator.html` — v01.65w
+
+##### Changed
+- Internal code organization dividers shortened (no user-visible change)
+
+#### `testation7.html` — v01.07w
+
+##### Changed
+- Internal code organization dividers shortened (no user-visible change)
+
+#### `testation8.html` — v01.06w
+
+##### Changed
+- Internal code organization dividers shortened (no user-visible change)
+
+#### `index.gs` — 01.06g
+
+##### Changed
+- Internal code organization dividers shortened (no user-visible change)
+
+#### `testation7.gs` — 01.08g
+
+##### Changed
+- Internal code organization dividers shortened (no user-visible change)
+
+#### `testation8.gs` — 01.07g
+
+##### Changed
+- Internal code organization dividers shortened (no user-visible change)
 
 ## [v04.15r] — 2026-03-07 11:54:44 AM EST
 
