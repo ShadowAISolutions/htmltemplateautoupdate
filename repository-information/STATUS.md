@@ -4,10 +4,10 @@
 
 | Page | File | Version | Live URL | Status |
 |------|------|---------|----------|--------|
-| Landing Page | `live-site-pages/index.html` | v01.00w | *(deploy to activate)* | Active |
-| GAS Project Creator | `live-site-pages/gas-project-creator.html` | v01.00w | *(deploy to activate)* | Active |
-| Testation7 | `live-site-pages/testation7.html` | v01.00w | *(deploy to activate)* | Active |
-| Testation8 | `live-site-pages/testation8.html` | v01.00w | *(deploy to activate)* | Active |
+| Landing Page | `live-site-pages/index.html` | v01.00w | [View](https://ShadowAISolutions.github.io/htmltemplateautoupdate/) | Active |
+| GAS Project Creator | `live-site-pages/gas-project-creator.html` | v01.00w | [View](https://ShadowAISolutions.github.io/htmltemplateautoupdate/gas-project-creator.html) | Active |
+| Testation7 | `live-site-pages/testation7.html` | v01.00w | [View](https://ShadowAISolutions.github.io/htmltemplateautoupdate/testation7.html) | Active |
+| Testation8 | `live-site-pages/testation8.html` | v01.00w | [View](https://ShadowAISolutions.github.io/htmltemplateautoupdate/testation8.html) | Active |
 
 
 ## GAS Projects
