@@ -47,6 +47,7 @@ The html.version.txt polling system supports a **maintenance mode** that display
 - GAS changelogs follow the same pattern: `live-site-pages/gs-changelogs/PAGENAMEgs.changelog.md`
 - Archive files live alongside their changelogs in the same subdirectory
 - The HTML pages fetch changelog files via a relative URL from `html-changelogs/` (same base-path pattern as the version files in `html-versions/`), so the changelog popup works regardless of whether the repo is public or private
+- **`.nojekyll` is required** — the `live-site-pages/.nojekyll` file **must** exist to prevent GitHub Pages from running Jekyll on the deployment. Without it, Jekyll processes `.md` files into rendered HTML (with `<h1>`, `<h2>`, `<ul>` tags wrapped in a Jekyll layout), which breaks the changelog popup parsers — the JavaScript regex expects raw markdown (`## [v01.01w]`, `### Added`, `- item`) and produces no matches against rendered HTML, resulting in "No changelog entries yet." for every page. **Never delete `.nojekyll`** — it is critical infrastructure for the changelog system. This file was added in v03.96r after diagnosing the bug introduced when changelogs migrated from `.txt` to `.md` in v03.88r (`.txt` files were unaffected because Jekyll only processes markdown)
 
 ### New Embedding Page Setup Checklist
 > **Automated by `scripts/setup-gas-project.sh`** — for GAS-embedded pages, the setup script handles all mechanical file creation (steps 1–13). Claude runs the script, then handles ARCHITECTURE.md, README.md tree, STATUS.md, and commit/push.
@@ -116,6 +117,8 @@ live-site-pages/
     └── indexgs.changelog-archive.md   # Older changelog sections (rotated)
 ```
 Version files live in `live-site-pages/html-versions/` and `live-site-pages/gs-versions/`. Changelogs and their archives live in `live-site-pages/html-changelogs/` and `live-site-pages/gs-changelogs/` — these are both the source of truth and the deployed files fetched by the changelog popup. See Pre-Commit item #17.
+
+**Note:** The `live-site-pages/.nojekyll` file must already exist in the repo (see "Changelog Files" section above). New pages inherit it automatically since it applies to the entire deployment directory.
 
 ## GAS UI Layout Awareness
 
