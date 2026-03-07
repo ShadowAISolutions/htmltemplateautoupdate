@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="template-id" content="sais-aut-7f3e9b2d">
-  <meta name="build-version" content="v01.58w">
+  <meta name="build-version" content="v01.59w">
   <title>GAS Project Creator</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
@@ -594,6 +594,8 @@
 
     // Show/hide: set to false to hide the website version indicator
     var SHOW_WEB_VERSION = true;
+    // Show/hide: set to false to disable changelog popup on version indicator click
+    var SHOW_CHANGELOG = true;
 
     // ────────────────────────────────────────────────────────────────────
 
@@ -923,7 +925,11 @@
         var ind = document.getElementById('version-indicator');
         if (ind && !ind._clBound) {
           ind._clBound = true;
-          ind.addEventListener('click', function(e) { e.stopPropagation(); show(); });
+          if (SHOW_CHANGELOG) {
+            ind.addEventListener('click', function(e) { e.stopPropagation(); show(); });
+          } else {
+            ind.style.cursor = 'default';
+          }
           obs.disconnect();
         }
       });

@@ -151,6 +151,8 @@
 
     // Show/hide: set to false to hide the website version indicator
     var SHOW_WEB_VERSION = true;
+    // Show/hide: set to false to disable changelog popup on version indicator click
+    var SHOW_CHANGELOG = true;
 
     // ────────────────────────────────────────────────────────────────────
 
@@ -528,11 +530,15 @@
       var gclCache = null;
 
       if (pill) {
-        pill.addEventListener('click', function(e) {
-          e.stopPropagation();
-          gclOverlay.style.display = 'flex';
-          if (!gclCache) fetchGasChangelog();
-        });
+        if (SHOW_CHANGELOG) {
+          pill.addEventListener('click', function(e) {
+            e.stopPropagation();
+            gclOverlay.style.display = 'flex';
+            if (!gclCache) fetchGasChangelog();
+          });
+        } else {
+          pill.style.cursor = 'default';
+        }
       }
 
       document.getElementById('gcl-close').addEventListener('click', function() { gclOverlay.style.display = 'none'; });
@@ -672,12 +678,16 @@
           });
       }
 
-      // Attach click handler when version indicator appears
+      // Attach click handler when version indicator appears (if changelog enabled)
       var obs = new MutationObserver(function() {
         var ind = document.getElementById('version-indicator');
         if (ind && !ind._clBound) {
           ind._clBound = true;
-          ind.addEventListener('click', function(e) { e.stopPropagation(); show(); });
+          if (SHOW_CHANGELOG) {
+            ind.addEventListener('click', function(e) { e.stopPropagation(); show(); });
+          } else {
+            ind.style.cursor = 'default';
+          }
           obs.disconnect();
         }
       });

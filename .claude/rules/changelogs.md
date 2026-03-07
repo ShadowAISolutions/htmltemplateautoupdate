@@ -80,11 +80,9 @@ Changelogs in this repo are **publicly accessible** — page changelogs are depl
 ### Changelog Popup Toggle (per-page)
 The changelog popup can be independently enabled or disabled per page using the `SHOW_CHANGELOG` variable in each HTML page's configuration block. This is **separate from `SHOW_WEB_VERSION`** — the version indicator pill can remain visible (for developer reference) while the changelog popup is hidden from users.
 
-**Implementation design** *(not yet implemented — planned for a future session)*:
-- Add `var SHOW_CHANGELOG = true;` to each HTML page's config block (near `SHOW_WEB_VERSION`)
-- When `SHOW_CHANGELOG = false`: the version indicator still appears (if `SHOW_WEB_VERSION = true`), but clicking it does nothing — no popup, no fetch. The changelog CSS, DOM elements, and JavaScript are still present but the click handler is gated
-- When `SHOW_CHANGELOG = true` (default): current behavior — clicking the version indicator opens the changelog popup
-- Add `SHOW_CHANGELOG` to `.config.json` files so GAS config sync keeps it in sync
+- `var SHOW_CHANGELOG = true;` exists in each HTML page's config block (near `SHOW_WEB_VERSION`)
+- When `SHOW_CHANGELOG = false`: the version indicator still appears (if `SHOW_WEB_VERSION = true`), but clicking it does nothing — no popup, no fetch. The cursor changes to `default` to signal non-interactivity. On GAS-enabled pages, the GAS pill click is also disabled. The changelog CSS, DOM elements, and JavaScript are still present but the click handler is gated
+- When `SHOW_CHANGELOG = true` (default): current behavior — clicking the version indicator opens the changelog popup, clicking the GAS pill opens the GAS changelog popup
 - **Recommended for clinic/healthcare apps**: set `SHOW_CHANGELOG = false` to minimize public information exposure. The changelog files still exist in the repo for developer reference but are not surfaced to end users
 
 ### Archive Rotation Summary

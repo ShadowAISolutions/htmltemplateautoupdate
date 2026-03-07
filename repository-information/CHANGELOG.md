@@ -3,9 +3,40 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 59/100`
+`Sections: 60/100`
 
 ## [Unreleased]
+
+## [v03.99r] — 2026-03-06 10:55:54 PM EST
+
+### Added
+
+- Implemented per-page changelog popup toggle (`SHOW_CHANGELOG` variable) — version indicator pill remains visible but clicking it is gated when `SHOW_CHANGELOG = false`; also gates GAS changelog pill on GAS-enabled pages; cursor changes to `default` when disabled
+- Updated changelogs rules to reflect implemented toggle (removed "planned for future session" note)
+
+#### `index.html` — v01.21w
+
+##### Added
+
+- Added `SHOW_CHANGELOG` config variable for per-page changelog popup toggle
+
+#### `testation7.html` — v01.03w
+
+##### Added
+
+- Added `SHOW_CHANGELOG` config variable for per-page changelog popup toggle
+
+#### `testation8.html` — v01.02w
+
+##### Added
+
+- Added `SHOW_CHANGELOG` config variable for per-page changelog popup toggle
+
+#### `gas-project-creator.html` — v01.59w
+
+##### Added
+
+- Added `SHOW_CHANGELOG` config variable for per-page changelog popup toggle
 
 ## [v03.98r] — 2026-03-06 10:44:03 PM EST
 
