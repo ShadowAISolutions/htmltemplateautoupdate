@@ -4,6 +4,37 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-03-07 01:04:32 PM EST
+**Repo version:** v04.20r
+
+### What was done
+- Left-aligned internal dividers (`/* ═══...`) in template HTML and all 4 pages — moved from centered to left-aligned for consistency (v04.08r through v04.13r, multiple pushes covering template + pages)
+- Shortened dividers from full-width to ~60 chars in template and all pages (v04.14r through v04.18r)
+- Added PROJECT OVERRIDE markers for template propagation safety — marking page-specific customizations so Pre-Commit #20 knows to stop and alert instead of blindly overwriting (v04.19r)
+- Updated page & GAS changelog rules to require an entry for every version bump — internal-only changes now use generic "Minor internal improvements" instead of skipping the changelog, preventing version gaps in public-facing changelogs (v04.20r)
+
+### Where we left off
+All changes committed and merged to main. The user clarified that the repo-level CHANGELOG.md is allowed to have detailed internal descriptions, while only the public-facing page/GAS changelogs should use generic entries for internal changes. The rules already reflect this correctly (the change was scoped to Pre-Commit #17 only).
+
+### Key decisions made
+- Divider alignment: left-aligned is the standard, not centered — applied across all pages and template
+- Divider length: ~60 chars, not full-width — shorter for readability
+- Changelog gap policy: every version bump must have a page/GAS changelog entry, even for internal-only changes — use `- Minor internal improvements` under `### Changed`
+- Repo CHANGELOG.md is exempt from the "generic entry" rule — it can include detailed internal descriptions since it's not public-facing
+
+### Active context
+- Branch: `claude/align-dividers-left-enG0o`
+- Repo version: v04.20r
+- Page versions: index v01.29w, gas-project-creator v01.67w, testation7 v01.09w, testation8 v01.08w
+- GAS versions: index 01.01g, testation7 01.03g, testation8 01.02g
+- Active reminders in REMINDERS.md (developer-owned):
+  - "Check test.html issues in Chrome DevTools" (note: test.html was deleted in a prior session — reminder may be obsolete)
+- TODO items: Get mayo, Get lettuce, Get sliced turkey, Get mustard, Get pickles
+- `TEMPLATE_DEPLOY` = `On`, `CHAT_BOOKENDS` = `On`, `END_OF_RESPONSE_BLOCK` = `On`
+- `MULTI_SESSION_MODE` = `Off`
+
+## Previous Sessions
+
 **Date:** 2026-03-07 12:46:28 AM EST
 **Repo version:** v04.07r
 
@@ -17,34 +48,5 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ### Where we left off
 All changes committed and merged to main. All 4 pages are now at current template features. The 3 existing `.gs` files (`index.gs`, `testation7.gs`, `testation8.gs`) have never been compared against the GAS template (`gas-project-creator-code.js.txt`) — identified as a potential follow-up task.
-
-### Key decisions made
-- `testation7.html` and `testation8.html` use unconditional `pill.style.display = 'flex'` instead of template's auto-detect — intentional divergence for known GAS pages
-- `gas-project-creator.html` has no corresponding `.gs` file, so GAS pill stays hidden via auto-detect (no `gs.version.txt`)
-- Template source propagation preserves page-specific customizations while adding missing infrastructure
-
-### Active context
-- Branch: `claude/update-testation8-gas-knIKH`
-- Repo version: v04.07r
-- Page versions: index v01.24w, gas-project-creator v01.61w, testation7 v01.04w, testation8 v01.03w
-- GAS versions: testation7 01.03g, testation8 01.02g
-- Active reminders in REMINDERS.md (developer-owned):
-  - "Check test.html issues in Chrome DevTools" (note: test.html was deleted in a prior session — reminder may be obsolete)
-- TODO items: Get mayo, Get lettuce, Get sliced turkey, Get mustard, Get pickles
-- `TEMPLATE_DEPLOY` = `On`, `CHAT_BOOKENDS` = `On`, `END_OF_RESPONSE_BLOCK` = `On`
-- `MULTI_SESSION_MODE` = `Off`
-
-## Previous Sessions
-
-**Date:** 2026-03-06 06:44:47 PM EST
-**Repo version:** v03.87r
-
-### What was done
-- Renamed `GasExample.html` → `HtmlAndGasTemplateAutoUpdate.html` — clearer naming for the GAS-enabled HTML page template used by `setup-gas-project.sh` (v03.86r)
-- Deleted Test project environment — `test.html`, `googleAppsScripts/Test/`, all associated version/changelog files (v03.87r)
-- Consolidated GAS template to single source of truth: `gas-project-creator-code.js.txt` — eliminated `HtmlTemplateAutoUpdate.gs` (v03.85r, done in prior push same session context)
-
-### Where we left off
-All changes committed and merged to main. Repo is cleaner — only 3 hosted pages remain: index.html, gas-project-creator.html, testation7.html. Only 1 GAS project active: Testation7.
 
 Developed by: ShadowAISolutions
