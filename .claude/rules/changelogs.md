@@ -31,7 +31,7 @@ paths:
 - Never mention file names, function names, commit SHAs, deployment IDs, or internal architecture
 - Version section format for pages: `## [vXX.XXw] — YYYY-MM-DD HH:MM:SS AM/PM EST — vXX.XXr`
 - Version section format for GAS: `## [XX.XXg] — YYYY-MM-DD HH:MM:SS AM/PM EST — vXX.XXr`
-- Skip changelog entry if the change is purely internal with no user-visible effect
+- **Every version bump gets an entry** — if the change is purely internal with no user-visible effect, add `- Minor internal improvements` under `### Changed`. No version should exist in the changelog without at least one entry
 - Same 100-section archive rotation as the repo CHANGELOG
 - **Single source of truth** — page changelogs live directly in `live-site-pages/html-changelogs/` (`.md` files) and GAS changelogs in `live-site-pages/gs-changelogs/` (`.md` files). These are both the source of truth and the deployed files fetched by the live site's changelog popup — no separate deployment copy is needed
 

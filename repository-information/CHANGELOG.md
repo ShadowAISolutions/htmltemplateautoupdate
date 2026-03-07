@@ -3,9 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 80/100`
+`Sections: 81/100`
 
 ## [Unreleased]
+
+## [v04.20r] — 2026-03-07 12:50:10 PM EST
+
+### Changed
+
+- Page and GAS changelogs now require an entry for every version bump — internal-only changes use a generic "Minor internal improvements" entry instead of skipping the changelog, ensuring no version gaps
 
 ## [v04.19r] — 2026-03-07 12:46:19 PM EST
 
