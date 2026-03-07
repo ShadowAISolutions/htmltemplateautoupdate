@@ -42,12 +42,6 @@ graph TB
             GASTPL_CODE["gas-code-templates/\ngas-project-creator-code.js.txt"]
             TSTA7_PAGE["testation7.html"]
             TSTT_PAGE["testation8.html"]
-            TSTT_VERTXT["testation8html.version.txt"]
-            TSTT_CL["testation8html.changelog.md"]
-            TSTT_CLARCH["testation8html.changelog-archive.md"]
-            TSTT_GSCL["testation8gs.changelog.md"]
-            TSTT_GSCLARCH["testation8gs.changelog-archive.md"]
-            TSTT_GSVER["testation8gs.version.txt"]
             SND1["sounds/Website_Ready_Voice_1.mp3"]
             SND2["sounds/Code_Ready_Voice_1.mp3"]
 
@@ -55,10 +49,12 @@ graph TB
                 VERTXT["indexhtml.version.txt"]
                 GASTPL_VERTXT["gas-project-creatorhtml.version.txt"]
                 TSTA7_VERTXT["testation7html.version.txt"]
+                TSTT_VERTXT["testation8html.version.txt"]
             end
 
             subgraph "gs-versions/"
                 TSTA7_GVERTXT["testation7gs.version.txt"]
+                TSTT_GSVER["testation8gs.version.txt"]
             end
 
             subgraph "html-changelogs/"
@@ -68,6 +64,8 @@ graph TB
                 GASTPL_CL_ARCH["gas-project-creatorhtml.changelog-archive.md"]
                 TSTA7_CL["testation7html.changelog.md"]
                 TSTA7_CL_ARCH["testation7html.changelog-archive.md"]
+                TSTT_CL["testation8html.changelog.md"]
+                TSTT_CLARCH["testation8html.changelog-archive.md"]
             end
 
             subgraph "gs-changelogs/"
@@ -75,6 +73,8 @@ graph TB
                 INDEX_GCL_ARCH["indexgs.changelog-archive.md"]
                 TSTA7_GCL["testation7gs.changelog.md"]
                 TSTA7_GCL_ARCH["testation7gs.changelog-archive.md"]
+                TSTT_GSCL["testation8gs.changelog.md"]
+                TSTT_GSCLARCH["testation8gs.changelog-archive.md"]
             end
         end
 
@@ -130,7 +130,7 @@ graph TB
         subgraph "Scripts"
             INIT_SCRIPT["scripts/init-repo.sh\n(one-shot fork initialization)"]
             GAS_SETUP["scripts/setup-gas-project.sh\n(GAS project file creation)"]
-            INIT_SCRIPT -.->|"auto-detects org/repo\nreplaces 23+ files"| CLAUDE_MD
+            INIT_SCRIPT -.->|"auto-detects org/repo\nreplaces 22 files"| CLAUDE_MD
         end
     end
 

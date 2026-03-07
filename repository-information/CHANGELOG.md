@@ -3,9 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 82/100`
+`Sections: 83/100`
 
 ## [Unreleased]
+
+## [v04.22r] — 2026-03-07 01:56:59 PM EST
+
+### Fixed
+
+- Removed incorrect `#6 (version-bump portion)` from Template Repo Guard skip list in CLAUDE.md — #6 (ARCHITECTURE.md) is never a version-bump item
+- Added missing `#20` (Template source propagation) to the Template Repo Guard still-apply list in CLAUDE.md
+- Fixed init script file count from "23+" to accurate "22" across CLAUDE.md and ARCHITECTURE.md
+- Reordered Pre-Commit Checklist items 16–20 into correct numerical sequence in CLAUDE.md (were misordered as 17, 18, 16, 20, 19)
+- Fixed ARCHITECTURE.md Testation8 files — moved version.txt, changelog, and gs-version files from top-level `live-site-pages/` into their correct subgraph folders (html-versions/, html-changelogs/, gs-changelogs/, gs-versions/)
+- Replaced `*(deploy to activate)*` placeholders in STATUS.md with live GitHub Pages URLs (TEMPLATE_DEPLOY is On)
+- Dismissed stale test.html DevTools reminder in REMINDERS.md (test.html was removed from repo)
 
 ## [v04.21r] — 2026-03-07 01:20:54 PM EST
 
