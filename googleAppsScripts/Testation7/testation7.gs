@@ -1,14 +1,4 @@
-// ── PROJECT CONFIG ────────────────────────────────────────────────
-// testation7.config.json (same directory) is the SINGLE SOURCE OF TRUTH for
-// project-unique values: TITLE, DEPLOYMENT_ID, SPREADSHEET_ID,
-// SHEET_NAME, SOUND_FILE_ID. Edit config.json; the Pre-Commit
-// Checklist syncs the values here and to the embedding HTML page.
-//
-// VERSION and repo-derived values (GITHUB_OWNER, GITHUB_REPO,
-// FILE_PATH, EMBED_PAGE_URL) are managed directly in this file —
-// they are NOT in config.json.
-
-var VERSION = "01.04g";
+var VERSION = "01.05g";
 var TITLE = "title 7";                                      // ← testation7.config.json
 
 // GitHub config — where to pull code from

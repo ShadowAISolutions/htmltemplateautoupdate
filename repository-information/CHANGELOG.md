@@ -3,9 +3,31 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 69/100`
+`Sections: 70/100`
 
 ## [Unreleased]
+
+## [v04.09r] — 2026-03-07 10:39:09 AM EST
+
+### Changed
+
+- Removed PROJECT CONFIG comment block from GAS template source and all existing `.gs` files to reduce public-facing attack surface
+- Internal tooling comments (config.json source-of-truth, Pre-Commit Checklist references) already documented in `gas-scripts.md`
+
+#### `index.gs` — 01.03g
+
+##### Changed
+- Removed internal config documentation comments (no user-visible change)
+
+#### `testation7.gs` — 01.05g
+
+##### Changed
+- Removed internal config documentation comments (no user-visible change)
+
+#### `testation8.gs` — 01.04g
+
+##### Changed
+- Removed internal config documentation comments (no user-visible change)
 
 ## [v04.08r] — 2026-03-07 10:31:10 AM EST
 
