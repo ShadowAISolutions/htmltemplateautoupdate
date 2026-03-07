@@ -22,7 +22,6 @@
 
 | Template | File | Version (frozen) |
 |----------|------|------------------|
-| Auto-Update HTML | `live-site-templates/HtmlTemplateAutoUpdate.html` | v01.00w |
-| GAS+HTML Template | `live-site-templates/HtmlAndGasTemplateAutoUpdate.html` | v01.00w |
+| Universal Template | `live-site-templates/HtmlAndGasTemplateAutoUpdate.html` | v01.00w |
 
 Developed by: ShadowAISolutions

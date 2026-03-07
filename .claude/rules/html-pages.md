@@ -21,10 +21,10 @@ paths:
 - Each version file uses pipe delimiters: `|v01.08w|`. The version is always the middle field (between the pipes). The polling logic splits on `|` and reads `parts[1]`, stripping the `v` prefix for internal comparison. The pipes stay in place at all times — switching to maintenance mode only changes the first field
 - **html.version.txt is the single source of truth** — the HTML pages contain a `<meta name="build-version">` tag for informational purposes, but the polling logic does **not** read it. On page load, the polling logic immediately fetches html.version.txt, stores the version as the baseline, creates the version indicator pill, and begins the 10-second polling loop. This means bumping the version in html.version.txt alone (without editing the HTML meta tag) will trigger a reload correctly — after the reload, the page establishes the new version as its baseline, preventing an infinite loop. The meta tag is kept in sync with html.version.txt during commits for visibility, but it is never involved in the reload mechanism
 - The polling logic fetches the version file (~7 bytes) instead of the full HTML page, reducing bandwidth per poll from kilobytes to bytes
-- URL resolution: derive the version file URL relative to the current page's directory, using the page's own filename. See the template file (`live-site-templates/HtmlTemplateAutoUpdate.html`) for the implementation
+- URL resolution: derive the version file URL relative to the current page's directory, using the page's own filename. See the template file (`live-site-templates/HtmlAndGasTemplateAutoUpdate.html`) for the implementation
 - **The `if (!pageName)` fallback is critical** — when a page is accessed via a directory URL (e.g. `https://example.github.io/myapp/`), `pageName` resolves to an empty string. Without the fallback to `'index'`, the poll fetches `html.version.txt` (wrong file) and triggers an infinite reload loop
 - Cache-bust with a query param: `fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })`
-- The template in `live-site-templates/HtmlTemplateAutoUpdate.html` already implements this pattern — use it as a starting point for new projects
+- The template in `live-site-templates/HtmlAndGasTemplateAutoUpdate.html` already implements this pattern — use it as a starting point for new projects
 
 ### Maintenance Mode via html.version.txt
 The html.version.txt polling system supports a **maintenance mode** that displays a full-screen orange overlay when the first field is `maintenance`. The format always uses pipe (`|`) delimiters — you never need to add or remove pipes, just edit the fields:
@@ -54,12 +54,15 @@ The html.version.txt polling system supports a **maintenance mode** that display
 
 When creating a **new** HTML embedding page, follow every step below:
 
-1. **Copy the template** — start from `live-site-templates/HtmlTemplateAutoUpdate.html`, which already includes:
+1. **Copy the template** — start from `live-site-templates/HtmlAndGasTemplateAutoUpdate.html` (the universal template), which already includes:
    - Version file polling logic (fetches html.version.txt on load, then polls every 10 seconds)
    - Version indicator pill (bottom-right corner)
    - Green "Website Ready" splash overlay + sound playback
    - Orange "Under Maintenance" splash overlay (triggered by `maintenance|` prefix in html.version.txt)
    - AudioContext handling and screen wake lock
+   - GAS version pill + GAS version polling (auto-activates when `gs.version.txt` exists — stays hidden otherwise)
+   - GAS changelog popup (auto-activates with GAS pill)
+   - Blue "Website Ready" + Green "Code Ready" splash screens (for HTML and GAS updates respectively)
 2. **Choose the directory** — create a new subdirectory under `live-site-pages/` named after the project (e.g. `live-site-pages/my-project/`)
 3. **Create the version file** — place a `<page-name>html.version.txt` file in `live-site-pages/html-versions/` (e.g. `html-versions/indexhtml.version.txt` for `index.html`), containing the initial version string in pipe-delimited format (e.g. `|v01.00w|`). This is the **single source of truth** for the page version — the HTML contains no hardcoded version
 4. **Update the polling URL in the template** — ensure the JS version-file URL derivation matches the HTML filename (the template defaults to deriving it from the page's own filename)

@@ -3,9 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 62/100`
+`Sections: 63/100`
 
 ## [Unreleased]
+
+## [v04.02r] — 2026-03-06 11:40:01 PM EST
+
+### Changed
+
+- Consolidated to a single universal HTML template — deleted `HtmlTemplateAutoUpdate.html` (HTML-only) and its version file; `HtmlAndGasTemplateAutoUpdate.html` now serves both HTML-only and GAS-enabled pages (GAS features auto-activate when `gs.version.txt` exists, stay hidden otherwise)
+- Updated template references across 9 files: CLAUDE.md Pre-Commit #4, CONTRIBUTING.md, README.md tree, STATUS.md, ARCHITECTURE.md diagram, `init-repo.sh` file list, `html-pages.md` rules, `new-page` skill, and IMPROVEMENTS.md
+
+### Removed
+
+- Deleted `live-site-templates/HtmlTemplateAutoUpdate.html` — redundant with the universal template
+- Deleted `live-site-templates/HtmlTemplateAutoUpdatehtml.version.txt` — associated version file no longer needed
 
 ## [v04.01r] — 2026-03-06 11:26:53 PM EST
 
