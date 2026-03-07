@@ -3,7 +3,18 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [indexhtml.changelog-archive.md](indexhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 17/50`
+`Sections: 18/50`
+
+## [v01.22w] — 2026-03-07 12:21:26 AM EST — v04.05r
+
+### Changed
+- Update splash now shows a blue "Website Ready" screen for page updates and a green "Code Ready" screen for GAS code updates
+- Added GAS version indicator pill (bottom-right, left of the page version pill) showing the current GAS script version with live countdown
+- Clicking the GAS version pill now opens a GAS changelog popup
+- GAS script updates are now detected automatically via version polling (no longer requires the GAS app to send a message)
+
+### Removed
+- Removed legacy GAS reload mechanism that required the GAS app to signal the page
 
 ## [v01.20w] — 2026-03-06 08:15:21 PM EST — v03.88r
 

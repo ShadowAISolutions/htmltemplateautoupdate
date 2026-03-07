@@ -3,9 +3,38 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 65/100`
+`Sections: 66/100`
 
 ## [Unreleased]
+
+## [v04.05r] — 2026-03-07 12:21:26 AM EST
+
+### Changed
+
+- Propagated universal template features to `index.html` and `gas-project-creator.html` — both pages now match the template's dual splash system (blue Website Ready + green Code Ready), reusable `showUpdateSplash()` function, Code Ready sound caching, GAS version pill with countdown dot, GAS changelog popup, `gs.version.txt` polling with auto-detect, and `window._htmlPollTime` anti-sync guard
+
+### Removed
+
+- Removed legacy `postMessage`-based GAS reload mechanism from `index.html` — replaced by `gs.version.txt` polling (same mechanism used by all other pages)
+
+#### `index.html` — v01.22w
+
+##### Changed
+- Updated splash system from single green splash to dual blue (Website Ready) + green (Code Ready) splashes
+- Added GAS version pill with countdown dot and GAS changelog popup
+- Replaced inline splash/sound code with reusable `showUpdateSplash()` function
+- Added Code Ready sound caching and `gs.version.txt` polling for GAS auto-refresh
+
+##### Removed
+- Removed legacy `postMessage`-based GAS reload mechanism
+
+#### `gas-project-creator.html` — v01.60w
+
+##### Changed
+- Updated splash system from single green splash to dual blue (Website Ready) + green (Code Ready) splashes
+- Added GAS version pill with countdown dot and GAS changelog popup
+- Replaced inline splash/sound code with reusable `showUpdateSplash()` function
+- Added Code Ready sound caching and `gs.version.txt` polling for GAS auto-refresh
 
 ## [v04.04r] — 2026-03-07 12:09:07 AM EST
 
