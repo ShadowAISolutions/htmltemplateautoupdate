@@ -122,7 +122,7 @@ GAS_SCRIPTS_RULES=".claude/rules/gas-scripts.md"
 
 # ── Template sources ─────────────────────────────────────────────
 TPL_HTML="live-site-templates/HtmlAndGasTemplateAutoUpdate.html"
-TPL_GS="live-site-pages/gas-code/gas-project-creator-code.js.txt"
+TPL_GS="live-site-pages/gas-code-templates/gas-project-creator-code.js.txt"
 
 # ── Phase 1: Pre-flight Checks ──────────────────────────────────
 info "Phase 1: Pre-flight checks..."

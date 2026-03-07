@@ -3,9 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 75/100`
+`Sections: 76/100`
 
 ## [Unreleased]
+
+## [v04.15r] — 2026-03-07 11:54:44 AM EST
+
+### Changed
+
+- Renamed `live-site-pages/gas-code/` folder to `live-site-pages/gas-code-templates/` for clearer naming
+- Updated all references across HTML pages, rules files, setup script, CLAUDE.md, skills, README tree, and ARCHITECTURE.md
+
+#### `gas-project-creator.html` — v01.64w
+
+##### Changed
+- Updated GAS code fetch path to new `gas-code-templates/` subfolder (no user-visible change)
 
 ## [v04.14r] — 2026-03-07 11:47:12 AM EST
 

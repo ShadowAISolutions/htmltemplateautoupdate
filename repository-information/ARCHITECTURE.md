@@ -39,7 +39,7 @@ graph TB
             NOJEKYLL[".nojekyll"]
             INDEX["index.html"]
             GASTPL_PAGE["gas-project-creator.html"]
-            GASTPL_CODE["gas-code/\ngas-project-creator-code.js.txt"]
+            GASTPL_CODE["gas-code-templates/\ngas-project-creator-code.js.txt"]
             TSTA7_PAGE["testation7.html"]
             TSTT_PAGE["testation8.html"]
             TSTT_VERTXT["testation8html.version.txt"]

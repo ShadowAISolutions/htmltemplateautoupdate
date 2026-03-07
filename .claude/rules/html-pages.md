@@ -3,7 +3,7 @@ paths:
   - "live-site-pages/**/*.html"
   - "live-site-pages/html-versions/**"
   - "live-site-templates/**"
-  - "live-site-pages/gas-code/gas-project-creator-code.js.txt"
+  - "live-site-pages/gas-code-templates/gas-project-creator-code.js.txt"
 ---
 
 # HTML Pages Rules
@@ -130,7 +130,7 @@ Version files live in `live-site-pages/html-versions/` and `live-site-pages/gs-v
 
 When either template source file is modified, **propagate the same changes to all existing pages/GAS scripts** in the repo. The two template sources are:
 - **HTML template**: `live-site-templates/HtmlAndGasTemplateAutoUpdate.html` → propagate to all `.html` pages in `live-site-pages/`
-- **GAS template**: `live-site-pages/gas-code/gas-project-creator-code.js.txt` → propagate to all `.gs` files in `googleAppsScripts/`
+- **GAS template**: `live-site-pages/gas-code-templates/gas-project-creator-code.js.txt` → propagate to all `.gs` files in `googleAppsScripts/`
 
 ### What "propagate" means
 - Apply the **same structural/feature change** (the diff) to each existing page or GAS script — do NOT blindly overwrite files. Each page has its own title, config values, deployment IDs, localStorage keys, and page-specific customizations that must be preserved
