@@ -3,7 +3,12 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [indexhtml.changelog-archive.md](indexhtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 19/50`
+`Sections: 20/50`
+
+## [v01.24w] — 2026-03-07 12:42:46 AM EST — v04.07r
+
+### Changed
+- Version bump to trigger page reload with latest changes
 
 ## [v01.23w] — 2026-03-07 12:31:43 AM EST — v04.06r
 

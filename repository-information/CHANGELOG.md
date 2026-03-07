@@ -3,9 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 67/100`
+`Sections: 68/100`
 
 ## [Unreleased]
+
+## [v04.07r] — 2026-03-07 12:42:46 AM EST
+
+### Changed
+
+- Bumped homepage version to trigger live site reload
+
+#### `index.html` — v01.24w
+
+##### Changed
+- Version bump to trigger auto-refresh on the live site
 
 ## [v04.06r] — 2026-03-07 12:31:43 AM EST
 
