@@ -316,6 +316,63 @@ If the user says **"reconcile"** (or similar: "reconcile multi-session", "end mu
 > **--- END OF RECONCILE MULTI-SESSION COMMAND ---**
 ---
 
+## Repo Audit Command
+If the user says **"repo audit"** (or similar: "audit the repo", "run repo audit", "consistency check"):
+
+Perform a comprehensive cross-system consistency audit of the entire repository. The audit checks whether all systems, rules, references, and structures are working harmoniously without contradictions. **This is a research-only command** — it produces a report with findings and recommendations. No changes are made until the user approves specific items.
+
+### Audit procedure
+
+Use **parallel subagents** (Explore agents) to audit multiple categories simultaneously. Each category produces a list of findings rated as: `🔴 Issue` (definite inconsistency — should be fixed), `🟡 Suggestion` (improvement opportunity — user decides), or `🟢 OK` (no problems found). Group the audit into these categories:
+
+1. **CLAUDE.md internal consistency** — verify that all Pre-Commit checklist item numbers referenced elsewhere in CLAUDE.md (Template Repo Guard skip lists, MULTI-SESSION GATE, TEMPLATE REPO GATE, Reference Files table) match the actual numbered items. Check that section separators exist between all `##` sections. Verify the Template Variables table values are consistent with their documented "Where it appears" columns
+2. **Cross-file reference integrity** — verify that every file referenced in CLAUDE.md, ARCHITECTURE.md, STATUS.md, and README.md actually exists at the stated path. Check that `.claude/rules/` files referenced in the Reference Files table exist. Verify internal markdown links (`[text](path)`) across all `.md` files resolve to existing targets
+3. **Version consistency** — compare versions across all tracking files: `repository.version.txt`, STATUS.md versions, `html.version.txt` files vs HTML `<meta>` tags, `gs.version.txt` files vs `.gs` `VERSION` variables. Flag any mismatches
+4. **ARCHITECTURE.md accuracy** — compare the Mermaid diagram against the actual file/directory structure (use `find` or `ls -R`). Flag files/directories that exist but aren't in the diagram, or diagram entries that don't exist on disk. Verify no version numbers appear in diagram nodes (they shouldn't)
+5. **STATUS.md accuracy** — verify all pages listed in the Hosted Pages table exist in `live-site-pages/`. Verify all GAS projects listed exist in `googleAppsScripts/`. Check that URL patterns are correct for the current `TEMPLATE_DEPLOY` state. Confirm version numbers match their source-of-truth files
+6. **Changelog consistency** — verify capacity counters (`Sections: X/100`) match the actual count of `## [v` sections in each changelog. Check that archive files exist for all changelogs. Verify the repo CHANGELOG's latest version section matches the current repo version. Check page/GAS changelogs have entries corresponding to their current versions
+7. **Template/page propagation** — compare the template file (`live-site-templates/HtmlAndGasTemplateAutoUpdate.html`) against all pages in `live-site-pages/` for structural drift. Flag significant divergences that aren't marked with `PROJECT OVERRIDE` markers (informational only — some drift is expected)
+8. **GAS config sync** — for each `.config.json` in `googleAppsScripts/`, verify its values match the corresponding `.gs` file's `var` declarations and the embedding HTML page's `<title>` and `var _e` value
+9. **README.md structure** — verify the ASCII tree matches the actual file structure. Check that all `##` sections with links have the "Tip" blockquote. Verify the `Last updated:` timestamp and repo version are current
+10. **Rules files audit** — verify all `.claude/rules/*.md` files are accounted for in the Reference Files table or in the Behavioral Rules / Output Formatting / Chat Bookends references. Check for rules that contradict CLAUDE.md checklist items
+
+### Output format
+
+After all subagents complete, compile the results into a single report:
+
+```
+══════════════════════════════
+  REPO AUDIT REPORT
+  Date: YYYY-MM-DD HH:MM:SS AM/PM EST
+  Repo version: vXX.XXr
+══════════════════════════════
+
+## Category Name
+🔴 Issue: description — file(s) affected
+🟡 Suggestion: description — file(s) affected
+🟢 OK — brief confirmation of what was checked
+
+... (repeat for each category) ...
+
+══════════════════════════════
+  SUMMARY
+  🔴 Issues: N
+  🟡 Suggestions: N
+  🟢 OK: N
+══════════════════════════════
+```
+
+### After the report
+
+- Present the report to the user and wait for their decision on which items (if any) to implement
+- **Do not make any changes automatically** — the audit is informational. The user reviews the findings and says which ones to fix
+- If the user approves fixes, implement them in a single commit following normal Pre-Commit/Pre-Push rules
+- The audit itself is a **research-only response** — it ends with `🔬🔬RESEARCH COMPLETE🔬🔬`, not `✅✅CODING COMPLETE✅✅`. Only the follow-up fix response (if any) ends with `✅✅CODING COMPLETE✅✅`
+
+---
+> **--- END OF REPO AUDIT COMMAND ---**
+---
+
 ## Behavioral Rules
 *Full rules in `.claude/rules/behavioral-rules.md` (always-loaded, no path scope). Covers: Execution Style, Plan Mode Visibility, AskUserQuestion Visibility, Page-Scope Commands, Pushback & Reasoning, Continuous Improvement, Backups Before Major Changes, Solution Depth, Confidence Disclosure, Validate Before Asserting, User-Perspective Reasoning, Section Placement Guide, Web Search Confidence, Provenance Markers.*
 
