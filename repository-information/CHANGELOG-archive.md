@@ -28,610 +28,22 @@ When Claude runs Pre-Commit #7 on the push commit, after creating the new versio
 ### Key rules
 
 - **Group by date, not individually** — never split a date group across the two files. All sections from the same day move together. A date group can contain any number of sections — the count of sections in the group is irrelevant; the group always moves as a unit
-
----
-
-## [v03.39r] — 2026-03-05 11:57:12 PM EST
-
-### Changed
-- GAS version and title now render instantly on page load instead of loading asynchronously
-
-#### `testation3.gs` — 01.24g
-
-##### Changed
-- Version and title display immediately on load — no more "..." placeholder while waiting for server response
-
-## [v03.38r] — 2026-03-05 11:50:00 PM EST
-
-### Fixed
-- GAS version pill now shows the actual version immediately on page load instead of "GAS ..."
-
-#### `testation3.html` — v01.09w
-
-##### Fixed
-- GAS version pill now fetches and displays the real version on load instead of showing placeholder dots until the first polling cycle
-
-
-## [v03.37r] — 2026-03-05 11:45:52 PM EST
-
-### Changed
-- GAS version polling interval changed from 15s to 10s with 15s initial delay (5s offset from HTML polling)
-- GAS version pill repositioned from bottom-left to bottom-right, just left of the HTML version pill
-
-#### `testation3.html` — v01.08w
-
-##### Changed
-- GAS version check now polls every 10 seconds (was 15), starting after a 15-second initial delay to stay 5 seconds offset from the HTML version check
-- GAS version pill moved from the far left to just left of the website version pill
-
-
-## [v03.36r] — 2026-03-05 11:37:56 PM EST
-
-### Removed
-- Blue splash overlay removed from GAS iframe (no more loading screen on every page load)
-
-#### `testation3.gs` — 01.23g
-
-##### Removed
-- Blue splash screen overlay that appeared on every page load inside the GAS iframe
-
-
-## [v03.35r] — 2026-03-05 11:30:39 PM EST
-
-### Changed
-- Update-triggered reloads now differentiate between HTML and GAS updates with distinct splash screens and sounds
-
-#### `testation3.html` — v01.07w
-
-##### Added
-- Blue "Website Ready" splash screen with website sound for HTML version updates
-- Green "Code Ready" splash screen with code sound for GAS version updates
-- Pre-caching of Code Ready sound for instant playback
-
-##### Changed
-- GAS update reload now shows its own green splash and plays "Code Ready" sound instead of reusing the website update behavior
-
-
-## [v03.34r] — 2026-03-05 11:22:48 PM EST
-
-### Changed
-- Version bumped to 01.22g
-
-#### `testation3.gs` — 01.22g
-
-##### Changed
-- Version bumped to 01.22g
-
-
-## [v03.33r] — 2026-03-05 11:17:54 PM EST
-
-### Added
-- GAS version pill with countdown dot and changelog popup on the embedding page (moved from GAS iframe layer)
-
-### Changed
-- Large orange version number display restored in GAS iframe
-- GAS changelog now fetched directly from GitHub Pages by the embedding page instead of via server-side GAS function
-
-### Removed
-- GAS pill UI, changelog overlay, and `getGasChangelog()` server function from GAS script (now handled by the embedding page)
-
-#### `testation3.gs` — 01.21g
-
-##### Added
-- Large orange version number display restored at the top of the app
-
-##### Removed
-- GAS version pill with countdown dot and changelog popup (moved to embedding page)
-- Server-side `getGasChangelog()` function (no longer needed)
-
-#### `testation3.html` — v01.06w
-
-##### Added
-- GAS version pill (bottom-left) with countdown dot showing next check timer
-- GAS changelog popup — click the GAS pill to view the script's update history
-
-
-## [v03.32r] — 2026-03-05 11:06:42 PM EST
-
-### Changed
-- GAS update detection now polls `testation3gs.version.txt` from GitHub Pages instead of using GAS CacheService — mirrors the HTML auto-refresh pattern
-- Removed CacheService-based version polling and postMessage reload signaling from GAS client
-
-### Added
-- GAS version deployment copy (`testation3gs.version.txt`) deployed to GitHub Pages for client-side polling
-
-#### `testation3.gs` — 01.20g
-
-##### Changed
-- Update detection now handled by the embedding page polling a version file instead of internal cache polling
-
-##### Removed
-- CacheService-based version caching and polling
-- PostMessage reload signaling to embedding page
-
-#### `testation3.html` — v01.05w
-
-##### Added
-- GAS version polling — fetches `testation3gs.version.txt` every 15 seconds and reloads on version change
-
-##### Removed
-- PostMessage-based GAS reload listener (replaced by direct version.txt polling)
-
-
-## [v03.31r] — 2026-03-05 10:52:53 PM EST
-
-### Changed
-- Bumped Testation3 GAS version
-
-#### `testation3.gs` — 01.19g
-
-##### Changed
-- Version bump (no functional changes)
-
-
-## [v03.30r] — 2026-03-05 10:47:58 PM EST
-
-### Fixed
-- GAS auto-refresh not triggering page reload after server-side deploy
-
-#### `testation3.gs` — 01.18g
-
-##### Fixed
-- Auto-refresh now reloads the page immediately when a new version is detected instead of re-deploying (which found "Already up to date" and skipped the reload)
-
-
-## [v03.29r] — 2026-03-05 09:30:02 PM EST
-
-### Added
-- Decorative tree SVG below the spreadsheet in Testation3 GAS app
-
-#### `testation3.gs` — 01.17g
-
-##### Added
-- Tree decoration displayed below the spreadsheet section
-
-
-## [v03.28r] — 2026-03-05 09:23:06 PM EST
-
-### Changed
-- Updated time estimation heuristics with parallel batching discount — parallel tool calls count as ~15s total instead of N × 10s, producing more accurate estimates
-
-
-## [v03.27r] — 2026-03-05 09:17:29 PM EST
-
-### Fixed
-- GAS auto-reload now deploys new code before sending reload signal to embedding page — matches the proven RND pattern
-
-#### `testation3.gs` — 01.16g
-
-##### Fixed
-- App now pulls and deploys updates before triggering page reload, ensuring the new version is live when the page refreshes
-
-
-## [v03.26r] — 2026-03-05 08:24:20 PM EST
-
-### Added
-- Test Sound (Drive), Test Beep (Old), and Test Vibrate buttons to Testation3 GAS app
-
-#### `testation3.gs` — 01.15g
-
-##### Added
-- Test Sound (Drive) button to play notification sound from Google Drive
-- Test Beep (Old) button to play synthesized AudioContext beep
-- Test Vibrate button to trigger device vibration
-
-
-## [v03.25r] — 2026-03-05 05:37:15 PM EST
-
-### Removed
-- Giant orange version number display from Testation3 GAS app (version already shown in the GAS pill)
-
-#### `testation3.gs` — 01.14g
-
-##### Removed
-- Large orange version display at the top of the app
-
-
-## [v03.24r] — 2026-03-05 05:31:24 PM EST
-
-### Fixed
-- Actually applied testation3.gs VERSION bump to 01.13g (missed in v03.23r — files were staged but never edited)
-- Updated testation3gs.version.txt to 01.13g
-- Updated STATUS.md GAS version for Testation3
-
-#### `testation3.gs` — 01.13g
-
-##### Fixed
-- Version bump now actually applied (was missed in previous push)
-
-
-## [v03.23r] — 2026-03-05 05:18:50 PM EST
-
-### Changed
-- Bumped Testation3 GAS version to 01.13g
-
-#### `testation3.gs` — 01.13g
-
-##### Changed
-- Version bumped to 01.13g
-
-
-## [v03.22r] — 2026-03-05 05:16:05 PM EST
-
-### Removed
-- "Pull Latest from GitHub" manual button from Testation3 GAS app (auto-update handles this now)
-- Red tree emoji art from Testation3 GAS app
-
-#### `testation3.gs` — 01.12g
-
-##### Removed
-- Manual "Pull Latest from GitHub" button (no longer needed — auto-update on page load handles updates)
-- Decorative red tree art
-
-
-## [v03.21r] — 2026-03-05 05:12:23 PM EST
-
-### Changed
-- Bumped Testation3 GAS version to 01.11g
-
-#### `testation3.gs` — 01.11g
-
-##### Changed
-- Version bumped to 01.11g
-
-
-## [v03.20r] — 2026-03-05 05:09:46 PM EST
-
-### Changed
-- Bumped Testation3 page version to v01.04w
-
-#### `testation3.html` — v01.04w
-
-##### Changed
-- Version bumped to v01.04w
-
-
-## [v03.19r] — 2026-03-05 05:03:00 PM EST
-
-### Added
-- GitHub Actions workflow step to auto-deploy Testation3 GAS after merge to main
-- Page-load auto-check in Testation3 GAS — silently calls pullAndDeployFromGitHub on every page load as a fallback when the webhook misses
-
-#### `testation3.gs` — 01.10g
-
-##### Added
-- Automatic update check on page load — app now self-updates when visited, even if the deploy webhook was missed
-
-
-## [v03.18r] — 2026-03-05 04:49:19 PM EST
-
-### Changed
-- Bumped Testation3 GAS version to 01.09g
-
-#### `testation3.gs` — 01.09g
-
-##### Changed
-- Version bumped to 01.09g
-
-
-## [v03.17r] — 2026-03-05 04:08:59 PM EST
-
-### Added
-- Re-added "Pull Latest from GitHub" button to the Testation3 GAS web app for manual update triggering
-
-#### `testation3.gs` — 01.08g
-
-##### Added
-- "Pull Latest from GitHub" button for manually triggering code updates from GitHub
-
-
-## [v03.16r] — 2026-03-05 04:01:02 PM EST
-
-### Changed
-- GAS version indicator moved from the HTML embedding layer to the GAS iframe layer — the pill now renders inside the GAS iframe where it naturally belongs
-- GAS changelog popup now uses server-side `google.script.run` to fetch changelog data instead of cross-origin browser fetch
-
-### Removed
-- GAS indicator CSS and JavaScript from the HTML embedding page (now handled entirely within the GAS layer)
-
-#### `testation3.html` — v01.03w
-
-##### Removed
-- GAS version indicator CSS and JavaScript — moved to the GAS layer where it belongs
-
-#### `testation3.gs` — 01.07g
-
-##### Added
-- GAS version pill with countdown timer rendered directly in the GAS iframe
-- GAS changelog popup accessible by clicking the version pill
-- Server-side changelog fetching via `getGasChangelog()` using GitHub raw content API
-
-
-## [v03.15r] — 2026-03-05 03:47:47 PM EST
-
-### Fixed
-- GAS version indicator now appears immediately on page load instead of staying hidden
-- GAS version polling now uses self-reporting from the iframe instead of unreliable cross-origin parent-to-iframe messaging
-
-#### `testation3.html` — v01.02w
-
-##### Fixed
-- GAS version indicator now visible immediately (shows "GAS ..." while waiting for first report)
-- Removed unreliable parent-to-iframe version polling
-
-#### `testation3.gs` — 01.06g
-
-##### Changed
-- Version is now reported to the embedding page every 15 seconds automatically
-
-
-## [v03.14r] — 2026-03-05 03:34:35 PM EST
-
-### Added
-- GAS version indicator pill (bottom-left) on Testation3 embedding page with countdown timer and GAS changelog popup
-- GAS iframe now reports its version to the embedding page via `postMessage` on load and on request
-- GAS changelog deployment copy (`testation3gs.changelog.txt`) for live site access
-
-#### `testation3.html` — v01.01w
-
-##### Added
-- GAS version indicator at bottom-left with countdown to next version check
-- GAS changelog popup (click the GAS version pill to view)
-
-#### `testation3.gs` — 01.05g
-
-##### Added
-- Reports version to embedding page on load for the GAS version indicator
-- Responds to version-request messages from embedding page
-
-
-## [v03.13r] — 2026-03-05 03:26:01 PM EST
-
-### Removed
-- "Pull Latest from GitHub" button — updates are now fully automatic via the workflow deploy pipeline
-
-#### `testation3.gs` — 01.04g
-
-##### Removed
-- Manual "Pull Latest from GitHub" button — updates happen automatically
-
-
-## [v03.12r] — 2026-03-05 03:21:18 PM EST
-
-### Fixed
-- Multi-tab auto-refresh race condition — `pollPushedVersionFromCache` now sends `postMessage` reload directly instead of calling `checkForUpdates()`, preventing the second tab from updating its DOM text without actually reloading
-
-#### `testation3.gs` — 01.03g
-
-##### Fixed
-- All open tabs now reliably auto-refresh when updates are deployed
-
-
-## [v03.11r] — 2026-03-05 03:14:41 PM EST
-
-### Fixed
-- Auto-refresh not triggering when workflow deploys GAS update before client polls — `checkForUpdates()` now calls `getAppData()` on "Already up to date" and triggers reload if displayed version is stale
-
-#### `testation3.gs` — 01.02g
-
-##### Fixed
-- Page now auto-refreshes when updates are deployed by the workflow
-
-
-## [v03.10r] — 2026-03-05 02:56:41 PM EST
-
-### Added
-- Red tree decoration at the bottom of Testation3 GAS web app UI
-
-#### `testation3.gs` — 01.01g
-
-##### Added
-- Red tree emoji art displayed at the bottom of the app interface
-
-
-## [v03.09r] — 2026-03-05 02:48:36 PM EST
-
-### Added
-- New GAS project "Testation3" — 10 files created via setup script (HTML page, GAS script, config, version files, changelogs)
-- Registered Testation3 in GAS Projects table, STATUS.md, ARCHITECTURE.md, and README.md structure tree
-
-
-## [v03.08r] — 2026-03-05 02:05:59 PM EST
-
-### Changed
-- `setup-gas-project.sh` now fully automates all post-setup steps: updates ARCHITECTURE.md (Mermaid diagram), README.md (structure tree), STATUS.md (both tables), and fixes .gs comment references — no manual edits needed after running the script
-- Added "Setup GAS Project Command" section to CLAUDE.md for deterministic execution (like Initialize Command)
-- Simplified Copy Config for Claude button output to a minimal prompt — script handles everything
-
-#### `gas-project-creator.html` — v01.54w
-
-##### Changed
-- Copy Config button now generates a shorter prompt since the setup script handles all documentation updates automatically
-
-
-## [v03.07r] — 2026-03-05 01:57:34 PM EST
-
-### Added
-- New GAS project "Testation2" with full embedding page, GAS script, config, version files, and changelogs (10 files created via setup script)
-- Testation2 registered in GAS Projects table, STATUS.md, ARCHITECTURE.md diagram, and README.md structure tree
-
-#### `testation2.html` — v01.00w
-
-##### Added
-- New page for Testation2 GAS web app
-
-#### `testation2.gs` — 01.01g
-
-##### Added
-- New self-updating GAS script for Testation2
-
-
-## [v03.06r] — 2026-03-05 01:37:09 PM EST
-
-### Changed
-- "Copy Config for Claude" output now lists the three template source files so Claude knows exactly which templates the setup script copies from
-
-#### `gas-project-creator.html` — v01.53w
-
-##### Changed
-- Copy Config button output now lists the template files used for new project creation
-
-
-## [v03.05r] — 2026-03-05 01:32:42 PM EST
-
-### Changed
-- "Copy Config for Claude" button now includes a natural-language preamble and post-script steps, so Claude Code knows the full intent and follow-up actions without guessing
-
-#### `gas-project-creator.html` — v01.52w
-
-##### Changed
-- Copy Config button output now includes setup instructions and post-script checklist for Claude Code
-
-
-## [v03.04r] — 2026-03-05 11:25:27 AM EST
-
-### Added
-- Shell script `scripts/setup-gas-project.sh` automates GAS project file creation — replaces the 13-step manual Claude prompt with a single command that creates 10+ files (HTML page, .gs script, config, versions, changelogs)
-- Script supports both create mode (new projects) and update mode (sync config into existing projects)
-
-### Changed
-- "Copy Config for Claude" button now copies a setup script command instead of a natural language prompt — paste into Claude Code or run directly in terminal
-
-#### `gas-project-creator.html` — v01.51w
-
-##### Changed
-- Copy Config button now outputs a shell script command instead of a Claude prompt — faster, deterministic project creation
-
-
-## [v03.03r] — 2026-03-05 10:34:03 AM EST
-
-### Added
-- Spreadsheet display section with embedded Google Sheets iframe, live B1 polling, and live quotas sidebar added to GAS template and Copy Code.gs template — new GAS projects created via GAS Project Creator now include these features out of the box
-
-#### `gas-template.gs` — 01.02g
-
-##### Added
-- Embedded Google Sheets iframe showing the configured spreadsheet when SPREADSHEET_ID is set
-- Live B1 value display with 15-second cache-backed polling
-- Live quotas sidebar showing GitHub rate limit, email quota, and service estimates (updates every 60 seconds)
-- Server-side functions: `readB1FromCacheOrSheet()`, `onEditWriteB1ToCache()`, `fetchGitHubQuotaAndLimits()`
-
-
-## [v03.02r] — 2026-03-05 10:25:03 AM EST
-
-### Changed
-- Replaced "Open in Google Sheets" link button with embedded Google Sheets iframe in test_link_gas_1_app GAS web app
-
-#### `test_link_gas_1_app.gs` — 01.03g
-
-##### Changed
-- Spreadsheet section now shows embedded Google Sheets iframe instead of external link button
-
-
-## [v03.01r] — 2026-03-05 10:09:45 AM EST
-
-### Added
-- Spreadsheet data section in test_link_gas_1_app GAS web app — shows sheet name, live B1 value with "Open in Google Sheets" button, and live quotas sidebar
-
-#### `test_link_gas_1_app.gs` — 01.02g
-
-##### Added
-- Spreadsheet data section showing sheet name, live B1 value, and "Open in Google Sheets" button when spreadsheet is configured
-- Live B1 value updates automatically every 15 seconds via cache-backed polling
-- Live quotas sidebar showing GitHub rate limit, email quota, and service estimates
-
-
-## [v03.00r] — 2026-03-05 09:55:36 AM EST
-
-### Changed
-- Updated test_link_gas_1_app GAS project config: TITLE changed from "optional title" to "Test Title"
-
-#### `test_link_gas_1_app.html` — v01.01w
-
-##### Changed
-- Page title updated to "Test Title"
-
-#### `test_link_gas_1_app.gs` — 01.01g
-
-##### Changed
-- App title updated to "Test Title"
-
-
-## [v02.99r] — 2026-03-05 09:42:31 AM EST
-
-### Fixed
-- Re-trigger GitHub Pages deployment after transient GitHub API 500 error during prior deploy
-
-
-## [v02.98r] — 2026-03-05 09:33:31 AM EST
-
-### Fixed
-- Copy Code.gs now injects `GITHUB_OWNER`, `GITHUB_REPO`, and `FILE_PATH` from the page URL and environment name — previously these were left as template placeholders, causing 404 errors when the GAS app tried to pull from GitHub
-
-#### `gas-project-creator.html` — v01.50w
-
-##### Fixed
-- Copy Code.gs now automatically sets the GitHub owner, repo, and file path so the pasted code can pull updates without manual edits
-
-
-## [v02.97r] — 2026-03-05 09:22:51 AM EST
-
-### Added
-- Created full `test_link_gas_1_app` GAS project ecosystem: HTML embedding page, `.gs` file, config.json, version files, changelogs, and deployment changelog copy
-- Registered TestLinkGas1App in GAS Projects table
-
-#### `test_link_gas_1_app.html` — v01.00w
-
-##### Added
-- New embedding page for Test Link Gas 1 App GAS project with full template features (auto-refresh, version polling, maintenance mode, changelog popup)
-
-
-## [v02.96r] — 2026-03-05 09:07:01 AM EST
-
-### Changed
-- Copy Code.gs now injects `EMBED_PAGE_URL` using the Project Environment Name, so the `.gs` code knows its containing HTML page for redirects
-
-#### `gas-project-creator.html` — v01.49w
-
-##### Changed
-- Copy Code.gs now sets the embedding page URL automatically from the environment name
-- Copy Code.gs button now requires both Deployment ID and Project Environment Name (was Deployment ID only)
-
-
-## [v02.95r] — 2026-03-05 08:52:11 AM EST
-
-### Changed
-- "Copy Config for Claude" prompt now uses an explicit **Project Environment Name** field instead of inferring file paths from the project title
-
-#### `gas-project-creator.html` — v01.48w
-
-##### Added
-- Project Environment Name input field (required) — specifies the base name for all project files (e.g. `test` creates `test.html`, `test.gs`, etc.)
-
-##### Changed
-- "Copy Config for Claude" button now requires both Deployment ID and Project Environment Name to be filled
-- Copied prompt now references the Page Setup Checklist and uses the environment name for all file paths
-
-
-## [v02.94r] — 2026-03-05 08:41:02 AM EST
-
-### Changed
-- Restructured Page Rename/Move Checklist to use a **Project Environment Name** field — specify just the base name (e.g. `gas-template` → `gas-project-creator`) and all 10 file paths are derived automatically via a lookup table
-
-
-Developed by: ShadowAISolutions
-
-` placeholder
-6. **Re-check** — after moving one date group, re-count the non-exempt sections remaining. If still above 100, repeat steps 4–5 with the next oldest date group. Continue until ≤100 non-exempt sections remain (or only today's sections are left)
-
-### Key rules
-
-- **Group by date, not individually** — never split a date group across the two files. All sections from the same day move together. A date group can contain any number of sections — the count of sections in the group is irrelevant; the group always moves as a unit
 - **Never rotate today** — today's sections (EST) always stay in CHANGELOG.md regardless of count. The limit is enforced against older dates only
 - **Common scenario: all non-exempt sections share one date** — this happens after a busy day followed by a new day. Example: 103 sections total, 3 from today, 100 from yesterday. All 100 from yesterday form one date group → rotate all 100 at once, leaving only today's 3. Do NOT move just enough to reach 100 — the date group is indivisible
 - **Preserve content verbatim** — sections are moved exactly as-is (categories, entries, timestamps). No reformatting. The only modification during rotation is SHA enrichment (step 5) — adding a commit SHA link to headers that don't already have one
 - **Order in archive** — newest archived sections appear at the top of the archive (just like CHANGELOG.md uses reverse-chronological order). When appending a newly rotated date group, insert it **above** any previously archived sections but below the archive header
 - **Threshold is configurable** — the limit of 100 sections is defined in Pre-Commit #7 in CLAUDE.md. To change it, update the number there
+- **SHA enrichment is MANDATORY — never skip it** — this is the most commonly skipped step during rotation. The "distraction tunnel" pattern causes it: moving large blocks of text is complex, and the per-section SHA lookup gets lost in the complexity. **Before writing any rotated section to the archive, verify it has a SHA link appended.** If you catch yourself about to insert sections without SHA links, STOP and go back to step 5. The SHA enrichment step applies to BOTH the repo CHANGELOG archive AND all page/GAS changelog archives — every `## [v...]` header in every archive file must have a commit SHA link. For page/GAS changelogs, look up the SHA using the repo version cross-reference at the end of the header (e.g. `— v02.90r` → search for `v02.90r` in git log)
+
+### Post-rotation verification (MANDATORY)
+
+After completing all rotation steps, run this verification before proceeding:
+
+```
+grep '^## \[v' CHANGELOG-archive.md | grep -v '— \[' | head -5
+```
+
+If ANY lines appear (sections without SHA links), the rotation is incomplete — go back and enrich those sections. **Do not commit until this check passes.** Run the same check on any page/GAS changelog archives that were rotated.
 
 ### Examples
 
@@ -660,6 +72,594 @@ Developed by: ShadowAISolutions
 - 102 non-exempt → rotate oldest date (2 sections) → 100 non-exempt → done
 
 ---
+
+## [v03.39r] — 2026-03-05 11:57:12 PM EST — [3cb374f](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3cb374f9928cbfed3211371078148cbeca875d44)
+
+### Changed
+- GAS version and title now render instantly on page load instead of loading asynchronously
+
+#### `testation3.gs` — 01.24g
+
+##### Changed
+- Version and title display immediately on load — no more "..." placeholder while waiting for server response
+
+## [v03.38r] — 2026-03-05 11:50:00 PM EST — [dab8ff4](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/dab8ff4e43d29ab535892efc8abc159b87ecbb55)
+
+### Fixed
+- GAS version pill now shows the actual version immediately on page load instead of "GAS ..."
+
+#### `testation3.html` — v01.09w
+
+##### Fixed
+- GAS version pill now fetches and displays the real version on load instead of showing placeholder dots until the first polling cycle
+
+
+## [v03.37r] — 2026-03-05 11:45:52 PM EST — [c8ec3ff](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/c8ec3ff411d74fc89f324076a0b9d1fcd8a6285e)
+
+### Changed
+- GAS version polling interval changed from 15s to 10s with 15s initial delay (5s offset from HTML polling)
+- GAS version pill repositioned from bottom-left to bottom-right, just left of the HTML version pill
+
+#### `testation3.html` — v01.08w
+
+##### Changed
+- GAS version check now polls every 10 seconds (was 15), starting after a 15-second initial delay to stay 5 seconds offset from the HTML version check
+- GAS version pill moved from the far left to just left of the website version pill
+
+
+## [v03.36r] — 2026-03-05 11:37:56 PM EST — [2ab56c7](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2ab56c76ef7760408c577152dc2ce6dceb6aced3)
+
+### Removed
+- Blue splash overlay removed from GAS iframe (no more loading screen on every page load)
+
+#### `testation3.gs` — 01.23g
+
+##### Removed
+- Blue splash screen overlay that appeared on every page load inside the GAS iframe
+
+
+## [v03.35r] — 2026-03-05 11:30:39 PM EST — [edf036c](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/edf036ccea882e9690264c8ecc2f06d8df8d78db)
+
+### Changed
+- Update-triggered reloads now differentiate between HTML and GAS updates with distinct splash screens and sounds
+
+#### `testation3.html` — v01.07w
+
+##### Added
+- Blue "Website Ready" splash screen with website sound for HTML version updates
+- Green "Code Ready" splash screen with code sound for GAS version updates
+- Pre-caching of Code Ready sound for instant playback
+
+##### Changed
+- GAS update reload now shows its own green splash and plays "Code Ready" sound instead of reusing the website update behavior
+
+
+## [v03.34r] — 2026-03-05 11:22:48 PM EST — [80fef87](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/80fef871e038cbf13a74692e59810b850defa1e0)
+
+### Changed
+- Version bumped to 01.22g
+
+#### `testation3.gs` — 01.22g
+
+##### Changed
+- Version bumped to 01.22g
+
+
+## [v03.33r] — 2026-03-05 11:17:54 PM EST — [54b4217](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/54b421777af9ae2c2e80e95831797f918128eebf)
+
+### Added
+- GAS version pill with countdown dot and changelog popup on the embedding page (moved from GAS iframe layer)
+
+### Changed
+- Large orange version number display restored in GAS iframe
+- GAS changelog now fetched directly from GitHub Pages by the embedding page instead of via server-side GAS function
+
+### Removed
+- GAS pill UI, changelog overlay, and `getGasChangelog()` server function from GAS script (now handled by the embedding page)
+
+#### `testation3.gs` — 01.21g
+
+##### Added
+- Large orange version number display restored at the top of the app
+
+##### Removed
+- GAS version pill with countdown dot and changelog popup (moved to embedding page)
+- Server-side `getGasChangelog()` function (no longer needed)
+
+#### `testation3.html` — v01.06w
+
+##### Added
+- GAS version pill (bottom-left) with countdown dot showing next check timer
+- GAS changelog popup — click the GAS pill to view the script's update history
+
+
+## [v03.32r] — 2026-03-05 11:06:42 PM EST — [7d1d365](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/7d1d36516e532cd8839e417ea8b8eaf5e16d1007)
+
+### Changed
+- GAS update detection now polls `testation3gs.version.txt` from GitHub Pages instead of using GAS CacheService — mirrors the HTML auto-refresh pattern
+- Removed CacheService-based version polling and postMessage reload signaling from GAS client
+
+### Added
+- GAS version deployment copy (`testation3gs.version.txt`) deployed to GitHub Pages for client-side polling
+
+#### `testation3.gs` — 01.20g
+
+##### Changed
+- Update detection now handled by the embedding page polling a version file instead of internal cache polling
+
+##### Removed
+- CacheService-based version caching and polling
+- PostMessage reload signaling to embedding page
+
+#### `testation3.html` — v01.05w
+
+##### Added
+- GAS version polling — fetches `testation3gs.version.txt` every 15 seconds and reloads on version change
+
+##### Removed
+- PostMessage-based GAS reload listener (replaced by direct version.txt polling)
+
+
+## [v03.31r] — 2026-03-05 10:52:53 PM EST — [9455283](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/94552831bfa5da7f427f315340a71e515bc392ef)
+
+### Changed
+- Bumped Testation3 GAS version
+
+#### `testation3.gs` — 01.19g
+
+##### Changed
+- Version bump (no functional changes)
+
+
+## [v03.30r] — 2026-03-05 10:47:58 PM EST — [7a30c46](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/7a30c46e4647d7f1c5fb12da9d41d040db93cce0)
+
+### Fixed
+- GAS auto-refresh not triggering page reload after server-side deploy
+
+#### `testation3.gs` — 01.18g
+
+##### Fixed
+- Auto-refresh now reloads the page immediately when a new version is detected instead of re-deploying (which found "Already up to date" and skipped the reload)
+
+
+## [v03.29r] — 2026-03-05 09:30:02 PM EST — [4f2b89d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4f2b89d857a5bd275e3badb7828b02bfe6808514)
+
+### Added
+- Decorative tree SVG below the spreadsheet in Testation3 GAS app
+
+#### `testation3.gs` — 01.17g
+
+##### Added
+- Tree decoration displayed below the spreadsheet section
+
+
+## [v03.28r] — 2026-03-05 09:23:06 PM EST — [5a3a243](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/5a3a24395bb0082801cf34d3f7524ef86c429c64)
+
+### Changed
+- Updated time estimation heuristics with parallel batching discount — parallel tool calls count as ~15s total instead of N × 10s, producing more accurate estimates
+
+
+## [v03.27r] — 2026-03-05 09:17:29 PM EST — [4efdd48](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4efdd48a7313793dc99586469130eded79651e20)
+
+### Fixed
+- GAS auto-reload now deploys new code before sending reload signal to embedding page — matches the proven RND pattern
+
+#### `testation3.gs` — 01.16g
+
+##### Fixed
+- App now pulls and deploys updates before triggering page reload, ensuring the new version is live when the page refreshes
+
+
+## [v03.26r] — 2026-03-05 08:24:20 PM EST — [e17164e](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/e17164ee852c884a90114d8a991a87d065111844)
+
+### Added
+- Test Sound (Drive), Test Beep (Old), and Test Vibrate buttons to Testation3 GAS app
+
+#### `testation3.gs` — 01.15g
+
+##### Added
+- Test Sound (Drive) button to play notification sound from Google Drive
+- Test Beep (Old) button to play synthesized AudioContext beep
+- Test Vibrate button to trigger device vibration
+
+
+## [v03.25r] — 2026-03-05 05:37:15 PM EST — [267735d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/267735d001758c4a4aa48686d74e0519d8c40fa5)
+
+### Removed
+- Giant orange version number display from Testation3 GAS app (version already shown in the GAS pill)
+
+#### `testation3.gs` — 01.14g
+
+##### Removed
+- Large orange version display at the top of the app
+
+
+## [v03.24r] — 2026-03-05 05:31:24 PM EST — [4ccd5c2](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4ccd5c24f11ea29adcb3f002d070ca3ff5dda0b8)
+
+### Fixed
+- Actually applied testation3.gs VERSION bump to 01.13g (missed in v03.23r — files were staged but never edited)
+- Updated testation3gs.version.txt to 01.13g
+- Updated STATUS.md GAS version for Testation3
+
+#### `testation3.gs` — 01.13g
+
+##### Fixed
+- Version bump now actually applied (was missed in previous push)
+
+
+## [v03.23r] — 2026-03-05 05:18:50 PM EST — [880d05e](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/880d05eb600e9bfe1fda31e27ec90cf07cfef27f)
+
+### Changed
+- Bumped Testation3 GAS version to 01.13g
+
+#### `testation3.gs` — 01.13g
+
+##### Changed
+- Version bumped to 01.13g
+
+
+## [v03.22r] — 2026-03-05 05:16:05 PM EST — [eeb5c35](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/eeb5c357fc96b84932e9623c488639981e9ee1ac)
+
+### Removed
+- "Pull Latest from GitHub" manual button from Testation3 GAS app (auto-update handles this now)
+- Red tree emoji art from Testation3 GAS app
+
+#### `testation3.gs` — 01.12g
+
+##### Removed
+- Manual "Pull Latest from GitHub" button (no longer needed — auto-update on page load handles updates)
+- Decorative red tree art
+
+
+## [v03.21r] — 2026-03-05 05:12:23 PM EST — [cbc584d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/cbc584d3cd7bec11e675dc947de6fa18cef50a35)
+
+### Changed
+- Bumped Testation3 GAS version to 01.11g
+
+#### `testation3.gs` — 01.11g
+
+##### Changed
+- Version bumped to 01.11g
+
+
+## [v03.20r] — 2026-03-05 05:09:46 PM EST — [e330747](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/e330747ac9581a3180a178e2b056c0ade95c3627)
+
+### Changed
+- Bumped Testation3 page version to v01.04w
+
+#### `testation3.html` — v01.04w
+
+##### Changed
+- Version bumped to v01.04w
+
+
+## [v03.19r] — 2026-03-05 05:03:00 PM EST — [33af87f](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/33af87f4717897744a744b5b0a3ceee352fbaaa7)
+
+### Added
+- GitHub Actions workflow step to auto-deploy Testation3 GAS after merge to main
+- Page-load auto-check in Testation3 GAS — silently calls pullAndDeployFromGitHub on every page load as a fallback when the webhook misses
+
+#### `testation3.gs` — 01.10g
+
+##### Added
+- Automatic update check on page load — app now self-updates when visited, even if the deploy webhook was missed
+
+
+## [v03.18r] — 2026-03-05 04:49:19 PM EST — [b69304b](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b69304b971e661de532b058c4aa37871a4a14585)
+
+### Changed
+- Bumped Testation3 GAS version to 01.09g
+
+#### `testation3.gs` — 01.09g
+
+##### Changed
+- Version bumped to 01.09g
+
+
+## [v03.17r] — 2026-03-05 04:08:59 PM EST — [a6def71](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/a6def717187605d3c33ef3b7c96f5cd65a7351c6)
+
+### Added
+- Re-added "Pull Latest from GitHub" button to the Testation3 GAS web app for manual update triggering
+
+#### `testation3.gs` — 01.08g
+
+##### Added
+- "Pull Latest from GitHub" button for manually triggering code updates from GitHub
+
+
+## [v03.16r] — 2026-03-05 04:01:02 PM EST — [62140d6](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/62140d6d5cb095e74c858c20bb49ae2218279407)
+
+### Changed
+- GAS version indicator moved from the HTML embedding layer to the GAS iframe layer — the pill now renders inside the GAS iframe where it naturally belongs
+- GAS changelog popup now uses server-side `google.script.run` to fetch changelog data instead of cross-origin browser fetch
+
+### Removed
+- GAS indicator CSS and JavaScript from the HTML embedding page (now handled entirely within the GAS layer)
+
+#### `testation3.html` — v01.03w
+
+##### Removed
+- GAS version indicator CSS and JavaScript — moved to the GAS layer where it belongs
+
+#### `testation3.gs` — 01.07g
+
+##### Added
+- GAS version pill with countdown timer rendered directly in the GAS iframe
+- GAS changelog popup accessible by clicking the version pill
+- Server-side changelog fetching via `getGasChangelog()` using GitHub raw content API
+
+
+## [v03.15r] — 2026-03-05 03:47:47 PM EST — [a7ee8d3](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/a7ee8d3f1472cb450c1a5c7b6af8d5ec694d4361)
+
+### Fixed
+- GAS version indicator now appears immediately on page load instead of staying hidden
+- GAS version polling now uses self-reporting from the iframe instead of unreliable cross-origin parent-to-iframe messaging
+
+#### `testation3.html` — v01.02w
+
+##### Fixed
+- GAS version indicator now visible immediately (shows "GAS ..." while waiting for first report)
+- Removed unreliable parent-to-iframe version polling
+
+#### `testation3.gs` — 01.06g
+
+##### Changed
+- Version is now reported to the embedding page every 15 seconds automatically
+
+
+## [v03.14r] — 2026-03-05 03:34:35 PM EST — [e863358](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/e863358ce8a79c141252835d4767893350e2f2b3)
+
+### Added
+- GAS version indicator pill (bottom-left) on Testation3 embedding page with countdown timer and GAS changelog popup
+- GAS iframe now reports its version to the embedding page via `postMessage` on load and on request
+- GAS changelog deployment copy (`testation3gs.changelog.txt`) for live site access
+
+#### `testation3.html` — v01.01w
+
+##### Added
+- GAS version indicator at bottom-left with countdown to next version check
+- GAS changelog popup (click the GAS version pill to view)
+
+#### `testation3.gs` — 01.05g
+
+##### Added
+- Reports version to embedding page on load for the GAS version indicator
+- Responds to version-request messages from embedding page
+
+
+## [v03.13r] — 2026-03-05 03:26:01 PM EST — [1c62807](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/1c62807760fc4c83f4deeecfae41d07e5e7e5ae6)
+
+### Removed
+- "Pull Latest from GitHub" button — updates are now fully automatic via the workflow deploy pipeline
+
+#### `testation3.gs` — 01.04g
+
+##### Removed
+- Manual "Pull Latest from GitHub" button — updates happen automatically
+
+
+## [v03.12r] — 2026-03-05 03:21:18 PM EST — [fba85e2](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/fba85e250c147f1134c62dcadcfbf56dc62dd729)
+
+### Fixed
+- Multi-tab auto-refresh race condition — `pollPushedVersionFromCache` now sends `postMessage` reload directly instead of calling `checkForUpdates()`, preventing the second tab from updating its DOM text without actually reloading
+
+#### `testation3.gs` — 01.03g
+
+##### Fixed
+- All open tabs now reliably auto-refresh when updates are deployed
+
+
+## [v03.11r] — 2026-03-05 03:14:41 PM EST — [de72a9d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/de72a9d7efff9909e8ac297e99f0992c9f26f762)
+
+### Fixed
+- Auto-refresh not triggering when workflow deploys GAS update before client polls — `checkForUpdates()` now calls `getAppData()` on "Already up to date" and triggers reload if displayed version is stale
+
+#### `testation3.gs` — 01.02g
+
+##### Fixed
+- Page now auto-refreshes when updates are deployed by the workflow
+
+
+## [v03.10r] — 2026-03-05 02:56:41 PM EST — [d26f8e8](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d26f8e89b47ba0a2881878612ff2cce5ae79717e)
+
+### Added
+- Red tree decoration at the bottom of Testation3 GAS web app UI
+
+#### `testation3.gs` — 01.01g
+
+##### Added
+- Red tree emoji art displayed at the bottom of the app interface
+
+
+## [v03.09r] — 2026-03-05 02:48:36 PM EST — [ede4130](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/ede4130e6abdb933dde8a376ffebdb1d1c262f34)
+
+### Added
+- New GAS project "Testation3" — 10 files created via setup script (HTML page, GAS script, config, version files, changelogs)
+- Registered Testation3 in GAS Projects table, STATUS.md, ARCHITECTURE.md, and README.md structure tree
+
+
+## [v03.08r] — 2026-03-05 02:05:59 PM EST — [68af432](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/68af432fc454174d08f9e08af03b428e3138ce6e)
+
+### Changed
+- `setup-gas-project.sh` now fully automates all post-setup steps: updates ARCHITECTURE.md (Mermaid diagram), README.md (structure tree), STATUS.md (both tables), and fixes .gs comment references — no manual edits needed after running the script
+- Added "Setup GAS Project Command" section to CLAUDE.md for deterministic execution (like Initialize Command)
+- Simplified Copy Config for Claude button output to a minimal prompt — script handles everything
+
+#### `gas-project-creator.html` — v01.54w
+
+##### Changed
+- Copy Config button now generates a shorter prompt since the setup script handles all documentation updates automatically
+
+
+## [v03.07r] — 2026-03-05 01:57:34 PM EST — [a92ec24](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/a92ec24bce9f0db95e892ea81fb622022190edfa)
+
+### Added
+- New GAS project "Testation2" with full embedding page, GAS script, config, version files, and changelogs (10 files created via setup script)
+- Testation2 registered in GAS Projects table, STATUS.md, ARCHITECTURE.md diagram, and README.md structure tree
+
+#### `testation2.html` — v01.00w
+
+##### Added
+- New page for Testation2 GAS web app
+
+#### `testation2.gs` — 01.01g
+
+##### Added
+- New self-updating GAS script for Testation2
+
+
+## [v03.06r] — 2026-03-05 01:37:09 PM EST — [dbbfd73](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/dbbfd7377e9a42e236c2002787d3c92864e37fcc)
+
+### Changed
+- "Copy Config for Claude" output now lists the three template source files so Claude knows exactly which templates the setup script copies from
+
+#### `gas-project-creator.html` — v01.53w
+
+##### Changed
+- Copy Config button output now lists the template files used for new project creation
+
+
+## [v03.05r] — 2026-03-05 01:32:42 PM EST — [0f54109](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/0f541097191a98729c651d9d3d90670bc1e6edee)
+
+### Changed
+- "Copy Config for Claude" button now includes a natural-language preamble and post-script steps, so Claude Code knows the full intent and follow-up actions without guessing
+
+#### `gas-project-creator.html` — v01.52w
+
+##### Changed
+- Copy Config button output now includes setup instructions and post-script checklist for Claude Code
+
+
+## [v03.04r] — 2026-03-05 11:25:27 AM EST — [bfec987](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/bfec987be300e975b2f03ab004f2b9fd43836bb8)
+
+### Added
+- Shell script `scripts/setup-gas-project.sh` automates GAS project file creation — replaces the 13-step manual Claude prompt with a single command that creates 10+ files (HTML page, .gs script, config, versions, changelogs)
+- Script supports both create mode (new projects) and update mode (sync config into existing projects)
+
+### Changed
+- "Copy Config for Claude" button now copies a setup script command instead of a natural language prompt — paste into Claude Code or run directly in terminal
+
+#### `gas-project-creator.html` — v01.51w
+
+##### Changed
+- Copy Config button now outputs a shell script command instead of a Claude prompt — faster, deterministic project creation
+
+
+## [v03.03r] — 2026-03-05 10:34:03 AM EST — [d79f5e0](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d79f5e00da3d300ba90be2e20cb3d146d34f876d)
+
+### Added
+- Spreadsheet display section with embedded Google Sheets iframe, live B1 polling, and live quotas sidebar added to GAS template and Copy Code.gs template — new GAS projects created via GAS Project Creator now include these features out of the box
+
+#### `gas-template.gs` — 01.02g
+
+##### Added
+- Embedded Google Sheets iframe showing the configured spreadsheet when SPREADSHEET_ID is set
+- Live B1 value display with 15-second cache-backed polling
+- Live quotas sidebar showing GitHub rate limit, email quota, and service estimates (updates every 60 seconds)
+- Server-side functions: `readB1FromCacheOrSheet()`, `onEditWriteB1ToCache()`, `fetchGitHubQuotaAndLimits()`
+
+
+## [v03.02r] — 2026-03-05 10:25:03 AM EST — [be9221e](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/be9221e0e55be35aef0c0557673b2779b94799e9)
+
+### Changed
+- Replaced "Open in Google Sheets" link button with embedded Google Sheets iframe in test_link_gas_1_app GAS web app
+
+#### `test_link_gas_1_app.gs` — 01.03g
+
+##### Changed
+- Spreadsheet section now shows embedded Google Sheets iframe instead of external link button
+
+
+## [v03.01r] — 2026-03-05 10:09:45 AM EST — [9f2c52e](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/9f2c52e935f31e697d0ee116e7353b38a6c7d9dc)
+
+### Added
+- Spreadsheet data section in test_link_gas_1_app GAS web app — shows sheet name, live B1 value with "Open in Google Sheets" button, and live quotas sidebar
+
+#### `test_link_gas_1_app.gs` — 01.02g
+
+##### Added
+- Spreadsheet data section showing sheet name, live B1 value, and "Open in Google Sheets" button when spreadsheet is configured
+- Live B1 value updates automatically every 15 seconds via cache-backed polling
+- Live quotas sidebar showing GitHub rate limit, email quota, and service estimates
+
+
+## [v03.00r] — 2026-03-05 09:55:36 AM EST — [c359c80](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/c359c803aced7d9db6b82a9fe76d0c41cb1274c6)
+
+### Changed
+- Updated test_link_gas_1_app GAS project config: TITLE changed from "optional title" to "Test Title"
+
+#### `test_link_gas_1_app.html` — v01.01w
+
+##### Changed
+- Page title updated to "Test Title"
+
+#### `test_link_gas_1_app.gs` — 01.01g
+
+##### Changed
+- App title updated to "Test Title"
+
+
+## [v02.99r] — 2026-03-05 09:42:31 AM EST — [707e3f0](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/707e3f044b782a78ba41df26455cac6695e9bad9)
+
+### Fixed
+- Re-trigger GitHub Pages deployment after transient GitHub API 500 error during prior deploy
+
+
+## [v02.98r] — 2026-03-05 09:33:31 AM EST — [16b7726](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/16b772661000b587a7288b02c787552218b098d2)
+
+### Fixed
+- Copy Code.gs now injects `GITHUB_OWNER`, `GITHUB_REPO`, and `FILE_PATH` from the page URL and environment name — previously these were left as template placeholders, causing 404 errors when the GAS app tried to pull from GitHub
+
+#### `gas-project-creator.html` — v01.50w
+
+##### Fixed
+- Copy Code.gs now automatically sets the GitHub owner, repo, and file path so the pasted code can pull updates without manual edits
+
+
+## [v02.97r] — 2026-03-05 09:22:51 AM EST — [4aeb23c](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4aeb23cbacc6f510d2102f0ccc9459ec461a9cdc)
+
+### Added
+- Created full `test_link_gas_1_app` GAS project ecosystem: HTML embedding page, `.gs` file, config.json, version files, changelogs, and deployment changelog copy
+- Registered TestLinkGas1App in GAS Projects table
+
+#### `test_link_gas_1_app.html` — v01.00w
+
+##### Added
+- New embedding page for Test Link Gas 1 App GAS project with full template features (auto-refresh, version polling, maintenance mode, changelog popup)
+
+
+## [v02.96r] — 2026-03-05 09:07:01 AM EST — [4e6c629](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4e6c6292c5c72896bcf29b93b845200209c055c7)
+
+### Changed
+- Copy Code.gs now injects `EMBED_PAGE_URL` using the Project Environment Name, so the `.gs` code knows its containing HTML page for redirects
+
+#### `gas-project-creator.html` — v01.49w
+
+##### Changed
+- Copy Code.gs now sets the embedding page URL automatically from the environment name
+- Copy Code.gs button now requires both Deployment ID and Project Environment Name (was Deployment ID only)
+
+
+## [v02.95r] — 2026-03-05 08:52:11 AM EST — [cb0fecf](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/cb0fecfccf7b424ea0916be1e72a1b243e92b906)
+
+### Changed
+- "Copy Config for Claude" prompt now uses an explicit **Project Environment Name** field instead of inferring file paths from the project title
+
+#### `gas-project-creator.html` — v01.48w
+
+##### Added
+- Project Environment Name input field (required) — specifies the base name for all project files (e.g. `test` creates `test.html`, `test.gs`, etc.)
+
+##### Changed
+- "Copy Config for Claude" button now requires both Deployment ID and Project Environment Name to be filled
+- Copied prompt now references the Page Setup Checklist and uses the environment name for all file paths
+
+
+## [v02.94r] — 2026-03-05 08:41:02 AM EST — [b2458e5](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b2458e5fb0a4e4342584d100472bebce439b46df)
+
+### Changed
+- Restructured Page Rename/Move Checklist to use a **Project Environment Name** field — specify just the base name (e.g. `gas-template` → `gas-project-creator`) and all 10 file paths are derived automatically via a lookup table
+
 
 ## [v02.93r] — 2026-03-04 11:07:56 PM EST — [ae74e88](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/ae74e8877c819143233facdda3d08d9862683454)
 
@@ -716,7 +716,7 @@ Developed by: ShadowAISolutions
 ##### Fixed
 - Setup steps no longer indented away from the section header
 
-## [v02.87r] — 2026-03-04 09:52:43 PM EST
+## [v02.87r] — 2026-03-04 09:52:43 PM EST — [610cfc2](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/610cfc2440666589ce3e754d2b9ad491873f5d2d)
 
 ### Changed
 - Restructured Step 4 in GAS Project Creator to recommend Google Sheets method as preferred, with script.google.com as standalone alternative
@@ -727,7 +727,7 @@ Developed by: ShadowAISolutions
 - Step 4 now recommends creating scripts via Google Sheets (Extensions → Apps Script) as the preferred method
 - Standalone script creation via script.google.com shown as an alternative option
 
-## [v02.86r] — 2026-03-04 09:39:40 PM EST
+## [v02.86r] — 2026-03-04 09:39:40 PM EST — [742d596](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/742d5960d6488adf6f4065cde5bb3668e9747255)
 
 ### Changed
 - Updated SAIS logo URL across all pages, templates, and GAS scripts (renamed from `SAIS%20Logo.png` to `SAIS_Logo.png`)
@@ -758,7 +758,7 @@ Developed by: ShadowAISolutions
 - Developer splash logo URL updated to use underscore filename
 - Default splash logo URL in config panel updated
 
-## [v02.85r] — 2026-03-04 09:31:18 PM EST
+## [v02.85r] — 2026-03-04 09:31:18 PM EST — [b1ec6cb](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b1ec6cbf2cede53e74964e924b7ac5191dabb3be)
 
 ### Changed
 - Added standalone vs. linked script note to step 4 (creating Apps Script project)
@@ -770,7 +770,7 @@ Developed by: ShadowAISolutions
 - Step 4 now explains standalone vs. linked script creation
 - Troubleshooting label updated to "Potential Troubleshooting"
 
-## [v02.84r] — 2026-03-04 09:17:35 PM EST
+## [v02.84r] — 2026-03-04 09:17:35 PM EST — [3a9a607](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3a9a607e76443a511810aaed0d8e513f77668afd)
 
 ### Changed
 - Removed pre-populated values from Title, Spreadsheet ID, and Sheet Name fields (restored placeholder hints)
@@ -783,7 +783,7 @@ Developed by: ShadowAISolutions
 - Input fields now start empty with placeholder hints instead of pre-populated values
 - Copy Config button styled with Claude-branded coral/orange color
 
-## [v02.83r] — 2026-03-04 09:11:25 PM EST
+## [v02.83r] — 2026-03-04 09:11:25 PM EST — [939eb4b](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/939eb4b25c4859f1979a8d7dfedf4fd2c93c3393)
 
 ### Changed
 - Copy Config for Claude button now uses purple color instead of grey
@@ -801,7 +801,7 @@ Developed by: ShadowAISolutions
 - "Script function not found: doGet" hint also shown below Test GAS Connection button
 - GitHub token reuse note now warns that tokens are only shown once at creation
 
-## [v02.82r] — 2026-03-04 09:01:23 PM EST
+## [v02.82r] — 2026-03-04 09:01:23 PM EST — [447202d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/447202d4b0836cd4c2150a16f778202015bad5c0)
 
 ### Changed
 - GAS panel tab is now always enabled regardless of deployment ID
@@ -815,7 +815,7 @@ Developed by: ShadowAISolutions
 - "Script function not found: doGet" hint moved to GAS preview overlay with lightbulb emoji
 - GitHub token creation link narrowed to only "Fine-grained tokens"
 
-## [v02.81r] — 2026-03-04 08:54:07 PM EST
+## [v02.81r] — 2026-03-04 08:54:07 PM EST — [4015b4c](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4015b4c4e2e4d16d30a4d7d205738a7818b93215)
 
 ### Added
 - Hint below Test GAS Connection button explaining that "Script function not found: doGet" means the deployment ID is valid
@@ -825,7 +825,7 @@ Developed by: ShadowAISolutions
 ##### Added
 - Hint explaining that "Script function not found: doGet" confirms a valid deployment ID
 
-## [v02.80r] — 2026-03-04 08:47:21 PM EST
+## [v02.80r] — 2026-03-04 08:47:21 PM EST — [8005148](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8005148c7a05fe98a5fa34d009dcda63f0d02733)
 
 ### Fixed
 - Test GAS Connection button now visually appears disabled (dimmed, not-allowed cursor) when deployment ID is empty — CSS disabled style was missing for `.btn-apply`
@@ -835,7 +835,7 @@ Developed by: ShadowAISolutions
 ##### Fixed
 - Test GAS Connection button now correctly appears grayed out when deployment ID is empty
 
-## [v02.79r] — 2026-03-04 08:42:52 PM EST
+## [v02.79r] — 2026-03-04 08:42:52 PM EST — [758f879](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/758f87900a6f077950d2332d5d5ccf106a150d5b)
 
 ### Removed
 - HTML Layer status dashboard section (Page Title, Auto-Refresh, Version Polling, Audio Context, Wake Lock indicators) — redundant with version sound icon
@@ -854,7 +854,7 @@ Developed by: ShadowAISolutions
 ##### Changed
 - Setup instruction URLs are now clickable links instead of plain code text
 
-## [v02.78r] — 2026-03-04 08:36:59 PM EST
+## [v02.78r] — 2026-03-04 08:36:59 PM EST — [e16d67e](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/e16d67e970497ea0c799f319cedfd78ad5337dc8)
 
 ### Changed
 - Updated deployment ID hint text to reference "Test GAS Connection" instead of "Apply"
@@ -869,7 +869,7 @@ Developed by: ShadowAISolutions
 - "Copy Claude Config" button renamed to "Copy Config for Claude"
 - Footer note updated to match new button name
 
-## [v02.77r] — 2026-03-04 08:27:39 PM EST
+## [v02.77r] — 2026-03-04 08:27:39 PM EST — [7e531a7](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/7e531a765ad19179d9c0fa075eb19e4c5e0b5de2)
 
 ### Changed
 - Fixed audio context dashboard showing "Suspended" on page load when audio is actually available — now uses the same sessionStorage check as the version sound icon
@@ -889,7 +889,7 @@ Developed by: ShadowAISolutions
 - Clear Local Storage button
 - Footer note reference to localStorage
 
-## [v02.76r] — 2026-03-04 08:18:28 PM EST
+## [v02.76r] — 2026-03-04 08:18:28 PM EST — [f3e45e9](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/f3e45e9de82effcdbe347581525f01277f95c510)
 
 ### Changed
 - Made Title field optional in GAS Project Creator configuration form
@@ -909,7 +909,7 @@ Developed by: ShadowAISolutions
 - doGet tip banner from the GAS preview panel
 - Config save and page title change triggered by Test GAS Connection
 
-## [v02.75r] — 2026-03-04 08:08:19 PM EST
+## [v02.75r] — 2026-03-04 08:08:19 PM EST — [db62bfa](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/db62bfab5d5fb0e34d963e2c09169ba55233344e)
 
 ### Changed
 - Copy Claude Config now auto-handles Version (set to 01.00g), GitHub Owner, GitHub Repo, and GitHub Branch via the prompt — no longer requires manual input
@@ -925,7 +925,7 @@ Developed by: ShadowAISolutions
 ##### Removed
 - Version, GitHub Owner, GitHub Repo, and GitHub Branch input fields from the form
 
-## [v02.74r] — 2026-03-04 08:02:31 PM EST
+## [v02.74r] — 2026-03-04 08:02:31 PM EST — [d4e7576](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d4e75764871e3890e1d636758f404baf7b8f644f)
 
 ### Changed
 - Test GAS Connection panel now shows a tip explaining that "Script function not found: doGet" means the Deployment ID is valid
@@ -943,7 +943,7 @@ Developed by: ShadowAISolutions
 - GAS Deployment ID status row from HTML Layer dashboard
 - LOCALSTORAGE badge from Setup & Configuration header
 
-## [v02.73r] — 2026-03-04 07:20:53 PM EST
+## [v02.73r] — 2026-03-04 07:20:53 PM EST — [91cb1c2](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/91cb1c218bd87658c773ed7ebaad169bb2cab13a)
 
 ### Changed
 - Test GAS Connection now uses a bottom-panel drawer with tab toggle instead of a popup overlay — matches the original GAS panel design with slide-up panel, resize handle, and collapsible tab
@@ -953,7 +953,7 @@ Developed by: ShadowAISolutions
 ##### Changed
 - Test GAS Connection replaced popup overlay with bottom-panel drawer (tab at bottom-left, resizable panel with iframe)
 
-## [v02.72r] — 2026-03-04 07:13:41 PM EST
+## [v02.72r] — 2026-03-04 07:13:41 PM EST — [87948be](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/87948be90776ee87394ce7057a2a31d00129f3e3)
 
 ### Added
 - Test GAS Connection overlay — loads GAS deployment URL in an iframe popup for live testing
@@ -978,7 +978,7 @@ Developed by: ShadowAISolutions
 - Local Config dashboard section (localStorage status indicators)
 - File Path and Embedding URL input fields
 
-## [v02.71r] — 2026-03-04 07:02:02 PM EST
+## [v02.71r] — 2026-03-04 07:02:02 PM EST — [80b049b](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/80b049ba22831f8cde728805302f57b2a25eb473)
 
 ### Changed
 - Updated default form placeholder values in GAS Project Creator to reference NewGas project configuration
@@ -992,7 +992,7 @@ Developed by: ShadowAISolutions
 - Default embedding URL changed to newgas1.html
 - Spreadsheet ID and Sound File ID now pre-filled with real values
 
-## [v02.70r] — 2026-03-04 06:53:55 PM EST
+## [v02.70r] — 2026-03-04 06:53:55 PM EST — [a448a6c](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/a448a6c5087657a8f18e7c5d3ddd874bc27ce146)
 
 ### Removed
 - Removed GAS iframe layer, postMessage listeners, GAS panel, and spreadsheet data display from gas-project-creator page — now a static setup tool with no GAS backend
@@ -1014,7 +1014,7 @@ Developed by: ShadowAISolutions
 ##### Changed
 - Page title updated from "GAS Integration Status" to "GAS Project Creator"
 
-## [v02.69r] — 2026-03-04 06:41:06 PM EST
+## [v02.69r] — 2026-03-04 06:41:06 PM EST — [0812462](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/08124623896313b0689cae91b9312710bc25523e)
 
 ### Added
 - Created `live-site-pages/gas-template.html` — live embedding page for the GasTemplate GAS project
@@ -1025,7 +1025,7 @@ Developed by: ShadowAISolutions
 - Configured `gas-template.gs` with real org/repo values and embedding page URL
 - Updated `gas-project-creator-code.js.txt` to use HtmlTemplateAutoUpdate.gs (pure placeholders) as source
 
-## [v02.68r] — 2026-03-04 06:32:59 PM EST
+## [v02.68r] — 2026-03-04 06:32:59 PM EST — [a4e66c1](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/a4e66c10f5f8d0a239ea3a988e2862b842607de1)
 
 ### Added
 - Created new GAS template ecosystem: `GasTemplate.html` (GAS-enabled HTML template), `gas-template.gs` (GAS template script with placeholders), `gas-template.config.json` (template config)
@@ -1334,12 +1334,12 @@ Developed by: ShadowAISolutions
 ### Changed
 - Moved all unique project variables (GitHub repo, deployment ID, spreadsheet ID, sheet name, sound file ID, embedding URL, splash logo URL) to a single configuration block at the top of `gas-template-code.js.txt` for easier management — all inline references now use the top-level variables
 
-## [v02.43r] — 2026-03-04 11:53:21 AM EST
+## [v02.43r] — 2026-03-04 11:53:21 AM EST — [a114620](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/a114620fcfcb65a4fbe5dd8c4c29ae0d11276b1d)
 
 ### Changed
 - Synced `gas-template-code.js.txt` with `RND_GAS_AND_WEBSITE/Code.gs` — the shared Copy Code.gs source now matches the RND reference implementation
 
-## [v02.42r] — 2026-03-04 11:46:16 AM EST
+## [v02.42r] — 2026-03-04 11:46:16 AM EST — [9f9f236](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/9f9f23676735e32b5e1ccd8da1858d2deab5e014)
 
 ### Changed
 - Consolidated Copy Code.gs to use a single shared template source (`gas-template-code.js.txt`) instead of per-page copies — all pages now copy the canonical template with placeholder values
@@ -1352,7 +1352,7 @@ Developed by: ShadowAISolutions
 ##### Changed
 - Copy Code.gs button now fetches from the shared template source instead of a page-specific copy
 
-## [v02.41r] — 2026-03-04 11:28:22 AM EST
+## [v02.41r] — 2026-03-04 11:28:22 AM EST — [b1d1740](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b1d17405f4897d755396905dbd6adfff1d46c7ef)
 
 ### Fixed
 - Fixed blank Google Sheets iframe in GAS web app — Google Sheets `/edit?rm=minimal` loads blank when nested inside a GAS sandbox iframe embedded on GitHub Pages due to cross-origin X-Frame-Options/CSP restrictions
@@ -1371,7 +1371,7 @@ Developed by: ShadowAISolutions
 ##### Fixed
 - Same fix applied — replaced broken embedded Google Sheets iframe with "Open in Google Sheets" button
 
-## [v02.40r] — 2026-03-04 11:09:05 AM EST
+## [v02.40r] — 2026-03-04 11:09:05 AM EST — [3667e33](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3667e3366a676a71a9e55041ca1d0bb4d649438d)
 
 ### Changed
 - Reinforced `TEMPLATE_DEPLOY` check in chat-bookends.md URL display rules — added explicit "check TEMPLATE_DEPLOY first" warning to prevent incorrectly showing "no live site deployed" when `TEMPLATE_DEPLOY` = `On`
@@ -1379,7 +1379,7 @@ Developed by: ShadowAISolutions
 ### Removed
 - Removed incorrect "Reference Implementation Fidelity" rule from gas-scripts.md (was not the requested reinforcement)
 
-## [v02.39r] — 2026-03-04 11:04:37 AM EST
+## [v02.39r] — 2026-03-04 11:04:37 AM EST — [0e466bd](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/0e466bd43529a21c70a9bb4676620d9d6176549d)
 
 ### Added
 - Test Sound (Drive), Test Beep (Old), and Test Vibrate buttons to GAS web app for audio and haptic feedback testing
@@ -1412,7 +1412,7 @@ Developed by: ShadowAISolutions
 ##### Changed
 - Sound preload now shows server errors instead of failing silently
 
-## [v02.38r] — 2026-03-04 10:48:27 AM EST
+## [v02.38r] — 2026-03-04 10:48:27 AM EST — [0f661e2](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/0f661e261976fa81178d9fcdfe33931b1f7d648c)
 
 ### Changed
 - GAS web app now matches the RND Code.gs reference — includes live B1 value display, embedded spreadsheet with sheet name heading, and live quota/token info sidebar
@@ -1433,7 +1433,7 @@ Developed by: ShadowAISolutions
 ##### Changed
 - Spreadsheet section now shows sheet name dynamically and includes live B1 value alongside the embed
 
-## [v02.37r] — 2026-03-04 10:34:53 AM EST
+## [v02.37r] — 2026-03-04 10:34:53 AM EST — [4ce0434](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4ce043419f1b1c0589da298e66a788d23fde90f7)
 
 ### Changed
 - Replaced read-only spreadsheet cell values with an interactive embedded Google Sheets iframe in the GAS web app — you can now view and edit the spreadsheet directly from the web app
@@ -1447,17 +1447,17 @@ Developed by: ShadowAISolutions
 ##### Changed
 - Spreadsheet section now shows a live, editable Google Sheets embed instead of read-only cell values
 
-## [v02.36r] — 2026-03-04 10:30:27 AM EST
+## [v02.36r] — 2026-03-04 10:30:27 AM EST — [b154b9d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b154b9d7d712652ea1151e1e80a415767afaae4c)
 
 ### Added
 - Mandatory sync rule for Copy Code.gs deployment files — `.gs` changes now automatically require updating the corresponding `-code.js.txt` in `live-site-pages/`
 
-## [v02.35r] — 2026-03-04 10:26:42 AM EST
+## [v02.35r] — 2026-03-04 10:26:42 AM EST — [916230e](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/916230e43950718b144a08b0fa66d59fc6bb57c2)
 
 ### Fixed
 - Synced Copy Code.gs deployment files (`gas-template-code.js.txt`, `gas-test-code.js.txt`) with the current `.gs` source — previously stuck at v01.00g with no spreadsheet display section
 
-## [v02.34r] — 2026-03-04 10:20:48 AM EST
+## [v02.34r] — 2026-03-04 10:20:48 AM EST — [a220c36](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/a220c36284156ad69356296c4d6f9511b1eecf81)
 
 ### Added
 - Spreadsheet data section in the GAS web app — when opening the web app directly (not embedded), spreadsheet cell values (A1, B1, C1) and sheet name are now visible
@@ -1473,7 +1473,7 @@ Developed by: ShadowAISolutions
 - Spreadsheet Data section showing sheet name, A1 (version), B1 (live value), and C1 (pushed version) when spreadsheet is configured
 - Live B1 value updates directly in the web app display via 15-second polling
 
-## [v02.33r] — 2026-03-04 10:09:15 AM EST
+## [v02.33r] — 2026-03-04 10:09:15 AM EST — [9627745](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/9627745b1c58c623c6494fe50c0d4a0a03fbe98f)
 
 ### Changed
 - "Copy Code.gs" button now produces a fully configured .gs file — injects Spreadsheet ID, Sheet Name, Sound File ID, Title, and Deployment ID from the dashboard form fields into the code before copying
@@ -1489,7 +1489,7 @@ Developed by: ShadowAISolutions
 - Copy Code.gs now injects all filled config values into the copied code for a ready-to-paste .gs file
 - Spreadsheet ID, Sheet Name, and Sound File ID fields moved to Step 1 before the Copy button
 
-## [v02.32r] — 2026-03-04 09:47:03 AM EST
+## [v02.32r] — 2026-03-04 09:47:03 AM EST — [b911cd5](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b911cd55a55c503a0ff0fa550ae59fa7a3df7ca5)
 
 ### Added
 - Collapsible GCP troubleshooting guide in GAS dashboard setup steps — covers the "managed folder" error, IAM Project Mover role fix, and "create new project" alternative
@@ -1502,22 +1502,22 @@ Developed by: ShadowAISolutions
 ##### Added
 - Collapsible troubleshooting section under "Link the GCP project" step with step-by-step fix for the "Apps Script-managed folder" error
 
-## [v02.31r] — 2026-03-04 09:41:57 AM EST
+## [v02.31r] — 2026-03-04 09:41:57 AM EST — [fa1a04d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/fa1a04db375da178fa1def16826c1e4ad5b3f862)
 
 ### Added
 - User-facing GCP Project Setup & Troubleshooting section in README.md — covers initial setup, "cannot switch to managed folder" fix (with IAM Project Mover steps), and "Apps Script API not enabled" fix
 
-## [v02.30r] — 2026-03-04 09:34:13 AM EST
+## [v02.30r] — 2026-03-04 09:34:13 AM EST — [23ab912](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/23ab912028ed49f4517b58bce2fca280eb91b1e8)
 
 ### Changed
 - GCP project setup guide — added IAM permission steps to "move the project" fix (Option A): grant yourself the **Project Mover** role at the organization level before migrating, since even org owners/admins lack this by default
 
-## [v02.29r] — 2026-03-04 09:14:19 AM EST
+## [v02.29r] — 2026-03-04 09:14:19 AM EST — [25d69d8](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/25d69d839cbd8127c1181c8debe014bfa3e3cded)
 
 ### Added
 - GCP project setup and troubleshooting guide in CODING-GUIDELINES.md — covers initial setup, "cannot switch to Apps Script-managed folder" fix, and "Apps Script API not enabled" fix
 
-## [v02.28r] — 2026-03-04 08:52:09 AM EST
+## [v02.28r] — 2026-03-04 08:52:09 AM EST — [f8a10b5](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/f8a10b5e5a77cff8cb925abe5c48262543d8bd18)
 
 ### Added
 - Spreadsheet data viewing in GAS dashboards — displays live B1 value, current version (A1), and pushed version (C1) from the connected Google Sheet
@@ -1549,13 +1549,13 @@ Developed by: ShadowAISolutions
 - Spreadsheet data (A1, B1, C1 cell values) included in `getAppData()` response
 - B1 polling in GAS iframe client code that reports values to embedding page via postMessage
 
-## [v02.27r] — 2026-03-04 08:37:17 AM EST
+## [v02.27r] — 2026-03-04 08:37:17 AM EST — [641976a](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/641976a4ef710aa29571a41bba62f62a1a7f8aef)
 
 ### Changed
 - Moved "GAS UI Layout Awareness" rule from `html-pages.md` to `gas-scripts.md` — GAS elements are guests in the host page, so the accommodating system (GAS) owns the rule
 - Added direction-of-responsibility guidance to Rule Placement Autonomy in `behavioral-rules.md` — rules about system A deferring to system B belong with system A
 
-## [v02.26r] — 2026-03-04 08:29:56 AM EST
+## [v02.26r] — 2026-03-04 08:29:56 AM EST — [98cc8f8](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/98cc8f882d1462c28290c0a2b2b733524c4b3195)
 
 ### Fixed
 - GAS panel toggle tab moved from bottom-right to bottom-left to avoid overlapping the version/changelog indicator
@@ -1568,7 +1568,7 @@ Developed by: ShadowAISolutions
 ##### Fixed
 - GAS toggle tab moved to bottom-left to avoid overlapping the version indicator
 
-## [v02.25r] — 2026-03-04 08:25:01 AM EST
+## [v02.25r] — 2026-03-04 08:25:01 AM EST — [6cd71e0](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/6cd71e0bb1bc1449ccd4f0591a584bd8171f4624)
 
 ### Fixed
 - GAS Layer "Spreadsheet" and "Sound File" status rows now show "Local only — update GAS script" when values are saved in localStorage but the GAS script still has placeholders, instead of misleading "Not set"
@@ -1581,7 +1581,7 @@ Developed by: ShadowAISolutions
 ##### Fixed
 - Spreadsheet and Sound File status now correctly reflects localStorage values when GAS script reports placeholders
 
-## [v02.24r] — 2026-03-04 08:15:33 AM EST
+## [v02.24r] — 2026-03-04 08:15:33 AM EST — [bb27f99](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/bb27f9987b9297930436bbe6817beb9b18504bf1)
 
 ### Added
 - "Local Config (localStorage)" dashboard section on GAS Template and GAS Test pages — shows saved Deployment ID, Spreadsheet ID, Sheet Name, and Sound File ID with green/gray status indicators
@@ -1610,7 +1610,7 @@ Developed by: ShadowAISolutions
 ##### Changed
 - GAS iframe opens in a resizable bottom drawer instead of a full-screen overlay
 
-## [v02.23r] — 2026-03-04 07:50:45 AM EST
+## [v02.23r] — 2026-03-04 07:50:45 AM EST — [e8338dc](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/e8338dc63d5ea2e405ae3819a48892f8954d58be)
 
 ### Added
 - "Copy Code.gs" button at step 1 on both GAS Template and GAS Test pages — fetches the associated `.gs` source from a co-deployed text file and copies to clipboard
@@ -1625,7 +1625,7 @@ Developed by: ShadowAISolutions
 - "Copy Code.gs" button at step 1 — one-click copy of the full `gas-test.gs` source code for pasting into the Apps Script editor
 
 
-## [v02.22r] — 2026-03-03 10:42:39 PM EST
+## [v02.22r] — 2026-03-03 10:42:39 PM EST — [3db1165](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3db116552ef2006b8f79c3570058bfffff31eba2)
 
 ### Changed
 - Step 2 (manifest JSON): added a "Copy" button to copy the `appsscript.json` contents to clipboard
@@ -1644,7 +1644,7 @@ Developed by: ShadowAISolutions
 - GCP Console link added to step 3 for new users
 - Detailed GITHUB_TOKEN creation walkthrough and reuse guidance in step 9
 
-## [v02.21r] — 2026-03-03 10:27:04 PM EST
+## [v02.21r] — 2026-03-03 10:27:04 PM EST — [0514119](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/0514119ef2af35c5eb2de0a2414419942b2d76a4)
 
 ### Changed
 - Restructured GAS Template and GAS Test pages — setup instructions are now the primary section with configuration inputs embedded inline at the relevant steps (e.g. Deployment ID input appears at step 8, Spreadsheet fields at step 11)
@@ -1660,7 +1660,7 @@ Developed by: ShadowAISolutions
 - Setup instructions moved before config inputs — inputs now appear inline within the step where they apply
 - Section header renamed from "Configuration" to "Setup & Configuration"
 
-## [v02.20r] — 2026-03-03 10:19:44 PM EST
+## [v02.20r] — 2026-03-03 10:19:44 PM EST — [bca5041](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/bca50413c1887780bee193e567b8fb071562e5bf)
 
 ### Added
 - Collapsible GAS Setup Instructions section on both GAS Template and GAS Test pages — step-by-step guide covering Apps Script project creation, GCP linking, deployment, and token configuration
@@ -1673,7 +1673,7 @@ Developed by: ShadowAISolutions
 ##### Added
 - Collapsible setup instructions panel — same 12-step guide as the GAS Template page
 
-## [v02.19r] — 2026-03-03 10:09:44 PM EST
+## [v02.19r] — 2026-03-03 10:09:44 PM EST — [b129e8d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b129e8daabbcc8972b912f07a16b0f3787ec68af)
 
 ### Added
 - New GAS Test page (`gas-test.html`) — test instance of the GAS template for trying out configuration before modifying the template itself
@@ -1688,7 +1688,7 @@ Developed by: ShadowAISolutions
 ##### Added
 - Test instance of the GAS template script — pulls from and deploys to GasTest directory
 
-## [v02.18r] — 2026-03-03 09:53:51 PM EST
+## [v02.18r] — 2026-03-03 09:53:51 PM EST — [1f741cd](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/1f741cdff3b14236487666fd7554591fd78d0850)
 
 ### Added
 - Interactive configuration form on GAS Template status page — input GAS project variables directly in the browser and test the GAS iframe connection without editing repo files
@@ -1703,7 +1703,7 @@ Developed by: ShadowAISolutions
 - Clear button removes saved settings and resets the dashboard to default state
 - Previously saved settings automatically restore on page load
 
-## [v02.17r] — 2026-03-03 09:40:29 PM EST
+## [v02.17r] — 2026-03-03 09:40:29 PM EST — [6296ec4](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/6296ec4c5d94040677adb8eb72a0067a6b3e1fa6)
 
 ### Added
 - New GAS integration status page (`gas-template.html`) — diagnostic dashboard showing HTML and GAS layer configuration status
@@ -1723,7 +1723,7 @@ Developed by: ShadowAISolutions
 - Config status reporting via `getAppData()` — reports which variables are configured vs placeholder
 - postMessage integration sends `gas-status` to embedding page for dashboard display
 
-## [v02.16r] — 2026-03-03 09:16:20 PM EST
+## [v02.16r] — 2026-03-03 09:16:20 PM EST — [63741a9](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/63741a9719b59dbb962fe1f70831636d3a4f8a4b)
 
 ### Changed
 - Deactivated maintenance mode on test page — maintenance overlay removed, page now accessible normally
@@ -1732,32 +1732,32 @@ Developed by: ShadowAISolutions
 ##### Changed
 - Maintenance mode deactivated — page is now accessible normally
 
-## [v02.15r] — 2026-03-02 06:52:41 PM EST
+## [v02.15r] — 2026-03-02 06:52:41 PM EST — [35633cb](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/35633cbb25bf3abfe70929f64539eb1e6f42924a)
 
 ### Fixed
 - Re-applied v02.14r version bump through proper `claude/*` branch workflow (v02.14r was erroneously pushed directly to `main`)
 
-## [v02.14r] — 2026-03-02 06:43:07 PM EST
+## [v02.14r] — 2026-03-02 06:43:07 PM EST — [cb8dd5f](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/cb8dd5f8728d80802377124c75f1730ebc1a9650)
 
 ### Changed
 - Bumped repository version from v02.13r to v02.14r
 
-## [v02.13r] — 2026-03-02 12:55:00 PM EST
+## [v02.13r] — 2026-03-02 12:55:00 PM EST — [ae0f3e7](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/ae0f3e71c073a82b90d909afc3888964d55b5ace)
 
 ### Added
 - "Imported Skills — Do Not Modify" rule in behavioral-rules.md — imported skills (`.claude/skills/imported--*`) are frozen; only location pointers may be updated, preserving traceability of which skill produces which behavior
 
-## [v02.12r] — 2026-03-02 12:18:12 PM EST
+## [v02.12r] — 2026-03-02 12:18:12 PM EST — [86f3d21](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/86f3d216c11be9b096c38051af1d2d1ef235bbc6)
 
 ### Added
 - `SKILLS-REFERENCE.md` — complete inventory of all Claude Code skills (custom, imported, and bundled/plugin) with visibility status and guidance on when to add local vs. rely on bundled
 
-## [v02.11r] — 2026-03-02 11:58:44 AM EST
+## [v02.11r] — 2026-03-02 11:58:44 AM EST — [a5b1ec8](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/a5b1ec8945e74fffd1221ccb2a360e4a8095bea5)
 
 ### Added
 - 6 imported Claude Code Skills in `.claude/skills/` with `imported--` prefix: `/webapp-testing` (Playwright page testing, from Anthropic), `/frontend-design` (distinctive UI creation, from Anthropic), `/skill-creator` (meta-skill for creating new skills, from Anthropic), `/security-review` (OWASP/web security audit, inspired by Trail of Bits), `/git-cleanup` (stale branch/worktree cleanup, inspired by Trail of Bits), `/diff-review` (pre-push differential code review, inspired by Trail of Bits)
 
-## [v02.10r] — 2026-03-02 11:48:51 AM EST
+## [v02.10r] — 2026-03-02 11:48:51 AM EST — [d51bb21](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d51bb21f79892bf93af0936c4a88d1d5a98247fd)
 
 ### Added
 - Claude Code Skills — 6 invokable workflow skills in `.claude/skills/`: `/phantom-update` (timestamp alignment), `/maintenance-mode` (toggle maintenance overlay), `/new-page` (create new HTML page with boilerplate), `/reconcile` (end multi-session mode), `/remember-session` (save session context), `/initialize` (first deployment setup)
@@ -1890,91 +1890,91 @@ Developed by: ShadowAISolutions
 ##### Added
 - Clicking the version number now opens a changelog popup showing recent page updates
 
-## [v01.95r] — 2026-03-01 02:35:56 PM EST
+## [v01.95r] — 2026-03-01 02:35:56 PM EST — [6a7324c](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/6a7324c3bc2144b685e82d6ba31d2ee2bc7fc92f)
 
 ### Changed
 - Added "Read the full message first" clause to single-commit-per-interaction rule — prevents premature commits when a user message contains multiple requests
 
-## [v01.94r] — 2026-03-01 02:25:56 PM EST
+## [v01.94r] — 2026-03-01 02:25:56 PM EST — [3dd5626](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3dd5626ecf8dbad661ceb4751753fbc66685d83e)
 
 ### Added
 - Added `REMINDERS_DISPLAY` toggle variable — controls whether active reminders are surfaced at session start (default `On`)
 - Added `SESSION_CONTEXT_DISPLAY` toggle variable — controls whether previous session context is surfaced at session start (default `On`)
 
-## [v01.93r] — 2026-03-01 02:18:05 PM EST
+## [v01.93r] — 2026-03-01 02:18:05 PM EST — [941a659](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/941a659731456f1082ac30389d497a1013b6ffc1)
 
 ### Changed
 - Completed "Consider creating a session recap file" reminder — moved from Active to Completed in REMINDERS.md
 
-## [v01.92r] — 2026-03-01 02:10:10 PM EST
+## [v01.92r] — 2026-03-01 02:10:10 PM EST — [5d168c1](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/5d168c1344edb82affcf882df8dc7eaea1be2a90)
 
 ### Changed
 - Turned on `CHAT_BOOKENDS` toggle — mid-response bookend markers now emitted
 - Updated output formatting pointer in CLAUDE.md to reflect toggle independence — removed hardcoded bookend flow description, replaced with toggle-aware summary
 - Fixed remaining toggle-dependent reference in "Duration before user interaction" rule — now uses "response start timestamp" instead of "opening marker (CODING START)"
 
-## [v01.91r] — 2026-03-01 02:05:07 PM EST
+## [v01.91r] — 2026-03-01 02:05:07 PM EST — [61faffa](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/61faffa23644f38edfa1aac63bae8bb54a8f7a53)
 
 ### Changed
 - Made `CHAT_BOOKENDS` and `END_OF_RESPONSE_BLOCK` toggles fully independent — added silent timestamp/estimate capture so all end-of-response block features (ACTUAL TOTAL COMPLETION TIME, PLAN EXECUTION TIME, ESTIMATE CALIBRATED) work even when mid-response bookends are off, and vice versa
 
-## [v01.90r] — 2026-03-01 01:52:37 PM EST
+## [v01.90r] — 2026-03-01 01:52:37 PM EST — [0c04b0f](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/0c04b0fd1466b6f8e77bcfbc0f11dbeec8c21c6d)
 
 ### Changed
 - Turned on `END_OF_RESPONSE_BLOCK` toggle — end-of-response block (UNAFFECTED URLS through CODING COMPLETE) is now emitted after each response
 
-## [v01.89r] — 2026-03-01 01:44:43 PM EST
+## [v01.89r] — 2026-03-01 01:44:43 PM EST — [8078cb1](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8078cb1d9b6e7096e6a2260a8171fd61e5ad6476)
 
 ### Changed
 - Renamed `AutoUpdateOnlyHtmlTemplate` to `HtmlTemplateAutoUpdate` across all files, directories, and documentation references (HTML template, GAS template, version files, changelogs, config files)
 
-## [v01.88r] — 2026-03-01 01:28:40 PM EST
+## [v01.88r] — 2026-03-01 01:28:40 PM EST — [7df18b7](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/7df18b7b35b7a440fab6a016fc72f1cf12dfa114)
 
 ### Changed
 - Chat bookends and end-of-response block toggles set to Off for streamlined output
 
-## [v01.87r] — 2026-03-01 01:15:52 PM EST
+## [v01.87r] — 2026-03-01 01:15:52 PM EST — [20e9843](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/20e984356612297a12acba81f7c04f38dfda1cd1)
 
 ### Changed
 - Improved AskUserQuestion Visibility rule — now covers multi-question popups (all questions shown together in chat) and echoes the user's selections back into chat after they respond
 
-## [v01.86r] — 2026-03-01 01:09:09 PM EST
+## [v01.86r] — 2026-03-01 01:09:09 PM EST — [c232ac3](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/c232ac3cedf99afda4bbccbddfbe7f27397ccaf2)
 
 ### Added
 - Added "AskUserQuestion Visibility" rule — question text and all options are now shown in the chat before the popup appears, so the question context is preserved in conversation history (same pattern as Plan Mode Visibility for ExitPlanMode)
 
-## [v01.85r] — 2026-03-01 12:53:32 PM EST
+## [v01.85r] — 2026-03-01 12:53:32 PM EST — [ddd0550](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/ddd0550cce55f293fbdb7b31aaa6cf7e5f2a61b5)
 
 ### Added
 - Added multi-session mode (`MULTI_SESSION_MODE` variable) — when enabled, parallel Claude Code sessions can safely push to the same repo without merge conflicts on shared state files (repo version, README timestamp, CHANGELOG version sections, STATUS.md)
 - Added "Reconcile Multi-Session" command to catch up on deferred versioning and changelog work when multi-session mode is turned off
 
-## [v01.84r] — 2026-03-01 12:27:00 PM EST
+## [v01.84r] — 2026-03-01 12:27:00 PM EST — [80ff2be](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/80ff2bef345c82e874edb56b6daa4c86624ba8e6)
 
 ### Changed
 - Large file write status messages now include a timestamp and duration estimate so the user knows when the operation started and roughly how long to wait
 
-## [v01.83r] — 2026-03-01 12:22:35 PM EST
+## [v01.83r] — 2026-03-01 12:22:35 PM EST — [f469a5d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/f469a5dbab6871388e130ecb727a3facac8b6018)
 
 ### Added
 - Added "Plan Mode Visibility" rule — plan content must be output as chat text before calling ExitPlanMode so the user can reference it after the approval window disappears
 
-## [v01.82r] — 2026-03-01 12:16:34 PM EST
+## [v01.82r] — 2026-03-01 12:16:34 PM EST — [4f7fb94](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4f7fb94f18639a8f1ad7e9e4b1a8f8c80f1f0264)
 
 ### Added
 - Added session context staleness detection and auto-reconstruction to Session Start Checklist — when SESSION-CONTEXT.md is outdated (missed "remember session"), the system auto-recovers from CHANGELOG entries, commits, and pushes so context persists across sessions
 
-## [v01.81r] — 2026-03-01 11:58:00 AM EST
+## [v01.81r] — 2026-03-01 11:58:00 AM EST — [410576a](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/410576a6477db128978a198bd4c25653cb587352)
 
 ### Changed
 - Moved SESSION SAVED indicator to appear after CODING COMPLETE instead of inside the end-of-response block — ensures maximum visibility so the user cannot miss the session-save confirmation
 
-## [v01.80r] — 2026-03-01 11:53:27 AM EST
+## [v01.80r] — 2026-03-01 11:53:27 AM EST — [958afc2](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/958afc26bb3d7b096c6c974dfa7bed02dd7d69fb)
 
 ### Added
 - Added 4 sandwich ingredients to the to-do list: lettuce, sliced turkey, mustard, pickles
 
-## [v01.79r] — 2026-03-01 11:44:57 AM EST
+## [v01.79r] — 2026-03-01 11:44:57 AM EST — [4077c3d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4077c3d9c0f243b010909f9c8b22047bdd45db46)
 
 ### Changed
 - Session start now shows "📌 Reminders For Developer:" instead of "📌 Reminders from last session:"
@@ -1982,12 +1982,12 @@ Developed by: ShadowAISolutions
 - Session start now shows a tip reminding the developer about the "remember session" command
 - "Remember session" now recommends starting a new session in the end-of-response block to preserve saved context
 
-## [v01.78r] — 2026-03-01 11:39:23 AM EST
+## [v01.78r] — 2026-03-01 11:39:23 AM EST — [b558e7b](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b558e7b2161a640576c6e69155595df193e94657)
 
 ### Changed
 - Completed "Get bread" to-do item
 
-## [v01.77r] — 2026-03-01 11:25:23 AM EST
+## [v01.77r] — 2026-03-01 11:25:23 AM EST — [fff151d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/fff151d1d5d1dabc7b8ef48aa9b2e16b17b1d793)
 
 ### Changed
 - Renamed REMINDERS.md heading to "Reminders for Developer" — clarifies these are the developer's own notes, not a system Claude manages autonomously
@@ -1995,7 +1995,7 @@ Developed by: ShadowAISolutions
 - Broadened "User-Owned Content" rule to cover repurposing/restructuring — never fold a new feature into an existing user-created system or assume one replaces the other without explicit approval
 - Updated all references across CLAUDE.md, output-formatting.md, and README.md to use the new names
 
-## [v01.76r] — 2026-03-01 11:20:19 AM EST
+## [v01.76r] — 2026-03-01 11:20:19 AM EST — [7459327](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/7459327b71c773a81971ad5c91e7baff2b5f69ca)
 
 ### Added
 - Added "User-Owned Content — Do Not Override" rule to behavioral-rules.md — never complete, remove, or modify user-created reminders, to-do items, or notes without explicit approval
@@ -2003,13 +2003,13 @@ Developed by: ShadowAISolutions
 ### Fixed
 - Restored incorrectly completed reminder back to Active Reminders — "Consider creating a session recap file" was closed without user approval
 
-## [v01.75r] — 2026-03-01 11:12:55 AM EST
+## [v01.75r] — 2026-03-01 11:12:55 AM EST — [4b31bcc](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4b31bcc5af32d779389407297d9f68f847f3f47e)
 
 ### Added
 - Created `repository-information/SESSION-CONTEXT.md` — session context log for cross-session continuity
 - Added "Remember Session" command to CLAUDE.md — writes session context to SESSION-CONTEXT.md when the user says "Remember Session", enabling a future session to pick up where the previous one left off
 
-## [v01.74r] — 2026-03-01 11:06:35 AM EST
+## [v01.74r] — 2026-03-01 11:06:35 AM EST — [0f799e5](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/0f799e53e3a8d38494c32232aa17eb1d38fb555f)
 
 ### Fixed
 - Fixed cascading indentation in end-of-response block — added mandatory blank lines between sections and flush-left content to break markdown list context that caused AGENTS USED numbered list to nest all subsequent sections
@@ -2017,17 +2017,17 @@ Developed by: ShadowAISolutions
 ### Added
 - Added "Section separation" formatting rule to end-of-response block in chat-bookends.md — blank line between every section pair, flush-left content
 
-## [v01.73r] — 2026-03-01 10:59:10 AM EST
+## [v01.73r] — 2026-03-01 10:59:10 AM EST — [baae1b0](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/baae1b0ed21114b480444e718b8058a5c95ca8aa)
 
 ### Added
 - Added NEW FOLDERS section to end-of-response block — shows clickable links to any new directories created during a response, positioned between TODO and AFFECTED URLS (skipped entirely when no folders were created)
 
-## [v01.72r] — 2026-03-01 03:07:05 AM EST
+## [v01.72r] — 2026-03-01 03:07:05 AM EST — [9544c72](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/9544c7289e0ae4cf1f0075453b6533763533c3e0)
 
 ### Changed
 - Tightened "Single commit per interaction" rule to absolute — exactly one commit per interaction with only two exceptions (user explicitly requests multiple, or prior push already merged). Removed checkpoint exception
 
-## [v01.71r] — 2026-03-01 03:03:55 AM EST
+## [v01.71r] — 2026-03-01 03:03:55 AM EST — [efbf279](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/efbf279dff94bf5a8204f6375aa6b5edd4c18fa2)
 
 ### Added
 - Added "Single commit per interaction" rule to Pre-Commit Checklist — each user interaction should produce one commit, not split into intermediate + push commits
@@ -2035,13 +2035,13 @@ Developed by: ShadowAISolutions
 ### Changed
 - Rewritten "Rebase before push commit" rule — rebase now happens before making edits (using `git stash` if needed) instead of after, eliminating unnecessary intermediate commits
 
-## [v01.70r] — 2026-03-01 02:57:25 AM EST
+## [v01.70r] — 2026-03-01 02:57:25 AM EST — [feaea5a](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/feaea5a414a7ba6d4c46ddd500e8671b2e540451)
 
 ### Added
 - Added "Explicit Opinion When Consulted" behavioral rule — when the user delegates a judgment call via conditional language ("if you think", "if it makes sense"), state the opinion clearly and act on it rather than silently complying
 - Added "Rule Placement Autonomy" behavioral rule — autonomously choose the best location (CLAUDE.md, existing rules file, or new rules file) when the user asks to make something a rule, with mandatory contradiction scanning
 
-## [v01.69r] — 2026-03-01 02:50:58 AM EST
+## [v01.69r] — 2026-03-01 02:50:58 AM EST — [602197e](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/602197e8317a317b7804fda014a553b1fd2908d4)
 
 ### Fixed
 - Restored missing estimate calibration details in `.claude/rules/chat-bookends.md` — commit cycle example, "do not over-correct" caveat, calibration output example, follow-up commit fallback, and timing note
@@ -2055,7 +2055,7 @@ Developed by: ShadowAISolutions
 - Moved Commit Message Naming content to `.claude/rules/gas-scripts.md`
 - Updated CLAUDE.md pointers and "Maintaining these checklists" section to document always-loaded vs path-scoped rules file types
 
-## [v01.67r] — 2026-03-01 01:46:08 AM EST
+## [v01.67r] — 2026-03-01 01:46:08 AM EST — [4649e18](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4649e18b0f276880b8356f0e0878b7a7a1e3fd3b)
 
 ### Changed
 - Extracted 10 reference sections from CLAUDE.md into 6 path-scoped `.claude/rules/` files, reducing CLAUDE.md from ~1255 to ~993 lines while preserving all functionality via one-line pointers
@@ -2066,18 +2066,18 @@ Developed by: ShadowAISolutions
 - Populated `.claude/rules/changelogs.md` with quick-reference guide for changelog formats and archive rotation
 - Populated `.claude/rules/init-scripts.md` with init script details, Phantom Edit, and Line Ending Safety
 
-## [v01.66r] — 2026-03-01 01:22:38 AM EST
+## [v01.66r] — 2026-03-01 01:22:38 AM EST — [7bf740e](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/7bf740ef06c4f7bc527b95e52ad5a162da2505c9)
 
 ### Added
 - Added "Backups Before Major Changes" rule to CLAUDE.md — recommends creating `.bak` backups in `repository-information/backups/` before large-scale structural edits to critical files
 - Created initial `CLAUDE.md.bak` backup in `repository-information/backups/`
 
-## [v01.65r] — 2026-03-01 01:13:43 AM EST
+## [v01.65r] — 2026-03-01 01:13:43 AM EST — [689e2ad](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/689e2ad71aee74cc5df3c863d2aeeb6b3de6dd30)
 
 ### Added
 - Created `.claude/rules/` directory with 6 path-scoped placeholder rule files for future CLAUDE.md content extraction (html-pages, gas-scripts, workflows, repo-docs, changelogs, init-scripts)
 
-## [v01.64r] — 2026-03-01 01:03:17 AM EST
+## [v01.64r] — 2026-03-01 01:03:17 AM EST — [4a0b404](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4a0b404e4b7715b69eba02af3ffd13ce9c0b074a)
 
 ### Changed
 - Eliminated SHA backfill commit from push cycle — CHANGELOG version headers no longer include commit SHA links at push time, reducing each push from 2 commits to 1
@@ -2140,17 +2140,17 @@ Developed by: ShadowAISolutions
 ### Changed
 - Push commit cycle now includes a SHA backfill step: a mechanical follow-up commit inserts the SHA after the push commit is created
 
-## [v01.55r] — 2026-02-28 11:36:34 PM EST
+## [v01.55r] — 2026-02-28 11:36:34 PM EST — [b1df0c1](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b1df0c1c1d58920c4ea39d8a135e7d15e309bb35)
 
 ### Fixed
 - TODO display in end-of-response block now preserves original list position for crossed-out completed items
 
-## [v01.54r] — 2026-02-28 11:31:10 PM EST
+## [v01.54r] — 2026-02-28 11:31:10 PM EST — [6928620](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/69286202f33f04596550f9ab2a90a92159812111)
 
 ### Changed
 - Completed "Get turkey" to-do item
 
-## [v01.53r] — 2026-02-28 11:27:12 PM EST
+## [v01.53r] — 2026-02-28 11:27:12 PM EST — [d05404b](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d05404b18a397eb310ff57a5c80221d3e5108561)
 
 ### Changed
 - Push-once enforcement retry loop reduced from ~15s x 3 retries (45s max idle) to ~5s x 4 checks (20s max idle)
@@ -2158,7 +2158,7 @@ Developed by: ShadowAISolutions
 - Pre-Push #5 now cross-references "Rebase before push commit" sequence instead of vague "after rebasing" instruction
 - Rebase-before-push-commit rule now explicitly requires clean working tree and documents committing uncommitted changes before rebase
 
-## [v01.52r] — 2026-02-28 11:23:24 PM EST
+## [v01.52r] — 2026-02-28 11:23:24 PM EST — [c3a00f4](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/c3a00f42e492a94bc190fe82465b94d2d05a3040)
 
 ### Added
 - `🔃🔃CONTEXT COMPACTION RECOVERY🔃🔃` bookend — visible marker when context compaction triggers mid-session recovery
@@ -2167,12 +2167,12 @@ Developed by: ShadowAISolutions
 ### Changed
 - Context compaction recovery now skips reminders (already surfaced earlier in session) and focuses on resuming the interrupted task using previously gathered context
 
-## [v01.51r] — 2026-02-28 11:05:02 PM EST
+## [v01.51r] — 2026-02-28 11:05:02 PM EST — [90472eb](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/90472eb775f20ccb6c1cbb1225af1c39d72c3d0b)
 
 ### Changed
 - Context compaction recovery rule now requires resuming interrupted work after the session start checklist, preventing mid-response task abandonment
 
-## [v01.50r] — 2026-02-28 10:55:29 PM EST
+## [v01.50r] — 2026-02-28 10:55:29 PM EST — [26c4ac3](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/26c4ac34305f6560ab91637312c6b9af8b0ea38a)
 
 ### Changed
 - Removed SHA from CHANGELOG version headers — eliminates cross-push backfill dependency (~40-50s savings per push)
@@ -2183,134 +2183,134 @@ Developed by: ShadowAISolutions
 - Rebase-before-push-commit rule — commit intermediate work first, rebase, then do push commit cycle (eliminates stash/pop)
 - Push commit efficiency rules — single timestamp call + parallel edits for independent files
 
-## [v01.49r] — 2026-02-28 10:33:20 PM EST
+## [v01.49r] — 2026-02-28 10:33:20 PM EST — [fc1d454](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/fc1d4546731b1b5a051cb52eb3b840d7a866844e)
 
 ### Added
 - Page-scope command rule — commands that target individual pages (maintenance mode, etc.) now require specifying which pages unless "all" is explicitly stated
 
-## [v01.48r] — 2026-02-28 10:28:23 PM EST — SHA: [`4ced202`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4ced20283b11207f8309b4f9d6289f2283fd6ccb)
+## [v01.48r] — 2026-02-28 10:28:23 PM EST— [4ced202](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4ced20283b11207f8309b4f9d6289f2283fd6ccb)
 
 ### Changed
 - All live site pages placed into maintenance mode
 
-## [v01.47r] — 2026-02-28 10:18:53 PM EST — SHA: [`9c75328`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/9c75328a1ef736537f6e32e58222144791dd3a62)
+## [v01.47r] — 2026-02-28 10:18:53 PM EST— [9c75328](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/9c75328a1ef736537f6e32e58222144791dd3a62)
 
 ### Changed
 - Affected URLs section now shows the version each page becomes after changes
 - Planned Affected URLs now shows the current (pre-change) version for comparison
 - Unaffected URLs now shows the current version for each page
 
-## [v01.46r] — 2026-02-28 09:31:11 PM EST — SHA: [`6df5df7`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/6df5df7a19e035b1d3dc1cdb130c28c14c3a30ee)
+## [v01.46r] — 2026-02-28 09:31:11 PM EST— [6df5df7](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/6df5df7a19e035b1d3dc1cdb130c28c14c3a30ee)
 
 ### Changed
 - Countdown numbers now start appearing at 5 instead of 8
 
-## [v01.45r] — 2026-02-28 09:13:16 PM EST — SHA: [`c6cf8a6`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/c6cf8a66fcbfc1ca9c43f139c1d34091c48454d2)
+## [v01.45r] — 2026-02-28 09:13:16 PM EST— [c6cf8a6](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/c6cf8a66fcbfc1ca9c43f139c1d34091c48454d2)
 
 ### Changed
 - Countdown numbers now start appearing at 8 instead of 9, restoring the original yellow blink rhythm
 
-## [v01.44r] — 2026-02-28 07:35:31 PM EST — SHA: [`b9b59cf`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b9b59cfadb5e3285a7e235d0ac9794cd2b60ebb5)
+## [v01.44r] — 2026-02-28 07:35:31 PM EST— [b9b59cf](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b9b59cfadb5e3285a7e235d0ac9794cd2b60ebb5)
 
 ### Changed
 - Increased countdown font from 5px to 6px for better readability while staying centered in the 8px dot
 
-## [v01.43r] — 2026-02-28 07:29:42 PM EST — SHA: [`3ee4420`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3ee44208627fccd450213a22d014a4ea43995846)
+## [v01.43r] — 2026-02-28 07:29:42 PM EST— [3ee4420](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3ee44208627fccd450213a22d014a4ea43995846)
 
 ### Changed
 - Shrunk countdown font to 5px to center numbers within the original 8px dot instead of expanding the dot
 
-## [v01.42r] — 2026-02-28 07:26:37 PM EST — SHA: [`34d3689`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/34d3689c1050945ba6577969983ca1a7e2a0cc9a)
+## [v01.42r] — 2026-02-28 07:26:37 PM EST— [34d3689](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/34d3689c1050945ba6577969983ca1a7e2a0cc9a)
 
 ### Fixed
 - Fixed countdown numbers not centering in the dot at 100% zoom — dot now expands to 12px when counting for reliable centering at all zoom levels
 
-## [v01.41r] — 2026-02-28 07:19:05 PM EST — SHA: [`d5659eb`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d5659eb5a91cf82f6c15dc09799ee464fd4639e3)
+## [v01.41r] — 2026-02-28 07:19:05 PM EST— [d5659eb](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d5659eb5a91cf82f6c15dc09799ee464fd4639e3)
 
 ### Fixed
 - Centered countdown numbers inside the version indicator dot
 
-## [v01.40r] — 2026-02-28 07:15:10 PM EST — SHA: [`4672c2c`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4672c2c0ff8720402afd069ffc4bec3478344087)
+## [v01.40r] — 2026-02-28 07:15:10 PM EST— [4672c2c](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4672c2c0ff8720402afd069ffc4bec3478344087)
 
 ### Changed
 - Restored original dot size (8×8px) for the version indicator countdown circle
 
-## [v01.39r] — 2026-02-28 07:08:21 PM EST — SHA: [`bb27684`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/bb27684b5411c1233e9bd6fbd27f9400c77f0f70)
+## [v01.39r] — 2026-02-28 07:08:21 PM EST— [bb27684](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/bb27684b5411c1233e9bd6fbd27f9400c77f0f70)
 
 ### Fixed
 - Restored orange pulse during version check — `startCountdown()` was immediately overwriting the checking class, preventing the orange flash from showing
 - Countdown dot is now static gray with numbers (no pulse) — orange pulse reserved for the active fetch
 
-## [v01.38r] — 2026-02-28 07:02:59 PM EST — SHA: [`b5cc752`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b5cc752635b74ec4eb3a89e113c927df118cd48f)
+## [v01.38r] — 2026-02-28 07:02:59 PM EST— [b5cc752](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b5cc752635b74ec4eb3a89e113c927df118cd48f)
 
 ### Fixed
 - Restored pulse animation on the countdown dot — `.counting` class now includes the blink animation that was missing after the dot refactor
 
-## [v01.37r] — 2026-02-28 06:58:44 PM EST — SHA: [`98581d4`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/98581d48583c9c3dc37dd30821cf137051cf374b)
+## [v01.37r] — 2026-02-28 06:58:44 PM EST— [98581d4](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/98581d48583c9c3dc37dd30821cf137051cf374b)
 
 ### Changed
 - Moved poll countdown into the status dot circle — digit counts down 9, 8, ... 1 inside the dot instead of as separate text next to it
 - Countdown starts visibly at 9 (first second after poll is hidden) for a cleaner appearance
 
-## [v01.36r] — 2026-02-28 06:44:28 PM EST — SHA: [`53296d5`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/53296d5426d43e7016c2b43cbd31f50d0752eef7)
+## [v01.36r] — 2026-02-28 06:44:28 PM EST— [53296d5](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/53296d5426d43e7016c2b43cbd31f50d0752eef7)
 
 ### Added
 - Added poll countdown timer to the version indicator pill on all HTML pages — shows seconds remaining until the next version check (e.g. "10s", "9s", ... "1s"), then clears during the fetch
 
-## [v01.35r] — 2026-02-28 06:38:00 PM EST — SHA: [`36b1e51`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/36b1e51a4efb5f14dcc6f407c661936e11e2b3bb)
+## [v01.35r] — 2026-02-28 06:38:00 PM EST— [36b1e51](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/36b1e51a4efb5f14dcc6f407c661936e11e2b3bb)
 
 ### Changed
 - Consolidated two specific self-improvement rules (URL format gate, Reminders compacted-context guard) into a single general "Context compaction recovery" rule in the Session Start Checklist — on compacted/continued contexts, re-read the actual CLAUDE.md rules and re-execute the full Session Start Checklist instead of relying on patterns from the session summary; covers all future cases without needing to enumerate each one
 
-## [v01.34r] — 2026-02-28 06:33:58 PM EST — SHA: [`2908cb7`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2908cb798ee9a60a4d284d32b7234159c38c6f8c)
+## [v01.34r] — 2026-02-28 06:33:58 PM EST— [2908cb7](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2908cb798ee9a60a4d284d32b7234159c38c6f8c)
 
 ### Added
 - Added self-improvement rule to Reminders instruction in CLAUDE.md — explicitly states that reminders must be surfaced on compacted-context continuations and continued sessions, not just fresh sessions; prevents assuming reminders were already shown based on prior context
 
-## [v01.33r] — 2026-02-28 06:31:13 PM EST — SHA: [`b3fd2f5`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b3fd2f526510ddd17062630cd2d2da7ffc4e222f)
+## [v01.33r] — 2026-02-28 06:31:13 PM EST— [b3fd2f5](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/b3fd2f526510ddd17062630cd2d2da7ffc4e222f)
 
 ### Added
 - Added "URL format gate" self-improvement rule to Unaffected URLs section in CLAUDE.md — forces re-deriving the URL display pattern from current variable values (`IS_TEMPLATE_REPO` match + `TEMPLATE_DEPLOY`) instead of copying from prior responses, preventing the wrong URL format from propagating across responses
 
-## [v01.32r] — 2026-02-28 06:22:07 PM EST — SHA: [`5e3d201`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/5e3d2018c5f7a4ce7e3c7564d3beba26485fe0a5)
+## [v01.32r] — 2026-02-28 06:22:07 PM EST— [5e3d201](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/5e3d2018c5f7a4ce7e3c7564d3beba26485fe0a5)
 
 ### Changed
 - Changed bookend date format from `YYYY-MM-DD` to `MM/DD/YYYY` — applies to all 5 time+date bookends (CODING PLAN, CODING START, RESEARCH START, CODING COMPLETE, RESEARCH COMPLETE) and all flow examples
 - Completed to-do item "Get lettuce" and removed it from TODO.md
 
-## [v01.31r] — 2026-02-28 06:17:55 PM EST — SHA: [`0d58700`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/0d58700ccd450322f5c1ed377fbc5aa1fd836181)
+## [v01.31r] — 2026-02-28 06:17:55 PM EST— [0d58700](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/0d58700ccd450322f5c1ed377fbc5aa1fd836181)
 
 ### Added
 - Added 5 items to to-do list: get bread, get turkey, get lettuce, get tomato, get mayo
 
-## [v01.30r] — 2026-02-28 06:14:20 PM EST — SHA: [`9960a53`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/9960a533054121938482e0b0c85911d5c7c7360d)
+## [v01.30r] — 2026-02-28 06:14:20 PM EST— [9960a53](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/9960a533054121938482e0b0c85911d5c7c7360d)
 
 ### Added
 - Added `📋📋TODO📋📋` section to the end-of-response block — displays current to-do items from `repository-information/TODO.md`, shows completed items crossed off with checkboxes, and auto-removes them from the file after display
 
-## [v01.29r] — 2026-02-28 05:42:22 PM EST — SHA: [`1181e65`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/1181e65c33f79739d72e5d844af759de7fb3d10b)
+## [v01.29r] — 2026-02-28 05:42:22 PM EST— [1181e65](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/1181e65c33f79739d72e5d844af759de7fb3d10b)
 
 ### Changed
 - Split the Bookend Summary table into two separate tables: "Mid-Response" bookends and "End-of-Response Block" items — makes it easier to see which bookends belong to the work phase vs. the summary block
 - Added `END OF RESPONSE BLOCK` header between two backtick-wrapped divider lines at the start of the end-of-response block — provides a clear visual banner separating work output from the summary sections
 
-## [v01.28r] — 2026-02-28 05:27:48 PM EST — SHA: [`8cc1a0b`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8cc1a0bf696d7ecc9a556e62f2b78e2559b8dd3c)
+## [v01.28r] — 2026-02-28 05:27:48 PM EST— [8cc1a0b](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8cc1a0bf696d7ecc9a556e62f2b78e2559b8dd3c)
 
 ### Added
 - Added "HTML Page Config Files (html.config.json)" design consideration to IMPROVEMENTS.md — documents when and why an HTML-side config.json would become useful, with implementation design notes for future reference
 
-## [v01.27r] — 2026-02-28 05:09:04 PM EST — SHA: [`c20f20d`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/c20f20d8ffb8e67380c77f24a1984185cf32a6a4)
+## [v01.27r] — 2026-02-28 05:09:04 PM EST— [c20f20d](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/c20f20d8ffb8e67380c77f24a1984185cf32a6a4)
 
 ### Changed
 - `2026-02-28 05:06:41 PM EST` — Centralized all 12 per-page and per-GAS changelog files into `repository-information/changelogs/` — declutters `live-site-pages/`, `googleAppsScripts/`, and `live-site-templates/` directories, and eliminates false GitHub Pages deployment triggers from changelog-only edits
 
-## [v01.26r] — 2026-02-28 04:44:00 PM EST — SHA: [`d64e6d9`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d64e6d9845a5645409cc13fdd0876ae1b4edecc3)
+## [v01.26r] — 2026-02-28 04:44:00 PM EST— [d64e6d9](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d64e6d9845a5645409cc13fdd0876ae1b4edecc3)
 
 ### Changed
 - Standardized HTML version file naming from dot-separated (`index.htmlversion.txt`) to concatenated (`indexhtml.version.txt`) — now uniform with changelog naming pattern (`indexhtml.changelog.md`) and GAS naming pattern (`indexgs.version.txt`)
 - Updated JavaScript auto-refresh polling URL construction from `pageName + '.htmlversion.txt'` to `pageName + 'html.version.txt'`
 
-## [v01.25r] — 2026-02-28 04:32:51 PM EST — SHA: [`2cf6582`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2cf658251efcf92cd00c629098c85c75edf599fa)
+## [v01.25r] — 2026-02-28 04:32:51 PM EST— [2cf6582](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2cf658251efcf92cd00c629098c85c75edf599fa)
 
 ### Changed
 - Renamed HTML page version files to include `html` in filename — `index.version.txt` → `index.htmlversion.txt`, `test.version.txt` → `test.htmlversion.txt`, `AutoUpdateOnlyHtmlTemplate.version.txt` → `AutoUpdateOnlyHtmlTemplate.htmlversion.txt` — completing the disambiguation between HTML and GAS version files
@@ -2319,13 +2319,13 @@ Developed by: ShadowAISolutions
 ### Added
 - Added Pre-Commit #18 (unique file naming) — enforces that no two files in the repo share the same filename, with distinguishing identifiers (`html`, `gs`, etc.) for files tracking similar concepts across subsystems
 
-## [v01.24r] — 2026-02-28 04:17:58 PM EST — SHA: [`4a26eea`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4a26eea787f90d828529a34fbd5d50ca38eda527)
+## [v01.24r] — 2026-02-28 04:17:58 PM EST— [4a26eea](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/4a26eea787f90d828529a34fbd5d50ca38eda527)
 
 ### Changed
 - Renamed all changelog and GAS version files to include `html` or `gs` in filenames for disambiguation — `index.changelog.md` → `indexhtml.changelog.md` (pages) and `indexgs.changelog.md` (GAS), `index.version.txt` → `indexgs.version.txt` (GAS only — HTML version.txt keeps original name as it's a runtime dependency for auto-refresh polling)
 - Updated all internal links within renamed files, CLAUDE.md naming conventions, and README structure tree
 
-## [v01.23r] — 2026-02-28 04:09:55 PM EST — SHA: [`5c7d237`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/5c7d237a5b3c4cd6e3a113c56b892a2af169973e)
+## [v01.23r] — 2026-02-28 04:09:55 PM EST— [5c7d237](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/5c7d237a5b3c4cd6e3a113c56b892a2af169973e)
 
 ### Added
 - Added per-GAS-project `<page-name>.version.txt` files that mirror the `VERSION` variable in each `.gs` file — provides external version reference without reading the code
@@ -2338,12 +2338,12 @@ Developed by: ShadowAISolutions
 - Updated New Embedding Page Setup Checklist with step #10 (create GAS version file and changelog)
 - Updated Template Repo Guard and Phantom Edit reset rules to include GAS changelogs and version.txt files
 
-## [v01.22r] — 2026-02-28 04:02:49 PM EST — SHA: [`196a4ed`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/196a4ede2548770e483f1a0da7cfd08cb3e5bb17)
+## [v01.22r] — 2026-02-28 04:02:49 PM EST— [196a4ed](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/196a4ede2548770e483f1a0da7cfd08cb3e5bb17)
 
 ### Changed
 - Updated page changelog version section header format to include the corresponding repo version for developer cross-reference — format: `## [vXX.XXw] (vXX.XXr) — YYYY-MM-DD HH:MM:SS AM/PM EST`
 
-## [v01.21r] — 2026-02-28 03:57:32 PM EST — SHA: [`1410eef`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/1410eefb776afbc007b91042691a35652e61d87f)
+## [v01.21r] — 2026-02-28 03:57:32 PM EST— [1410eef](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/1410eefb776afbc007b91042691a35652e61d87f)
 
 ### Added
 - Added user-facing per-page changelogs (`<page-name>.changelog.md` and `<page-name>.changelog-archive.md`) for each HTML page in `live-site-pages/` — describes changes from the visitor's perspective without exposing backend details
@@ -2353,20 +2353,20 @@ Developed by: ShadowAISolutions
 ### Changed
 - Updated Template Repo Guard, Pre-Commit gate, Phantom Edit, and New Embedding Page Setup Checklist to include #17
 
-## [v01.20r] — 2026-02-28 03:49:03 PM EST — SHA: [`38627b5`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/38627b5c4cee48b12604d9c5d013b096f3cc2637)
+## [v01.20r] — 2026-02-28 03:49:03 PM EST— [38627b5](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/38627b5c4cee48b12604d9c5d013b096f3cc2637)
 
 ### Changed
 - Added SHA placeholder (`— SHA: *pending next push*`) to new CHANGELOG version section headers — makes it clear a SHA will be backfilled on the next push, instead of showing nothing
 - Updated Pre-Commit #7 format spec to include placeholder in new version section headers
 - Updated Pre-Commit #16 backfill logic to replace the placeholder with the actual linked SHA
 
-## [v01.19r] — 2026-02-28 03:38:51 PM EST — SHA: [`d19cddb`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d19cddb07062c3e51e0241e59d91997de6f2e122)
+## [v01.19r] — 2026-02-28 03:38:51 PM EST— [d19cddb](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d19cddb07062c3e51e0241e59d91997de6f2e122)
 
 ### Changed
 - Added "Conflict cleanup" rule to Continuous Improvement section in CLAUDE.md — when adding or modifying a rule, scan the rest of the file for conflicting text and remove/update it in the same commit
 - Fixed stale backfill format in Pre-Commit #7 — was still showing date-only (`YYYY-MM-DD`) instead of the new date+time format
 
-## [v01.18r] — 2026-02-28 03:32:19 PM EST — SHA: [`247665a`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/247665a7504155b1470e96f9a946f7d239dedb8e)
+## [v01.18r] — 2026-02-28 03:32:19 PM EST— [247665a](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/247665a7504155b1470e96f9a946f7d239dedb8e)
 
 ### Fixed
 - Fixed CHANGELOG entries — each version section now has its own entries describing what that specific push changed, instead of accumulating entries from prior versions into a single section
@@ -2374,81 +2374,81 @@ Developed by: ShadowAISolutions
 ### Changed
 - Added "One version, one set of entries" clarification to Pre-Commit #7 in CLAUDE.md — entries belong to the version that introduced them and must not be duplicated into later version sections
 
-## [v01.17r] — 2026-02-28 03:24:30 PM EST — SHA: [`e3e5bc2`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/e3e5bc2795fa041bc581c1f99950917155a5f9f3)
+## [v01.17r] — 2026-02-28 03:24:30 PM EST— [e3e5bc2](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/e3e5bc2795fa041bc581c1f99950917155a5f9f3)
 
 ### Changed
 - Moved timestamps from individual CHANGELOG entries to version section headers — each push is a single atomic unit, so one timestamp per section is sufficient
 - Updated Pre-Commit #7 entry format from timestamped entries to plain `- Description`
 - Updated version section header format to include full `HH:MM:SS AM/PM EST` timestamp
 
-## [v01.16r] — 2026-02-28 03:21:17 PM EST — SHA: [`d9f668e`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d9f668e18d95f976fbdcb6e7a1b807617bd76d23)
+## [v01.16r] — 2026-02-28 03:21:17 PM EST— [d9f668e](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/d9f668e18d95f976fbdcb6e7a1b807617bd76d23)
 
 ### Changed
 - Added `SHA:` label prefix to COMMIT LOG entries and CHANGELOG version headers — makes it clear that the linked alphanumeric string is a commit SHA (Secure Hash Algorithm identifier)
 - Updated Pre-Commit #7 and #16 format specs to include the `SHA:` label
 - Updated flow examples in Chat Bookends to show `SHA:` prefix
 
-## [v01.15r] — 2026-02-28 03:17:38 PM EST — SHA: [`2b4d930`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2b4d93039d2aede730bf939be775ddc7f262426b)
+## [v01.15r] — 2026-02-28 03:17:38 PM EST— [2b4d930](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2b4d93039d2aede730bf939be775ddc7f262426b)
 
 ### Changed
 - Changed COMMIT LOG SHA links from backtick-wrapped (red/accent) to plain markdown links (clickable, non-red) — matches the style used for file path links like index.html
 - Updated flow examples in Chat Bookends to show plain link format
 
-## [v01.14r] — 2026-02-28 03:12:45 PM EST — SHA: [`16ba557`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/16ba55710c33bb6b5ce51f37265fce33540a89b8)
+## [v01.14r] — 2026-02-28 03:12:45 PM EST— [16ba557](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/16ba55710c33bb6b5ce51f37265fce33540a89b8)
 
 ### Changed
 - Added linked SHAs to COMMIT LOG end-of-response section — commits now link to their GitHub commit page for one-click navigation
 - Updated COMMIT LOG format spec in Chat Bookends and flow examples
 
-## [v01.13r] — 2026-02-28 03:08:41 PM EST — SHA: [`8440b6e`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8440b6eb7a0ef05c922f7dd9f2f77baf5789a487)
+## [v01.13r] — 2026-02-28 03:08:41 PM EST— [8440b6e](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8440b6eb7a0ef05c922f7dd9f2f77baf5789a487)
 
 ### Changed
 - Made CHANGELOG commit SHAs clickable links to GitHub commit pages — updated Pre-Commit #7 and #16 format specs
 - Converted all 11 existing SHA entries in CHANGELOG to linked format
 
-## [v01.12r] — 2026-02-28 02:44:13 PM EST — SHA: [`96c0667`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/96c06679947b092b9582005448aa092e84922a34)
+## [v01.12r] — 2026-02-28 02:44:13 PM EST— [96c0667](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/96c06679947b092b9582005448aa092e84922a34)
 
 ### Changed
 - Reframed "Validate Before Asserting" in CLAUDE.md — "Wait. No." moments are acceptable and expected; what matters is treating each one as a Continuous Improvement trigger to propose CLAUDE.md additions that prevent the same mistake from recurring
 
-## [v01.11r] — 2026-02-28 02:40:29 PM EST — SHA: [`8e78453`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8e78453c83cbccd8ceef2803b144f473f3f48909)
+## [v01.11r] — 2026-02-28 02:40:29 PM EST— [8e78453](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8e78453c83cbccd8ceef2803b144f473f3f48909)
 
 ### Changed
 - Strengthened "Validate Before Asserting" rule in CLAUDE.md — now covers mid-reasoning assertions (not just opening statements), adds explicit "Wait. No." pattern warning, and emphasizes tracing multi-step logic to completion before asserting any step works
 
-## [v01.10r] — 2026-02-28 02:33:19 PM EST — SHA: [`3d087fe`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3d087fe6b6518e28755197318e64541c04d2417e)
+## [v01.10r] — 2026-02-28 02:33:19 PM EST— [3d087fe](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/3d087fe6b6518e28755197318e64541c04d2417e)
 
 ### Added
 - Added "Validate Before Asserting" section to CLAUDE.md — reason through claims before stating them as fact; never lead with a confident assertion that hasn't been verified
 
-## [v01.09r] — 2026-02-28 02:26:52 PM EST — SHA: [`8b3a82c`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8b3a82cac958665ad2ed9bd1854b026ba9a3e48f)
+## [v01.09r] — 2026-02-28 02:26:52 PM EST— [8b3a82c](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8b3a82cac958665ad2ed9bd1854b026ba9a3e48f)
 
 ### Changed
 - Increased CHANGELOG archive rotation limit from 20 to 50 version sections across CLAUDE.md, CHANGELOG.md, and CHANGELOG-archive.md (including rotation logic examples)
 
-## [v01.08r] — 2026-02-28 02:10:05 PM EST — SHA: [`eb3266b`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/eb3266b3d7176594a824ed92c44f7aab850e01ab)
+## [v01.08r] — 2026-02-28 02:10:05 PM EST— [eb3266b](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/eb3266b3d7176594a824ed92c44f7aab850e01ab)
 
 ### Added
 - Added capacity counter (`Sections: X/20`) to CHANGELOG.md header — shows current version section count vs. rotation limit at a glance
 - Added capacity counter update rule to Pre-Commit #7 — counter updates on every push commit after version section creation and archive rotation
 
-## [v01.07r] — 2026-02-28 01:59:08 PM EST — SHA: [`8b58ebc`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8b58ebcb7d387a5a19afed9d07712c212b677e20)
+## [v01.07r] — 2026-02-28 01:59:08 PM EST— [8b58ebc](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/8b58ebcb7d387a5a19afed9d07712c212b677e20)
 
 ### Added
 - Added Continuous Improvement section to CLAUDE.md — when Claude encounters struggles or missed steps, flag them to the user and propose CLAUDE.md additions to prevent recurrence
 
-## [v01.06r] — 2026-02-28 01:56:27 PM EST — SHA: [`abfe8e1`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/abfe8e18dd2028b2e112165d71763e441d8f6b43)
+## [v01.06r] — 2026-02-28 01:56:27 PM EST— [abfe8e1](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/abfe8e18dd2028b2e112165d71763e441d8f6b43)
 
 ### Changed
 - Fixed SHA backfill instructions in Pre-Commit #16 — after rebase onto `origin/main`, HEAD is the workflow's `[skip ci]` commit, not the version commit; must match version prefix in `git log` output instead of using `git log -1`
 
-## [v01.05r] — 2026-02-28 01:51:24 PM EST — SHA: [`ad76117`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/ad76117802c331ae1730c78f7ee3867a6e02d383)
+## [v01.05r] — 2026-02-28 01:51:24 PM EST— [ad76117](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/ad76117802c331ae1730c78f7ee3867a6e02d383)
 
 ### Changed
 - Refined CHANGELOG archive rotation to rotate by date group (all sections sharing the oldest date move together) with current-day exemption
 - Added detailed rotation logic documentation to `CHANGELOG-archive.md` (step-by-step procedure, key rules, examples)
 
-## [v01.04r] — 2026-02-28 01:48:26 PM EST — SHA: [`2f70fd4`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2f70fd45c4744fc9094c1807aaf91913fcc7469d)
+## [v01.04r] — 2026-02-28 01:48:26 PM EST— [2f70fd4](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2f70fd45c4744fc9094c1807aaf91913fcc7469d)
 
 ### Added
 - Added CHANGELOG archive rotation — when CHANGELOG.md exceeds 20 version sections, oldest sections are moved to `CHANGELOG-archive.md`
@@ -2458,7 +2458,7 @@ Developed by: ShadowAISolutions
 - Updated Phantom Edit and Template Repo Guard CHANGELOG reset rules to also reset the archive file
 - Fixed stale comment in README tree (`repository.version.txt` — "bumps every commit" → "bumps every push")
 
-## [v01.03r] — 2026-02-28 01:29:17 PM EST — SHA: [`17498e8`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/17498e80290c434d072ae8011f31c8e4903fbb16)
+## [v01.03r] — 2026-02-28 01:29:17 PM EST— [17498e8](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/17498e80290c434d072ae8011f31c8e4903fbb16)
 
 ### Changed
 - Changed repo version bump (#16) from per-commit to per-push — version now increments only on the final commit before `git push`
@@ -2468,7 +2468,7 @@ Developed by: ShadowAISolutions
 - Updated Commit Message Naming reference section with intermediate commit examples
 - Clarified Pre-Commit #11 that repo version display stays unchanged on intermediate commits
 
-## [v01.02r] — 2026-02-28 01:13:35 PM EST — SHA: [`dceafab`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/dceafab59bc174ef7acb32af0e990d711bc90abd)
+## [v01.02r] — 2026-02-28 01:13:35 PM EST— [dceafab](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/dceafab59bc174ef7acb32af0e990d711bc90abd)
 
 ### Added
 - Added repo version display next to `Last updated:` timestamp in README.md (format: `Last updated: TIMESTAMP · Repo version: vXX.XXr`)
@@ -2477,7 +2477,7 @@ Developed by: ShadowAISolutions
 - Updated Pre-Commit #11 to include repo version update alongside README timestamp
 - Broadened Initialize Command no-version-bump wording to explicitly list all version file types (`repository.version.txt`, `.gs` VERSION, HTML meta tags)
 
-## [v01.01r] — 2026-02-28 01:09:13 PM EST — SHA: [`2a376dd`](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2a376dd66a987d1125a1589a8ebe74b39b30ef73)
+## [v01.01r] — 2026-02-28 01:09:13 PM EST— [2a376dd](https://github.com/ShadowAISolutions/htmltemplateautoupdate/commit/2a376dd66a987d1125a1589a8ebe74b39b30ef73)
 
 ### Added
 - Introduced repository version system (`v01.XXr`) — tracks every commit with a dedicated version in `repository-information/repository.version.txt`

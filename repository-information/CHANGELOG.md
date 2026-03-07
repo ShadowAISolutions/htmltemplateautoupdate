@@ -3,9 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 81/100`
+`Sections: 82/100`
 
 ## [Unreleased]
+
+## [v04.21r] — 2026-03-07 01:20:54 PM EST
+
+### Fixed
+
+- Backfilled 138 missing commit SHA links in CHANGELOG-archive.md (v02.94r–v03.39r and older sections that were rotated without SHA enrichment)
+- Backfilled 47 missing commit SHA links in gas-project-creatorhtml.changelog-archive.md
+- Normalized 48 old-format SHA entries (`— SHA: [\`xxx\`]`) to the current format (`— [xxx]`) in CHANGELOG-archive.md
+- Removed corrupted duplicate "Key rules" / "Examples" section stranded between v02.94r and v02.93r in CHANGELOG-archive.md
+
+### Changed
+
+- Reinforced SHA enrichment rule in CHANGELOG-archive.md rotation logic — added "SHA enrichment is MANDATORY — never skip it" key rule and a mandatory post-rotation verification check (`grep` command to catch missing SHAs before committing)
+- Updated changelogs.md rules file — made SHA enrichment requirement more prominent with verification step
+- Updated CLAUDE.md Pre-Commit #7 archive rotation section — added SHA enrichment verification reminder and mandatory check
 
 ## [v04.20r] — 2026-03-07 12:50:10 PM EST
 

@@ -88,6 +88,6 @@ The changelog popup can be independently enabled or disabled per page using the 
 ### Archive Rotation Summary
 - **Quick rule**: 100 triggers, date groups move. A date group is ALL sections sharing the same date — could be 1 section or 500. Never split a date group. Today's sections (EST) are always exempt. Repeat until ≤100 non-exempt sections remain
 - Full rotation logic is documented in `repository-information/CHANGELOG-archive.md` (see "Rotation Logic" section)
-- SHA enrichment happens during rotation — see CHANGELOG-archive.md for details
+- **SHA enrichment is MANDATORY during rotation** — every section header moved to the archive MUST have a commit SHA link appended. This applies to the repo CHANGELOG archive AND all page/GAS changelog archives. Look up the commit via `git log --oneline --all --grep="^vXX.XXr "` for repo sections, or by searching for the repo version cross-reference for page/GAS sections. **Post-rotation verification**: run `grep '^## \[v' ARCHIVE_FILE | grep -v '— \[' | head -5` — if any lines appear, SHA enrichment was missed and must be completed before committing. This is the most commonly skipped rotation step — see CHANGELOG-archive.md "Post-rotation verification" for the mandatory check
 
 Developed by: ShadowAISolutions
