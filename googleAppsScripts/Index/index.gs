@@ -1,102 +1,3 @@
-// =============================================
-// SELF-UPDATING GOOGLE APPS SCRIPT FROM GITHUB
-// =============================================
-//
-// WHAT THIS IS
-// ------------
-// A Google Apps Script web app that pulls its own source code from
-// a GitHub repository and redeploys itself. GitHub is the source of
-// truth — this file (index.gs) is the ONLY file you need to edit.
-//
-// There are TWO ways updates reach the live web app:
-//   1. AUTOMATIC: Push to a claude/* branch → GitHub Action merges to
-//      main → calls doPost(action=deploy) → GAS pulls + deploys itself
-//   2. MANUAL: Click "Pull Latest" in the web app UI
-//
-// PAGE RELOAD (EMBEDDING SOLUTION)
-// ---------------------------------
-// The GAS sandbox iframe blocks programmatic navigation from async
-// callbacks. Solution: embed the web app as a full-screen iframe on
-// a GitHub Pages page. After deploy, the GAS client sends:
-//   window.top.postMessage({type:'gas-reload', version: ...}, '*')
-// The embedding page catches this and reloads itself.
-//
-// ARCHITECTURE — DYNAMIC LOADER PATTERN
-// ---------------------------------------
-// - doGet() serves a STATIC HTML shell (never changes)
-// - All visible content is fetched at runtime via getAppData()
-// - getAppData() returns {version, title} → applyData() updates DOM
-// - After a pull, getAppData() runs on the NEW server code
-// - This bypasses Google's aggressive server-side HTML caching
-//
-// AUTO-DEPLOY FLOW (push → live in ~30 seconds)
-// -----------------------------------------------
-//   1. Claude Code pushes to claude/* branch
-//   2. GitHub Action merges to main
-//   3. GitHub Action calls doPost(action=deploy)
-//   4. doPost() calls pullAndDeployFromGitHub() directly
-//   5. GAS pulls new code from GitHub, overwrites project, deploys
-//   6. postMessage tells the embedding page to reload
-//   7. App shows new version — zero manual clicks
-//
-// FALLBACK: If doPost deploy fails or is unavailable, the client-side
-// auto-pull on page load will catch up on the next page visit.
-//
-// VERSION LIMIT MANAGEMENT (200 VERSION CAP)
-// --------------------------------------------
-// Apps Script has a hard 200 version limit. The API does NOT support
-// deleting versions. When 180+ is reached, a warning appears.
-// Manually clean up: Apps Script editor → Project History → Bulk delete
-//
-// SETUP STEPS
-// -----------
-// 1. Create an Apps Script project, paste this code
-// 2. Enable "Show appsscript.json" in Project Settings, set contents:
-//    {
-//      "timeZone": "America/New_York",
-//      "runtimeVersion": "V8",
-//      "dependencies": {},
-//      "webapp": {
-//        "executeAs": "USER_DEPLOYING",
-//        "access": "ANYONE_ANONYMOUS"
-//      },
-//      "exceptionLogging": "STACKDRIVER",
-//      "oauthScopes": [
-//        "https://www.googleapis.com/auth/script.projects",
-//        "https://www.googleapis.com/auth/script.external_request",
-//        "https://www.googleapis.com/auth/script.deployments",
-//        "https://www.googleapis.com/auth/spreadsheets",
-//        "https://www.googleapis.com/auth/script.send_mail"
-//      ]
-//    }
-// 3. Create or use a GCP project where you have Owner access
-// 4. Enable Apps Script API in GCP project (APIs & Services → Library)
-// 5. Link GCP project in Apps Script (Project Settings → Change project)
-// 6. Enable Apps Script API at script.google.com/home/usersettings
-// 7. Deploy as Web app (Deploy → New deployment → Web app → Anyone)
-// 8. Copy Deployment ID into DEPLOYMENT_ID below
-// 9. Set GITHUB_TOKEN in Script Properties:
-//      Key: GITHUB_TOKEN   Value: github_pat_... token
-//      (fine-grained token with "Public repositories" read-only access)
-// 10. Run any function from editor to trigger OAuth authorization
-// 11. If using Google Sheets: create spreadsheet, copy ID into SPREADSHEET_ID
-// 12. If using installable trigger for sheet caching:
-//      Apps Script editor → Triggers → + Add Trigger →
-//      Function: onEditWriteB1ToCache, Event source: From spreadsheet,
-//      Event type: On edit
-//
-// IMPORTANT — AUTO-INCREMENT VERSION ON EVERY COMMIT:
-//   Whenever Claude Code edits this file, it MUST increment VERSION
-//   by 0.01 (e.g. "01.00g" → "01.01g"). No commit should leave
-//   VERSION unchanged.
-//
-// IMPORTANT — KEEP THIS OVERVIEW UP TO DATE:
-//   Whenever you make structural changes (new functions, new integrations,
-//   new config variables), update the relevant section of this overview
-//   IN THE SAME COMMIT.
-//
-// =============================================
-
 // ── PROJECT CONFIG ────────────────────────────────────────────────
 // index.config.json (same directory) is the SINGLE SOURCE OF TRUTH for
 // project-unique values: TITLE, DEPLOYMENT_ID, SPREADSHEET_ID,
@@ -107,7 +8,7 @@
 // FILE_PATH, EMBED_PAGE_URL, SPLASH_LOGO_URL) are managed directly
 // in this file — they are NOT in config.json.
 
-var VERSION = "01.01g";
+var VERSION = "01.02g";
 var TITLE = "CHANGE THIS PROJECT TITLE TEMPLATE";               // ← index.config.json
 
 // GitHub config — where to pull code from

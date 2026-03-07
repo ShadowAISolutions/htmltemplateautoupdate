@@ -103,6 +103,69 @@ Domain-specific coding constraints are maintained in a dedicated reference file.
 | Testation7 | `googleAppsScripts/Testation7/testation7.gs` | `googleAppsScripts/Testation7/testation7.config.json` | `live-site-pages/testation7.html` |
 | Testation8 | `googleAppsScripts/Testation8/testation8.gs` | `googleAppsScripts/Testation8/testation8.config.json` | `live-site-pages/testation8.html` |
 
+## GAS Architecture Overview
+
+### What This Is
+A Google Apps Script web app that pulls its own source code from a GitHub repository and redeploys itself. GitHub is the source of truth — the `.gs` file is the ONLY file you need to edit.
+
+Updates reach the live web app via webhook:
+Push to a `claude/*` branch → GitHub Action merges to main → workflow calls `doPost(action=deploy)` → GAS pulls + deploys itself
+
+### Page Reload (Embedding Solution)
+The GAS sandbox iframe blocks programmatic navigation from async callbacks. Solution: embed the web app as a full-screen iframe on a GitHub Pages page. The embedding page polls a version file on GitHub Pages to detect updates and reloads automatically.
+
+### Architecture — Dynamic Loader Pattern
+- `doGet()` serves a STATIC HTML shell (never changes)
+- All visible content is fetched at runtime via `getAppData()`
+- `getAppData()` returns `{version, title}` → `applyData()` updates DOM
+- After a pull, `getAppData()` runs on the NEW server code
+- This bypasses Google's aggressive server-side HTML caching
+
+### Auto-Deploy Flow (push → live in ~30 seconds)
+1. Claude Code pushes to `claude/*` branch
+2. GitHub Action merges to main
+3. GitHub Action calls `doPost(action=deploy)`
+4. `doPost()` calls `pullAndDeployFromGitHub()` directly
+5. GAS pulls new code from GitHub, overwrites project, deploys
+6. Embedding page detects version change via `gs.version.txt` polling
+7. App shows new version — zero manual clicks
+
+### Version Limit Management (200 Version Cap)
+Apps Script has a hard 200 version limit. The API does NOT support deleting versions. When 180+ is reached, a warning appears. Manually clean up: Apps Script editor → Project History → Bulk delete.
+
+### Setup Steps
+1. Create an Apps Script project, paste the code
+2. Enable "Show appsscript.json" in Project Settings, set contents:
+   ```json
+   {
+     "timeZone": "America/New_York",
+     "runtimeVersion": "V8",
+     "dependencies": {},
+     "webapp": {
+       "executeAs": "USER_DEPLOYING",
+       "access": "ANYONE_ANONYMOUS"
+     },
+     "exceptionLogging": "STACKDRIVER",
+     "oauthScopes": [
+       "https://www.googleapis.com/auth/script.projects",
+       "https://www.googleapis.com/auth/script.external_request",
+       "https://www.googleapis.com/auth/script.deployments",
+       "https://www.googleapis.com/auth/spreadsheets",
+       "https://www.googleapis.com/auth/script.send_mail"
+     ]
+   }
+   ```
+3. Create or use a GCP project where you have Owner access
+4. Enable Apps Script API in GCP project (APIs & Services → Library)
+5. Link GCP project in Apps Script (Project Settings → Change project)
+6. Enable Apps Script API at script.google.com/home/usersettings
+7. Deploy as Web app (Deploy → New deployment → Web app → Anyone)
+8. Copy Deployment ID into `DEPLOYMENT_ID` in the `.gs` file
+9. Set `GITHUB_TOKEN` in Script Properties: Key: `GITHUB_TOKEN`, Value: `github_pat_...` token (fine-grained token with "Public repositories" read-only access)
+10. Run any function from editor to trigger OAuth authorization
+11. If using Google Sheets: create spreadsheet, copy ID into `SPREADSHEET_ID`
+12. If using installable trigger for sheet caching: Apps Script editor → Triggers → + Add Trigger → Function: `onEditWriteB1ToCache`, Event source: From spreadsheet, Event type: On edit
+
 ## GAS Webhook Auto-Deploy (Confirmed Working)
 
 When a `.gs` file is pushed and merged to `main`, the `auto-merge-claude.yml` workflow triggers a webhook (`doPost(action=deploy)`) on the corresponding GAS web app. This causes the GAS script to pull its latest source from GitHub and redeploy itself — **without the embedding HTML page needing to be open**. The GAS backend updates server-side; the next time a user loads the page, they get the new version automatically.

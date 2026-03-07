@@ -3,9 +3,31 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 68/100`
+`Sections: 69/100`
 
 ## [Unreleased]
+
+## [v04.08r] — 2026-03-07 10:31:10 AM EST
+
+### Changed
+
+- Moved GAS architecture overview, setup steps, and auto-deploy flow documentation from inline code comments to `gas-scripts.md` rules file
+- Removed ~75-line comment block from GAS template source and all existing `.gs` files (content preserved in documentation)
+
+#### `index.gs` — 01.02g
+
+##### Changed
+- Removed inline architecture documentation (no user-visible change)
+
+#### `testation7.gs` — 01.04g
+
+##### Changed
+- Removed inline architecture documentation (no user-visible change)
+
+#### `testation8.gs` — 01.03g
+
+##### Changed
+- Removed inline architecture documentation (no user-visible change)
 
 ## [v04.07r] — 2026-03-07 12:42:46 AM EST
 
