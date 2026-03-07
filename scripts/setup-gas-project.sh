@@ -586,8 +586,6 @@ EXPECTED_FILES=(
     "$HTML_CL_ARCHIVE"
     "$GAS_CL"
     "$GAS_CL_ARCHIVE"
-    "$HTML_CL_DEPLOY"
-    "$GAS_CL_DEPLOY"
 )
 
 for f in "${EXPECTED_FILES[@]}"; do

@@ -40,6 +40,13 @@ graph TB
             GASTPL_PAGE["gas-project-creator.html"]
             GASTPL_CODE["gas-code/\ngas-project-creator-code.js.txt"]
             TSTA7_PAGE["testation7.html"]
+            TSTT_PAGE["testation8.html"]
+            TSTT_VERTXT["testation8html.version.txt"]
+            TSTT_CL["testation8html.changelog.md"]
+            TSTT_CLARCH["testation8html.changelog-archive.md"]
+            TSTT_GSCL["testation8gs.changelog.md"]
+            TSTT_GSCLARCH["testation8gs.changelog-archive.md"]
+            TSTT_GSVER["testation8gs.version.txt"]
             SND1["sounds/Website_Ready_Voice_1.mp3"]
             SND2["sounds/Code_Ready_Voice_1.mp3"]
 
@@ -90,6 +97,8 @@ graph TB
             GAS_CFG["index.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
             GAS_TSTA7["googleAppsScripts/Testation7/\ntestation7.gs"]
             GAS_TSTA7_CFG["testation7.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
+            GAS_TSTT["googleAppsScripts/Testation8/\ntestation8.gs"]
+            GAS_TSTT_CFG["testation8.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
         end
 
         subgraph "GAS Self-Update Loop"
@@ -131,14 +140,19 @@ graph TB
     GAS_CFG -.->|"syncs to\n(Pre-Commit #15)"| INDEX
     GAS_TSTA7_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_TSTA7
     GAS_TSTA7_CFG -.->|"syncs to\n(Pre-Commit #15)"| TSTA7_PAGE
+    GAS_TSTT_CFG -.->|"syncs to\n(Pre-Commit #15)"| GAS_TSTT
+    GAS_TSTT_CFG -.->|"syncs to\n(Pre-Commit #15)"| TSTT_PAGE
     GASTPL_CODE -.->|"template source\n(setup-gas-project.sh)"| GAS_INDEX
     GASTPL_CODE -.->|"template source\n(setup-gas-project.sh)"| GAS_TSTA7
+    GASTPL_CODE -.->|"template source\n(setup-gas-project.sh)"| GAS_TSTT
     LIVE -.->|"serves"| BROWSER
     INDEX -.->|"iframes"| GAS_APP
     TSTA7_PAGE -.->|"iframes"| GAS_APP
+    TSTT_PAGE -.->|"iframes"| GAS_APP
     GAS_POSTMSG -.->|"tells embedding\npage to reload"| BROWSER
     GAS_INDEX -.->|"source of truth\nfor GAS app\n(index.gs)"| GAS_PULL
     GAS_TSTA7 -.->|"source of truth\nfor GAS app\n(testation7.gs)"| GAS_PULL
+    GAS_TSTT -.->|"source of truth\nfor GAS app\n(testation8.gs)"| GAS_PULL
     GAS_DEPLOY -.->|"curl POST\naction=deploy"| GAS_APP
     SHA_FILE -.->|"read by"| SHA_CHECK
     UPDATE_SHA -.->|"writes"| SHA_FILE
@@ -155,6 +169,8 @@ graph TB
     style GAS_TSTA7_CFG fill:#ffe082,color:#000
     style GAS_TPL_PAGE fill:#ffa726,color:#000
     style GAS_APP fill:#42a5f5,color:#fff
+    style GAS_TSTT fill:#ff7043,color:#fff
+    style GAS_TSTT_CFG fill:#ffe082,color:#000
     style CLAUDE_MD fill:#ce93d8,color:#000
     style RULES fill:#ce93d8,color:#000
     style SKILLS fill:#ce93d8,color:#000

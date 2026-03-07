@@ -3,7 +3,17 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 99/100`
+`Sections: 100/100`
+
+## [v03.93r] — 2026-03-06 09:31:21 PM EST
+
+### Added
+
+- Set up new GAS project Testation8 with full template scaffolding (10 files, workflow deploy step, all table registrations)
+
+### Fixed
+
+- Fixed `setup-gas-project.sh` Phase 12 verification crash — removed undefined `HTML_CL_DEPLOY` and `GAS_CL_DEPLOY` variables from expected files array
 
 ## [v03.92r] — 2026-03-06 08:52:54 PM EST
 
