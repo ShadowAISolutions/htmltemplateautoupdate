@@ -1,4 +1,4 @@
-var VERSION = "01.05g";
+var VERSION = "01.06g";
 var TITLE = "test 8";
 var GITHUB_OWNER  = "ShadowAISolutions";
 var GITHUB_REPO   = "htmltemplateautoupdate";
@@ -9,6 +9,18 @@ var SPREADSHEET_ID = "1Nusq89frgjs8eWXrK_tYBAcfnscIFxX6sDWIS_F0MlM";
 var SHEET_NAME     = "Live_Sheet";
 var SOUND_FILE_ID = "1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN";
 var EMBED_PAGE_URL = "https://ShadowAISolutions.github.io/htmltemplateautoupdate/testation8.html";
+
+// ══════════════════════════════════════════════════════════════
+// PROJECT START
+// ══════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════
+// PROJECT END
+// ══════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════
+// TEMPLATE START
+// ══════════════════════════════════════════════════════════════
 
 function doGet() {
   var html = `
@@ -407,4 +419,8 @@ function pullAndDeployFromGitHub() {
 
   return "Updated to v" + pulledVersion + " (deployment " + newVersion + ")" + cleanupInfo;
 }
+
+// ══════════════════════════════════════════════════════════════
+// TEMPLATE END
+// ══════════════════════════════════════════════════════════════
 // Developed by: ShadowAISolutions

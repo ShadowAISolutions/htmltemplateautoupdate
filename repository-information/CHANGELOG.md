@@ -3,9 +3,32 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 71/100`
+`Sections: 72/100`
 
 ## [Unreleased]
+
+## [v04.11r] — 2026-03-07 10:57:40 AM EST
+
+### Added
+
+- Added TEMPLATE/PROJECT section dividers to GAS template source and all `.gs` files for clear template-vs-project code separation
+- Added inline `// PROJECT:` markers for project-specific modifications within template functions
+- Added "Template vs Project Code Separation" rule to `gas-scripts.md`
+
+#### `index.gs` — 01.05g
+
+##### Added
+- Internal code organization markers added (no user-visible change)
+
+#### `testation7.gs` — 01.07g
+
+##### Added
+- Internal code organization markers added (no user-visible change)
+
+#### `testation8.gs` — 01.06g
+
+##### Added
+- Internal code organization markers added (no user-visible change)
 
 ## [v04.10r] — 2026-03-07 10:47:17 AM EST
 

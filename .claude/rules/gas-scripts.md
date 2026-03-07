@@ -185,6 +185,52 @@ There is no separate `.gs` template file — this single file eliminates the syn
 
 *Template source propagation: when this file is modified, changes must be propagated to all existing `.gs` files — see `.claude/rules/html-pages.md` — section "Template Source Propagation" (Pre-Commit #20)*
 
+## Template vs Project Code Separation
+
+All GAS code files (`.gs` and `gas-project-creator-code.js.txt`) use section dividers to distinguish **template code** (shared across all projects, propagated via Pre-Commit #20) from **project-specific code** (unique to one project, never overwritten during propagation).
+
+### Divider format
+```javascript
+// ══════════════════════════════════════════════════════════════
+// TEMPLATE START
+// ══════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════
+// TEMPLATE END
+// ══════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════
+// PROJECT START
+// ══════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════
+// PROJECT END
+// ══════════════════════════════════════════════════════════════
+```
+
+### File structure (top to bottom)
+1. **Config variables** — always first, no divider needed (every file starts with these)
+2. **PROJECT block** — project-specific variables and standalone functions (e.g. `SPLASH_LOGO_URL`, `readPushedVersionFromCache()`). Empty on new projects — placeholder for future additions
+3. **TEMPLATE block** — all template functions (`doGet`, `doPost`, `getAppData`, `getSoundBase64`, `writeVersionToSheet`, `readB1FromCacheOrSheet`, `onEditWriteB1ToCache`, `fetchGitHubQuotaAndLimits`, `pullAndDeployFromGitHub`)
+4. `// Developed by:` branding line — always last
+
+### Inline project markers
+When a project modifies lines **within** a template function (rather than adding a whole new function), use an inline marker:
+```javascript
+CacheService.getScriptCache().put("pushed_version", value, 3600); // PROJECT: auto-update cache
+```
+For larger project-customized sections within a template function, use a single-line marker before the block:
+```javascript
+// PROJECT: custom UI (entire doGet diverged from template)
+function doGet() {
+```
+
+### Rules for new code
+- **New project-specific features** must go in the PROJECT block or use inline `// PROJECT:` markers — never mixed unmarked into template functions
+- **Template updates** (Pre-Commit #20) propagate changes only within TEMPLATE markers — PROJECT blocks and inline `// PROJECT:` lines are preserved as-is
+- **Keep clusters large** — prefer grouping related project-specific code together rather than scattering small project additions throughout the file. When practical, extract project logic into standalone functions in the PROJECT block and call them from template functions with an inline `// PROJECT:` marker
+- **The template source file** (`gas-project-creator-code.js.txt`) has an empty PROJECT block — it defines the insertion point but contains no project code itself
+
 ## GAS UI Layout Awareness
 
 GAS UI elements (iframe panels, toggle buttons, status indicators, overlays) are **guests** inside the host HTML page. They must defer to the host page's existing layout — the HTML page should never need to accommodate GAS elements. When making changes to GAS-related UI on any HTML page:

@@ -1,4 +1,4 @@
-var VERSION = "01.04g";
+var VERSION = "01.05g";
 var TITLE = "CHANGE THIS PROJECT TITLE TEMPLATE";
 var GITHUB_OWNER  = "ShadowAISolutions";
 var GITHUB_REPO   = "htmltemplateautoupdate";
@@ -9,8 +9,20 @@ var SPREADSHEET_ID = "1fZhpw9h_Ci4bIQTwyT-3txrKmtg1tWASBHM2n0UFCRY";
 var SHEET_NAME     = "Live_Sheet";
 var SOUND_FILE_ID = "1bzVp6wpTHdJ4BRX8gbtDN73soWpmq1kN";
 var EMBED_PAGE_URL = "https://ShadowAISolutions.github.io/htmltemplateautoupdate/";
-var SPLASH_LOGO_URL = "https://www.shadowaisolutions.com/SAIS_Logo.png";
 
+// ══════════════════════════════════════════════════════════════
+// PROJECT START
+// ══════════════════════════════════════════════════════════════
+var SPLASH_LOGO_URL = "https://www.shadowaisolutions.com/SAIS_Logo.png";
+// ══════════════════════════════════════════════════════════════
+// PROJECT END
+// ══════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════
+// TEMPLATE START
+// ══════════════════════════════════════════════════════════════
+
+// PROJECT: custom UI (entire doGet diverged from template)
 function doGet() {
   var html = `
     <html>
@@ -166,7 +178,7 @@ function doPost(e) {
         sheet.getRange("C1").setValue(value + " — " + new Date().toLocaleString());
       } catch(e) {}
     }
-    CacheService.getScriptCache().put("pushed_version", value, 3600);
+    CacheService.getScriptCache().put("pushed_version", value, 3600); // PROJECT: auto-update cache
     return ContentService.createTextOutput("OK");
   }
 
@@ -214,6 +226,7 @@ function getSoundBase64() {
   return "data:" + contentType + ";base64," + base64;
 }
 
+// PROJECT: auto-update polling
 function readPushedVersionFromCache() {
   return CacheService.getScriptCache().get("pushed_version") || "";
 }
@@ -318,8 +331,12 @@ function pullAndDeployFromGitHub() {
     cleanupInfo = " | Version count error: " + cleanupErr.message;
   }
 
-  CacheService.getScriptCache().put("pushed_version", "v" + pulledVersion, 3600);
+  CacheService.getScriptCache().put("pushed_version", "v" + pulledVersion, 3600); // PROJECT: auto-update cache
 
   return "Updated to v" + pulledVersion + " (deployment " + newVersion + ")" + cleanupInfo;
 }
+
+// ══════════════════════════════════════════════════════════════
+// TEMPLATE END
+// ══════════════════════════════════════════════════════════════
 // Developed by: ShadowAISolutions
