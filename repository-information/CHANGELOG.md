@@ -3,9 +3,15 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 60/100`
+`Sections: 61/100`
 
 ## [Unreleased]
+
+## [v04.00r] — 2026-03-06 11:02:58 PM EST
+
+### Changed
+
+- Clarified changelog security rule: repo CHANGELOG (`repository-information/CHANGELOG.md`) is exempt from HIPAA/PHI and attack surface restrictions — it is never deployed publicly and should use technically precise descriptions for developer context and audit trails; security restrictions apply only to publicly deployed page and GAS changelogs in `live-site-pages/`
 
 ## [v03.99r] — 2026-03-06 10:55:54 PM EST
 
