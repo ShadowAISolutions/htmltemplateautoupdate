@@ -1,4 +1,4 @@
-var VERSION = "01.06g";
+var VERSION = "01.00g";
 var TITLE = "CHANGE THIS PROJECT TITLE TEMPLATE";
 var GITHUB_OWNER  = "ShadowAISolutions";
 var GITHUB_REPO   = "htmltemplateautoupdate";

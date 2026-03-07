@@ -1,4 +1,4 @@
-var VERSION = "01.08g";
+var VERSION = "01.00g";
 var TITLE = "title 7";
 var GITHUB_OWNER  = "ShadowAISolutions";
 var GITHUB_REPO   = "htmltemplateautoupdate";
