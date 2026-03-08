@@ -3,9 +3,14 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 3/100`
+`Sections: 4/100`
 
 ## [Unreleased]
+
+## [v01.04r] — 2026-03-08 02:48:28 PM EST
+
+### Fixed
+- Added missing `.editorconfig` and `.gitignore` to README project structure tree
 
 ## [v01.03r] — 2026-03-08 02:31:16 PM EST
 

@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-03-08 02:31:16 PM EST` · Repo version: `v01.03r`
+Last updated: `2026-03-08 02:48:28 PM EST` · Repo version: `v01.04r`
 
 You are currently using the **htmltemplateautoupdate** developed by **ShadowAISolutions**<br>
 Initialize your repository and Claude will update the live site link and QR code here
@@ -241,6 +241,8 @@ htmltemplateautoupdate/
 │   ├── init-repo.sh            # One-shot fork initialization script
 │   └── setup-gas-project.sh    # GAS project file creation script
 ├── .gitattributes              # Line ending normalization (LF)
+├── .editorconfig               # Editor formatting rules (indent, charset, EOL)
+├── .gitignore                  # Git ignore patterns
 ├── CITATION.cff                # Citation metadata
 ├── CLAUDE.md                   # Developer instructions
 ├── CODE_OF_CONDUCT.md          # Community standards
