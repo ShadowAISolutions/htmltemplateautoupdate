@@ -11,7 +11,7 @@ graph TB
             DEV -->|"push"| CB
         end
 
-        subgraph "CI/CD — auto-merge-claude.yml"
+        subgraph "CI/CD — auto-merge-claude.yml [template]"
             direction TB
             TRIGGER{"Push to claude/*?"}
             CB --> TRIGGER
@@ -34,34 +34,34 @@ graph TB
             DEPLOY_PAGES --> LIVE
         end
 
-        subgraph "live-site-pages/ — Hosted Content"
+        subgraph "live-site-pages/ — Hosted Content [template]"
             direction LR
-            NOJEKYLL[".nojekyll"]
-            INDEX["index.html"]
-            GASTPL_PAGE["gas-project-creator.html"]
-            GASTPL_CODE["gas-code-templates/\ngas-project-creator-code.js.txt"]
-            SND1["sounds/Website_Ready_Voice_1.mp3"]
-            SND2["sounds/Code_Ready_Voice_1.mp3"]
+            NOJEKYLL["[template] .nojekyll"]
+            INDEX["[template] index.html"]
+            GASTPL_PAGE["[template] gas-project-creator.html"]
+            GASTPL_CODE["[template] gas-code-templates/\ngas-project-creator-code.js.txt"]
+            SND1["[template] sounds/Website_Ready_Voice_1.mp3"]
+            SND2["[template] sounds/Code_Ready_Voice_1.mp3"]
 
-            subgraph "html-versions/"
-                VERTXT["indexhtml.version.txt"]
-                GASTPL_VERTXT["gas-project-creatorhtml.version.txt"]
+            subgraph "html-versions/ [template]"
+                VERTXT["[template] indexhtml.version.txt"]
+                GASTPL_VERTXT["[template] gas-project-creatorhtml.version.txt"]
             end
 
-            subgraph "gs-versions/"
-                INDEX_GSVER["indexgs.version.txt"]
+            subgraph "gs-versions/ [template]"
+                INDEX_GSVER["[template] indexgs.version.txt"]
             end
 
-            subgraph "html-changelogs/"
-                INDEX_CL["indexhtml.changelog.md"]
-                INDEX_CL_ARCH["indexhtml.changelog-archive.md"]
-                GASTPL_CL["gas-project-creatorhtml.changelog.md"]
-                GASTPL_CL_ARCH["gas-project-creatorhtml.changelog-archive.md"]
+            subgraph "html-changelogs/ [template]"
+                INDEX_CL["[template] indexhtml.changelog.md"]
+                INDEX_CL_ARCH["[template] indexhtml.changelog-archive.md"]
+                GASTPL_CL["[template] gas-project-creatorhtml.changelog.md"]
+                GASTPL_CL_ARCH["[template] gas-project-creatorhtml.changelog-archive.md"]
             end
 
-            subgraph "gs-changelogs/"
-                INDEX_GCL["indexgs.changelog.md"]
-                INDEX_GCL_ARCH["indexgs.changelog-archive.md"]
+            subgraph "gs-changelogs/ [template]"
+                INDEX_GCL["[template] indexgs.changelog.md"]
+                INDEX_GCL_ARCH["[template] indexgs.changelog-archive.md"]
             end
         end
 
@@ -79,10 +79,10 @@ graph TB
             COMPARE -->|No| POLL
         end
 
-        subgraph "Google Apps Scripts"
+        subgraph "Google Apps Scripts [template]"
             direction LR
-            GAS_INDEX["googleAppsScripts/Index/index.gs"]
-            GAS_CFG["index.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
+            GAS_INDEX["[template] googleAppsScripts/Index/index.gs"]
+            GAS_CFG["[template] index.config.json\n(source of truth for\nTITLE, DEPLOYMENT_ID,\nSPREADSHEET_ID, etc.)"]
         end
 
         subgraph "GAS Self-Update Loop"
@@ -96,23 +96,23 @@ graph TB
             GAS_DEPLOY_STEP --> GAS_POSTMSG
         end
 
-        subgraph "Template Files"
-            TPL["HtmlAndGasTemplateAutoUpdate.html\n(universal template — never bumped)"]
-            TPL_VER["HtmlAndGasTemplateAutoUpdatehtml.version.txt"]
+        subgraph "Template Files [template]"
+            TPL["[template] HtmlAndGasTemplateAutoUpdate.html\n(universal template — never bumped)"]
+            TPL_VER["[template] HtmlAndGasTemplateAutoUpdatehtml.version.txt"]
         end
 
-        subgraph "Project Config"
-            CLAUDE_MD["CLAUDE.md\n(project instructions)"]
-            RULES[".claude/rules/\n(always-loaded + path-scoped rules)"]
-            SKILLS[".claude/skills/\n(invokable workflow skills)"]
-            REPO_VER["repository.version.txt"]
-            SETTINGS[".claude/settings.json\n(git * auto-allowed)"]
-            SHA_FILE[".github/last-processed-commit.sha\n(inherited branch guard)"]
+        subgraph "Project Config [template]"
+            CLAUDE_MD["[template] CLAUDE.md\n(project instructions)"]
+            RULES["[template] .claude/rules/\n(always-loaded + path-scoped rules)"]
+            SKILLS["[template] .claude/skills/\n(invokable workflow skills)"]
+            REPO_VER["[template] repository.version.txt"]
+            SETTINGS["[template] .claude/settings.json\n(git * auto-allowed)"]
+            SHA_FILE["[template] .github/last-processed-commit.sha\n(inherited branch guard)"]
         end
 
-        subgraph "Scripts"
-            INIT_SCRIPT["scripts/init-repo.sh\n(one-shot fork initialization)"]
-            GAS_SETUP["scripts/setup-gas-project.sh\n(GAS project file creation)"]
+        subgraph "Scripts [template]"
+            INIT_SCRIPT["[template] scripts/init-repo.sh\n(one-shot fork initialization)"]
+            GAS_SETUP["[template] scripts/setup-gas-project.sh\n(GAS project file creation)"]
             INIT_SCRIPT -.->|"auto-detects org/repo\nreplaces 22 files"| CLAUDE_MD
         end
     end

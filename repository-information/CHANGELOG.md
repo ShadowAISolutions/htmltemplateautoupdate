@@ -3,9 +3,16 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 7/100`
+`Sections: 8/100`
 
 ## [Unreleased]
+
+## [v01.08r] — 2026-03-08 03:12:53 PM EST
+
+### Added
+- Added `[template]` origin labels to ARCHITECTURE.md Mermaid diagram — file nodes and file-centric subgraphs are prefixed with `[template]` to distinguish template-origin components from fork-added ones
+- Added `Origin` column to all STATUS.md tables — template-origin entries show `template`, making it immediately visible which rows came from the template
+- Added template origin label rules to Pre-Commit #5 (STATUS.md Origin column) and #6 (ARCHITECTURE.md node/subgraph labels), including `[template · modified]` tracking on non-template repos
 
 ## [v01.07r] — 2026-03-08 03:04:33 PM EST
 
