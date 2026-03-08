@@ -179,7 +179,9 @@ if [ -f "$CLAUDE_FILE" ]; then
   sed -i "s/| \`YOUR_REPO_NAME\` | YourRepoName/| \`YOUR_REPO_NAME\` | ${REPO_NAME}/" "$CLAUDE_FILE"
   # DEVELOPER_NAME: ShadowAISolutions -> developer name
   sed -i "s/| \`DEVELOPER_NAME\` | ${OLD_ORG}/| \`DEVELOPER_NAME\` | ${DEVELOPER_NAME}/" "$CLAUDE_FILE"
-  echo "  Updated 4 table values."
+  # TEMPLATE_DEPLOY: On -> Off (template-only toggle, forks should start with Off)
+  sed -i "s/| \`TEMPLATE_DEPLOY\` | On/| \`TEMPLATE_DEPLOY\` | Off/" "$CLAUDE_FILE"
+  echo "  Updated 5 table values."
 else
   echo "  WARN: CLAUDE.md not found, skipping table update."
 fi
