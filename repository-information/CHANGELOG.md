@@ -3,9 +3,18 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 8/100`
+`Sections: 9/100`
 
 ## [Unreleased]
+
+## [v01.09r] — 2026-03-08 03:23:13 PM EST
+
+### Added
+- Added three-tier template origin label system: `[template]` (template repo), `[template · initialized]` (fork after init), `[template · modified]` (fork after customization) — distinguishes initialization changes from genuine post-init customizations
+- Added Phase 5b to init script (`scripts/init-repo.sh`) — upgrades all `[template]` labels to `[template · initialized]` in README.md tree, ARCHITECTURE.md diagram, and STATUS.md Origin column during fork initialization
+
+### Changed
+- Updated Pre-Commit #5, #6, #8 template origin label rules to document the three-tier system and the `[template · initialized]` intermediate state
 
 ## [v01.08r] — 2026-03-08 03:12:53 PM EST
 

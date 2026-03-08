@@ -276,6 +276,30 @@ else
 fi
 echo ""
 
+# ── PHASE 5b: TEMPLATE ORIGIN LABELS ──
+echo "[Phase 5b] Upgrading [template] labels to [template · initialized]..."
+
+# README.md tree comments: [template] -> [template · initialized]
+if [ -f "$README_FILE" ]; then
+  sed -i 's/\[template\]/[template · initialized]/g' "$README_FILE"
+  echo "  Updated README.md tree labels."
+fi
+
+# ARCHITECTURE.md Mermaid nodes and subgraph titles
+ARCH_FILE="$REPO_ROOT/repository-information/ARCHITECTURE.md"
+if [ -f "$ARCH_FILE" ]; then
+  sed -i 's/\[template\]/[template · initialized]/g' "$ARCH_FILE"
+  echo "  Updated ARCHITECTURE.md diagram labels."
+fi
+
+# STATUS.md Origin column: template -> initialized
+STATUS_FILE="$REPO_ROOT/repository-information/STATUS.md"
+if [ -f "$STATUS_FILE" ]; then
+  sed -i 's/| template |/| initialized |/g' "$STATUS_FILE"
+  echo "  Updated STATUS.md Origin column values."
+fi
+echo ""
+
 # ── PHASE 6: QR CODE GENERATION ──
 echo "[Phase 6] Generating QR code for live site URL..."
 
